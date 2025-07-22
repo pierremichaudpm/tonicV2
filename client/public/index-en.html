@@ -38,7 +38,7 @@
         .view-container{position:fixed;inset:0;opacity:0;pointer-events:none;transition:opacity .5s ease}
         .view-container.active{opacity:1;pointer-events:auto}
         .splash-container{position:fixed;inset:0;z-index:100;background:#000;display:flex;align-items:center;justify-content:center;padding:2rem;flex-direction:column}
-        .splash-logo{font-size:clamp(5rem,15vw,10rem);font-weight:900;color:#fff;text-align:center;text-shadow:0 4px 20px rgba(0,0,0,.8);opacity:0;animation:fadeInSoft 1.2s ease-out forwards}
+        .splash-logo{width:clamp(300px,50vw,600px);height:auto;opacity:0;animation:fadeInSoft 1.2s ease-out forwards;filter:drop-shadow(0 4px 20px rgba(0,0,0,.8))}
         .splash-tagline{font-size:clamp(1rem,2.5vw,1.5rem);font-weight:500;color:#fff;text-align:center;text-shadow:0 2px 10px rgba(0,0,0,.8);opacity:0;animation:fadeInSoft 1.2s ease-out .3s forwards;margin-top:1rem}
         
         /* Grid - Updated 2:34 AM for MUCH darker backgrounds */
@@ -247,7 +247,7 @@
     <noscript>
         <div style="min-height:100vh;background:#000;color:#fff;display:flex;align-items:center;justify-content:center;padding:2rem;text-align:center">
             <div>
-                <h1 style="font-size:3rem;font-weight:900;margin-bottom:1rem;font-family:'CBC Sans',sans-serif">TONIC</h1>
+                <img src="images/tonic-logo.png" alt="Groupe Tonic" style="width:clamp(200px,40vw,300px);height:auto;margin-bottom:1rem;" />
                 <p style="margin-bottom:2rem;opacity:.8">This site requires JavaScript to function properly. Please enable it in your browser.</p>
             </div>
         </div>
@@ -356,7 +356,9 @@
                             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-0 sm:gap-4">
                                 <h1 className="header-logo text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white leading-none" 
                                     style={{textShadow:'0 4px 20px rgba(0,0,0,0.9), 0 2px 10px rgba(0,0,0,0.8)'}}
-                                    onClick={goToGrid}>TONIC</h1>
+                                    onClick={goToGrid}>
+                                    <img src="images/tonic-logo.png" alt="Groupe Tonic" style={{width:'clamp(180px,35vw,250px)',height:'auto'}} />
+                                </h1>
                                 <span className={`text-white/90 text-[0.55rem] xs:text-[0.6rem] sm:text-xs md:text-sm lg:text-base font-medium leading-tight whitespace-normal sm:whitespace-normal ${currentView === VIEWS.GRID ? 'header-tagline-grid' : 'header-tagline-hero'}`}
                                     style={{textShadow:'0 2px 10px rgba(0,0,0,0.9)',overflow:'hidden',textOverflow:'ellipsis'}}>
                                     <span className="hidden sm:inline">| </span>
@@ -746,7 +748,7 @@
             if (!state.isInitialized) {
                 return (
                     <div style={{minHeight:'100vh',background:'#000',color:'white',display:'flex',alignItems:'center',justifyContent:'center'}}>
-                        <h1 style={{fontSize:'3rem',fontWeight:'900'}}>TONIC</h1>
+                        <img src="images/tonic-logo.png" alt="Groupe Tonic" style={{width:'clamp(200px,40vw,300px)',height:'auto'}} />
                     </div>
                 );
             }
@@ -756,7 +758,7 @@
                     {/* Splash View */}
                     <div className={`view-container ${state.currentView === VIEWS.SPLASH ? 'active' : ''}`}>
                         <div className="splash-container">
-                            <h1 className="splash-logo">TONIC</h1>
+                            <img src="images/tonic-logo.png" alt="Groupe Tonic" className="splash-logo" />
                             <p className="splash-tagline">Créateur d'expériences mémorables</p>
                         </div>
                     </div>
@@ -1143,7 +1145,7 @@
                 document.getElementById('root').innerHTML = `
                     <div style="min-height:100vh;background:#000;color:white;display:flex;align-items:center;justify-content:center;padding:2rem;text-align:center">
                         <div>
-                            <h1 style="font-size:3rem;font-weight:900;margin-bottom:2rem;font-family:'CBC Sans',sans-serif">TONIC</h1>
+                            <img src="images/tonic-logo.png" alt="Groupe Tonic" style="width:clamp(200px,40vw,300px);height:auto;margin-bottom:2rem;" />
                             <h2 style="font-size:1.5rem;margin-bottom:1rem;color:#ef4444">Loading Error</h2>
                             <p style="margin-bottom:2rem;opacity:0.8">An error occurred while loading the application.</p>
                             <button onclick="window.location.reload()" style="padding:0.75rem 2rem;background:white;color:black;border:none;border-radius:50px;font-weight:bold;cursor:pointer;font-size:1rem">
