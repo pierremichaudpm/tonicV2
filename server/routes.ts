@@ -57,6 +57,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/ai-helper", (req, res) => {
     res.sendFile(path.join(publicPath, "ai-helper.html"));
   });
+  
+  // Add legal pages routes
+  app.get("/politique-de-confidentialite", (req, res) => {
+    res.sendFile(path.join(publicPath, "politique-de-confidentialite.html"));
+  });
+  
+  app.get("/privacy-policy", (req, res) => {
+    res.sendFile(path.join(publicPath, "privacy-policy.html"));
+  });
+  
+  app.get("/conditions-utilisation", (req, res) => {
+    res.sendFile(path.join(publicPath, "conditions-utilisation.html"));
+  });
+  
+  app.get("/terms-of-use", (req, res) => {
+    res.sendFile(path.join(publicPath, "terms-of-use.html"));
+  });
+  
+  // Handle legacy .html routes for compatibility  
+  app.get("/index.html", (req, res) => {
+    res.sendFile(path.join(publicPath, "index.html"));
+  });
+  
+  app.get("/index-en.html", (req, res) => {
+    res.sendFile(path.join(publicPath, "index-en.html"));
+  });
 
   const aiAssistant = new AICodeAssistant();
   
