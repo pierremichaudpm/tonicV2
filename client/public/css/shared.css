@@ -324,63 +324,24 @@
         margin-bottom: 0.5rem !important;
     }
     
-    /* Header improvements - ensure visibility for React header */
-    header[class*="fixed"][class*="top-0"],
-    header.fixed,
-    [data-current-view="grid"] header,
-    .grid-selection-container header {
+    /* Simple header fix */
+    header {
         display: block !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        right: 0 !important;
-        z-index: 99 !important;
-        background: linear-gradient(to bottom,rgba(0,0,0,0.98) 0%,rgba(0,0,0,0.95) 30%,rgba(0,0,0,0.85) 60%,rgba(0,0,0,0.5) 85%,rgba(0,0,0,0.1) 100%) !important;
-        backdrop-filter: blur(20px) saturate(180%) !important;
-        -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-        box-shadow: 0 4px 30px rgba(0,0,0,0.5) !important;
-    }
-    
-    /* Force header visibility - nuclear option */
-    * header {
-        display: block !important;
-    }
-    
-    body [data-current-view="grid"] header,
-    body .view-container.active header,
-    body div[class*="grid"] header {
-        display: block !important;
-        visibility: visible !important;
         opacity: 1 !important;
         z-index: 999 !important;
     }
     
-    /* Debug header visibility - temporary bright background */
-    @media only screen and (min-width: 768px) and (max-width: 1023px) {
-        header {
-            background-color: rgba(255, 0, 0, 0.3) !important;
-            border: 2px solid red !important;
-        }
+    /* Tablet header sizing */
+    header .container {
+        padding: 0.5rem !important;
     }
     
-    /* Container inside React header - much smaller */
-    header .container.mx-auto, [class*="container"][class*="mx-auto"] {
-        padding: 0.25rem 0.5rem !important;
-        display: flex !important;
+    header img {
+        max-width: 150px !important;
     }
     
-    /* Header logo much smaller on tablet */
-    .header-logo img {
-        width: clamp(120px, 25vw, 180px) !important;
-        height: auto !important;
-    }
-    
-    /* Header tagline much smaller */
-    .header-tagline-grid, .header-tagline-hero {
-        font-size: 0.6rem !important;
-        line-height: 1.1 !important;
+    header span {
+        font-size: 0.7rem !important;
     }
     
     /* CTA Button - much smaller */
