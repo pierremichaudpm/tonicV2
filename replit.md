@@ -142,6 +142,13 @@ The application is designed to serve both a public-facing bilingual website and 
 - **Navigation responsive behavior** confirmed working at different screen sizes
 - **Minor responsiveness note**: Desktop navigation may wrap to 2 lines at intermediate screen sizes (acceptable behavior)
 
+### Legal Pages Enhancement - July 22, 2025
+- **Enhanced footer sections** across all static pages with proper legal page links
+- **Upgraded footer consistency** with enhanced TONIC branding and professional layout
+- **Corrected company information** in terms of use pages to use proper "Groupe Tonic" name
+- **Updated contact address format**: Groupe Tonic, 615 Rue le Breton, Longueuil, QC J4G 1R9
+- **Standardized email addresses** to info@groupetonic.ca across all legal pages
+
 ### Technical Architecture Status
 - React-based interactive homepage with hero views, animations, and smooth transitions ✅
 - Bilingual routing system (French default, English -en suffix) ✅  
