@@ -187,4 +187,6 @@ The website is now fully operational and matches the original local/Netlify func
 - **Preserved taglines**: "Créateur d'expériences mémorables" / "Creator of memorable experiences" maintained
 - **Legal content updates**: All references changed from "TONIC Productions" to "Groupe Tonic"
 - **Improved splash screen spacing**: Increased margin between logo and tagline from 1rem to 3rem
+- **Enhanced header spacing**: Increased header padding across all pages from py-5 (1.25rem) to py-8 (2rem) for better logo prominence
+- **React homepage padding boost**: Increased hero content top padding from 5rem to 6rem for improved logo breathing room  
 - **Logo file**: `images/tonic-logo.png` (processed from user attachment)
