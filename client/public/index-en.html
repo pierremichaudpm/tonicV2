@@ -353,23 +353,17 @@
         const Header = memo(({goToGrid, isMobileMenuOpen, setIsMobileMenuOpen, currentView}) => {
             const navItems = useMemo(() => createNavItems(goToGrid), [goToGrid]);
             const headerStyle = useMemo(() => ({
-                background: 'rgba(0,0,0,0.95)',
-                backdropFilter: 'blur(20px) saturate(180%)',
-                WebkitBackdropFilter: 'blur(20px) saturate(180%)',
-                boxShadow: '0 4px 30px rgba(0,0,0,0.5)',
-                transition: 'all 0.3s ease',
-                display: 'block',
-                visibility: 'visible',
-                opacity: 1,
-                position: 'fixed',
-                top: 0,
-                left: 0,
-                right: 0,
-                zIndex: 9999
+                background: currentView === VIEWS.GRID 
+                    ? 'linear-gradient(to bottom,rgba(0,0,0,0.98) 0%,rgba(0,0,0,0.95) 30%,rgba(0,0,0,0.85) 60%,rgba(0,0,0,0.5) 85%,rgba(0,0,0,0.1) 100%)'
+                    : 'linear-gradient(to bottom,rgba(0,0,0,0.2),rgba(0,0,0,0.02) 30%,transparent 60%)',
+                backdropFilter: currentView === VIEWS.GRID ? 'blur(20px) saturate(180%)' : 'none',
+                WebkitBackdropFilter: currentView === VIEWS.GRID ? 'blur(20px) saturate(180%)' : 'none',
+                boxShadow: currentView === VIEWS.GRID ? '0 4px 30px rgba(0,0,0,0.5)' : 'none',
+                transition: 'all 0.3s ease'
             }), [currentView]);
 
             return (
-                <header style={headerStyle}>
+                <header className="fixed top-0 left-0 right-0 z-50" style={headerStyle}>
                     <div className="container mx-auto px-2 py-2 sm:px-4 sm:py-5">
                         <div className="flex items-center justify-between">
                             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-0 sm:gap-4">
@@ -386,17 +380,17 @@
                                 </span>
                             </div>
                             <div className="flex items-center gap-4">
-                                <nav className="hidden sm:flex items-center gap-0.5 px-2 py-0.5 rounded-full nav-container" style={{background:'rgba(0,0,0,0.2)',backdropFilter:'blur(10px)'}}>
+                                <nav className="hidden md:flex lg:flex items-center gap-0.5 px-2 py-0.5 rounded-full nav-container" style={{background:'rgba(0,0,0,0.2)',backdropFilter:'blur(10px)'}}>
                                     {navItems.map(item => (
                                         <a key={item.label} onClick={item.onClick} href={item.href} className="nav-item flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-white/10 transition-all text-white hover:text-white cursor-pointer" data-tooltip={item.label}>
                                             {item.icon}
-                                            <span className="tablet-hide text-xs font-medium">{item.label}</span>
+                                            <span className="text-xs font-medium">{item.label}</span>
                                         </a>
                                     ))}
                                     <div className="lang-divider"></div>
                                     <a href="index.html" className="lang-switcher"><span>FR</span></a>
                                 </nav>
-                                <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="block sm:hidden p-2 hover:bg-white/10 rounded-lg transition-colors text-white" style={{background:'rgba(0,0,0,0.2)',backdropFilter:'blur(10px)',color:'white'}}>
+                                <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="md:hidden p-2 hover:bg-white/10 rounded-lg transition-colors text-white" style={{background:'rgba(0,0,0,0.2)',backdropFilter:'blur(10px)',color:'white'}}>
                                     <div style={{color:'white'}}>{isMobileMenuOpen ? Icons.x : Icons.menu}</div>
                                 </button>
                             </div>
