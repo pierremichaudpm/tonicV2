@@ -141,6 +141,14 @@
 .nav-item svg {
     width: 1rem;
     height: 1rem;
+    color: currentColor;
+    stroke: currentColor;
+}
+
+/* Mobile menu specific icon styling */
+.mobile-menu .nav-item svg {
+    color: white;
+    stroke: white;
 }
 
 /* Mobile Menu */

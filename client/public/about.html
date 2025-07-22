@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>About - Tonic</title>
-    <meta name="description" content="Discover Tonic, creator of memorable experiences and leader in organizing major sporting and cultural events in Quebec.">
+    <meta name="description" content="Discover Groupe Tonic, creator of memorable experiences and leader in organizing major sporting and cultural events in Quebec for over 40 years.">
     <link rel="stylesheet" href="css/shared.css">
     <link rel="preload" href="https://fonts.cbc.ca/fonts/CBCSans-Bold.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preconnect" href="https://fonts.cbc.ca">
@@ -17,14 +17,32 @@
         body{margin:0;background:#000;overflow-x:hidden;min-height:100vh;min-height:100dvh}
         .header-logo{cursor:pointer;transition:transform .2s ease}
         .header-logo:hover{transform:scale(1.05)}
-        .stat-card{background:linear-gradient(135deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02));backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);transition:all 0.3s ease}
+        .stat-card{background:linear-gradient(135deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02));backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);transition:all 0.3s ease;border-radius:1rem;padding:2rem;text-align:center}
         .stat-card:hover{transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,0,0,0.3);border-color:rgba(255,255,255,0.2)}
-        .timeline-item{position:relative;padding-left:3rem}
-        .timeline-item::before{content:'';position:absolute;left:0.75rem;top:0.5rem;width:0.5rem;height:0.5rem;background:var(--accent-primary);border-radius:50%;box-shadow:0 0 20px var(--accent-glow)}
-        .timeline-item::after{content:'';position:absolute;left:1rem;top:1.5rem;width:1px;height:calc(100% + 1rem);background:rgba(255,255,255,0.2)}
-        .timeline-item:last-child::after{display:none}
+        .stat-number{font-size:3rem;font-weight:900;color:#fff;line-height:1;margin-bottom:0.5rem}
+        .stat-label{color:rgba(255,255,255,0.8);font-size:1.1rem;font-weight:500}
+        .values-card{background:linear-gradient(135deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02));backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-radius:1rem;padding:2rem;transition:all 0.3s ease}
+        .values-card:hover{transform:translateY(-2px);border-color:rgba(255,255,255,0.2)}
+        .timeline-container{position:relative;overflow:hidden;padding:4rem 0}
+        .timeline-path{position:absolute;top:50%;left:0;right:0;height:2px;background:rgba(255,255,255,0.2)}
+        .timeline-curve{position:absolute;stroke:rgba(255,255,255,0.3);stroke-width:2;fill:none;width:100%;height:200px;top:50%;transform:translateY(-50%)}
+        .timeline-item{position:relative;background:rgba(0,0,0,0.8);border:1px solid rgba(255,255,255,0.1);border-radius:0.75rem;padding:1.5rem;margin-bottom:2rem;backdrop-filter:blur(10px);transition:all 0.3s ease}
+        .timeline-item:hover{border-color:rgba(255,255,255,0.3);transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,0,0,0.5)}
+        .timeline-year{font-size:1.5rem;font-weight:900;color:#fff;margin-bottom:0.5rem}
+        .timeline-title{font-weight:700;color:#fff;margin-bottom:0.5rem;font-size:1.1rem}
+        .timeline-desc{color:rgba(255,255,255,0.8);line-height:1.5}
+        .hero-title{font-size:clamp(2.5rem,8vw,5rem);line-height:0.9} /* Reduced by ~30% from original */
         .hero-bg{background:linear-gradient(135deg,#1a1a1a 0%,#0a0a0a 100%)}
-        @media(max-width:768px){.timeline-item{padding-left:2rem}.timeline-item::before{left:0.25rem}.timeline-item::after{left:0.5rem}}
+        .cta-section{background:linear-gradient(135deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01));border-top:1px solid rgba(255,255,255,0.1)}
+        
+        /* Timeline responsive layout */
+        @media(min-width:768px){
+            .timeline-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start}
+            .timeline-item:nth-child(even){margin-top:3rem}
+        }
+        @media(max-width:767px){
+            .timeline-item{margin-bottom:1.5rem}
+        }
     </style>
 </head>
 <body class="bg-black text-white">
@@ -34,7 +52,7 @@
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-4">
                     <a href="index-en.html" class="header-logo text-4xl md:text-5xl font-black text-white">TONIC</a>
-                    <span class="hidden sm:inline text-white/70 text-sm">| Créateur d'expériences mémorables</span>
+                    <span class="hidden sm:inline text-white/70 text-sm">| Creator of memorable experiences</span>
                 </div>
                 <nav class="hidden md:flex items-center nav-container">
                     <a href="index-en.html" class="nav-item">
@@ -105,7 +123,7 @@
     <section class="hero-bg relative pt-32 pb-20 overflow-hidden">
         <div class="absolute inset-0 bg-gradient-to-br from-black/50 to-transparent"></div>
         <div class="container mx-auto px-4 relative z-10">
-            <h1 class="text-5xl md:text-7xl font-black mb-6 fade-in">About Tonic</h1>
+            <h1 class="hero-title font-black mb-6 fade-in">About Groupe Tonic</h1>
             <p class="text-xl md:text-2xl text-white/80 max-w-3xl fade-in delay-100">
                 For over 40 years, we've been creating unforgettable moments by organizing major international sporting and cultural events in Quebec.
             </p>
@@ -118,148 +136,197 @@
         <section class="container mx-auto px-4 mb-20">
             <div class="max-w-4xl mx-auto">
                 <h2 class="text-4xl font-bold mb-8 fade-in">Our Mission</h2>
-                <p class="text-lg text-white/80 mb-6 fade-in delay-100">
-                    Tonic is a creator of memorable experiences. We organize and produce major sporting and cultural events that bring communities together and celebrate excellence. Our expertise spans from conception to execution, including promotion and complete management of large-scale events.
-                </p>
-                <p class="text-lg text-white/80 fade-in delay-200">
-                    With a passionate team and strong partnerships, we transform every project into a unique experience that leaves a lasting impression and creates enduring memories for participants, spectators, and communities.
-                </p>
+                <div class="space-y-6 text-lg text-white/80 fade-in delay-100">
+                    <p>
+                        Groupe Tonic is a creator of memorable experiences. We organize and produce major sporting and cultural events that bring communities together and celebrate excellence. Our expertise extends from conception to execution, including promotion and complete management of large-scale events.
+                    </p>
+                    <p>
+                        With a passionate team and strong partnerships, we transform every project into a unique experience that leaves a lasting impression and creates enduring memories for participants, spectators, and communities.
+                    </p>
+                </div>
             </div>
         </section>
 
-        <!-- Stats Section -->
-        <section class="container mx-auto px-4 mb-20">
+        <!-- Statistics Section -->
+        <section class="container mx-auto px-4 mb-24">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-                <div class="stat-card p-8 rounded-2xl text-center fade-in">
-                    <div class="text-5xl font-black text-coral-500 mb-2">40+</div>
-                    <p class="text-white/70">Years of Experience</p>
+                <div class="stat-card fade-in delay-200">
+                    <div class="stat-number">40+</div>
+                    <div class="stat-label">Years of Experience</div>
                 </div>
-                <div class="stat-card p-8 rounded-2xl text-center fade-in delay-100">
-                    <div class="text-5xl font-black text-coral-500 mb-2">1M+</div>
-                    <p class="text-white/70">Annual Participants</p>
+                <div class="stat-card fade-in delay-300">
+                    <div class="stat-number">1M+</div>
+                    <div class="stat-label">Annual Participants</div>
                 </div>
-                <div class="stat-card p-8 rounded-2xl text-center fade-in delay-200">
-                    <div class="text-5xl font-black text-coral-500 mb-2">7</div>
-                    <p class="text-white/70">Major Events</p>
+                <div class="stat-card fade-in delay-400">
+                    <div class="stat-number">5</div>
+                    <div class="stat-label">Major Events</div>
                 </div>
             </div>
         </section>
 
         <!-- Values Section -->
-        <section class="container mx-auto px-4 mb-20">
-            <div class="max-w-4xl mx-auto">
+        <section class="container mx-auto px-4 mb-24">
+            <div class="max-w-6xl mx-auto">
                 <h2 class="text-4xl font-bold mb-12 text-center fade-in">Our Values</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div class="glass p-8 rounded-2xl fade-in">
-                        <h3 class="text-2xl font-bold mb-4 text-coral-500">Excellence</h3>
-                        <p class="text-white/70">We strive for excellence in every aspect of our events, from planning to execution.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="values-card fade-in delay-200">
+                        <h3 class="text-xl font-bold mb-3 text-white">Excellence</h3>
+                        <p class="text-white/80">With 40 years of experience, we deliver high-level events combining rigor and creativity.</p>
                     </div>
-                    <div class="glass p-8 rounded-2xl fade-in delay-100">
-                        <h3 class="text-2xl font-bold mb-4 text-coral-500">Innovation</h3>
-                        <p class="text-white/70">We constantly push boundaries to create unique and memorable experiences.</p>
+                    <div class="values-card fade-in delay-300">
+                        <h3 class="text-xl font-bold mb-3 text-white">Audacity</h3>
+                        <p class="text-white/80">We push boundaries with unique formats and ambitious productions.</p>
                     </div>
-                    <div class="glass p-8 rounded-2xl fade-in delay-200">
-                        <h3 class="text-2xl font-bold mb-4 text-coral-500">Community</h3>
-                        <p class="text-white/70">We believe in the unifying power of sport and culture to bring communities together.</p>
+                    <div class="values-card fade-in delay-400">
+                        <h3 class="text-xl font-bold mb-3 text-white">Community</h3>
+                        <p class="text-white/80">We believe in the unifying power of sport and culture to bring communities together.</p>
                     </div>
-                    <div class="glass p-8 rounded-2xl fade-in delay-300">
-                        <h3 class="text-2xl font-bold mb-4 text-coral-500">Sustainability</h3>
-                        <p class="text-white/70">We integrate sustainable practices into all our events for positive long-term impact.</p>
+                    <div class="values-card fade-in delay-500">
+                        <h3 class="text-xl font-bold mb-3 text-white">Collaboration</h3>
+                        <p class="text-white/80">Our ecosystem unites diverse expertise to build exceptional experiences.</p>
+                    </div>
+                    <div class="values-card fade-in delay-600 md:col-span-2 lg:col-span-1">
+                        <h3 class="text-xl font-bold mb-3 text-white">Lasting Impact</h3>
+                        <p class="text-white/80">Our projects transform society positively with a beneficial, human, and healthy footprint.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Timeline Section -->
-        <section class="container mx-auto px-4 mb-20">
-            <div class="max-w-4xl mx-auto">
-                <h2 class="text-4xl font-bold mb-12 fade-in">Our History</h2>
-                <div class="space-y-8">
-                    <div class="timeline-item fade-in">
-                        <h3 class="text-xl font-bold mb-2">1982 - Foundation</h3>
-                        <p class="text-white/70">Creation of Tonic with the vision of transforming Quebec's event landscape.</p>
+        <!-- History Timeline Section -->
+        <section class="container mx-auto px-4 mb-24">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-4xl font-bold mb-4 text-center fade-in">Our History</h2>
+                <p class="text-xl text-white/70 mb-16 text-center fade-in delay-100">A little trip back in time</p>
+                
+                <!-- Early Years: 1978-2000 -->
+                <div class="mb-16">
+                    <h3 class="text-2xl font-bold mb-8 text-white/90">1978-2000</h3>
+                    <div class="timeline-grid">
+                        <div class="timeline-item fade-in delay-200">
+                            <div class="timeline-year">1978</div>
+                            <div class="timeline-title">Creation of Serdy Vidéo</div>
+                            <div class="timeline-desc">The beginning of our adventure in the world of audiovisual production.</div>
+                        </div>
+                        <div class="timeline-item fade-in delay-300">
+                            <div class="timeline-year">1979</div>
+                            <div class="timeline-title">The 1st Marathon de Montréal</div>
+                            <div class="timeline-desc">A family story begins with the organization of the first Marathon de Montréal.</div>
+                        </div>
+                        <div class="timeline-item fade-in delay-400">
+                            <div class="timeline-year">1988 to 1992</div>
+                            <div class="timeline-title">Grand Prix des Amériques</div>
+                            <div class="timeline-desc">Organization of the prestigious Grand Prix des Amériques.</div>
+                        </div>
+                        <div class="timeline-item fade-in delay-500">
+                            <div class="timeline-year">1992 & 1994</div>
+                            <div class="timeline-title">Olympic Games</div>
+                            <div class="timeline-desc">Production of the Barcelona 1992 and Lillehammer 1994 Olympic Games for TVA.</div>
+                        </div>
+                        <div class="timeline-item fade-in delay-600">
+                            <div class="timeline-year">1999</div>
+                            <div class="timeline-title">Tour Trans-Canada</div>
+                            <div class="timeline-desc">Organization of the Tour Trans-Canada.</div>
+                        </div>
+                        <div class="timeline-item fade-in delay-700">
+                            <div class="timeline-year">2000</div>
+                            <div class="timeline-title">Évasion</div>
+                            <div class="timeline-desc">Launch of Évasion (Tour de France broadcasting rights).</div>
+                        </div>
                     </div>
-                    <div class="timeline-item fade-in delay-100">
-                        <h3 class="text-xl font-bold mb-2">1985 - First Cycling Grand Prix</h3>
-                        <p class="text-white/70">Launch of the Quebec and Montreal Cycling Grand Prix, quickly becoming must-attend events.</p>
-                    </div>
-                    <div class="timeline-item fade-in delay-200">
-                        <h3 class="text-xl font-bold mb-2">2003 - Montreal Marathon</h3>
-                        <p class="text-white/70">Taking over and revitalizing the Montreal Marathon, now one of Canada's most important.</p>
-                    </div>
-                    <div class="timeline-item fade-in delay-300">
-                        <h3 class="text-xl font-bold mb-2">2022 - Beach Pro Tour</h3>
-                        <p class="text-white/70">Hosting the Beach Pro Tour, confirming Montreal as a major destination for world beach volleyball.</p>
-                    </div>
-                    <div class="timeline-item fade-in delay-400">
-                        <h3 class="text-xl font-bold mb-2">2026 - UCI World Championships</h3>
-                        <p class="text-white/70">Preparing to host the UCI Road World Championships, a historic event for cycling.</p>
+                </div>
+
+                <!-- Modern Era: 2010-Present -->
+                <div>
+                    <h3 class="text-2xl font-bold mb-8 text-white/90">2010-Today</h3>
+                    <div class="timeline-grid">
+                        <div class="timeline-item fade-in delay-200">
+                            <div class="timeline-year">2010</div>
+                            <div class="timeline-title">Launch of Zeste and IDHD</div>
+                            <div class="timeline-desc">Creation of the GPCQM under the Serdy group.</div>
+                        </div>
+                        <div class="timeline-item fade-in delay-300">
+                            <div class="timeline-year">2013</div>
+                            <div class="timeline-title">Zeste and Espaces Magazines</div>
+                            <div class="timeline-desc">Launch of Zeste and Espaces magazines.</div>
+                        </div>
+                        <div class="timeline-item fade-in delay-400">
+                            <div class="timeline-year">2017</div>
+                            <div class="timeline-title">Launch of DOCK 619</div>
+                            <div class="timeline-desc">Opening of our unique event venue.</div>
+                        </div>
+                        <div class="timeline-item fade-in delay-500">
+                            <div class="timeline-year">2019</div>
+                            <div class="timeline-title">Sale to TVA</div>
+                            <div class="timeline-desc">Sale of Serdy to TVA. The GPCQM remain the property of Sébastien Arsenault.</div>
+                        </div>
+                        <div class="timeline-item fade-in delay-600">
+                            <div class="timeline-year">2020</div>
+                            <div class="timeline-title">UCI Road World Championships 2026</div>
+                            <div class="timeline-desc">Submission of candidacy to host the UCI Road World Championships 2026 in Montréal. Obtaining the Marathon de Montréal organization mandate.</div>
+                        </div>
+                        <div class="timeline-item fade-in delay-700">
+                            <div class="timeline-year">2022</div>
+                            <div class="timeline-title">Marathon Beneva de Montréal</div>
+                            <div class="timeline-desc">First edition of Marathon Beneva de Montréal under the Courons Montréal banner. UCI Road World Championships 2026 awarded to Montréal by the organization.</div>
+                        </div>
+                        <div class="timeline-item fade-in delay-800">
+                            <div class="timeline-year">2024</div>
+                            <div class="timeline-title">21K de Montréal</div>
+                            <div class="timeline-desc">Acquisition of 21K de Montréal which joins the MBM under the Courons Montréal banner.</div>
+                        </div>
+                        <div class="timeline-item fade-in delay-900">
+                            <div class="timeline-year">2025</div>
+                            <div class="timeline-title">Volleyball World Beach Pro Tour</div>
+                            <div class="timeline-desc">Acquisition of Volleyball World Beach Pro Tour Élite 16 Montréal. Resumption of DOCK 619 management, a high-end event hall for corporate and private events.</div>
+                        </div>
+                        <div class="timeline-item fade-in delay-1000">
+                            <div class="timeline-year">...</div>
+                            <div class="timeline-title">Video Production Studio</div>
+                            <div class="timeline-desc">The creation of a video production company is under study.</div>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- CTA Section -->
-        <section class="container mx-auto px-4 text-center">
-            <div class="max-w-2xl mx-auto">
-                <h2 class="text-4xl font-bold mb-6 fade-in">Let's create your next memorable event together</h2>
-                <p class="text-xl text-white/80 mb-8 fade-in delay-100">
-                    Discover how our expertise can transform your vision into reality.
-                </p>
-                <a href="nous-joindre-en.html" class="cta-button fade-in delay-200">
-                    <span>Contact Us</span>
-                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                </a>
+        <section class="cta-section py-20">
+            <div class="container mx-auto px-4 text-center">
+                <div class="max-w-3xl mx-auto">
+                    <h2 class="text-4xl font-bold mb-6 fade-in">Let's create a memorable event together</h2>
+                    <p class="text-xl text-white/80 mb-8 fade-in delay-100">
+                        Discover how our expertise can transform your vision into reality.
+                    </p>
+                    <a href="nous-joindre-en.html" class="inline-flex items-center gap-3 bg-gradient-to-r from-white/10 to-white/5 hover:from-white/20 hover:to-white/10 border border-white/20 hover:border-white/30 px-8 py-4 rounded-full text-white font-semibold transition-all duration-300 fade-in delay-200">
+                        Contact Us
+                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                            <polyline points="12 5 19 12 12 19"/>
+                        </svg>
+                    </a>
+                </div>
             </div>
         </section>
     </main>
 
     <!-- Footer -->
-    <footer class="bg-black/50 backdrop-blur-lg border-t border-white/10 py-8 mt-20">
+    <footer class="border-t border-white/10 py-12">
         <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-                <div class="text-center md:text-left">
-                    <div class="text-2xl font-black mb-2">TONIC</div>
-                    <p class="text-sm text-white/60">© 2024 Tonic. All rights reserved.</p>
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <h3 class="text-4xl font-black text-white mb-2">TONIC</h3>
+                    <p class="text-white/70">© 2025 Tonic. All rights reserved.</p>
                 </div>
                 <div class="flex gap-6">
-                    <a href="#" class="text-white/60 hover:text-white transition-colors">Privacy Policy</a>
-                    <a href="#" class="text-white/60 hover:text-white transition-colors">Terms of Use</a>
+                    <a href="#" class="text-white/70 hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="#" class="text-white/70 hover:text-white transition-colors">Terms of Use</a>
                 </div>
             </div>
         </div>
     </footer>
 
-    <script>
-        // Mobile menu toggle
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const mobileMenu = document.getElementById('mobileMenu');
-        
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('active');
-        });
-
-        // Fade in animation on scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.fade-in').forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(20px)';
-            el.style.transition = 'opacity 0.8s ease-out, transform 0.8s ease-out';
-            observer.observe(el);
-        });
-    </script>
+    <script src="js/shared.js"></script>
 </body>
 </html>
