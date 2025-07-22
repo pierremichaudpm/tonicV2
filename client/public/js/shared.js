@@ -13,9 +13,12 @@ const Icons = {
 
 // Toggle Mobile Menu
 function toggleMobileMenu() {
+    console.log('toggleMobileMenu called');
     const mobileMenu = document.getElementById('mobileMenu');
+    console.log('mobileMenu element:', mobileMenu);
     if (mobileMenu) {
         mobileMenu.classList.toggle('active');
+        console.log('mobileMenu classes after toggle:', mobileMenu.className);
     }
 }
 
