@@ -216,7 +216,7 @@
                         style="text-shadow: 0 4px 20px rgba(0,0,0,0.9)">
                         <img src="images/tonic-logo.png" alt="Groupe Tonic" style="height: clamp(1.875rem, 3.75vw, 2.625rem); width: auto;" />
                     </h1>
-                    <span class="text-white/90 text-xs sm:text-sm font-medium"
+                    <span class="text-white text-xs sm:text-sm font-medium"
                         style="text-shadow: 0 2px 10px rgba(0,0,0,0.9)">
                         <span class="hidden sm:inline">| </span>Créateur d'expériences mémorables
                     </span>
@@ -302,7 +302,7 @@
         <!-- Hero Section -->
         <section class="container mx-auto px-4 py-12 sm:py-16 text-center">
             <h1 class="text-5xl sm:text-6xl lg:text-7xl font-black mb-4 fade-in">Communiqués</h1>
-            <p class="text-lg sm:text-xl text-white/80 max-w-2xl mx-auto fade-in delay-100">
+            <p class="text-lg sm:text-xl text-white max-w-2xl mx-auto fade-in delay-100">
                 Dernières nouvelles et annonces de Groupe Tonic
             </p>
         </section>
@@ -401,9 +401,9 @@
                         ${pr.category}
                     </span>
                     <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black mb-4">${pr.title}</h1>
-                    <p class="text-white/60">${formatDate(pr.date)}</p>
+                    <p class="text-white">${formatDate(pr.date)}</p>
                 </div>
-                <div class="pr-content text-white/80 space-y-4">
+                <div class="pr-content text-white space-y-4">
                     ${pr.content}
                 </div>
             `;
@@ -446,9 +446,9 @@
                                     <span class="inline-block px-3 py-1 rounded-full text-xs font-medium text-white ${categoryClass}">
                                         ${pr.category}
                                     </span>
-                                    <span class="text-sm text-white/60 whitespace-nowrap">${formatDate(pr.date)}</span>
+                                    <span class="text-sm text-white whitespace-nowrap">${formatDate(pr.date)}</span>
                                 </div>
-                                <h2 class="text-xl sm:text-2xl font-bold mb-2 text-white hover:text-white/90 transition-colors">
+                                <h2 class="text-xl sm:text-2xl font-bold mb-2 text-white hover:text-white transition-colors">
                                     ${pr.title}
                                 </h2>
                                 <p class="text-white line-clamp-2">${pr.summary}</p>
@@ -497,7 +497,7 @@
             
             // Check if data is loaded
             if (typeof pressReleases === 'undefined' || !Array.isArray(pressReleases)) {
-                DOM.prList.innerHTML = '<p class="text-white/60 text-center py-8">Erreur de chargement. Veuillez rafraîchir la page.</p>';
+                DOM.prList.innerHTML = '<p class="text-white text-center py-8">Erreur de chargement. Veuillez rafraîchir la page.</p>';
                 return;
             }
             
