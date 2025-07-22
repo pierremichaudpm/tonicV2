@@ -160,19 +160,15 @@ The application is designed to serve both a public-facing bilingual website and 
 The website is now fully operational and matches the original local/Netlify functionality.
 
 ### Performance & SEO Optimization - July 22, 2025
-- **Removed all production console logs** from shared.js for security and performance
+- **Removed all production console logs** from shared.js for security and performance  
 - **Standardized 15+ title tags** to consistent "Page Name | Groupe Tonic" format across all pages
 - **Enhanced meta descriptions** with 150+ character optimized descriptions mentioning 40+ years experience
-- **Major CDN elimination**: Removed Tailwind CDN from 7 pages, eliminating 50KB+ external dependency
-- **Added 500+ lines of optimized CSS utilities** to shared.css replacing Tailwind CDN functionality
-- **Performance improvement achieved**: 60-75% faster loading through CDN removal and console log cleanup
-- **SEO consistency**: All pages now use unified branding and professional descriptions
+- **SEO consistency**: All pages now use unified branding and professional descriptions  
 - **Image optimization**: Confirmed lazy loading and proper alt tags across all dynamic content
-- **Production ready**: Eliminated development-mode console output and external dependencies
+- **Production code cleanup**: Eliminated development-mode console output
 
-### Technical Performance Metrics
-- **Reduced CSS dependency**: 50KB+ Tailwind CDN → 8KB local utilities
-- **Eliminated console logs**: 4 production console.log statements removed
-- **Title standardization**: 15 pages updated to consistent format
-- **SEO enhancement**: Improved meta descriptions across French/English versions
-- **Loading optimization**: Images already using lazy loading and proper alt attributes
+### CDN Optimization Attempt - Reverted
+- **Attempted**: Tailwind CDN removal to reduce external dependencies
+- **Issue**: Broke visual styling including background photos and grid colors
+- **Resolution**: Restored Tailwind CDN to all pages to maintain functionality
+- **Lesson**: Site depends on comprehensive Tailwind classes that require careful migration planning
