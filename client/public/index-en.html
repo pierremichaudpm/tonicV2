@@ -49,7 +49,9 @@
         .selection-tile:hover{transform:scale(1.02);z-index:10;box-shadow:0 10px 30px rgba(0,0,0,.5)}
         .selection-tile-bg{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .3s ease}
         .selection-tile:hover .selection-tile-bg{transform:scale(1.05)}
-        .selection-tile-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.95) 0%,rgba(0,0,0,.6) 40%,rgba(0,0,0,.98) 100%);display:flex;flex-direction:column;justify-content:space-between;padding:clamp(.75rem,2vw,1.25rem);padding-bottom:clamp(1rem,2.5vw,1.5rem)}
+        .selection-tile-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.2) 0%,rgba(0,0,0,.05) 50%,rgba(0,0,0,.4) 100%);display:flex;flex-direction:column;justify-content:space-between;padding:clamp(.75rem,2vw,1.25rem);padding-bottom:clamp(1rem,2.5vw,1.5rem)}
+        .selection-tile-overlay::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--brand-color,#000000) 0%,transparent 40%,transparent 60%,var(--brand-color,#000000) 100%);opacity:0.3;mix-blend-mode:overlay;z-index:1}
+        .selection-tile-content{position:relative;z-index:2}
         .selection-tile-logo{max-height:clamp(30px,5vh,50px);max-width:clamp(80px,15vw,140px);object-fit:contain;filter:drop-shadow(0 2px 6px rgba(0,0,0,.8));opacity:.95}
         .selection-tile-content{display:flex;flex-direction:column;gap:.25rem;min-height:3.5rem;justify-content:flex-end}
         .selection-tile-title{font-size:clamp(.875rem,1.5vw,1.25rem);font-weight:900;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.9);line-height:1.1}
@@ -387,9 +389,9 @@
             
             if (property.id === 7) {
                 return (
-                    <div className="selection-tile" style={{'--index':index}} onClick={handleClick}>
+                    <div className="selection-tile" style={{'--index':index,'--brand-color':property.color}} onClick={handleClick}>
                         <div className="selection-tile-bg" style={{backgroundImage:`url(${property.image})`,backgroundColor:property.color}}/>
-                        <div className={`absolute inset-0 bg-gradient-to-r ${property.theme.primary} opacity-30`}/>
+                        <div className={`absolute inset-0 bg-gradient-to-r ${property.theme.primary} opacity-50`}/>
                         <div className="selection-tile-overlay">
                             <div className="dock619-grid-content">
                                 <div className="dock619-grid-top" style={{marginLeft:'-0.5rem',marginTop:'1rem'}}>
@@ -407,9 +409,9 @@
             
             if (property.id === 6) {
                 return (
-                    <div className="selection-tile" style={{'--index':index}} onClick={handleClick}>
+                    <div className="selection-tile" style={{'--index':index,'--brand-color':property.color}} onClick={handleClick}>
                         <div className="selection-tile-bg" style={{backgroundImage:`url(${property.image})`,backgroundColor:property.color}}/>
-                        <div className={`absolute inset-0 bg-gradient-to-r ${property.theme.primary} opacity-30`}/>
+                        <div className={`absolute inset-0 bg-gradient-to-r ${property.theme.primary} opacity-50`}/>
                         <div className="selection-tile-overlay">
                             <div className="studio76-grid-content">
                                 <div className="studio76-grid-top">
@@ -426,9 +428,9 @@
             }
             
             return (
-                <div className="selection-tile" style={{'--index':index}} onClick={handleClick}>
+                <div className="selection-tile" style={{'--index':index,'--brand-color':property.color}} onClick={handleClick}>
                     <div className="selection-tile-bg" style={{backgroundImage:`url(${property.image})`,backgroundColor:property.color}}/>
-                    <div className={`absolute inset-0 bg-gradient-to-r ${property.theme.primary} opacity-30`}/>
+                    <div className={`absolute inset-0 bg-gradient-to-r ${property.theme.primary} opacity-50`}/>
                     <div className="selection-tile-overlay">
                         <div style={{paddingLeft:property.id===2?'1.25rem':'0'}}>
                             {property.logo && (
