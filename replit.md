@@ -180,3 +180,11 @@ The website is now fully operational and matches the original local/Netlify func
 - **Issue**: Broke visual styling including background photos and grid colors
 - **Resolution**: Restored Tailwind CDN to all pages to maintain functionality
 - **Lesson**: Site depends on comprehensive Tailwind classes that require careful migration planning
+
+### Logo Rebranding - July 22, 2025
+- **Complete TONIC text replacement** with custom logo image across all pages (splash screens, headers, footers)
+- **Responsive logo sizing**: Homepage uses `clamp(2.5rem, 5vw, 3.5rem)`, subpages use `clamp(1.875rem, 3.75vw, 2.625rem)` (25% smaller)
+- **Preserved taglines**: "Créateur d'expériences mémorables" / "Creator of memorable experiences" maintained
+- **Legal content updates**: All references changed from "TONIC Productions" to "Groupe Tonic"
+- **Improved splash screen spacing**: Increased margin between logo and tagline from 1rem to 3rem
+- **Logo file**: `images/tonic-logo.png` (processed from user attachment)
