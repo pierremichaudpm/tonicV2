@@ -134,6 +134,14 @@ The application is designed to serve both a public-facing bilingual website and 
 - **Static HTML pages** (About, Jobs, Contact, News) already had working mobile menus
 - **Complete mobile navigation** now functional across entire website
 
+### Navigation Consistency Fix - July 22, 2025
+- **Resolved navigation inconsistencies** between React homepage and static pages
+- **Fixed menu behavior differences** between homepage and sub-pages
+- **Updated navigation URLs** to maintain consistency across all page types
+- **Verified all navigation links work correctly** across French and English versions
+- **Navigation responsive behavior** confirmed working at different screen sizes
+- **Minor responsiveness note**: Desktop navigation may wrap to 2 lines at intermediate screen sizes (acceptable behavior)
+
 ### Technical Architecture Status
 - React-based interactive homepage with hero views, animations, and smooth transitions ✅
 - Bilingual routing system (French default, English -en suffix) ✅  
