@@ -200,37 +200,40 @@
 }
 
 /* Tablet improvements - focus on smaller elements */
-@media (min-width: 768px) and (max-width: 1023px) {
-    /* Container padding - moderate increase */
-    .container {
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+    /* Container padding - moderate increase but be more specific */
+    .container:not([class*="mx-auto"]) {
         padding-left: 1.5rem !important;
         padding-right: 1.5rem !important;
     }
     
-    /* React Homepage - smaller elements with better spacing */
-    .hero-container {
-        padding: 1.5rem !important;
-        margin: 0 0.75rem !important;
-    }
-    
-    .hero-content {
-        padding: 1.5rem 0 !important;
-        margin-bottom: 1rem !important;
-    }
-    
-    /* Grid wrapper - compact layout */
-    .grid-wrapper {
-        padding: 1rem !important;
-        gap: 0.75rem !important;
-    }
-    
-    .grid-selection-container {
-        padding: 0.75rem !important;
-    }
-    
-    .selection-grid {
-        gap: 0.75rem !important;
+    /* React Homepage - target by class names directly */
+    div[class*="grid-wrapper"] {
         padding: 0.5rem !important;
+    }
+    
+    div[class*="grid-selection-container"] {
+        padding: 0.5rem !important;
+    }
+    
+    div[class*="selection-grid"] {
+        gap: 0.5rem !important;
+        padding: 0.5rem !important;
+    }
+    
+    /* Make grid tiles smaller - this should be very visible */
+    div[class*="selection-tile"] {
+        min-height: 100px !important;
+        max-height: 140px !important;
+        padding: 0.5rem !important;
+        font-size: 0.8rem !important;
+    }
+    
+    /* Logo sizes in grid */
+    img[class*="selection-tile-logo"], 
+    div[class*="grid-content"] img {
+        max-height: 2rem !important;
+        width: auto !important;
     }
     
     /* Smaller grid tiles */
@@ -304,14 +307,19 @@
         margin-bottom: 1rem !important;
     }
     
-    /* Header improvements - don't hide header */
-    header {
+    /* Header improvements - ensure visibility for React header */
+    header.fixed.top-0, [class*="fixed"][class*="top-0"] {
         display: block !important;
         visibility: visible !important;
+        opacity: 1 !important;
+        position: fixed !important;
+        z-index: 50 !important;
     }
     
-    header .container {
-        padding: 1rem 1.5rem !important;
+    /* Container inside React header */
+    header .container.mx-auto, [class*="container"][class*="mx-auto"] {
+        padding: 0.5rem 1rem !important;
+        display: flex !important;
     }
     
     /* CTA Button - smaller */
