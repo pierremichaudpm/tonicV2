@@ -274,26 +274,6 @@
             </p>
         </section>
         
-        <!-- Filters -->
-        <section class="container mx-auto px-4 py-4">
-            <div class="max-w-4xl mx-auto">
-                <div class="flex flex-wrap gap-2 justify-center mb-8">
-                    <button class="filter-btn active px-4 py-2 rounded-full text-sm font-medium transition-all" data-filter="all">
-                        All positions
-                    </button>
-                    <button class="filter-btn px-4 py-2 rounded-full text-sm font-medium transition-all" data-filter="Événements">
-                        Events
-                    </button>
-                    <button class="filter-btn px-4 py-2 rounded-full text-sm font-medium transition-all" data-filter="Production">
-                        Production
-                    </button>
-                    <button class="filter-btn px-4 py-2 rounded-full text-sm font-medium transition-all" data-filter="Groupe Tonic">
-                        Administration
-                    </button>
-                </div>
-            </div>
-        </section>
-        
         <!-- Job Listings -->
         <section class="container mx-auto px-4 py-8">
             <div class="max-w-4xl mx-auto">
@@ -389,13 +369,11 @@
             jobsList: null,
             modal: null,
             modalTitle: null,
-            modalContent: null,
-            filterBtns: null
+            modalContent: null
         };
         
         // State management
         const state = {
-            currentFilter: 'all',
             isModalOpen: false
         };
         
@@ -413,28 +391,12 @@
             return classMap[department] || 'dept-events';
         };
 
-        // Filter jobs by department
-        function getJobsByDepartment(filter) {
+        // Get all jobs
+        function getAllJobs() {
             if (!jobListings || !Array.isArray(jobListings)) {
                 return [];
             }
-            
-            if (filter === 'all') {
-                return jobListings;
-            }
-            
-            return jobListings.filter(job => {
-                switch(filter) {
-                    case 'events':
-                        return job.department === 'Événements' || job.department === 'Events';
-                    case 'production':
-                        return job.department === 'Production';
-                    case 'admin':
-                        return job.department === 'Administration' || job.department === 'Cuisine' || job.department === 'Kitchen';
-                    default:
-                        return true;
-                }
-            });
+            return jobListings;
         }
 
         // Get days since posting
@@ -460,8 +422,8 @@
         }
         
         // Render job listings - Optimized with template literals
-        function renderJobs(filter = 'all') {
-            const jobs = getJobsByDepartment(filter);
+        function renderJobs() {
+            const jobs = getAllJobs();
             
             if (jobs.length === 0) {
                 DOM.jobsList.innerHTML = '<p class="text-white text-center py-8">No positions available in this category.</p>';
@@ -515,17 +477,7 @@
             DOM.jobsList.appendChild(fragment);
         }
         
-        // Filter jobs - Optimized event delegation
-        function filterJobs(filter) {
-            state.currentFilter = filter;
-            
-            // Update active filter button
-            DOM.filterBtns.forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.filter === filter);
-            });
-            
-            renderJobs(filter);
-        }
+
         
         // Open job modal - Optimized
         function openJobModal(jobId) {
@@ -630,10 +582,9 @@
             DOM.modal = document.getElementById('jobModal');
             DOM.modalTitle = document.getElementById('modalTitle');
             DOM.modalContent = document.getElementById('modalContent');
-            DOM.filterBtns = document.querySelectorAll('.filter-btn');
             
             // Check if required functions and data are available
-            if (typeof getJobsByDepartment !== 'function' || typeof jobListings === 'undefined') {
+            if (typeof getAllJobs !== 'function' || typeof jobListings === 'undefined') {
                 DOM.jobsList.innerHTML = '<p class="text-white text-center py-8">Error loading. Please refresh the page.</p>';
                 return;
             }
@@ -644,14 +595,6 @@
                 if (jobCard) {
                     const jobId = jobCard.dataset.jobId;
                     openJobModal(jobId);
-                }
-            });
-            
-            // Event delegation for filters
-            document.querySelector('.flex.flex-wrap.gap-2').addEventListener('click', function(e) {
-                const filterBtn = e.target.closest('.filter-btn');
-                if (filterBtn) {
-                    filterJobs(filterBtn.dataset.filter);
                 }
             });
             
