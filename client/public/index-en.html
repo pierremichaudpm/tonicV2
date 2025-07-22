@@ -785,7 +785,7 @@
                                 setIsMobileMenuOpen={value => setState(prev => ({...prev, isMobileMenuOpen: value}))}
                                 currentView={state.currentView}
                             />
-                            <div className="grid-wrapper">
+                            <div className="grid-wrapper grid-selection-container">
                                 <div className="selection-grid">
                                     {PROPERTIES.map((property, index) => (
                                         <PropertyTile key={property.id} property={property} index={index} onClick={startHeroSequence} />

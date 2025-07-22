@@ -199,6 +199,139 @@
     }
 }
 
+/* Tablet landscape general spacing improvements */
+@media (min-width: 768px) and (max-width: 1023px) {
+    /* Container padding improvements */
+    .container {
+        padding-left: 2rem !important;
+        padding-right: 2rem !important;
+    }
+    
+    /* React Homepage specific adjustments */
+    .hero-container {
+        padding: 2.5rem 2rem !important;
+        margin: 0 1rem !important;
+    }
+    
+    .hero-content {
+        padding: 2.5rem 0 !important;
+        margin-bottom: 2rem !important;
+    }
+    
+    /* Grid wrapper with better spacing */
+    .grid-wrapper {
+        padding: 2rem !important;
+        gap: 1.5rem !important;
+    }
+    
+    .grid-selection-container {
+        padding: 1.5rem !important;
+    }
+    
+    .selection-grid {
+        gap: 1.5rem !important;
+        padding: 1rem !important;
+    }
+    
+    /* Side navigation improvements */
+    .side-nav-wrapper {
+        padding: 1.5rem 1rem !important;
+        gap: 1rem !important;
+        right: 1.5rem !important;
+    }
+    
+    .side-nav-item {
+        padding: 1.25rem !important;
+        margin-bottom: 1rem !important;
+        border-radius: 0.75rem !important;
+    }
+    
+    /* Hero view content spacing */
+    .hero-property {
+        padding: 2rem !important;
+        margin: 0 1.5rem !important;
+    }
+    
+    .hero-property .content-wrapper {
+        padding: 2rem !important;
+        gap: 2rem !important;
+    }
+    
+    /* Header improvements */
+    header .container {
+        padding: 1.5rem 2rem !important;
+    }
+    
+    /* CTA Button spacing */
+    .cta-button, .hero-cta {
+        margin-top: 2rem !important;
+        padding: 1rem 2rem !important;
+    }
+    
+    /* Typography spacing */
+    .hero-title, h1 {
+        margin-bottom: 1.5rem !important;
+        line-height: 1.2 !important;
+    }
+    
+    .hero-description, p {
+        margin-bottom: 1.5rem !important;
+        line-height: 1.6 !important;
+        padding-right: 1rem !important;
+    }
+    
+    /* Event cards in sidebar */
+    .event-card {
+        padding: 1.5rem !important;
+        margin-bottom: 1.25rem !important;
+    }
+    
+    /* Progress indicators */
+    .desktop-progress {
+        bottom: 2rem !important;
+        gap: 1rem !important;
+    }
+    
+    .progress-line {
+        height: 6px !important;
+        width: 90px !important;
+    }
+}
+
+/* Additional tablet-specific improvements for all orientations */
+@media (min-width: 768px) and (max-width: 1023px) {
+    /* Ensure main content isn't cramped */
+    .view-container {
+        padding: 1rem !important;
+    }
+    
+    /* Better spacing for static pages */
+    .hero-bg, .hero-section {
+        padding: 4rem 2rem !important;
+    }
+    
+    /* Content sections spacing */
+    section {
+        padding: 3rem 2rem !important;
+    }
+    
+    /* Card-like elements */
+    .card, .modal-content {
+        margin: 1rem !important;
+        padding: 2rem !important;
+    }
+    
+    /* Form elements */
+    .form-group, .form-section {
+        margin-bottom: 1.5rem !important;
+    }
+    
+    /* Lists and navigation items */
+    .nav-list li, .content-list li {
+        padding: 0.75rem 0 !important;
+    }
+}
+
 .nav-item:hover {
     background: rgba(255, 255, 255, 0.1);
     color: white;
