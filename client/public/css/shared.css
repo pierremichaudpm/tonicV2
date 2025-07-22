@@ -147,8 +147,15 @@
 
 /* Mobile menu specific icon styling */
 .mobile-menu .nav-item svg {
-    color: white;
-    stroke: white;
+    color: white !important;
+    stroke: white !important;
+    fill: none !important;
+}
+
+/* Mobile menu button icon */
+#mobileMenuBtn svg {
+    color: white !important;
+    stroke: white !important;
 }
 
 /* Mobile Menu */
