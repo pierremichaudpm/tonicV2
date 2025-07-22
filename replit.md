@@ -122,6 +122,9 @@ The application is designed to serve both a public-facing bilingual website and 
 - **Completed CTA translations** from French to English while preserving brand names
 - **Verified grid layout** and responsive breakpoints working across both language versions
 - **Translation approach confirmed**: Interface navigation in English, all event names and branding remain French
+- **Enhanced grid visual design** with prominent event-specific brand colors (pink, lime green, purple, etc.)
+- **Implemented brand color overlays** using CSS variables and diagonal gradients for visual prominence
+- **Reduced overlay darkness** to better showcase event branding while maintaining text readability
 
 ### Technical Architecture Status
 - React-based interactive homepage with hero views, animations, and smooth transitions ✅
