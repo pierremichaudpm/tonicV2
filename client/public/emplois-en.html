@@ -584,10 +584,17 @@
             DOM.modalContent = document.getElementById('modalContent');
             
             // Check if required functions and data are available
-            if (typeof getAllJobs !== 'function' || typeof jobListings === 'undefined') {
-                DOM.jobsList.innerHTML = '<p class="text-white text-center py-8">Error loading. Please refresh the page.</p>';
+            if (typeof getAllJobs !== 'function') {
+                DOM.jobsList.innerHTML = '<p class="text-white text-center py-8">getAllJobs function missing.</p>';
                 return;
             }
+            
+            if (typeof jobListings === 'undefined') {
+                DOM.jobsList.innerHTML = '<p class="text-white text-center py-8">Job data not loaded.</p>';
+                return;
+            }
+            
+            console.log('Jobs data loaded:', jobListings.length, 'positions');
             
             // Event delegation for job cards
             DOM.jobsList.addEventListener('click', function(e) {
