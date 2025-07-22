@@ -199,31 +199,10 @@
     }
 }
 
-/* Tablet fix */
+/* Tablet navigation - icons only */
 @media (min-width: 768px) and (max-width: 1023px) {
-    body { padding-top: 90px !important; }
-    
-    /* Force header to show */
-    header,
-    .fixed.top-0 {
-        display: block !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        right: 0 !important;
-        width: 100vw !important;
-        z-index: 9999 !important;
-        background: rgba(0, 0, 0, 0.95) !important;
-        height: 90px !important;
-    }
-    
-    /* Navigation icons only */
-    .nav-item span { display: none !important; }
+    .tablet-hide { display: none !important; }
     .nav-item { padding: 0.5rem !important; }
-    
-    /* Compact everything */
     .container { padding: 0.75rem !important; }
     .selection-grid { 
         gap: 0.75rem !important; 
@@ -236,6 +215,7 @@
         padding: 0.5rem !important; 
         font-size: 0.8rem !important; 
     }
+}
     /* TABLET SPACING - ULTRA TIGHT */
     .container:not([class*="mx-auto"]) {
         padding: 0.25rem !important;

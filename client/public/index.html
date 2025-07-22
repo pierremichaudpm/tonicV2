@@ -368,17 +368,17 @@
                                 </span>
                             </div>
                             <div className="flex items-center gap-4">
-                                <nav className="hidden md:flex lg:flex items-center gap-0.5 px-2 py-0.5 rounded-full nav-container" style={{background:'rgba(0,0,0,0.2)',backdropFilter:'blur(10px)'}}>
+                                <nav className="hidden sm:flex items-center gap-0.5 px-2 py-0.5 rounded-full nav-container" style={{background:'rgba(0,0,0,0.2)',backdropFilter:'blur(10px)'}}>
                                     {navItems.map(i => (
                                         <a key={i.label} onClick={i.onClick} href={i.href} className="nav-item flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-white/10 transition-all text-white hover:text-white cursor-pointer" data-tooltip={i.label}>
                                             {i.icon}
-                                            <span className="text-xs font-medium">{i.label}</span>
+                                            <span className="tablet-hide text-xs font-medium">{i.label}</span>
                                         </a>
                                     ))}
                                     <div className="lang-divider"></div>
                                     <a href="index-en.html" className="lang-switcher"><span>EN</span></a>
                                 </nav>
-                                <button onClick={()=>setIsMobileMenuOpen(!isMobileMenuOpen)} className="md:hidden p-2 hover:bg-white/10 rounded-lg transition-colors text-white" style={{background:'rgba(0,0,0,0.2)',backdropFilter:'blur(10px)',color:'white'}}>
+                                <button onClick={()=>setIsMobileMenuOpen(!isMobileMenuOpen)} className="sm:hidden p-2 hover:bg-white/10 rounded-lg transition-colors text-white" style={{background:'rgba(0,0,0,0.2)',backdropFilter:'blur(10px)',color:'white'}}>
                                     <div style={{color:'white'}}>{isMobileMenuOpen?Icons.x:Icons.menu}</div>
                                 </button>
                             </div>
