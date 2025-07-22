@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Groupe Tonic - Jobs</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Join the Groupe Tonic team. Discover our career opportunities in events and production.">
+    
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.cbc.ca">
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Shared Styles -->
+    <link rel="stylesheet" href="css/shared.css">
+    
+    <!-- Page Specific Styles -->
+    <style>
+        /* Language Switcher */
+        .lang-switcher {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            transition: all 0.2s ease;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        .lang-switcher:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        .lang-divider {
+            width: 1px;
+            height: 16px;
+            background: rgba(255, 255, 255, 0.2);
+            margin: 0 0.5rem;
+        }
+        
+        /* Optimized styles with CSS custom properties */
+        :root {
+            --glass-bg: rgba(255,255,255,0.05);
+            --glass-bg-hover: rgba(255,255,255,0.02);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-border-hover: rgba(255, 255, 255, 0.2);
+            --transition-default: all 0.3s ease;
+        }
+        
+        /* Job Card Styles */
+        .job-card {
+            background: linear-gradient(135deg, var(--glass-bg), var(--glass-bg-hover));
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            transition: var(--transition-default);
+            cursor: pointer;
+        }
+        
+        .job-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            border-color: var(--glass-border-hover);
+        }
+        
+        /* Department colors */
+        .dept-events { background: linear-gradient(135deg, #ff0e9b, #ff0e9b33); }
+        .dept-production { background: linear-gradient(135deg, #06b6d4, #06b6d433); }
+        .dept-tonic { background: linear-gradient(135deg, var(--accent-primary), var(--accent-20)); }
+        
+        /* Filter buttons */
+        .filter-btn {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            transition: var(--transition-default);
+        }
+        
+        .filter-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .filter-btn.active {
+            background: var(--accent-20);
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+        }
+        
+        /* Modal styles - Optimized with single backdrop */
+        .modal-backdrop {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            position: fixed;
+            inset: 0;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition-default);
+        }
+        
+        .modal-backdrop.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-content {
+            background: linear-gradient(135deg, rgba(20,20,20,0.95), rgba(10,10,10,0.95));
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 1rem;
+            max-width: 48rem;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+        
+        .modal-backdrop.active .modal-content {
+            transform: scale(1);
+        }
+        
+        /* Custom scrollbar for modal - Simplified */
+        .modal-content::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .modal-content::-webkit-scrollbar-track {
+            background: var(--glass-bg);
+            border-radius: 4px;
+        }
+        
+        .modal-content::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+        
+        .modal-content::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Icon backgrounds using CSS variables */
+        .icon-bg-accent {
+            background-color: var(--accent-20);
+        }
+        
+        .icon-accent {
+            color: var(--accent-light);
+        }
+        
+        /* Text accent colors */
+        .text-accent {
+            color: var(--accent-primary);
+        }
+        
+        .text-accent:hover {
+            color: var(--accent-hover);
+        }
+    </style>
+</head>
+<body class="bg-black text-white min-h-screen">
+    <!-- Header -->
+    <header class="header-main fixed top-0 left-0 right-0 z-40">
+        <div class="container mx-auto px-4 py-4 sm:py-5">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <a href="index-en.html" class="flex flex-col sm:flex-row items-start sm:items-center gap-0.5 sm:gap-4">
+                    <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-white" 
+                        style="text-shadow: 0 4px 20px rgba(0,0,0,0.9)">
+                        TONIC
+                    </h1>
+                    <span class="text-white/90 text-xs sm:text-sm font-medium"
+                        style="text-shadow: 0 2px 10px rgba(0,0,0,0.9)">
+                        <span class="hidden sm:inline">| </span>Créateur d'expériences mémorables
+                    </span>
+                </a>
+                
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex nav-container">
+                    <a href="index-en.html" class="nav-item">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                        <span>Home</span>
+                    </a>
+                    <a href="about.html" class="nav-item">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                        <span>About</span>
+                    </a>
+                    <a href="emplois-en.html" class="nav-item active">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                        <span>Jobs</span>
+                    </a>
+                    <a href="communiques-en.html" class="nav-item">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M10 6h8"/><path d="M10 10h8"/><path d="M10 14h4"/></svg>
+                        <span>News</span>
+                    </a>
+                    <a href="nous-joindre-en.html" class="nav-item">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                        <span>Contact</span>
+                    </a>
+                    <div class="lang-divider"></div>
+                    <a href="emplois.html" class="lang-switcher">
+                        <span>FR</span>
+                    </a>
+                </nav>
+                
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden p-2 hover:bg-white/10 rounded-lg transition-colors" onclick="toggleMobileMenu()" aria-label="Menu">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M3 12h18M3 6h18M3 18h18"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="mobile-menu">
+        <div class="container mx-auto px-4">
+            <button onclick="toggleMobileMenu()" class="absolute top-4 right-4 p-2 hover:bg-white/10 rounded-lg" aria-label="Close">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+            
+            <nav class="space-y-2 mt-8">
+                <a href="index-en.html" class="nav-item w-full">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                    <span>Home</span>
+                </a>
+                <a href="about.html" class="nav-item w-full">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                    <span>About</span>
+                </a>
+                <a href="emplois-en.html" class="nav-item w-full active">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                    <span>Jobs</span>
+                </a>
+                <a href="communiques-en.html" class="nav-item w-full">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M10 6h8"/><path d="M10 10h8"/><path d="M10 14h4"/></svg>
+                    <span>News</span>
+                </a>
+                <a href="nous-joindre-en.html" class="nav-item w-full">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                    <span>Contact</span>
+                </a>
+                <div class="lang-divider my-2"></div>
+                <a href="emplois.html" class="lang-switcher justify-center">
+                    <span>Français</span>
+                </a>
+            </nav>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <main class="pt-24 sm:pt-28 pb-20">
+        <!-- Hero Section -->
+        <section class="container mx-auto px-4 py-12 sm:py-16 text-center">
+            <h1 class="text-5xl sm:text-6xl lg:text-7xl font-black mb-4 fade-in">Jobs</h1>
+            <p class="text-lg sm:text-xl text-white/80 max-w-2xl mx-auto fade-in delay-100">
+                Join a passionate team that creates memorable experiences
+            </p>
+        </section>
+        
+        <!-- Filters -->
+        <section class="container mx-auto px-4 py-4">
+            <div class="max-w-4xl mx-auto">
+                <div class="flex flex-wrap gap-2 justify-center mb-8">
+                    <button class="filter-btn active px-4 py-2 rounded-full text-sm font-medium transition-all" data-filter="all">
+                        All positions
+                    </button>
+                    <button class="filter-btn px-4 py-2 rounded-full text-sm font-medium transition-all" data-filter="Événements">
+                        Events
+                    </button>
+                    <button class="filter-btn px-4 py-2 rounded-full text-sm font-medium transition-all" data-filter="Production">
+                        Production
+                    </button>
+                    <button class="filter-btn px-4 py-2 rounded-full text-sm font-medium transition-all" data-filter="Groupe Tonic">
+                        Administration
+                    </button>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Job Listings -->
+        <section class="container mx-auto px-4 py-8">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-2xl font-bold mb-6 text-center">Available positions</h2>
+                <div id="jobsList" class="space-y-4">
+                    <!-- Jobs will be inserted here by JavaScript -->
+                </div>
+            </div>
+        </section>
+        
+        <!-- Culture Section -->
+        <section class="container mx-auto px-4 py-16">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl sm:text-4xl font-black mb-8">Why work at Tonic?</h2>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="fade-in delay-100">
+                        <div class="w-16 h-16 rounded-full icon-bg-accent flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 icon-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Innovation</h3>
+                        <p class="text-white/70">Participate in creative and innovative projects in the event industry</p>
+                    </div>
+                    
+                    <div class="fade-in delay-200">
+                        <div class="w-16 h-16 rounded-full bg-lime-500/20 flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-lime-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Passionate team</h3>
+                        <p class="text-white/70">Collaborate with talented and dedicated professionals</p>
+                    </div>
+                    
+                    <div class="fade-in delay-300">
+                        <div class="w-16 h-16 rounded-full bg-purple-500/20 flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Growth</h3>
+                        <p class="text-white/70">Professional development and advancement opportunities</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Job Modal -->
+    <div id="jobModal" class="modal-backdrop">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="sticky top-0 bg-black/80 backdrop-blur-lg border-b border-white/10 p-6 flex justify-between items-start">
+                <h2 id="modalTitle" class="text-2xl font-bold pr-4"></h2>
+                <button onclick="closeModal()" class="p-2 hover:bg-white/10 rounded-lg transition-colors" aria-label="Close">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <div id="modalContent" class="p-6">
+                <!-- Job details will be inserted here -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="border-t border-white/10 py-8 mt-20">
+        <div class="container mx-auto px-4 text-center text-white/60 text-sm">
+            <p>&copy; 2025 Groupe Tonic. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <!-- Load job data -->
+    <script src="js/emplois-data.js"></script>
+    
+    <!-- Shared JavaScript -->
+    <script src="js/shared.js"></script>
+    
+    <!-- Page specific JavaScript - Optimized -->
+    <script>
+        // Cache DOM elements
+        const DOM = {
+            jobsList: null,
+            modal: null,
+            modalTitle: null,
+            modalContent: null,
+            filterBtns: null
+        };
+        
+        // State management
+        const state = {
+            currentFilter: 'all',
+            isModalOpen: false
+        };
+        
+        // Get department class for styling
+        const getDepartmentClass = (department) => {
+            const classMap = {
+                'Événements': 'dept-events',
+                'Production': 'dept-production',
+                'Groupe Tonic': 'dept-tonic'
+            };
+            return classMap[department] || 'dept-events';
+        };
+        
+        // Render job listings - Optimized with template literals
+        function renderJobs(filter = 'all') {
+            const jobs = getJobsByDepartment(filter);
+            
+            if (jobs.length === 0) {
+                DOM.jobsList.innerHTML = '<p class="text-white/60 text-center py-8">No positions available in this category.</p>';
+                return;
+            }
+            
+            // Use document fragment for better performance
+            const fragment = document.createDocumentFragment();
+            const tempDiv = document.createElement('div');
+            
+            tempDiv.innerHTML = jobs.map((job, index) => `
+                <div class="job-card p-6 rounded-xl cursor-pointer fade-in delay-${Math.min(index * 100, 500)}" 
+                     data-job-id="${job.id}">
+                    <div class="flex items-start justify-between mb-3">
+                        <span class="inline-block px-3 py-1 rounded-full text-xs font-medium text-white ${getDepartmentClass(job.department)}">
+                            ${job.department === 'Événements' ? 'Events' : job.department === 'Production' ? 'Production' : 'Administration'}
+                        </span>
+                        <span class="text-xs text-white/60">${getDaysSincePostingEn(job.datePosted)}</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">${job.title}</h3>
+                    <div class="flex flex-wrap gap-2 text-sm text-white/70 mb-3">
+                        <span class="flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                            ${job.location}
+                        </span>
+                        <span class="flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            ${job.type === 'Temps plein' ? 'Full time' : job.type}
+                        </span>
+                    </div>
+                    <p class="text-sm text-white/60 line-clamp-2">${job.summary}</p>
+                    <div class="mt-4 flex items-center text-accent text-sm font-medium">
+                        <span>View details</span>
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </div>
+                </div>
+            `).join('');
+            
+            while (tempDiv.firstChild) {
+                fragment.appendChild(tempDiv.firstChild);
+            }
+            
+            DOM.jobsList.innerHTML = '';
+            DOM.jobsList.appendChild(fragment);
+        }
+        
+        // Filter jobs - Optimized event delegation
+        function filterJobs(filter) {
+            state.currentFilter = filter;
+            
+            // Update active filter button
+            DOM.filterBtns.forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.filter === filter);
+            });
+            
+            renderJobs(filter);
+        }
+        
+        // Open job modal - Optimized
+        function openJobModal(jobId) {
+            const job = jobListings.find(j => j.id === parseInt(jobId));
+            if (!job) return;
+            
+            state.isModalOpen = true;
+            DOM.modalTitle.textContent = job.title;
+            
+            DOM.modalContent.innerHTML = `
+                <div class="mb-6">
+                    <div class="flex flex-wrap items-center gap-4 mb-4">
+                        <span class="inline-block px-3 py-1 rounded-full text-sm font-medium text-white ${getDepartmentClass(job.department)}">
+                            ${job.department === 'Événements' ? 'Events' : job.department === 'Production' ? 'Production' : 'Administration'}
+                        </span>
+                        <span class="text-white/60">${job.location} • ${job.type === 'Temps plein' ? 'Full time' : job.type}</span>
+                    </div>
+                    
+                    <div class="grid sm:grid-cols-3 gap-4 text-sm">
+                        <div class="bg-white/5 rounded-lg p-4">
+                            <p class="text-white/60 mb-1">Date posted</p>
+                            <p class="font-medium">${formatJobDateEn(job.datePosted)}</p>
+                        </div>
+                        <div class="bg-white/5 rounded-lg p-4">
+                            <p class="text-white/60 mb-1">Salary</p>
+                            <p class="font-medium">${job.salary}</p>
+                        </div>
+                        <div class="bg-white/5 rounded-lg p-4">
+                            <p class="text-white/60 mb-1">Start date</p>
+                            <p class="font-medium">${job.startDate}</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="prose prose-invert max-w-none mb-8">
+                    ${job.description}
+                </div>
+                
+                <div class="bg-gradient-to-r from-white/10 to-white/5 rounded-xl p-6">
+                    <h3 class="font-bold mb-3 text-lg">Interested in this position?</h3>
+                    <p class="text-white/70 mb-4">Send your CV and cover letter to:</p>
+                    <a href="mailto:emplois@groupetonic.ca?subject=${encodeURIComponent(job.emailSubject)}" 
+                       class="inline-flex items-center gap-2 text-accent hover:text-accent transition-colors mb-4">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                        emplois@groupetonic.ca
+                    </a>
+                    <div class="flex gap-3">
+                        <button onclick="applyForJob('${job.emailSubject}')" class="cta-button">
+                            <span>Apply now</span>
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            // Show modal
+            DOM.modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // Close modal
+        function closeModal(event) {
+            if (event && event.target !== event.currentTarget) return;
+            
+            state.isModalOpen = false;
+            DOM.modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        // Apply for job
+        function applyForJob(emailSubject) {
+            window.location.href = `mailto:emplois@groupetonic.ca?subject=${encodeURIComponent(emailSubject)}`;
+        }
+        
+        // English date functions
+        function formatJobDateEn(dateString) {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString('en-US', options);
+        }
+        
+        function getDaysSincePostingEn(dateString) {
+            const posted = new Date(dateString);
+            const today = new Date();
+            const diffTime = Math.abs(today - posted);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            if (diffDays === 0) return "Today";
+            if (diffDays === 1) return "Yesterday";
+            if (diffDays < 7) return `${diffDays} days ago`;
+            if (diffDays < 30) return `${Math.floor(diffDays / 7)} week${Math.floor(diffDays / 7) > 1 ? 's' : ''} ago`;
+            return `${Math.floor(diffDays / 30)} month${Math.floor(diffDays / 30) > 1 ? 's' : ''} ago`;
+        }
+        
+        // Initialize - Optimized with event delegation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Cache DOM elements
+            DOM.jobsList = document.getElementById('jobsList');
+            DOM.modal = document.getElementById('jobModal');
+            DOM.modalTitle = document.getElementById('modalTitle');
+            DOM.modalContent = document.getElementById('modalContent');
+            DOM.filterBtns = document.querySelectorAll('.filter-btn');
+            
+            // Check if required functions and data are available
+            if (typeof getJobsByDepartment !== 'function' || typeof jobListings === 'undefined') {
+                DOM.jobsList.innerHTML = '<p class="text-white/60 text-center py-8">Error loading. Please refresh the page.</p>';
+                return;
+            }
+            
+            // Event delegation for job cards
+            DOM.jobsList.addEventListener('click', function(e) {
+                const jobCard = e.target.closest('.job-card');
+                if (jobCard) {
+                    const jobId = jobCard.dataset.jobId;
+                    openJobModal(jobId);
+                }
+            });
+            
+            // Event delegation for filters
+            document.querySelector('.flex.flex-wrap.gap-2').addEventListener('click', function(e) {
+                const filterBtn = e.target.closest('.filter-btn');
+                if (filterBtn) {
+                    filterJobs(filterBtn.dataset.filter);
+                }
+            });
+            
+            // Modal backdrop click
+            DOM.modal.addEventListener('click', closeModal);
+            
+            // Keyboard events
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && state.isModalOpen) {
+                    closeModal();
+                }
+            });
+            
+            // Initial render
+            renderJobs();
+        });
+    </script>
+</body>
+</html>

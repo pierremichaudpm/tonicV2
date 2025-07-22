@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>À propos - Tonic</title>
+    <meta name="description" content="Découvrez Tonic, créateur d'expériences mémorables et leader dans l'organisation d'événements sportifs et culturels majeurs au Québec.">
+    <link rel="stylesheet" href="css/shared.css">
+    <link rel="preload" href="https://fonts.cbc.ca/fonts/CBCSans-Bold.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preconnect" href="https://fonts.cbc.ca">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @font-face{font-family:'CBC Sans';font-weight:400;font-display:swap;src:url('https://fonts.cbc.ca/fonts/CBCSans-Regular.woff2') format('woff2')}
+        @font-face{font-family:'CBC Sans';font-weight:700;font-display:swap;src:url('https://fonts.cbc.ca/fonts/CBCSans-Bold.woff2') format('woff2')}
+        @font-face{font-family:'CBC Sans';font-weight:900;font-display:swap;src:url('https://fonts.cbc.ca/fonts/CBCSans-Black.woff2') format('woff2')}
+        *{font-family:'CBC Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+        body{margin:0;background:#000;overflow-x:hidden;min-height:100vh;min-height:100dvh}
+        .header-logo{cursor:pointer;transition:transform .2s ease}
+        .header-logo:hover{transform:scale(1.05)}
+        .stat-card{background:linear-gradient(135deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02));backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);transition:all 0.3s ease}
+        .stat-card:hover{transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,0,0,0.3);border-color:rgba(255,255,255,0.2)}
+        .timeline-item{position:relative;padding-left:3rem}
+        .timeline-item::before{content:'';position:absolute;left:0.75rem;top:0.5rem;width:0.5rem;height:0.5rem;background:var(--accent-primary);border-radius:50%;box-shadow:0 0 20px var(--accent-glow)}
+        .timeline-item::after{content:'';position:absolute;left:1rem;top:1.5rem;width:1px;height:calc(100% + 1rem);background:rgba(255,255,255,0.2)}
+        .timeline-item:last-child::after{display:none}
+        .hero-bg{background:linear-gradient(135deg,#1a1a1a 0%,#0a0a0a 100%)}
+        @media(max-width:768px){.timeline-item{padding-left:2rem}.timeline-item::before{left:0.25rem}.timeline-item::after{left:0.5rem}}
+    </style>
+</head>
+<body class="bg-black text-white">
+    <!-- Header -->
+    <header class="header-main fixed top-0 left-0 right-0 z-50">
+        <div class="container mx-auto px-4 py-5">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <a href="index.html" class="header-logo text-4xl md:text-5xl font-black text-white">TONIC</a>
+                    <span class="hidden sm:inline text-white/70 text-sm">| Créateur d'expériences mémorables</span>
+                </div>
+                <nav class="hidden md:flex items-center nav-container">
+                    <a href="index.html" class="nav-item">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                        <span>Accueil</span>
+                    </a>
+                    <a href="a-propos.html" class="nav-item active">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                        <span>À propos</span>
+                    </a>
+                    <a href="emplois.html" class="nav-item">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                        <span>Emplois</span>
+                    </a>
+                    <a href="communiques.html" class="nav-item">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M10 6h8"/><path d="M10 10h8"/><path d="M10 14h4"/></svg>
+                        <span>Communiqués</span>
+                    </a>
+                    <a href="nous-joindre.html" class="nav-item">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                        <span>Nous joindre</span>
+                    </a>
+                    <div class="w-px h-4 bg-white/20 mx-2"></div>
+                    <a href="about.html" class="nav-item">
+                        <span>EN</span>
+                    </a>
+                </nav>
+                <button id="mobileMenuBtn" class="md:hidden p-2 hover:bg-white/10 rounded-lg transition-colors">
+                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="mobile-menu">
+        <div class="container mx-auto px-4 py-4">
+            <div class="space-y-2">
+                <a href="index.html" class="nav-item w-full">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                    <span>Accueil</span>
+                </a>
+                <a href="a-propos.html" class="nav-item active w-full">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                    <span>À propos</span>
+                </a>
+                <a href="emplois.html" class="nav-item w-full">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                    <span>Emplois</span>
+                </a>
+                <a href="communiques.html" class="nav-item w-full">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M10 6h8"/><path d="M10 10h8"/><path d="M10 14h4"/></svg>
+                    <span>Communiqués</span>
+                </a>
+                <a href="nous-joindre.html" class="nav-item w-full">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                    <span>Nous joindre</span>
+                </a>
+                <div class="h-px bg-white/10 my-4"></div>
+                <a href="about.html" class="nav-item w-full">
+                    <span>English</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-bg relative pt-32 pb-20 overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-black/50 to-transparent"></div>
+        <div class="container mx-auto px-4 relative z-10">
+            <h1 class="text-5xl md:text-7xl font-black mb-6 fade-in">À propos de Tonic</h1>
+            <p class="text-xl md:text-2xl text-white/80 max-w-3xl fade-in delay-100">
+                Depuis plus de 40 ans, nous créons des moments inoubliables en organisant des événements sportifs et culturels d'envergure internationale au Québec.
+            </p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="py-20">
+        <!-- Mission Section -->
+        <section class="container mx-auto px-4 mb-20">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold mb-8 fade-in">Notre mission</h2>
+                <p class="text-lg text-white/80 mb-6 fade-in delay-100">
+                    Tonic est un créateur d'expériences mémorables. Nous organisons et produisons des événements sportifs et culturels majeurs qui rassemblent les communautés et célèbrent l'excellence. Notre expertise s'étend de la conception à la réalisation, en passant par la promotion et la gestion complète d'événements d'envergure.
+                </p>
+                <p class="text-lg text-white/80 fade-in delay-200">
+                    Avec une équipe passionnée et des partenariats solides, nous transformons chaque projet en une expérience unique qui marque les esprits et crée des souvenirs durables pour les participants, les spectateurs et les communautés.
+                </p>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="container mx-auto px-4 mb-20">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+                <div class="stat-card p-8 rounded-2xl text-center fade-in">
+                    <div class="text-5xl font-black text-coral-500 mb-2">40+</div>
+                    <p class="text-white/70">Années d'expérience</p>
+                </div>
+                <div class="stat-card p-8 rounded-2xl text-center fade-in delay-100">
+                    <div class="text-5xl font-black text-coral-500 mb-2">1M+</div>
+                    <p class="text-white/70">Participants annuels</p>
+                </div>
+                <div class="stat-card p-8 rounded-2xl text-center fade-in delay-200">
+                    <div class="text-5xl font-black text-coral-500 mb-2">7</div>
+                    <p class="text-white/70">Événements majeurs</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Values Section -->
+        <section class="container mx-auto px-4 mb-20">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold mb-12 text-center fade-in">Nos valeurs</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="glass p-8 rounded-2xl fade-in">
+                        <h3 class="text-2xl font-bold mb-4 text-coral-500">Excellence</h3>
+                        <p class="text-white/70">Nous visons l'excellence dans chaque aspect de nos événements, de la planification à l'exécution.</p>
+                    </div>
+                    <div class="glass p-8 rounded-2xl fade-in delay-100">
+                        <h3 class="text-2xl font-bold mb-4 text-coral-500">Innovation</h3>
+                        <p class="text-white/70">Nous repoussons constamment les limites pour créer des expériences uniques et mémorables.</p>
+                    </div>
+                    <div class="glass p-8 rounded-2xl fade-in delay-200">
+                        <h3 class="text-2xl font-bold mb-4 text-coral-500">Communauté</h3>
+                        <p class="text-white/70">Nous croyons au pouvoir rassembleur du sport et de la culture pour unir les communautés.</p>
+                    </div>
+                    <div class="glass p-8 rounded-2xl fade-in delay-300">
+                        <h3 class="text-2xl font-bold mb-4 text-coral-500">Durabilité</h3>
+                        <p class="text-white/70">Nous intégrons des pratiques durables dans tous nos événements pour un impact positif à long terme.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Timeline Section -->
+        <section class="container mx-auto px-4 mb-20">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold mb-12 fade-in">Notre histoire</h2>
+                <div class="space-y-8">
+                    <div class="timeline-item fade-in">
+                        <h3 class="text-xl font-bold mb-2">1982 - Fondation</h3>
+                        <p class="text-white/70">Création de Tonic avec la vision de transformer le paysage événementiel québécois.</p>
+                    </div>
+                    <div class="timeline-item fade-in delay-100">
+                        <h3 class="text-xl font-bold mb-2">1985 - Premiers Grands Prix Cyclistes</h3>
+                        <p class="text-white/70">Lancement des Grands Prix Cyclistes de Québec et Montréal, devenant rapidement des événements incontournables.</p>
+                    </div>
+                    <div class="timeline-item fade-in delay-200">
+                        <h3 class="text-xl font-bold mb-2">2003 - Marathon de Montréal</h3>
+                        <p class="text-white/70">Reprise et revitalisation du Marathon de Montréal, aujourd'hui l'un des plus importants au Canada.</p>
+                    </div>
+                    <div class="timeline-item fade-in delay-300">
+                        <h3 class="text-xl font-bold mb-2">2022 - Beach Pro Tour</h3>
+                        <p class="text-white/70">Accueil du Beach Pro Tour, confirmant Montréal comme destination majeure du volleyball de plage mondial.</p>
+                    </div>
+                    <div class="timeline-item fade-in delay-400">
+                        <h3 class="text-xl font-bold mb-2">2026 - Championnats du Monde UCI</h3>
+                        <p class="text-white/70">Préparation pour accueillir les Championnats du Monde Route UCI, un événement historique pour le cyclisme.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="container mx-auto px-4 text-center">
+            <div class="max-w-2xl mx-auto">
+                <h2 class="text-4xl font-bold mb-6 fade-in">Créons ensemble votre prochain événement mémorable</h2>
+                <p class="text-xl text-white/80 mb-8 fade-in delay-100">
+                    Découvrez comment notre expertise peut transformer votre vision en réalité.
+                </p>
+                <a href="nous-joindre.html" class="cta-button fade-in delay-200">
+                    <span>Contactez-nous</span>
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-black/50 backdrop-blur-lg border-t border-white/10 py-8 mt-20">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="text-center md:text-left">
+                    <div class="text-2xl font-black mb-2">TONIC</div>
+                    <p class="text-sm text-white/60">© 2024 Tonic. Tous droits réservés.</p>
+                </div>
+                <div class="flex gap-6">
+                    <a href="#" class="text-white/60 hover:text-white transition-colors">Politique de confidentialité</a>
+                    <a href="#" class="text-white/60 hover:text-white transition-colors">Conditions d'utilisation</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active');
+        });
+
+        // Fade in animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.8s ease-out, transform 0.8s ease-out';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
