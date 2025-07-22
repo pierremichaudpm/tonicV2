@@ -203,6 +203,8 @@ The website is now fully operational and matches the original local/Netlify func
 - **Enhanced department mapping** - Added support for Administration, Cuisine, Kitchen departments
 - **Updated contact emails** - Jobs now use rh@gpcqm.ca as specified in original documents
 - **Unique job IDs** - Resolved conflicts with existing job listings
+- **Removed job filters** - Simplified both French and English job pages by removing department filter buttons
+- **Streamlined job display** - All available positions now show directly without categorization
 
 ### Spacing & Visual Refinements - July 22, 2025
 - **Grid spacing optimization**: Reduced desktop grid padding from 2.5rem/3vh to final 0.25rem for minimal spacing
