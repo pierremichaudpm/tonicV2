@@ -126,6 +126,14 @@ The application is designed to serve both a public-facing bilingual website and 
 - **Implemented brand color overlays** using CSS variables and diagonal gradients for visual prominence
 - **Reduced overlay darkness** to better showcase event branding while maintaining text readability
 
+### Mobile Menu Fix - July 22, 2025
+- **Fixed mobile menu visibility issue** on React-based homepage (both French and English versions)
+- **Resolved dual mobile menu system**: Grid view and hero view mobile menus now both functional
+- **Fixed icon color rendering** by wrapping React SVG icons in white color divs for proper visibility
+- **Mobile menu now works correctly** in both hero view (individual event browsing) and grid view (all events)
+- **Static HTML pages** (About, Jobs, Contact, News) already had working mobile menus
+- **Complete mobile navigation** now functional across entire website
+
 ### Technical Architecture Status
 - React-based interactive homepage with hero views, animations, and smooth transitions ✅
 - Bilingual routing system (French default, English -en suffix) ✅  
