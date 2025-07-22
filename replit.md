@@ -172,6 +172,7 @@ The website is now fully operational and matches the original local/Netlify func
 - **beach-pro-tour-hero.webp**: 3.7MB → 488KB (87% size reduction)
 - **21k-hero.jpg**: 1.7MB → optimized with resize and quality compression  
 - **marathon-beneva-hero.jpg**: 858KB → 796KB (7% reduction)
+- **dock619-hero-optimized.jpg**: 7.8MB → 567KB (93% size reduction) - new corporate event image
 - **Performance impact**: Significantly faster page loading, especially on mobile devices
 - **Total image size reduction**: ~70% smaller hero images
 
