@@ -45,7 +45,7 @@
         /* Grid - Updated 2:34 AM for MUCH darker backgrounds */
         .grid-selection-container{position:fixed;inset:0;z-index:90;background:#000;display:flex;flex-direction:column;height:100vh;height:100dvh;overflow:hidden}
         .grid-selection-container header{flex-shrink:0;height:65px}
-        .grid-wrapper{flex:1;padding:calc(80px + max(0.8rem,1vh)) max(1.5rem,3vw) max(1rem,1.5vh);display:flex;align-items:center;justify-content:center;min-height:0;overflow:hidden}
+        .grid-wrapper{flex:1;padding:calc(80px + 0.25rem) max(1.5rem,3vw) 0.25rem;display:flex;align-items:center;justify-content:center;min-height:0;overflow:hidden}
         .selection-grid{display:grid;gap:12px;width:100%;height:100%;max-width:min(1190px,90vw);max-height:min(85%,85vh);margin:auto}
         .selection-tile{position:relative;width:100%;height:100%;min-height:0;border-radius:12px;overflow:hidden;cursor:pointer;transition:all .3s ease;animation:scaleIn .5s ease-out forwards;animation-delay:calc(var(--index) * .05s);opacity:0;box-shadow:0 4px 15px rgba(0,0,0,.3)}
         .selection-tile:hover{transform:scale(1.02);z-index:10;box-shadow:0 10px 30px rgba(0,0,0,.5)}
@@ -143,7 +143,7 @@
             .selection-tile:nth-child(5){grid-area:e}
             .selection-tile:nth-child(6){grid-area:f}
             .selection-tile:nth-child(7){grid-area:g}
-            .grid-wrapper{padding-top:calc(80px + 0.8rem)}
+            .grid-wrapper{padding-top:calc(80px + 0.25rem)}
         }
         @media(min-width:480px) and (max-width:767px){
             .selection-grid{grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(4,minmax(0,1fr));grid-template-areas:"a a b b" "c c d d" "e e f f" ". g g ."}
@@ -155,7 +155,7 @@
             .selection-tile:nth-child(5){grid-area:e}
             .selection-tile:nth-child(6){grid-area:f}
             .selection-tile:nth-child(7){grid-area:g}
-            .grid-wrapper{padding-top:calc(80px + 0.8rem)}
+            .grid-wrapper{padding-top:calc(80px + 0.25rem)}
         }
         @media(max-width:479px){
             .grid-wrapper{overflow-y:auto;-webkit-overflow-scrolling:touch;padding:calc(75px + 1.5rem) 1rem 1.5rem;padding-top:calc(75px + max(1.5rem,env(safe-area-inset-top) + 1rem));padding-bottom:max(1.5rem,env(safe-area-inset-bottom) + 1.5rem)}
