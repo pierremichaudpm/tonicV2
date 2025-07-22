@@ -1,5 +1,6 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
+import { AICodeAssistant } from "./ai-assistant";
 import path from "path";
 import express from "express";
 
@@ -51,6 +52,52 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   app.get("/nous-joindre-en", (req, res) => {
     res.sendFile(path.join(publicPath, "nous-joindre-en.html"));
+  });
+  
+  app.get("/ai-helper", (req, res) => {
+    res.sendFile(path.join(publicPath, "ai-helper.html"));
+  });
+
+  const aiAssistant = new AICodeAssistant();
+  
+  // AI Code Assistant endpoint for grid changes
+  app.post("/api/ai/grid-change", async (req, res) => {
+    try {
+      const { changeDescription } = req.body;
+      
+      if (!changeDescription) {
+        return res.status(400).json({ error: "changeDescription is required" });
+      }
+      
+      const result = await aiAssistant.applyGridChange(changeDescription);
+      res.json(result);
+    } catch (error) {
+      console.error("AI Assistant Error:", error);
+      res.status(500).json({ 
+        error: "Failed to process AI request",
+        details: error instanceof Error ? error.message : "Unknown error"
+      });
+    }
+  });
+  
+  // AI Code Suggestions endpoint
+  app.post("/api/ai/suggest", async (req, res) => {
+    try {
+      const { code, context } = req.body;
+      
+      if (!code) {
+        return res.status(400).json({ error: "code is required" });
+      }
+      
+      const suggestion = await aiAssistant.suggestCodeImprovement(code, context || "");
+      res.json({ suggestion });
+    } catch (error) {
+      console.error("AI Suggestion Error:", error);
+      res.status(500).json({ 
+        error: "Failed to get AI suggestions",
+        details: error instanceof Error ? error.message : "Unknown error"
+      });
+    }
   });
 
   // API route to show migration status
