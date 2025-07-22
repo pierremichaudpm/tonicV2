@@ -188,5 +188,7 @@ The website is now fully operational and matches the original local/Netlify func
 - **Legal content updates**: All references changed from "TONIC Productions" to "Groupe Tonic"
 - **Improved splash screen spacing**: Increased margin between logo and tagline from 1rem to 3rem
 - **Enhanced header spacing**: Increased header padding across all pages from py-5 (1.25rem) to py-8 (2rem) for better logo prominence
-- **React homepage padding boost**: Increased hero content top padding from 5rem to 6rem for improved logo breathing room  
+- **React homepage padding boost**: Increased hero content top padding from 5rem to 6rem for improved logo breathing room
+- **Further enhanced header padding**: Increased to py-12 (3rem) on static pages and 2.5rem grid padding for maximum visual prominence
+- **Hero view extra padding**: Boosted mobile hero padding from 6rem to 7.5rem for significantly more logo breathing room
 - **Logo file**: `images/tonic-logo.png` (processed from user attachment)
