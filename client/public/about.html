@@ -2,56 +2,264 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>About - Tonic</title>
-    <meta name="description" content="Learn more about Tonic and our mission.">
-    <link rel="stylesheet" href="./css/shared.css">
+    <meta name="description" content="Discover Tonic, creator of memorable experiences and leader in organizing major sporting and cultural events in Quebec.">
+    <link rel="stylesheet" href="css/shared.css">
+    <link rel="preload" href="https://fonts.cbc.ca/fonts/CBCSans-Bold.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preconnect" href="https://fonts.cbc.ca">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @font-face{font-family:'CBC Sans';font-weight:400;font-display:swap;src:url('https://fonts.cbc.ca/fonts/CBCSans-Regular.woff2') format('woff2')}
+        @font-face{font-family:'CBC Sans';font-weight:700;font-display:swap;src:url('https://fonts.cbc.ca/fonts/CBCSans-Bold.woff2') format('woff2')}
+        @font-face{font-family:'CBC Sans';font-weight:900;font-display:swap;src:url('https://fonts.cbc.ca/fonts/CBCSans-Black.woff2') format('woff2')}
+        *{font-family:'CBC Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+        body{margin:0;background:#000;overflow-x:hidden;min-height:100vh;min-height:100dvh}
+        .header-logo{cursor:pointer;transition:transform .2s ease}
+        .header-logo:hover{transform:scale(1.05)}
+        .stat-card{background:linear-gradient(135deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02));backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);transition:all 0.3s ease}
+        .stat-card:hover{transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,0,0,0.3);border-color:rgba(255,255,255,0.2)}
+        .timeline-item{position:relative;padding-left:3rem}
+        .timeline-item::before{content:'';position:absolute;left:0.75rem;top:0.5rem;width:0.5rem;height:0.5rem;background:var(--accent-primary);border-radius:50%;box-shadow:0 0 20px var(--accent-glow)}
+        .timeline-item::after{content:'';position:absolute;left:1rem;top:1.5rem;width:1px;height:calc(100% + 1rem);background:rgba(255,255,255,0.2)}
+        .timeline-item:last-child::after{display:none}
+        .hero-bg{background:linear-gradient(135deg,#1a1a1a 0%,#0a0a0a 100%)}
+        @media(max-width:768px){.timeline-item{padding-left:2rem}.timeline-item::before{left:0.25rem}.timeline-item::after{left:0.5rem}}
+    </style>
 </head>
-<body>
-    <header>
-        <nav>
-            <div class="logo">
-                <img src="./images/tonic-productions-hero.jpg" alt="Tonic Logo">
+<body class="bg-black text-white">
+    <!-- Header -->
+    <header class="header-main fixed top-0 left-0 right-0 z-50">
+        <div class="container mx-auto px-4 py-5">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <a href="index-en.html" class="header-logo text-4xl md:text-5xl font-black text-white">TONIC</a>
+                    <span class="hidden sm:inline text-white/70 text-sm">| Créateur d'expériences mémorables</span>
+                </div>
+                <nav class="hidden md:flex items-center nav-container">
+                    <a href="index-en.html" class="nav-item">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                        <span>Home</span>
+                    </a>
+                    <a href="about.html" class="nav-item active">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                        <span>About</span>
+                    </a>
+                    <a href="emplois-en.html" class="nav-item">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                        <span>Jobs</span>
+                    </a>
+                    <a href="communiques-en.html" class="nav-item">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M10 6h8"/><path d="M10 10h8"/><path d="M10 14h4"/></svg>
+                        <span>News</span>
+                    </a>
+                    <a href="nous-joindre-en.html" class="nav-item">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                        <span>Contact</span>
+                    </a>
+                    <div class="w-px h-4 bg-white/20 mx-2"></div>
+                    <a href="a-propos.html" class="nav-item">
+                        <span>FR</span>
+                    </a>
+                </nav>
+                <button id="mobileMenuBtn" class="md:hidden p-2 hover:bg-white/10 rounded-lg transition-colors">
+                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                </button>
             </div>
-            <ul class="nav-links">
-                <li><a href="/en">Home</a></li>
-                <li><a href="/about" class="active">About</a></li>
-                <li><a href="/communiques-en">Press Releases</a></li>
-                <li><a href="/emplois-en">Jobs</a></li>
-                <li><a href="/nous-joindre-en">Contact Us</a></li>
-                <li><a href="/a-propos">Français</a></li>
-            </ul>
-        </nav>
+        </div>
     </header>
 
-    <main>
-        <section class="page-header">
-            <h1>About Tonic</h1>
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="mobile-menu">
+        <div class="container mx-auto px-4 py-4">
+            <div class="space-y-2">
+                <a href="index-en.html" class="nav-item w-full">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                    <span>Home</span>
+                </a>
+                <a href="about.html" class="nav-item active w-full">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                    <span>About</span>
+                </a>
+                <a href="emplois-en.html" class="nav-item w-full">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                    <span>Jobs</span>
+                </a>
+                <a href="communiques-en.html" class="nav-item w-full">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M10 6h8"/><path d="M10 10h8"/><path d="M10 14h4"/></svg>
+                    <span>News</span>
+                </a>
+                <a href="nous-joindre-en.html" class="nav-item w-full">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                    <span>Contact</span>
+                </a>
+                <div class="h-px bg-white/10 my-4"></div>
+                <a href="a-propos.html" class="nav-item w-full">
+                    <span>Français</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-bg relative pt-32 pb-20 overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-black/50 to-transparent"></div>
+        <div class="container mx-auto px-4 relative z-10">
+            <h1 class="text-5xl md:text-7xl font-black mb-6 fade-in">About Tonic</h1>
+            <p class="text-xl md:text-2xl text-white/80 max-w-3xl fade-in delay-100">
+                For over 40 years, we've been creating unforgettable moments by organizing major international sporting and cultural events in Quebec.
+            </p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="py-20">
+        <!-- Mission Section -->
+        <section class="container mx-auto px-4 mb-20">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold mb-8 fade-in">Our Mission</h2>
+                <p class="text-lg text-white/80 mb-6 fade-in delay-100">
+                    Tonic is a creator of memorable experiences. We organize and produce major sporting and cultural events that bring communities together and celebrate excellence. Our expertise spans from conception to execution, including promotion and complete management of large-scale events.
+                </p>
+                <p class="text-lg text-white/80 fade-in delay-200">
+                    With a passionate team and strong partnerships, we transform every project into a unique experience that leaves a lasting impression and creates enduring memories for participants, spectators, and communities.
+                </p>
+            </div>
         </section>
 
-        <section class="content">
-            <div class="container">
-                <h2>Our Mission</h2>
-                <p>Tonic is dedicated to providing innovative solutions and creating meaningful connections within our community.</p>
-                
-                <h2>Our Story</h2>
-                <p>Founded with a vision to make a positive impact, Tonic has grown to become a trusted name in our industry.</p>
-                
-                <h2>Our Values</h2>
-                <ul>
-                    <li>Innovation</li>
-                    <li>Quality</li>
-                    <li>Community</li>
-                    <li>Sustainability</li>
-                </ul>
+        <!-- Stats Section -->
+        <section class="container mx-auto px-4 mb-20">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+                <div class="stat-card p-8 rounded-2xl text-center fade-in">
+                    <div class="text-5xl font-black text-coral-500 mb-2">40+</div>
+                    <p class="text-white/70">Years of Experience</p>
+                </div>
+                <div class="stat-card p-8 rounded-2xl text-center fade-in delay-100">
+                    <div class="text-5xl font-black text-coral-500 mb-2">1M+</div>
+                    <p class="text-white/70">Annual Participants</p>
+                </div>
+                <div class="stat-card p-8 rounded-2xl text-center fade-in delay-200">
+                    <div class="text-5xl font-black text-coral-500 mb-2">7</div>
+                    <p class="text-white/70">Major Events</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Values Section -->
+        <section class="container mx-auto px-4 mb-20">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold mb-12 text-center fade-in">Our Values</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="glass p-8 rounded-2xl fade-in">
+                        <h3 class="text-2xl font-bold mb-4 text-coral-500">Excellence</h3>
+                        <p class="text-white/70">We strive for excellence in every aspect of our events, from planning to execution.</p>
+                    </div>
+                    <div class="glass p-8 rounded-2xl fade-in delay-100">
+                        <h3 class="text-2xl font-bold mb-4 text-coral-500">Innovation</h3>
+                        <p class="text-white/70">We constantly push boundaries to create unique and memorable experiences.</p>
+                    </div>
+                    <div class="glass p-8 rounded-2xl fade-in delay-200">
+                        <h3 class="text-2xl font-bold mb-4 text-coral-500">Community</h3>
+                        <p class="text-white/70">We believe in the unifying power of sport and culture to bring communities together.</p>
+                    </div>
+                    <div class="glass p-8 rounded-2xl fade-in delay-300">
+                        <h3 class="text-2xl font-bold mb-4 text-coral-500">Sustainability</h3>
+                        <p class="text-white/70">We integrate sustainable practices into all our events for positive long-term impact.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Timeline Section -->
+        <section class="container mx-auto px-4 mb-20">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold mb-12 fade-in">Our History</h2>
+                <div class="space-y-8">
+                    <div class="timeline-item fade-in">
+                        <h3 class="text-xl font-bold mb-2">1982 - Foundation</h3>
+                        <p class="text-white/70">Creation of Tonic with the vision of transforming Quebec's event landscape.</p>
+                    </div>
+                    <div class="timeline-item fade-in delay-100">
+                        <h3 class="text-xl font-bold mb-2">1985 - First Cycling Grand Prix</h3>
+                        <p class="text-white/70">Launch of the Quebec and Montreal Cycling Grand Prix, quickly becoming must-attend events.</p>
+                    </div>
+                    <div class="timeline-item fade-in delay-200">
+                        <h3 class="text-xl font-bold mb-2">2003 - Montreal Marathon</h3>
+                        <p class="text-white/70">Taking over and revitalizing the Montreal Marathon, now one of Canada's most important.</p>
+                    </div>
+                    <div class="timeline-item fade-in delay-300">
+                        <h3 class="text-xl font-bold mb-2">2022 - Beach Pro Tour</h3>
+                        <p class="text-white/70">Hosting the Beach Pro Tour, confirming Montreal as a major destination for world beach volleyball.</p>
+                    </div>
+                    <div class="timeline-item fade-in delay-400">
+                        <h3 class="text-xl font-bold mb-2">2026 - UCI World Championships</h3>
+                        <p class="text-white/70">Preparing to host the UCI Road World Championships, a historic event for cycling.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="container mx-auto px-4 text-center">
+            <div class="max-w-2xl mx-auto">
+                <h2 class="text-4xl font-bold mb-6 fade-in">Let's create your next memorable event together</h2>
+                <p class="text-xl text-white/80 mb-8 fade-in delay-100">
+                    Discover how our expertise can transform your vision into reality.
+                </p>
+                <a href="nous-joindre-en.html" class="cta-button fade-in delay-200">
+                    <span>Contact Us</span>
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </a>
             </div>
         </section>
     </main>
 
-    <footer>
-        <p>&copy; 2025 Tonic. All rights reserved.</p>
+    <!-- Footer -->
+    <footer class="bg-black/50 backdrop-blur-lg border-t border-white/10 py-8 mt-20">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="text-center md:text-left">
+                    <div class="text-2xl font-black mb-2">TONIC</div>
+                    <p class="text-sm text-white/60">© 2024 Tonic. All rights reserved.</p>
+                </div>
+                <div class="flex gap-6">
+                    <a href="#" class="text-white/60 hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="#" class="text-white/60 hover:text-white transition-colors">Terms of Use</a>
+                </div>
+            </div>
+        </div>
     </footer>
 
-    <script src="./js/shared.js"></script>
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active');
+        });
+
+        // Fade in animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.8s ease-out, transform 0.8s ease-out';
+            observer.observe(el);
+        });
+    </script>
 </body>
 </html>
