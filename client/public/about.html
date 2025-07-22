@@ -17,12 +17,16 @@
         body{margin:0;background:#000;overflow-x:hidden;min-height:100vh;min-height:100dvh}
         .header-logo{cursor:pointer;transition:transform .2s ease}
         .header-logo:hover{transform:scale(1.05)}
-        .stat-card{background:linear-gradient(135deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02));backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);transition:all 0.3s ease;border-radius:1rem;padding:2rem;text-align:center}
-        .stat-card:hover{transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,0,0,0.3);border-color:rgba(255,255,255,0.2)}
-        .stat-number{font-size:3rem;font-weight:900;color:#fff;line-height:1;margin-bottom:0.5rem}
-        .stat-label{color:rgba(255,255,255,0.8);font-size:1.1rem;font-weight:500}
-        .values-card{background:linear-gradient(135deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02));backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-radius:1rem;padding:2rem;transition:all 0.3s ease}
-        .values-card:hover{transform:translateY(-2px);border-color:rgba(255,255,255,0.2)}
+        .stat-card{background:linear-gradient(135deg,rgba(254,68,69,0.1),rgba(0,0,0,0.8));backdrop-filter:blur(10px);border:1px solid var(--accent-20);transition:all 0.3s ease;border-radius:1rem;padding:2rem;text-align:center;position:relative;overflow:hidden}
+        .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent-primary),var(--accent-hover));border-radius:1rem 1rem 0 0}
+        .stat-card:hover{transform:translateY(-8px);box-shadow:0 20px 60px rgba(254,68,69,0.3);border-color:var(--accent-30);background:linear-gradient(135deg,rgba(254,68,69,0.15),rgba(0,0,0,0.9))}
+        .stat-number{font-size:3.5rem;font-weight:900;background:linear-gradient(135deg,var(--accent-primary),var(--accent-hover));background-clip:text;-webkit-background-clip:text;color:transparent;line-height:1;margin-bottom:0.5rem}
+        .stat-label{color:rgba(255,255,255,0.9);font-size:1.1rem;font-weight:600;text-transform:uppercase;letter-spacing:0.5px}
+        .values-card{background:linear-gradient(135deg,rgba(255,255,255,0.08),rgba(254,68,69,0.05));backdrop-filter:blur(15px);border:1px solid rgba(255,255,255,0.1);border-radius:1.5rem;padding:2.5rem;transition:all 0.4s ease;position:relative;overflow:hidden}
+        .values-card::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:conic-gradient(from 0deg,transparent,var(--accent-20),transparent);opacity:0;transition:opacity 0.4s ease;animation:rotate 10s linear infinite}
+        .values-card:hover::before{opacity:1}
+        .values-card:hover{transform:translateY(-4px) scale(1.02);border-color:var(--accent-30);box-shadow:0 15px 40px rgba(254,68,69,0.2);background:linear-gradient(135deg,rgba(255,255,255,0.12),rgba(254,68,69,0.08))}
+        @keyframes rotate{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
         .timeline-container{position:relative;overflow:hidden;padding:4rem 0}
         .timeline-path{position:absolute;top:50%;left:0;right:0;height:2px;background:rgba(255,255,255,0.2)}
         .timeline-curve{position:absolute;stroke:rgba(255,255,255,0.3);stroke-width:2;fill:none;width:100%;height:200px;top:50%;transform:translateY(-50%)}
@@ -31,9 +35,25 @@
         .timeline-year{font-size:1.5rem;font-weight:900;color:#fff;margin-bottom:0.5rem}
         .timeline-title{font-weight:700;color:#fff;margin-bottom:0.5rem;font-size:1.1rem}
         .timeline-desc{color:rgba(255,255,255,0.8);line-height:1.5}
-        .hero-title{font-size:clamp(2.5rem,8vw,5rem);line-height:0.9} /* Reduced by ~30% from original */
-        .hero-bg{background:linear-gradient(135deg,#1a1a1a 0%,#0a0a0a 100%)}
-        .cta-section{background:linear-gradient(135deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01));border-top:1px solid rgba(255,255,255,0.1)}
+        .hero-title{font-size:clamp(2rem,6vw,3.5rem);line-height:0.9;background:linear-gradient(135deg,#fff,var(--accent-light));background-clip:text;-webkit-background-clip:text;color:transparent;text-shadow:0 4px 20px rgba(254,68,69,0.3)} /* Reduced by ~50% from original */
+        .hero-bg{background:linear-gradient(135deg,#1a1a1a 0%,#0a0a0a 100%);position:relative}
+        .hero-bg::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(254,68,69,0.1) 0%,transparent 70%);pointer-events:none}
+        .cta-section{background:linear-gradient(135deg,rgba(254,68,69,0.05),rgba(0,0,0,0.9));border-top:1px solid var(--accent-20);position:relative}
+        .cta-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(254,68,69,0.1),transparent 70%);pointer-events:none}
+        
+        .timeline-section{position:relative;margin-bottom:4rem}
+        .timeline-section::before{content:'';position:absolute;left:2rem;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--accent-primary),var(--accent-hover),var(--accent-primary));opacity:0.6}
+        .timeline-item{position:relative;background:linear-gradient(135deg,rgba(0,0,0,0.9),rgba(254,68,69,0.05));border:1px solid var(--accent-20);border-radius:1rem;padding:2rem;margin-bottom:2rem;margin-left:4rem;backdrop-filter:blur(15px);transition:all 0.4s ease;box-shadow:0 8px 32px rgba(0,0,0,0.3)}
+        .timeline-item::before{content:'';position:absolute;left:-2.5rem;top:1.5rem;width:1rem;height:1rem;background:var(--accent-primary);border-radius:50%;box-shadow:0 0 20px var(--accent-glow);border:3px solid #000}
+        .timeline-item:hover{border-color:var(--accent-40);transform:translateX(10px) translateY(-4px);box-shadow:0 15px 50px rgba(254,68,69,0.4);background:linear-gradient(135deg,rgba(0,0,0,0.95),rgba(254,68,69,0.1))}
+        .timeline-year{font-size:1.8rem;font-weight:900;background:linear-gradient(135deg,var(--accent-primary),var(--accent-hover));background-clip:text;-webkit-background-clip:text;color:transparent;margin-bottom:0.75rem;display:inline-block}
+        .timeline-title{font-weight:700;color:#fff;margin-bottom:0.75rem;font-size:1.2rem;text-shadow:0 2px 10px rgba(0,0,0,0.5)}
+        .timeline-desc{color:rgba(255,255,255,0.85);line-height:1.6;font-size:1rem}
+        
+        .section-header{text-align:center;margin-bottom:4rem;position:relative}
+        .section-title{font-size:3.5rem;font-weight:900;background:linear-gradient(135deg,#fff,var(--accent-light));background-clip:text;-webkit-background-clip:text;color:transparent;margin-bottom:1rem}
+        .section-subtitle{font-size:1.3rem;color:rgba(255,255,255,0.7);max-width:600px;margin:0 auto}
+        .accent-line{width:80px;height:4px;background:linear-gradient(90deg,var(--accent-primary),var(--accent-hover));border-radius:2px;margin:2rem auto}
         
         /* Timeline responsive layout */
         @media(min-width:768px){
@@ -168,7 +188,11 @@
         <!-- Values Section -->
         <section class="container mx-auto px-4 mb-24">
             <div class="max-w-6xl mx-auto">
-                <h2 class="text-4xl font-bold mb-12 text-center fade-in">Our Values</h2>
+                <div class="section-header">
+                    <h2 class="section-title">Our Values</h2>
+                    <div class="accent-line"></div>
+                    <p class="section-subtitle">The principles that have guided our excellence for over 40 years</p>
+                </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <div class="values-card fade-in delay-200">
                         <h3 class="text-xl font-bold mb-3 text-white">Excellence</h3>
@@ -197,13 +221,16 @@
         <!-- History Timeline Section -->
         <section class="container mx-auto px-4 mb-24">
             <div class="max-w-6xl mx-auto">
-                <h2 class="text-4xl font-bold mb-4 text-center fade-in">Our History</h2>
-                <p class="text-xl text-white/70 mb-16 text-center fade-in delay-100">A little trip back in time</p>
+                <div class="section-header">
+                    <h2 class="section-title">Our History</h2>
+                    <div class="accent-line"></div>
+                    <p class="section-subtitle">A little trip back in time</p>
+                </div>
                 
                 <!-- Early Years: 1978-2000 -->
-                <div class="mb-16">
-                    <h3 class="text-2xl font-bold mb-8 text-white/90">1978-2000</h3>
-                    <div class="timeline-grid">
+                <div class="timeline-section">
+                    <h3 class="text-3xl font-bold mb-8 text-white/90 text-center">1978-2000</h3>
+                    <div class="timeline-container">
                         <div class="timeline-item fade-in delay-200">
                             <div class="timeline-year">1978</div>
                             <div class="timeline-title">Creation of Serdy Vidéo</div>
@@ -237,10 +264,12 @@
                     </div>
                 </div>
 
+                </div>
+                
                 <!-- Modern Era: 2010-Present -->
-                <div>
-                    <h3 class="text-2xl font-bold mb-8 text-white/90">2010-Today</h3>
-                    <div class="timeline-grid">
+                <div class="timeline-section">
+                    <h3 class="text-3xl font-bold mb-8 text-white/90 text-center">2010-Today</h3>
+                    <div class="timeline-container">
                         <div class="timeline-item fade-in delay-200">
                             <div class="timeline-year">2010</div>
                             <div class="timeline-title">Launch of Zeste and IDHD</div>
@@ -292,14 +321,14 @@
         </section>
 
         <!-- CTA Section -->
-        <section class="cta-section py-20">
+        <section class="cta-section py-20 relative z-10">
             <div class="container mx-auto px-4 text-center">
                 <div class="max-w-3xl mx-auto">
-                    <h2 class="text-4xl font-bold mb-6 fade-in">Let's create a memorable event together</h2>
-                    <p class="text-xl text-white/80 mb-8 fade-in delay-100">
+                    <h2 class="text-4xl font-bold mb-6 fade-in bg-gradient-to-r from-white to-white/90 bg-clip-text text-transparent">Let's create a memorable event together</h2>
+                    <p class="text-xl text-white/90 mb-8 fade-in delay-100">
                         Discover how our expertise can transform your vision into reality.
                     </p>
-                    <a href="nous-joindre-en.html" class="inline-flex items-center gap-3 bg-gradient-to-r from-white/10 to-white/5 hover:from-white/20 hover:to-white/10 border border-white/20 hover:border-white/30 px-8 py-4 rounded-full text-white font-semibold transition-all duration-300 fade-in delay-200">
+                    <a href="nous-joindre-en.html" class="inline-flex items-center gap-3 bg-gradient-to-r from-orange-500/90 to-red-500/90 hover:from-orange-400 hover:to-red-400 border border-orange-400/30 hover:border-orange-300/50 px-8 py-4 rounded-full text-white font-bold transition-all duration-300 fade-in delay-200 shadow-lg hover:shadow-xl hover:shadow-orange-500/25 transform hover:scale-105">
                         Contact Us
                         <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <line x1="5" y1="12" x2="19" y2="12"/>
