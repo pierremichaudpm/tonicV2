@@ -1,157 +1,82 @@
-// Fonctions partagées pour toutes les pages
+// shared.js - Shared JavaScript across all pages
 
-// Fonction pour gérer la navigation active
-function updateActiveNavigation() {
-    const currentPath = window.location.pathname;
-    const navLinks = document.querySelectorAll('.nav-links a');
+// Navigation Icons SVG Components
+const Icons = {
+    grid: () => '<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>',
     
-    navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === currentPath || 
-            (currentPath === '/' && link.getAttribute('href') === '/') ||
-            (currentPath === '/en' && link.getAttribute('href') === '/en')) {
-            link.classList.add('active');
-        }
-    });
-}
-
-// Fonction pour gérer les formulaires de contact
-function setupContactForm() {
-    const contactForm = document.querySelector('.contact-form form');
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Récupérer les données du formulaire
-            const formData = new FormData(this);
-            const data = {
-                name: formData.get('name'),
-                email: formData.get('email'),
-                message: formData.get('message')
-            };
-            
-            // Simulation d'envoi (remplacer par votre logique d'envoi réelle)
-            console.log('Données du formulaire:', data);
-            alert('Merci pour votre message! Nous vous contacterons bientôt.');
-            
-            // Réinitialiser le formulaire
-            this.reset();
-        });
-    }
-}
-
-// Fonction pour gérer le responsive du menu
-function setupMobileNavigation() {
-    const nav = document.querySelector('nav');
-    const navLinks = document.querySelector('.nav-links');
+    briefcase: () => '<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>',
     
-    // Ajouter un bouton de menu mobile si nécessaire
-    if (window.innerWidth <= 768) {
-        // Logique pour menu mobile peut être ajoutée ici
-    }
-}
-
-// Fonction pour smooth scroll
-function setupSmoothScroll() {
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth'
-                });
-            }
-        });
-    });
-}
-
-// Fonction pour animation d'entrée des éléments
-function setupAnimations() {
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver(function(entries) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
-        });
-    }, observerOptions);
-
-    // Observer les cartes et autres éléments
-    document.querySelectorAll('.card, .communique-item, .emploi-item').forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(20px)';
-        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(el);
-    });
-}
-
-// Fonction utilitaire pour formater les dates
-function formatDate(dateString, locale = 'fr-FR') {
-    const date = new Date(dateString);
-    return date.toLocaleDateString(locale, {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-    });
-}
-
-// Fonction pour gérer le changement de langue
-function setupLanguageToggle() {
-    const languageLinks = document.querySelectorAll('a[href*="en"], a[href="/"]');
-    languageLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            // Ajouter une classe de transition si nécessaire
-            document.body.classList.add('language-transition');
-            setTimeout(() => {
-                document.body.classList.remove('language-transition');
-            }, 300);
-        });
-    });
-}
-
-// Initialisation quand le DOM est chargé
-document.addEventListener('DOMContentLoaded', function() {
-    updateActiveNavigation();
-    setupContactForm();
-    setupMobileNavigation();
-    setupSmoothScroll();
-    setupAnimations();
-    setupLanguageToggle();
+    newspaper: () => '<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M10 6h8"/><path d="M10 10h8"/><path d="M10 14h4"/></svg>',
     
-    // Gérer le redimensionnement de la fenêtre
-    window.addEventListener('resize', setupMobileNavigation);
-});
-
-// Fonctions utilitaires globales
-window.TonicUtils = {
-    formatDate,
-    updateActiveNavigation,
-    setupContactForm,
-    setupMobileNavigation,
-    setupSmoothScroll,
-    setupAnimations,
-    setupLanguageToggle
+    mail: () => '<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>'
 };
 
-// Gestion des erreurs globales
-window.addEventListener('error', function(e) {
-    console.error('Erreur JavaScript:', e.error);
-    // Vous pouvez ajouter ici un système de rapport d'erreurs
-});
-
-// Performance monitoring basique
-if ('performance' in window) {
-    window.addEventListener('load', function() {
-        setTimeout(function() {
-            const perfData = performance.timing;
-            const loadTime = perfData.loadEventEnd - perfData.navigationStart;
-            console.log('Temps de chargement de la page:', loadTime + 'ms');
-        }, 0);
-    });
+// Toggle Mobile Menu
+function toggleMobileMenu() {
+    const mobileMenu = document.getElementById('mobileMenu');
+    if (mobileMenu) {
+        mobileMenu.classList.toggle('active');
+    }
 }
+
+// Handle form submission (for contact form)
+function handleFormSubmit(event) {
+    event.preventDefault();
+    
+    // Get form data
+    const formData = new FormData(event.target);
+    const data = Object.fromEntries(formData);
+    
+    // Create mailto link with form data
+    const subject = encodeURIComponent(`Contact - ${data.subject}`);
+    const body = encodeURIComponent(`
+Nom: ${data.name}
+Courriel: ${data.email}
+Sujet: ${data.subject}
+
+Message:
+${data.message}
+    `);
+    
+    // Open email client
+    window.location.href = `mailto:info@groupetonic.ca?subject=${subject}&body=${body}`;
+    
+    // Reset form
+    event.target.reset();
+    
+    // Show success message (optional)
+    alert('Votre message a été préparé. Veuillez l\'envoyer via votre client de messagerie.');
+}
+
+// Format date in French
+function formatDate(dateString) {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString('fr-CA', options);
+}
+
+// Initialize shared components
+document.addEventListener('DOMContentLoaded', function() {
+    // Track page load time for performance
+    const loadTime = performance.now();
+    console.log('Temps de chargement de la page:', Math.round(loadTime) + 'ms');
+    
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', function(event) {
+        const mobileMenu = document.getElementById('mobileMenu');
+        const menuButton = event.target.closest('button[onclick*="toggleMobileMenu"]');
+        
+        if (mobileMenu && mobileMenu.classList.contains('active') && !mobileMenu.contains(event.target) && !menuButton) {
+            mobileMenu.classList.remove('active');
+        }
+    });
+    
+    // Handle escape key to close mobile menu
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            const mobileMenu = document.getElementById('mobileMenu');
+            if (mobileMenu && mobileMenu.classList.contains('active')) {
+                mobileMenu.classList.remove('active');
+            }
+        }
+    });
+});

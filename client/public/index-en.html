@@ -2,61 +2,246 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tonic - Home</title>
-    <meta name="description" content="Tonic - Official website. Discover our press releases, jobs and information.">
-    <link rel="stylesheet" href="./css/shared.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Tonic - Creator of Memorable Experiences</title>
+    <meta name="description" content="Tonic - Creator of memorable experiences. Beach Pro Tour, Grand Prix Cyclistes, Marathon Beneva and more.">
+    <meta property="og:title" content="Tonic - Creator of Memorable Experiences">
+    <meta property="og:description" content="Discover our major sporting events and event spaces">
+    <meta property="og:image" content="images/beach-pro-tour-hero.webp">
+    <meta property="og:type" content="website">
+    <link rel="stylesheet" href="css/shared.css">
+    <link rel="preload" href="https://fonts.cbc.ca/fonts/CBCSans-Bold.woff2" as="font" type="font/woff2" crossorigin>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.cbc.ca">
+    <style>
+        @font-face{font-family:'CBC Sans';font-weight:400;font-display:swap;src:url('https://fonts.cbc.ca/fonts/CBCSans-Regular.woff2') format('woff2')}
+        @font-face{font-family:'CBC Sans';font-weight:700;font-display:swap;src:url('https://fonts.cbc.ca/fonts/CBCSans-Bold.woff2') format('woff2')}
+        @font-face{font-family:'CBC Sans';font-weight:900;font-display:swap;src:url('https://fonts.cbc.ca/fonts/CBCSans-Black.woff2') format('woff2')}
+        *{box-sizing:border-box;font-family:'CBC Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+        body{margin:0;background:#000;overflow-x:hidden;min-height:100vh;min-height:100dvh;overscroll-behavior:none}
+        
+        /* Core animations */
+        @keyframes fadeInSoft{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes scaleIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+        @keyframes slideIn{from{opacity:0;transform:translateX(-30px)}to{opacity:1;transform:translateX(0)}}
+        @keyframes subtleZoom{0%,100%{transform:scale(1)}50%{transform:scale(1.02)}}
+        @keyframes float{0%,100%{transform:translateY(0) translateX(0);opacity:.3}50%{transform:translateY(-30px) translateX(10px);opacity:.8}}
+        @keyframes pulse{0%,100%{opacity:.7}50%{opacity:1}}
+        @keyframes progress{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+        @keyframes progressLine{from{width:0}to{width:100%}}
+        @keyframes gridProgress{from{width:0}to{width:100%}}
+        @keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+        @keyframes fadeInOut{0%{opacity:0;transform:translate(-50%,-50%) scale(.8)}20%{opacity:1;transform:translate(-50%,-50%) scale(1)}80%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) scale(.95)}}
+        
+        /* Base components */
+        .view-container{position:fixed;inset:0;opacity:0;pointer-events:none;transition:opacity .5s ease}
+        .view-container.active{opacity:1;pointer-events:auto}
+        .splash-container{position:fixed;inset:0;z-index:100;background:#000;display:flex;align-items:center;justify-content:center;padding:2rem;flex-direction:column}
+        .splash-logo{font-size:clamp(5rem,15vw,10rem);font-weight:900;color:#fff;text-align:center;text-shadow:0 4px 20px rgba(0,0,0,.8);opacity:0;animation:fadeInSoft 1.2s ease-out forwards}
+        .splash-tagline{font-size:clamp(1rem,2.5vw,1.5rem);font-weight:500;color:#fff;text-align:center;text-shadow:0 2px 10px rgba(0,0,0,.8);opacity:0;animation:fadeInSoft 1.2s ease-out .3s forwards;margin-top:1rem}
+        
+        /* Grid */
+        .grid-selection-container{position:fixed;inset:0;z-index:90;background:#000;display:flex;flex-direction:column;height:100vh;height:100dvh;overflow:hidden}
+        .grid-selection-container header{flex-shrink:0;height:65px}
+        .grid-wrapper{flex:1;padding:calc(80px + max(1rem,1.5vh)) max(1.5rem,3vw) max(1rem,1.5vh);display:flex;align-items:center;justify-content:center;min-height:0;overflow:hidden}
+        .selection-grid{display:grid;gap:12px;width:100%;height:100%;max-width:min(1190px,90vw);max-height:min(85%,85vh);margin:auto}
+        .selection-tile{position:relative;width:100%;height:100%;min-height:0;border-radius:12px;overflow:hidden;cursor:pointer;transition:all .3s ease;animation:scaleIn .5s ease-out forwards;animation-delay:calc(var(--index) * .05s);opacity:0;box-shadow:0 4px 15px rgba(0,0,0,.3)}
+        .selection-tile:hover{transform:scale(1.02);z-index:10;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+        .selection-tile-bg{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .3s ease}
+        .selection-tile:hover .selection-tile-bg{transform:scale(1.05)}
+        .selection-tile-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.3) 0%,rgba(0,0,0,.1) 50%,rgba(0,0,0,.7) 100%);display:flex;flex-direction:column;justify-content:space-between;padding:clamp(.75rem,2vw,1.25rem);padding-bottom:clamp(1rem,2.5vw,1.5rem)}
+        .selection-tile-logo{max-height:clamp(30px,5vh,50px);max-width:clamp(80px,15vw,140px);object-fit:contain;filter:drop-shadow(0 2px 6px rgba(0,0,0,.8));opacity:.95}
+        .selection-tile-content{display:flex;flex-direction:column;gap:.25rem;min-height:3.5rem;justify-content:flex-end}
+        .selection-tile-title{font-size:clamp(.875rem,1.5vw,1.25rem);font-weight:900;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.9);line-height:1.1}
+        .selection-tile-date{font-size:clamp(.65rem,1vw,.875rem);color:rgba(255,255,255,.9);font-weight:500}
+        .selection-tile-tagline{font-size:clamp(.88rem,1.35vw,1.08rem);color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.05em;line-height:1.2;text-shadow:0 2px 6px rgba(0,0,0,.8)}
+        
+        /* Progress indicators */
+        .grid-progress-bar{position:fixed;bottom:0;left:0;right:0;height:6px;background:rgba(255,255,255,.1);z-index:95;display:none}
+        .grid-progress-fill{height:100%;background:linear-gradient(90deg,color-mix(in srgb,var(--accent-primary) 10%,#000) 0%,color-mix(in srgb,var(--accent-primary) 20%,#000) 15%,color-mix(in srgb,var(--accent-primary) 40%,#000) 30%,color-mix(in srgb,var(--accent-primary) 60%,#000) 45%,var(--accent-primary) 60%,var(--accent-hover) 75%,var(--accent-light) 90%,color-mix(in srgb,var(--accent-light) 60%,#fff) 100%);animation:gridProgress 10s linear forwards;transform-origin:left;box-shadow:0 0 25px var(--accent-shadow),0 0 10px var(--accent-30)}
+        .progress-bar{position:absolute;bottom:0;left:0;height:4px;background:var(--accent-color);animation:progress 7s linear forwards;transform-origin:left;transform:scaleX(0);box-shadow:0 0 15px var(--accent-color);border-radius:0 3px 3px 0;z-index:10}
+        .progress-bar.paused{animation-play-state:paused}
+        .desktop-progress{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);z-index:40;display:none;align-items:center;gap:.75rem}
+        .progress-line{width:80px;height:5px;background:rgba(255,255,255,.3);cursor:pointer;transition:all .3s ease;position:relative;overflow:hidden;border-radius:3px}
+        .progress-line:hover{background:rgba(255,255,255,.4);transform:scaleY(1.3);box-shadow:0 2px 8px rgba(255,255,255,.2)}
+        .progress-line.active{background:rgba(255,255,255,.5)}
+        .progress-line.active::after{content:'';position:absolute;left:0;top:0;height:100%;background:var(--accent-color);animation:progressLine 7s linear forwards;box-shadow:0 0 10px var(--accent-color),0 0 20px var(--accent-color)}
+        .progress-line.active.paused::after{animation-play-state:paused}
+        
+        /* Navigation */
+        .lang-switcher{display:flex;align-items:center;gap:.25rem;padding:.25rem .5rem;border-radius:.5rem;color:rgba(255,255,255,.9);transition:all .2s ease;font-size:.75rem;font-weight:500;text-decoration:none;cursor:pointer}
+        .lang-switcher:hover{background:rgba(255,255,255,.1);color:#fff}
+        .lang-divider{width:1px;height:16px;background:rgba(255,255,255,.2);margin:0 .5rem}
+        
+        /* Grid layouts for responsive design */
+        @media(min-width:1024px) and (max-width:2999px){
+            .selection-grid{grid-template-columns:repeat(12,1fr)!important;grid-template-rows:repeat(2,1fr)!important;grid-auto-flow:dense}
+            .selection-tile:nth-child(1){grid-column:1/4!important;grid-row:1/2!important}
+            .selection-tile:nth-child(2){grid-column:4/7!important;grid-row:1/2!important}
+            .selection-tile:nth-child(3){grid-column:7/10!important;grid-row:1/2!important}
+            .selection-tile:nth-child(4){grid-column:10/13!important;grid-row:1/2!important}
+            .selection-tile:nth-child(5){grid-column:1/5!important;grid-row:2/3!important}
+            .selection-tile:nth-child(6){grid-column:5/9!important;grid-row:2/3!important}
+            .selection-tile:nth-child(7){grid-column:9/13!important;grid-row:2/3!important}
+        }
+        @media(min-width:768px) and (max-width:1023px){
+            .selection-grid{grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(3,1fr);grid-template-areas:"a a b b c c" "d d e e f f" ". . g g . ."}
+            .selection-tile:nth-child(1){grid-area:a}
+            .selection-tile:nth-child(2){grid-area:b}
+            .selection-tile:nth-child(3){grid-area:c}
+            .selection-tile:nth-child(4){grid-area:d}
+            .selection-tile:nth-child(5){grid-area:e}
+            .selection-tile:nth-child(6){grid-area:f}
+            .selection-tile:nth-child(7){grid-area:g}
+            .grid-wrapper{padding-top:calc(80px + 1.25rem)}
+        }
+        @media(max-width:479px){
+            .grid-wrapper{overflow-y:auto;-webkit-overflow-scrolling:touch;padding:calc(75px + 1.5rem) 1rem 1.5rem;padding-top:calc(75px + max(1.5rem,env(safe-area-inset-top) + 1rem));padding-bottom:max(1.5rem,env(safe-area-inset-bottom) + 1.5rem)}
+            .selection-grid{grid-template-columns:1fr;grid-auto-rows:minmax(150px,auto);max-height:none;gap:20px;padding-bottom:6rem}
+            .selection-grid::after{content:'';display:block;height:5rem;width:100%}
+            .selection-tile:last-child{margin-bottom:4rem}
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <nav>
-            <div class="logo">
-                <img src="./images/tonic-productions-hero.jpg" alt="Tonic Logo">
+    <!-- Splash Screen -->
+    <div id="splash" class="splash-container">
+        <div class="splash-logo">TONIC</div>
+        <div class="splash-tagline">Creator of Memorable Experiences</div>
+    </div>
+
+    <!-- Grid Selection View -->
+    <div id="grid-selection" class="view-container grid-selection-container">
+        <header class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 bg-black/80 backdrop-blur-md">
+            <div class="header-logo">
+                <span class="text-2xl font-bold text-white">TONIC</span>
             </div>
-            <ul class="nav-links">
-                <li><a href="/en">Home</a></li>
-                <li><a href="/about">About</a></li>
-                <li><a href="/communiques-en">Press Releases</a></li>
-                <li><a href="/emplois-en">Jobs</a></li>
-                <li><a href="/nous-joindre-en">Contact Us</a></li>
-                <li><a href="/">Français</a></li>
-            </ul>
-        </nav>
-    </header>
+            <div class="flex items-center">
+                <a href="/" class="lang-switcher">Français</a>
+            </div>
+        </header>
 
-    <main>
-        <section class="hero">
-            <h1>Welcome to Tonic</h1>
-            <p>Your destination for the latest news and opportunities.</p>
-        </section>
+        <div class="grid-wrapper">
+            <div class="selection-grid">
+                <!-- Beach Pro Tour -->
+                <div class="selection-tile" style="--index: 0" data-event="beach-pro-tour">
+                    <div class="selection-tile-bg" style="background-image: url('images/beach-pro-tour-hero.webp')"></div>
+                    <div class="selection-tile-overlay">
+                        <img src="images/beach-pro-tour-logo.png" alt="Beach Pro Tour" class="selection-tile-logo">
+                        <div class="selection-tile-content">
+                            <div class="selection-tile-title">Beach Pro Tour</div>
+                            <div class="selection-tile-date">Montreal 2025</div>
+                            <div class="selection-tile-tagline">Elite Volleyball</div>
+                        </div>
+                    </div>
+                </div>
 
-        <section class="content">
-            <div class="grid">
-                <div class="card">
-                    <h2>Press Releases</h2>
-                    <p>Stay informed about our latest news.</p>
-                    <a href="/communiques-en" class="btn">View press releases</a>
+                <!-- Grand Prix Cyclistes -->
+                <div class="selection-tile" style="--index: 1" data-event="grands-prix-cyclistes">
+                    <div class="selection-tile-bg" style="background-image: url('images/grands-prix-cyclistes-hero.jpg')"></div>
+                    <div class="selection-tile-overlay">
+                        <img src="images/GPCQM-logo1.png" alt="GPCQM" class="selection-tile-logo">
+                        <div class="selection-tile-content">
+                            <div class="selection-tile-title">Grand Prix Cyclistes</div>
+                            <div class="selection-tile-date">Quebec & Montreal</div>
+                            <div class="selection-tile-tagline">World-Class Cycling</div>
+                        </div>
+                    </div>
                 </div>
-                
-                <div class="card">
-                    <h2>Jobs</h2>
-                    <p>Discover available career opportunities.</p>
-                    <a href="/emplois-en" class="btn">View jobs</a>
+
+                <!-- UCI 2026 -->
+                <div class="selection-tile" style="--index: 2" data-event="uci-2026">
+                    <div class="selection-tile-bg" style="background-image: url('images/montreal-2026-uci-hero.jpg')"></div>
+                    <div class="selection-tile-overlay">
+                        <img src="images/montreal-2026-uci-logo.png" alt="UCI 2026" class="selection-tile-logo">
+                        <div class="selection-tile-content">
+                            <div class="selection-tile-title">UCI World Championships</div>
+                            <div class="selection-tile-date">Montreal 2026</div>
+                            <div class="selection-tile-tagline">Road Cycling</div>
+                        </div>
+                    </div>
                 </div>
-                
-                <div class="card">
-                    <h2>Contact</h2>
-                    <p>Get in touch with our team.</p>
-                    <a href="/nous-joindre-en" class="btn">Contact us</a>
+
+                <!-- Marathon Beneva -->
+                <div class="selection-tile" style="--index: 3" data-event="marathon-beneva">
+                    <div class="selection-tile-bg" style="background-image: url('images/marathon-beneva-hero.jpg')"></div>
+                    <div class="selection-tile-overlay">
+                        <img src="images/marathon-beneva-logo.png" alt="Marathon Beneva" class="selection-tile-logo">
+                        <div class="selection-tile-content">
+                            <div class="selection-tile-title">Marathon Beneva</div>
+                            <div class="selection-tile-date">Montreal</div>
+                            <div class="selection-tile-tagline">Running</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 21K de Montreal -->
+                <div class="selection-tile" style="--index: 4" data-event="21k">
+                    <div class="selection-tile-bg" style="background-image: url('images/21k-hero.jpg')"></div>
+                    <div class="selection-tile-overlay">
+                        <img src="images/21k-logo.png" alt="21K" class="selection-tile-logo">
+                        <div class="selection-tile-content">
+                            <div class="selection-tile-title">21K Montreal</div>
+                            <div class="selection-tile-date">Half Marathon</div>
+                            <div class="selection-tile-tagline">Perfect Distance</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dock 619 -->
+                <div class="selection-tile" style="--index: 5" data-event="dock619">
+                    <div class="selection-tile-bg" style="background-image: url('images/dock619-hero.webp')"></div>
+                    <div class="selection-tile-overlay">
+                        <img src="images/dock619-logo.png" alt="Dock 619" class="selection-tile-logo">
+                        <div class="selection-tile-content">
+                            <div class="selection-tile-title">Dock 619</div>
+                            <div class="selection-tile-date">Event Space</div>
+                            <div class="selection-tile-tagline">Culinary Experiences</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Studio 76 -->
+                <div class="selection-tile" style="--index: 6" data-event="studio76">
+                    <div class="selection-tile-bg" style="background-image: url('images/tonic-productions-hero.jpg')"></div>
+                    <div class="selection-tile-overlay">
+                        <img src="images/studio76-logo.png" alt="Studio 76" class="selection-tile-logo">
+                        <div class="selection-tile-content">
+                            <div class="selection-tile-title">Studio 76</div>
+                            <div class="selection-tile-date">Event Production</div>
+                            <div class="selection-tile-tagline">Limitless Creativity</div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </section>
-    </main>
+        </div>
 
-    <footer>
-        <p>&copy; 2025 Tonic. All rights reserved.</p>
-    </footer>
+        <div class="grid-progress-bar">
+            <div class="grid-progress-fill" style="--accent-primary: #ff6b35; --accent-hover: #ff8c42; --accent-light: #ffad73; --accent-shadow: rgba(255, 107, 53, 0.6); --accent-30: rgba(255, 107, 53, 0.3);"></div>
+        </div>
+    </div>
 
-    <script src="./js/shared.js"></script>
+    <script src="js/shared.js"></script>
+    <script>
+        // Initialize the splash screen and grid
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show splash for 2 seconds, then show grid
+            setTimeout(() => {
+                document.getElementById('splash').style.display = 'none';
+                document.getElementById('grid-selection').classList.add('active');
+            }, 2500);
+
+            // Add click handlers for tiles
+            document.querySelectorAll('.selection-tile').forEach(tile => {
+                tile.addEventListener('click', function() {
+                    const event = this.dataset.event;
+                    // For now, just log the selection
+                    console.log('Selected event:', event);
+                    // You can add navigation logic here later
+                });
+            });
+        });
+    </script>
 </body>
 </html>
