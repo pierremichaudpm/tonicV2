@@ -199,91 +199,132 @@
     }
 }
 
-/* Tablet landscape general spacing improvements */
+/* Tablet improvements - focus on smaller elements */
 @media (min-width: 768px) and (max-width: 1023px) {
-    /* Container padding improvements */
+    /* Container padding - moderate increase */
     .container {
-        padding-left: 2rem !important;
-        padding-right: 2rem !important;
+        padding-left: 1.5rem !important;
+        padding-right: 1.5rem !important;
     }
     
-    /* React Homepage specific adjustments */
+    /* React Homepage - smaller elements with better spacing */
     .hero-container {
-        padding: 2.5rem 2rem !important;
-        margin: 0 1rem !important;
+        padding: 1.5rem !important;
+        margin: 0 0.75rem !important;
     }
     
     .hero-content {
-        padding: 2.5rem 0 !important;
-        margin-bottom: 2rem !important;
+        padding: 1.5rem 0 !important;
+        margin-bottom: 1rem !important;
     }
     
-    /* Grid wrapper with better spacing */
+    /* Grid wrapper - compact layout */
     .grid-wrapper {
-        padding: 2rem !important;
-        gap: 1.5rem !important;
+        padding: 1rem !important;
+        gap: 0.75rem !important;
     }
     
     .grid-selection-container {
-        padding: 1.5rem !important;
+        padding: 0.75rem !important;
     }
     
     .selection-grid {
-        gap: 1.5rem !important;
-        padding: 1rem !important;
+        gap: 0.75rem !important;
+        padding: 0.5rem !important;
     }
     
-    /* Side navigation improvements */
+    /* Smaller grid tiles */
+    .selection-tile {
+        min-height: 140px !important;
+        padding: 0.75rem !important;
+    }
+    
+    .selection-tile-logo {
+        max-height: 2.5rem !important;
+        margin: 0.25rem 0 !important;
+    }
+    
+    .selection-tile-title {
+        font-size: 0.875rem !important;
+        line-height: 1.1 !important;
+    }
+    
+    .selection-tile-date {
+        font-size: 0.75rem !important;
+        margin-top: 0.25rem !important;
+    }
+    
+    /* Side navigation - smaller and more compact */
     .side-nav-wrapper {
-        padding: 1.5rem 1rem !important;
-        gap: 1rem !important;
-        right: 1.5rem !important;
+        padding: 0.75rem 0.5rem !important;
+        gap: 0.5rem !important;
+        right: 1rem !important;
+        max-height: 80vh !important;
     }
     
     .side-nav-item {
-        padding: 1.25rem !important;
-        margin-bottom: 1rem !important;
-        border-radius: 0.75rem !important;
+        padding: 0.75rem !important;
+        margin-bottom: 0.5rem !important;
+        border-radius: 0.5rem !important;
+        font-size: 0.8rem !important;
+        min-height: auto !important;
     }
     
-    /* Hero view content spacing */
+    .side-nav-item .event-title {
+        font-size: 0.75rem !important;
+        line-height: 1.2 !important;
+        margin-bottom: 0.25rem !important;
+    }
+    
+    .side-nav-item .event-date {
+        font-size: 0.65rem !important;
+    }
+    
+    /* Hero view content - more compact */
     .hero-property {
-        padding: 2rem !important;
-        margin: 0 1.5rem !important;
+        padding: 1rem !important;
+        margin: 0 0.75rem !important;
     }
     
     .hero-property .content-wrapper {
-        padding: 2rem !important;
-        gap: 2rem !important;
+        padding: 1rem !important;
+        gap: 1rem !important;
     }
     
-    /* Header improvements */
+    /* Smaller hero titles and text */
+    .hero-title, .hero-property h1 {
+        font-size: 2.5rem !important;
+        line-height: 1.1 !important;
+        margin-bottom: 0.75rem !important;
+    }
+    
+    .hero-description, .hero-property p {
+        font-size: 0.9rem !important;
+        line-height: 1.4 !important;
+        margin-bottom: 1rem !important;
+    }
+    
+    /* Header improvements - don't hide header */
+    header {
+        display: block !important;
+        visibility: visible !important;
+    }
+    
     header .container {
-        padding: 1.5rem 2rem !important;
+        padding: 1rem 1.5rem !important;
     }
     
-    /* CTA Button spacing */
+    /* CTA Button - smaller */
     .cta-button, .hero-cta {
-        margin-top: 2rem !important;
-        padding: 1rem 2rem !important;
+        margin-top: 1rem !important;
+        padding: 0.75rem 1.5rem !important;
+        font-size: 0.875rem !important;
     }
     
-    /* Typography spacing */
-    .hero-title, h1 {
-        margin-bottom: 1.5rem !important;
-        line-height: 1.2 !important;
-    }
-    
-    .hero-description, p {
-        margin-bottom: 1.5rem !important;
-        line-height: 1.6 !important;
-        padding-right: 1rem !important;
-    }
-    
-    /* Event cards in sidebar */
+    /* Event cards in sidebar - compact */
     .event-card {
-        padding: 1.5rem !important;
-        margin-bottom: 1.25rem !important;
+        padding: 0.75rem !important;
+        margin-bottom: 0.5rem !important;
     }
     
     /* Progress indicators */
