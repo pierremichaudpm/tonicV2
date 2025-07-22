@@ -364,7 +364,15 @@
             }), [currentView]);
 
             return (
-                <header className="fixed top-0 left-0 right-0 z-50" style={headerStyle}>
+                <header className="fixed top-0 left-0 right-0 z-50" 
+                       style={{
+                           ...headerStyle,
+                           display: 'block',
+                           visibility: 'visible',
+                           opacity: '1',
+                           position: 'fixed',
+                           zIndex: '9999'
+                       }}>
                     <div className="container mx-auto px-2 py-2 sm:px-4 sm:py-5">
                         <div className="flex items-center justify-between">
                             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-0 sm:gap-4">
