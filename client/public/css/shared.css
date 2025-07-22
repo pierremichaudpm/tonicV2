@@ -215,3 +215,53 @@ header {
     right: 0 !important;
     z-index: 9999 !important;
 }
+
+/* Mobile menu styles */
+.mobile-menu {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(10px);
+    z-index: 9998;
+    padding-top: 100px; /* Account for header height */
+}
+
+.mobile-menu.active {
+    display: block;
+}
+
+.mobile-menu .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    color: white;
+    text-decoration: none;
+    border-radius: 0.5rem;
+    transition: background-color 0.2s ease;
+}
+
+.mobile-menu .nav-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.mobile-menu .nav-item.active {
+    background: rgba(254, 68, 69, 0.2);
+    border: 1px solid rgba(254, 68, 69, 0.3);
+}
+
+.mobile-menu .nav-item svg {
+    width: 1rem;
+    height: 1rem;
+    stroke: white;
+    fill: none;
+}
+
+.mobile-menu .nav-item.active svg {
+    fill: white;
+    stroke: white;
+}
