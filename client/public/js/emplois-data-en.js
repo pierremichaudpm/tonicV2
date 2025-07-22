@@ -5,7 +5,7 @@
 
 const jobListings = [
     {
-        id: 1,
+        id: 101,
         datePosted: "2025-07-22",
         title: "Senior Executive Assistant",
         department: "Administration",
@@ -52,7 +52,7 @@ const jobListings = [
         deadline: "July 28, 2025"
     },
     {
-        id: 2,
+        id: 102,
         datePosted: "2025-07-22",
         title: "Event Coordinator - DOCK619",
         department: "Events",
@@ -102,7 +102,7 @@ const jobListings = [
         applyEmail: "rh@gpcqm.ca"
     },
     {
-        id: 3,
+        id: 103,
         datePosted: "2025-07-22",
         title: "Dishwasher",
         department: "Kitchen",
@@ -148,7 +148,7 @@ const jobListings = [
         applyEmail: "rh@gpcqm.ca"
     },
     {
-        id: 4,
+        id: 1,
         datePosted: "2024-11-20",
         title: "Operations Coordinator - Beach Pro Tour",
         department: "Events",

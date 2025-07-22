@@ -5,7 +5,7 @@
 
 const jobListings = [
     {
-        id: 1,
+        id: 101,
         datePosted: "2025-07-22",
         title: "Adjoint(e) senior à la Direction",
         department: "Administration",
@@ -52,7 +52,7 @@ const jobListings = [
         deadline: "28 juillet 2025"
     },
     {
-        id: 2,
+        id: 102,
         datePosted: "2025-07-22",
         title: "Coordonnateur, Événements – DOCK619",
         department: "Événements",
@@ -102,7 +102,7 @@ const jobListings = [
         applyEmail: "rh@gpcqm.ca"
     },
     {
-        id: 3,
+        id: 103,
         datePosted: "2025-07-22",
         title: "Plongeur",
         department: "Cuisine",
@@ -148,7 +148,7 @@ const jobListings = [
         applyEmail: "rh@gpcqm.ca"
     },
     {
-        id: 4,
+        id: 1,
         datePosted: "2024-11-20",
         title: "Coordonnateur(trice) aux opérations - Beach Pro Tour",
         department: "Événements",
