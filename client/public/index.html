@@ -45,7 +45,7 @@
         /* Grid - Updated 2:34 AM for MUCH darker backgrounds */
         .grid-selection-container{position:fixed;inset:0;z-index:90;background:#000;display:flex;flex-direction:column;height:100vh;height:100dvh;overflow:hidden}
         .grid-selection-container header{flex-shrink:0;height:65px}
-        .grid-wrapper{flex:1;padding:calc(80px + max(2rem,2.5vh)) max(1.5rem,3vw) max(1rem,1.5vh);display:flex;align-items:center;justify-content:center;min-height:0;overflow:hidden}
+        .grid-wrapper{flex:1;padding:calc(80px + max(2.5rem,3vh)) max(1.5rem,3vw) max(1rem,1.5vh);display:flex;align-items:center;justify-content:center;min-height:0;overflow:hidden}
         .selection-grid{display:grid;gap:12px;width:100%;height:100%;max-width:min(1190px,90vw);max-height:min(85%,85vh);margin:auto}
         .selection-tile{position:relative;width:100%;height:100%;min-height:0;border-radius:12px;overflow:hidden;cursor:pointer;transition:all .3s ease;animation:scaleIn .5s ease-out forwards;animation-delay:calc(var(--index) * .05s);opacity:0;box-shadow:0 4px 15px rgba(0,0,0,.3)}
         .selection-tile:hover{transform:scale(1.02);z-index:10;box-shadow:0 10px 30px rgba(0,0,0,.5)}
@@ -174,7 +174,7 @@
         @media(max-width:768px){
             .mobile-dots{display:flex}
             .desktop-progress{display:none!important}
-            .hero-main-content{padding-top:max(7.5rem,env(safe-area-inset-top) + 6.5rem);padding-bottom:max(6rem,env(safe-area-inset-bottom) + 4rem);min-height:100vh;min-height:-webkit-fill-available;min-height:100dvh}
+            .hero-main-content{padding-top:max(8rem,env(safe-area-inset-top) + 7rem);padding-bottom:max(6rem,env(safe-area-inset-bottom) + 4rem);min-height:100vh;min-height:-webkit-fill-available;min-height:100dvh}
             .hero-content{max-width:100%;overflow-x:hidden}
             @media(max-height:700px) and (max-width:400px){
                 .hero-content h2{font-size:1.75rem!important}
@@ -943,7 +943,7 @@
                                                     {Object.entries(state.timeLeft[currentProperty.id]).map(([unit,value])=>(
                                                         <div key={unit} className="countdown-unit">
                                                             <div className="text-xl sm:text-2xl font-bold text-white">{value}</div>
-                                                            <div className="text-xs uppercase text-white/70">{unit}</div>
+                                                            <div className="text-xs uppercase text-white">{unit}</div>
                                                         </div>
                                                     ))}
                                                 </div>
