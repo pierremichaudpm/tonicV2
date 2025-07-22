@@ -207,27 +207,11 @@
     .selection-tile { height: 100px !important; padding: 0.5rem !important; font-size: 0.8rem !important; }
 }
 
-/* Force header visibility in all views */
-header,
-header *,
-.grid-selection-container header,
-.grid-selection-container header * {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-}
-
+/* Clean header styles */
 header {
     position: fixed !important;
     top: 0 !important;
     left: 0 !important;
     right: 0 !important;
     z-index: 9999 !important;
-    background: rgba(0,0,0,0.95) !important;
-}
-
-/* Override any grid-specific header styles */
-.grid-selection-container header {
-    height: auto !important;
-    flex-shrink: 0;
 }
