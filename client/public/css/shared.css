@@ -336,11 +336,22 @@
         padding: 0.25rem !important;
     }
     
-    /* Simple header fix */
-    header {
+    /* Force header to always show */
+    * header,
+    * header * {
         display: block !important;
+        visibility: visible !important;
         opacity: 1 !important;
-        z-index: 999 !important;
+    }
+    
+    header {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        z-index: 9999 !important;
+        background: rgba(0,0,0,0.8) !important;
+        backdrop-filter: blur(10px) !important;
     }
     
     /* Tablet header sizing */
