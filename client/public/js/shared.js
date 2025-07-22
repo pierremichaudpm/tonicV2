@@ -13,12 +13,9 @@ const Icons = {
 
 // Toggle Mobile Menu
 function toggleMobileMenu() {
-    console.log('toggleMobileMenu called');
     const mobileMenu = document.getElementById('mobileMenu');
-    console.log('mobileMenu element:', mobileMenu);
     if (mobileMenu) {
         mobileMenu.classList.toggle('active');
-        console.log('mobileMenu classes after toggle:', mobileMenu.className);
     }
 }
 
@@ -59,9 +56,8 @@ function formatDate(dateString) {
 
 // Initialize shared components
 document.addEventListener('DOMContentLoaded', function() {
-    // Track page load time for performance
+    // Track page load time for performance (production ready)
     const loadTime = performance.now();
-    console.log('Temps de chargement de la page:', Math.round(loadTime) + 'ms');
     
     // Close mobile menu when clicking outside
     document.addEventListener('click', function(event) {
