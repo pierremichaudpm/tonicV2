@@ -2,71 +2,196 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us - Tonic</title>
-    <meta name="description" content="Contact the Tonic team for more information.">
-    <link rel="stylesheet" href="./css/shared.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Contact - Tonic</title>
+    <meta name="description" content="Get in touch with Tonic for your event and production needs.">
+    <link rel="stylesheet" href="css/shared.css">
+    <link rel="preload" href="https://fonts.cbc.ca/fonts/CBCSans-Bold.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preconnect" href="https://fonts.cbc.ca">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @font-face{font-family:'CBC Sans';font-weight:400;font-display:swap;src:url('https://fonts.cbc.ca/fonts/CBCSans-Regular.woff2') format('woff2')}
+        @font-face{font-family:'CBC Sans';font-weight:700;font-display:swap;src:url('https://fonts.cbc.ca/fonts/CBCSans-Bold.woff2') format('woff2')}
+        @font-face{font-family:'CBC Sans';font-weight:900;font-display:swap;src:url('https://fonts.cbc.ca/fonts/CBCSans-Black.woff2') format('woff2')}
+        *{font-family:'CBC Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+        body{margin:0;background:#000;overflow-x:hidden;min-height:100vh;min-height:100dvh}
+        .header-logo{cursor:pointer;transition:transform .2s ease}
+        .header-logo:hover{transform:scale(1.05)}
+        .form-card{background:linear-gradient(135deg,rgba(255,255,255,0.08),rgba(255,255,255,0.02));backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);transition:all 0.3s ease}
+        .form-card:hover{border-color:rgba(255,255,255,0.2);box-shadow:0 20px 40px rgba(0,0,0,0.3)}
+        .form-input{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:white;transition:all 0.3s ease}
+        .form-input:focus{background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.3);outline:none;box-shadow:0 0 0 3px rgba(255,255,255,0.1)}
+        .form-input::placeholder{color:rgba(255,255,255,0.5)}
+        .contact-info-card{background:linear-gradient(135deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02));backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);transition:all 0.3s ease}
+        .contact-info-card:hover{transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,0,0,0.3);border-color:rgba(255,255,255,0.2)}
+        .hero-bg{background:linear-gradient(135deg,#1a1a1a 0%,#0a0a0a 100%)}
+        .btn-primary{background:linear-gradient(135deg,#ef4444,#dc2626);border:none;color:white;transition:all 0.3s ease}
+        .btn-primary:hover{background:linear-gradient(135deg,#dc2626,#b91c1c);transform:translateY(-2px);box-shadow:0 10px 25px rgba(239,68,68,0.4)}
+        @media(max-width:768px){.contact-grid{grid-template-columns:1fr}}
+    </style>
 </head>
-<body>
-    <header>
-        <nav>
-            <div class="logo">
-                <img src="./images/tonic-productions-hero.jpg" alt="Tonic Logo">
+<body class="bg-black text-white">
+    <!-- Header -->
+    <header class="header-main fixed top-0 left-0 right-0 z-50">
+        <div class="container mx-auto px-4 py-5">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <a href="index-en.html" class="header-logo text-4xl md:text-5xl font-black text-white">TONIC</a>
+                    <span class="hidden sm:inline text-white/70 text-sm">| Creator of memorable experiences</span>
+                </div>
+                <nav class="hidden md:flex items-center nav-container">
+                    <a href="index-en.html" class="nav-item">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                        <span>Home</span>
+                    </a>
+                    <a href="about.html" class="nav-item">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                        <span>About</span>
+                    </a>
+                    <a href="emplois-en.html" class="nav-item">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                        <span>Jobs</span>
+                    </a>
+                    <a href="communiques-en.html" class="nav-item">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M10 6h8"/><path d="M10 10h8"/><path d="M10 14h4"/></svg>
+                        <span>News</span>
+                    </a>
+                    <a href="nous-joindre-en.html" class="nav-item active">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                        <span>Contact</span>
+                    </a>
+                    <div class="lang-divider"></div>
+                    <a href="nous-joindre.html" class="lang-switcher">
+                        <span>FR</span>
+                    </a>
+                </nav>
             </div>
-            <ul class="nav-links">
-                <li><a href="/en">Home</a></li>
-                <li><a href="/about">About</a></li>
-                <li><a href="/communiques-en">Press Releases</a></li>
-                <li><a href="/emplois-en">Jobs</a></li>
-                <li><a href="/nous-joindre-en" class="active">Contact Us</a></li>
-                <li><a href="/nous-joindre">Français</a></li>
-            </ul>
-        </nav>
+        </div>
     </header>
 
-    <main>
-        <section class="page-header">
-            <h1>Contact Us</h1>
-        </section>
+    <!-- Main Content -->
+    <main class="pt-32 pb-20 px-4">
+        <div class="container mx-auto max-w-6xl">
+            <!-- Hero Section -->
+            <div class="text-center mb-16">
+                <h1 class="text-5xl md:text-6xl lg:text-7xl font-black text-white mb-6">
+                    Contact Us
+                </h1>
+                <p class="text-xl md:text-2xl text-white/80 max-w-3xl mx-auto leading-relaxed">
+                    Ready to create unforgettable experiences? Get in touch with our team today.
+                </p>
+            </div>
 
-        <section class="content">
-            <div class="container">
-                <div class="contact-info">
-                    <h2>Contact Information</h2>
-                    <p><strong>Email:</strong> info@tonic.com</p>
-                    <p><strong>Phone:</strong> +1 (555) 123-4567</p>
-                    <p><strong>Address:</strong> 123 Main Street, City, QC H1A 1A1</p>
-                </div>
-
-                <div class="contact-form">
-                    <h2>Send us a Message</h2>
-                    <form>
-                        <div class="form-group">
-                            <label for="name">Name:</label>
-                            <input type="text" id="name" name="name" required>
+            <!-- Contact Grid -->
+            <div class="grid lg:grid-cols-2 gap-12 contact-grid">
+                <!-- Contact Form -->
+                <div class="form-card rounded-2xl p-8">
+                    <h2 class="text-3xl font-bold text-white mb-6">Send us a message</h2>
+                    <form onsubmit="handleFormSubmit(event)" class="space-y-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="name" class="block text-sm font-medium text-white/80 mb-2">Full Name</label>
+                                <input type="text" id="name" name="name" required
+                                       class="form-input w-full px-4 py-3 rounded-lg"
+                                       placeholder="Your full name">
+                            </div>
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-white/80 mb-2">Email</label>
+                                <input type="email" id="email" name="email" required
+                                       class="form-input w-full px-4 py-3 rounded-lg"
+                                       placeholder="your.email@example.com">
+                            </div>
                         </div>
-                        
-                        <div class="form-group">
-                            <label for="email">Email:</label>
-                            <input type="email" id="email" name="email" required>
+                        <div>
+                            <label for="subject" class="block text-sm font-medium text-white/80 mb-2">Subject</label>
+                            <input type="text" id="subject" name="subject" required
+                                   class="form-input w-full px-4 py-3 rounded-lg"
+                                   placeholder="What is this regarding?">
                         </div>
-                        
-                        <div class="form-group">
-                            <label for="message">Message:</label>
-                            <textarea id="message" name="message" rows="5" required></textarea>
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-white/80 mb-2">Message</label>
+                            <textarea id="message" name="message" rows="6" required
+                                      class="form-input w-full px-4 py-3 rounded-lg resize-none"
+                                      placeholder="Tell us about your project or inquiry..."></textarea>
                         </div>
-                        
-                        <button type="submit" class="btn">Send</button>
+                        <button type="submit" class="btn-primary w-full py-4 px-6 rounded-lg font-bold text-lg">
+                            Send Message
+                        </button>
                     </form>
                 </div>
+
+                <!-- Contact Information -->
+                <div class="space-y-6">
+                    <div class="contact-info-card rounded-2xl p-8">
+                        <h3 class="text-2xl font-bold text-white mb-4">Get in Touch</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-start gap-3">
+                                <svg class="w-6 h-6 text-red-500 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+                                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+                                </svg>
+                                <div>
+                                    <h4 class="font-semibold text-white">Email</h4>
+                                    <p class="text-white/70">info@groupetonic.ca</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <svg class="w-6 h-6 text-red-500 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                                </svg>
+                                <div>
+                                    <h4 class="font-semibold text-white">Address</h4>
+                                    <p class="text-white/70">Montreal, Quebec<br/>Canada</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contact-info-card rounded-2xl p-8">
+                        <h3 class="text-2xl font-bold text-white mb-4">Our Services</h3>
+                        <ul class="space-y-2 text-white/80">
+                            <li class="flex items-center gap-2">
+                                <svg class="w-4 h-4 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                International Sporting Events
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <svg class="w-4 h-4 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                Video Production Services
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <svg class="w-4 h-4 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                Event Venue Rental
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <svg class="w-4 h-4 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                Brand Content Creation
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-        </section>
+        </div>
     </main>
 
-    <footer>
-        <p>&copy; 2025 Tonic. All rights reserved.</p>
+    <!-- Footer -->
+    <footer class="bg-gray-900/50 backdrop-blur-md border-t border-white/10 py-12">
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex items-center justify-center gap-4 mb-4">
+                <span class="text-3xl font-black text-white">TONIC</span>
+                <span class="text-white/70">| Creator of memorable experiences</span>
+            </div>
+            <p class="text-white/60">&copy; 2025 Groupe Tonic. All rights reserved.</p>
+        </div>
     </footer>
 
-    <script src="./js/shared.js"></script>
+    <script src="js/shared.js"></script>
 </body>
 </html>
