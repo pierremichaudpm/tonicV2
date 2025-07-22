@@ -192,3 +192,11 @@ The website is now fully operational and matches the original local/Netlify func
 - **Further enhanced header padding**: Increased to py-12 (3rem) on static pages and 2.5rem grid padding for maximum visual prominence
 - **Hero view extra padding**: Boosted mobile hero padding from 6rem to 7.5rem for significantly more logo breathing room
 - **Logo file**: `images/tonic-logo.png` (processed from user attachment)
+
+### Spacing & Visual Refinements - July 22, 2025
+- **Grid spacing optimization**: Reduced desktop grid padding from 2.5rem/3vh to final 0.8rem/1vh for better balance
+- **Static page padding reduction**: Decreased from py-12 to py-8 for more reasonable spacing
+- **Hero view mobile padding**: Enhanced to 8rem padding-top for improved visual hierarchy
+- **Complete tagline brightness fix**: Removed all text-white opacity variants (70%, 80%, 90%, etc.) across entire website
+- **Comprehensive opacity cleanup**: All header taglines now bright white instead of greyish appearance
+- **Visual balance achieved**: Grid spacing now properly balanced between header and lower page content
