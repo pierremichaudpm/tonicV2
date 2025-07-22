@@ -295,7 +295,7 @@
         // Properties data
         const PROPERTIES = [
             {id:4,name:"BEACH PRO TOUR",tagline:"L'élite mondiale du volleyball de plage",category:"CIRCUIT INTERNATIONAL",date:"13-17 août 2025",location:"Montréal",color:"#ff0e9b",image:"images/beach-pro-tour-hero.webp",logo:"images/beach-pro-tour-logo.png",url:"https://mtlbeachprotour.com/",countdown:new Date('2025-08-13'),theme:{primary:"from-pink-600 to-pink-500",secondary:"from-pink-900 to-pink-700"}},
-            {id:2,name:"GRANDS PRIX CYCLISTES",tagline:"Les seules épreuves UCI WorldTour en Amérique",category:"CYCLISME INTERNATIONAL",date:"12 & 14 septembre 2025",location:"Québec & Montréal",color:"#b7d233",image:"images/grands-prix-cyclistes-hero.jpg",logo:"images/GPCQM_logo.png",url:"https://gpcqm.ca/",countdown:new Date('2025-09-12'),theme:{primary:"from-lime-600 to-lime-500",secondary:"from-lime-900 to-lime-700"}},
+            {id:2,name:"GRANDS PRIX CYCLISTES",tagline:"Les seules épreuves UCI WorldTour en Amérique",category:"CYCLISME INTERNATIONAL",date:"12 & 14 septembre 2025",location:"Québec & Montréal",color:"#b7d233",image:"images/grands-prix-cyclistes-hero.jpg",logo:"images/GPCQM-logo.png",url:"https://gpcqm.ca/",countdown:new Date('2025-09-12'),theme:{primary:"from-lime-600 to-lime-500",secondary:"from-lime-900 to-lime-700"}},
             {id:1,name:"MARATHON BENEVA DE MONTRÉAL",tagline:"Vivez-le!",category:"COURSE À PIED",date:"19-21 septembre 2025",location:"Montréal, QC",color:"#463092",menuColor:"#957ab7",image:"images/marathon-beneva-hero.jpg",logo:"images/marathon-beneva-logo.png",url:"https://couronsmtl.com/marathon-beneva/accueil/",countdown:new Date('2025-09-19'),theme:{primary:"from-indigo-700 to-indigo-600",secondary:"from-indigo-900 to-indigo-800"}},
             {id:5,name:"21K DE MONTRÉAL",tagline:"Démarrez en grand votre saison de course",category:"COURSE À PIED",date:"Avril 2026",location:"Montréal",color:"#e2493c",image:"images/21k-hero.jpg",logo:"images/21k-logo.png",url:"https://couronsmtl.com/21k/accueil/",countdown:new Date('2026-04-01'),theme:{primary:"from-red-500 to-red-400",secondary:"from-red-800 to-red-700"}},
             {id:3,name:"CHAMPIONNATS DU MONDE ROUTE UCI MONTRÉAL 2026",tagline:"Montréal, capitale mondiale du vélo",category:"MONDIAUX",date:"19-27 septembre 2026",location:"Montréal, QC",color:"#da273b",image:"images/montreal-2026-uci-hero.jpg",logo:"images/montreal-2026-uci-logo.png",url:"https://www.montreal2026.org/",countdown:new Date('2026-09-19'),theme:{primary:"from-red-700 to-red-600",secondary:"from-red-900 to-red-800"}},
@@ -365,7 +365,7 @@
                 if(property.id===7) return (
                     <div className="dock619-grid-content">
                         <div className="dock619-grid-top" style={{marginLeft:'-0.5rem',marginTop:'1rem'}}>
-                            <img src="images/dock619-logo_2.png" alt="DOCK 619" className="h-3.5 sm:h-4 md:h-5 object-contain" 
+                            <img src="images/dock619-logo-2.png" alt="DOCK 619" className="h-3.5 sm:h-4 md:h-5 object-contain" 
                                 style={{filter:'drop-shadow(0 2px 8px rgba(0,0,0,0.9))',maxWidth:'100%',transform:'scale(0.77)'}} loading="lazy"/>
                         </div>
                         <div style={{minHeight:'3.5rem',display:'flex',alignItems:'flex-end',paddingBottom:'0.25rem'}}>
@@ -885,7 +885,7 @@
                                             {/* Title */}
                                             {currentProperty.id===7?(
                                                 <div className="hero-logo-container mb-4 sm:mb-6" style={{'--child-index':1}}>
-                                                    <img src="images/dock619-logo_2.png" alt="DOCK 619" className="sm:h-14 md:h-16 lg:h-20 xl:h-24 object-contain"
+                                                    <img src="images/dock619-logo-2.png" alt="DOCK 619" className="sm:h-14 md:h-16 lg:h-20 xl:h-24 object-contain"
                                                         style={{filter:'drop-shadow(0 4px 20px rgba(0,0,0,0.8))',height:state.isMobileView?'auto':undefined,
                                                         maxHeight:state.isMobileView?'4rem':undefined,transform:`scale(${getLogoScale(currentProperty,state.isMobileView)})`,
                                                         transformOrigin:'left center'}} loading="lazy"/>
