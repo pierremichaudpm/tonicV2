@@ -357,7 +357,7 @@
                                 </span>
                             </div>
                             <div className="flex items-center gap-4">
-                                <nav className="hidden md:flex items-center gap-0.5 px-2 py-0.5 rounded-full" style={{background:'rgba(0,0,0,0.2)',backdropFilter:'blur(10px)'}}>
+                                <nav className="hidden lg:flex items-center gap-0.5 px-2 py-0.5 rounded-full" style={{background:'rgba(0,0,0,0.2)',backdropFilter:'blur(10px)'}}>
                                     {navItems.map(i => (
                                         <a key={i.label} onClick={i.onClick} href={i.href} className="flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-white/10 transition-all text-white hover:text-white cursor-pointer">
                                             {i.icon}
@@ -367,7 +367,7 @@
                                     <div className="lang-divider"></div>
                                     <a href="index-en.html" className="lang-switcher"><span>EN</span></a>
                                 </nav>
-                                <button onClick={()=>setIsMobileMenuOpen(!isMobileMenuOpen)} className="md:hidden p-2 hover:bg-white/10 rounded-lg transition-colors text-white" style={{background:'rgba(0,0,0,0.2)',backdropFilter:'blur(10px)',color:'white'}}>
+                                <button onClick={()=>setIsMobileMenuOpen(!isMobileMenuOpen)} className="lg:hidden p-2 hover:bg-white/10 rounded-lg transition-colors text-white" style={{background:'rgba(0,0,0,0.2)',backdropFilter:'blur(10px)',color:'white'}}>
                                     <div style={{color:'white'}}>{isMobileMenuOpen?Icons.x:Icons.menu}</div>
                                 </button>
                             </div>
@@ -427,7 +427,7 @@
         const MobileMenu = memo(({isOpen,navItems,currentView}) => {
             if(!isOpen) return null;
             return (
-                <div className="md:hidden fixed inset-0 z-40 bg-black/95 backdrop-blur-md">
+                <div className="lg:hidden fixed inset-0 z-40 bg-black/95 backdrop-blur-md">
                     <div className="h-full pt-20 pb-6">
                         <div className="container mx-auto px-4 py-4">
                             <div className="space-y-2">
