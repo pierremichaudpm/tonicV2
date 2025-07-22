@@ -797,13 +797,13 @@
                                             <div className="mb-6 pb-6 border-b border-white/10">
                                                 <div className="space-y-2">
                                                     {navItems.map(i=>(
-                                                        <a key={i.label} onClick={i.onClick} href={i.href} className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/10 transition-all cursor-pointer">
-                                                            {i.icon}
+                                                        <a key={i.label} onClick={i.onClick} href={i.href} className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/10 transition-all cursor-pointer text-white">
+                                                            <div style={{color:'white'}}>{i.icon}</div>
                                                             <span className="font-medium text-white">{i.label}</span>
                                                         </a>
                                                     ))}
-                                                    <a href="index-en.html" className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/10 transition-all cursor-pointer">
-                                                        {Icons.lang}
+                                                    <a href="index-en.html" className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/10 transition-all cursor-pointer text-white">
+                                                        <div style={{color:'white'}}>{Icons.lang}</div>
                                                         <span className="font-medium text-white">English</span>
                                                     </a>
                                                 </div>
