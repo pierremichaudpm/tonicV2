@@ -207,33 +207,49 @@
         padding-right: 1.5rem !important;
     }
     
-    /* React Homepage - target by class names directly */
+    /* React Homepage - much smaller elements */
     div[class*="grid-wrapper"] {
-        padding: 0.5rem !important;
+        padding: 0.25rem !important;
     }
     
     div[class*="grid-selection-container"] {
-        padding: 0.5rem !important;
+        padding: 0.25rem !important;
     }
     
     div[class*="selection-grid"] {
-        gap: 0.5rem !important;
-        padding: 0.5rem !important;
+        gap: 0.25rem !important;
+        padding: 0.25rem !important;
     }
     
-    /* Make grid tiles smaller - this should be very visible */
+    /* Make grid tiles much smaller */
     div[class*="selection-tile"] {
-        min-height: 100px !important;
-        max-height: 140px !important;
-        padding: 0.5rem !important;
-        font-size: 0.8rem !important;
+        min-height: 80px !important;
+        max-height: 100px !important;
+        padding: 0.25rem !important;
+        font-size: 0.7rem !important;
     }
     
-    /* Logo sizes in grid */
+    /* Much smaller logos in grid */
     img[class*="selection-tile-logo"], 
     div[class*="grid-content"] img {
-        max-height: 2rem !important;
+        max-height: 1.5rem !important;
         width: auto !important;
+        transform: scale(0.8) !important;
+    }
+    
+    /* Smaller text in tiles */
+    .selection-tile-tagline,
+    div[class*="selection-tile"] p {
+        font-size: 0.65rem !important;
+        line-height: 1.1 !important;
+        margin: 0.125rem 0 !important;
+    }
+    
+    .selection-tile-title,
+    div[class*="selection-tile"] h3 {
+        font-size: 0.7rem !important;
+        line-height: 1.1 !important;
+        margin-bottom: 0.125rem !important;
     }
     
     /* Smaller grid tiles */
@@ -257,54 +273,55 @@
         margin-top: 0.25rem !important;
     }
     
-    /* Side navigation - smaller and more compact */
+    /* Side navigation - much more compact */
     .side-nav-wrapper {
-        padding: 0.75rem 0.5rem !important;
-        gap: 0.5rem !important;
-        right: 1rem !important;
-        max-height: 80vh !important;
+        padding: 0.5rem 0.25rem !important;
+        gap: 0.25rem !important;
+        right: 0.5rem !important;
+        max-height: 70vh !important;
+        width: 180px !important;
     }
     
     .side-nav-item {
-        padding: 0.75rem !important;
-        margin-bottom: 0.5rem !important;
-        border-radius: 0.5rem !important;
-        font-size: 0.8rem !important;
+        padding: 0.5rem !important;
+        margin-bottom: 0.25rem !important;
+        border-radius: 0.25rem !important;
+        font-size: 0.65rem !important;
         min-height: auto !important;
     }
     
     .side-nav-item .event-title {
-        font-size: 0.75rem !important;
-        line-height: 1.2 !important;
-        margin-bottom: 0.25rem !important;
+        font-size: 0.6rem !important;
+        line-height: 1.1 !important;
+        margin-bottom: 0.125rem !important;
     }
     
     .side-nav-item .event-date {
-        font-size: 0.65rem !important;
+        font-size: 0.55rem !important;
     }
     
-    /* Hero view content - more compact */
+    /* Hero view content - much more compact */
     .hero-property {
-        padding: 1rem !important;
-        margin: 0 0.75rem !important;
+        padding: 0.5rem !important;
+        margin: 0 0.5rem !important;
     }
     
     .hero-property .content-wrapper {
-        padding: 1rem !important;
-        gap: 1rem !important;
+        padding: 0.5rem !important;
+        gap: 0.5rem !important;
     }
     
-    /* Smaller hero titles and text */
+    /* Much smaller hero titles and text */
     .hero-title, .hero-property h1 {
-        font-size: 2.5rem !important;
-        line-height: 1.1 !important;
-        margin-bottom: 0.75rem !important;
+        font-size: 1.8rem !important;
+        line-height: 1.05 !important;
+        margin-bottom: 0.5rem !important;
     }
     
     .hero-description, .hero-property p {
-        font-size: 0.9rem !important;
-        line-height: 1.4 !important;
-        margin-bottom: 1rem !important;
+        font-size: 0.75rem !important;
+        line-height: 1.3 !important;
+        margin-bottom: 0.5rem !important;
     }
     
     /* Header improvements - ensure visibility for React header */
@@ -316,23 +333,35 @@
         z-index: 50 !important;
     }
     
-    /* Container inside React header */
+    /* Container inside React header - much smaller */
     header .container.mx-auto, [class*="container"][class*="mx-auto"] {
-        padding: 0.5rem 1rem !important;
+        padding: 0.25rem 0.5rem !important;
         display: flex !important;
     }
     
-    /* CTA Button - smaller */
-    .cta-button, .hero-cta {
-        margin-top: 1rem !important;
-        padding: 0.75rem 1.5rem !important;
-        font-size: 0.875rem !important;
+    /* Header logo much smaller on tablet */
+    .header-logo img {
+        width: clamp(120px, 25vw, 180px) !important;
+        height: auto !important;
     }
     
-    /* Event cards in sidebar - compact */
+    /* Header tagline much smaller */
+    .header-tagline-grid, .header-tagline-hero {
+        font-size: 0.6rem !important;
+        line-height: 1.1 !important;
+    }
+    
+    /* CTA Button - much smaller */
+    .cta-button, .hero-cta {
+        margin-top: 0.5rem !important;
+        padding: 0.5rem 1rem !important;
+        font-size: 0.75rem !important;
+    }
+    
+    /* Event cards in sidebar - very compact */
     .event-card {
-        padding: 0.75rem !important;
-        margin-bottom: 0.5rem !important;
+        padding: 0.5rem !important;
+        margin-bottom: 0.25rem !important;
     }
     
     /* Progress indicators */

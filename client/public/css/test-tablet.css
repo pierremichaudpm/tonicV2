@@ -1,4 +1,0 @@
-/* TEST - Adding red border to verify CSS is working */ 
-@media only screen and (min-width: 768px) and (max-width: 1023px) {
-  * { border: 1px solid red !important; }
-}
