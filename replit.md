@@ -232,3 +232,11 @@ The website is now fully operational and matches the original local/Netlify func
 - **JavaScript integration**: Mobile menu only shows when `.active` class is added via JavaScript
 - **Cross-browser compatibility**: Fixed mobile menu display across all pages and screen sizes
 - **Navigation consistency**: All responsive breakpoints (md:hidden/md:flex) working correctly across website
+
+### Tagline Consistency - July 22, 2025
+- **Standardized French tagline** across all pages (both French and English versions)
+- **"Créateur d'expériences mémorables"** now appears consistently in all headers
+- **Brand consistency**: French tagline reflects Quebec-based company identity regardless of interface language
+- **Updated all static pages**: About, Jobs, Contact, News, Privacy Policy, Terms of Use
+- **Updated React homepage**: Both French and English versions use French tagline
+- **Mobile layout consistency**: Tagline appears under logo on mobile, beside logo on desktop
