@@ -75,6 +75,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.sendFile(path.join(publicPath, "terms-of-use.html"));
   });
   
+  // CMS access test page
+  app.get("/test-strapi-access.html", (req, res) => {
+    res.sendFile(path.join(process.cwd(), "test-strapi-access.html"));
+  });
+  
+  app.get("/cms-access.html", (req, res) => {
+    res.sendFile(path.join(publicPath, "cms-access.html"));
+  });
+  
   // Handle legacy .html routes for compatibility  
   app.get("/index.html", (req, res) => {
     res.sendFile(path.join(publicPath, "index.html"));
