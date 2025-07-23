@@ -255,3 +255,10 @@ The website is now fully operational and matches the original local/Netlify func
 - **Responsive positioning for Grand Prix Cyclistes**: Applied `clamp(2rem, 4vw, 3rem)` padding for optimal desktop/mobile alignment
 - **Header alignment standardization**: Fixed discrepancy between About pages and other secondary pages using consistent `py-6 sm:py-8` responsive padding
 - **Cross-browser consistency**: All logo enhancements applied to both French and English versions
+
+### Content Refinements - July 23, 2025
+- **About page updates**: Applied comprehensive content updates from provided document including new mission statement, refined statistics (40+ years, 100+ projects, 5 major events, 350K participants)
+- **Timeline restructure**: Removed artificial section breaks, created single continuous timeline from 1978-2025 with proper chronological flow
+- **Timeline entries split**: 2022 now has two entries (Marathon Beneva + UCI Championships), 2025 has three entries (Volleyball Tour + DOCK 619 + Studio 76)
+- **Subtitle removal**: Removed "Un petit retour dans le passé" / "A little trip back in time" subtitles from history sections
+- **Contact form removal**: Removed "Écrivez-nous" / "Write to Us" contact form modules from both French and English contact pages due to no backend infrastructure
