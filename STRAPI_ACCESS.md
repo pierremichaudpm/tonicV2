@@ -2,14 +2,16 @@
 
 ## Step 1: Start Strapi Server
 
+## For Development in Replit:
 Open the Shell terminal in Replit and run:
 
 ```bash
 cd cms
-PORT=1337 npm run develop
+PORT=3001 npm run develop
 ```
 
-This starts the CMS server on port 1337 (to avoid conflicts with your main website on port 5000).
+## For Deployed Site:
+Once deployed, the CMS will be accessible through your deployed URL at `/cms-access.html` which provides direct links to the admin interface.
 
 You'll see output like:
 ```
