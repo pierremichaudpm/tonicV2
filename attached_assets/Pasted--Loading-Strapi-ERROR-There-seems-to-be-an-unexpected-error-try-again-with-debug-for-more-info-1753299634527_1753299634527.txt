@@ -1,0 +1,17 @@
+⠸ Loading Strapi[ERROR]  There seems to be an unexpected error, try again with --debug for more information 
+
+┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                                                                                                                                   │
+│   TypeError: Cannot read properties of undefined (reading 'kind')                                                                 │
+│       at Object.isSingleType (/home/runner/workspace/cms/node_modules/@strapi/utils/dist/content-types.js:95:25)                  │
+│       at Object.createRoutes (/home/runner/workspace/cms/node_modules/@strapi/core/dist/core-api/routes/index.js:6:34)            │
+│       at get routes [as routes] (/home/runner/workspace/cms/node_modules/@strapi/core/dist/factories.js:62:47)                    │
+│       at /home/runner/workspace/cms/node_modules/@strapi/core/dist/services/server/register-routes.js:87:20                       │
+│       at /home/runner/workspace/cms/node_modules/lodash/lodash.js:4967:15                                                         │
+│       at baseForOwn (/home/runner/workspace/cms/node_modules/lodash/lodash.js:3032:24)                                            │
+│       at /home/runner/workspace/cms/node_modules/lodash/lodash.js:4936:18                                                         │
+│       at Function.forEach (/home/runner/workspace/cms/node_modules/lodash/lodash.js:9410:14)                                      │
+│       at registerAPIRoutes (/home/runner/workspace/cms/node_modules/@strapi/core/dist/services/server/register-routes.js:83:11)   │
+│       at registerAllRoutes (/home/runner/workspace/cms/node_modules/@strapi/core/dist/services/server/register-routes.js:23:5)    │
+│                                                                                                                                   │
+└──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────

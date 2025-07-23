@@ -1,11 +1,10 @@
 {
   "kind": "collectionType",
-  "collectionName": "news",
+  "collectionName": "news_articles",
   "info": {
     "singularName": "news-article",
     "pluralName": "news-articles",
-    "displayName": "News",
-    "description": "News articles and press releases"
+    "displayName": "News Article"
   },
   "options": {
     "draftAndPublish": true
@@ -25,25 +24,6 @@
         }
       }
     },
-    "slug": {
-      "type": "uid",
-      "targetField": "title",
-      "required": true,
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "excerpt": {
-      "type": "text",
-      "required": true,
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
     "content": {
       "type": "richtext",
       "required": true,
@@ -53,52 +33,34 @@
         }
       }
     },
-    "featured_image": {
-      "type": "media",
-      "multiple": false,
-      "required": false,
-      "allowedTypes": ["images"],
+    "excerpt": {
+      "type": "text",
       "pluginOptions": {
         "i18n": {
-          "localized": false
-        }
-      }
-    },
-    "category": {
-      "type": "enumeration",
-      "enum": ["press-release", "event", "announcement", "partnership"],
-      "default": "announcement",
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      }
-    },
-    "featured": {
-      "type": "boolean",
-      "default": false,
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
+          "localized": true
         }
       }
     },
     "publish_date": {
       "type": "datetime",
-      "required": true,
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      }
+      "required": true
     },
-    "tags": {
-      "type": "json",
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      }
+    "featured_image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "category": {
+      "type": "enumeration",
+      "enum": [
+        "press-release",
+        "event", 
+        "announcement"
+      ],
+      "default": "announcement"
     }
   }
 }

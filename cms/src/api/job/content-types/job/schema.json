@@ -4,8 +4,7 @@
   "info": {
     "singularName": "job",
     "pluralName": "jobs",
-    "displayName": "Job",
-    "description": "Job postings for the website"
+    "displayName": "Job"
   },
   "options": {
     "draftAndPublish": true
@@ -25,34 +24,6 @@
         }
       }
     },
-    "department": {
-      "type": "string",
-      "required": true,
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      }
-    },
-    "location": {
-      "type": "string",
-      "required": true,
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      }
-    },
-    "type": {
-      "type": "enumeration",
-      "enum": ["full-time", "part-time", "contract", "temporary"],
-      "default": "full-time",
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      }
-    },
     "description": {
       "type": "richtext",
       "required": true,
@@ -62,6 +33,34 @@
         }
       }
     },
+    "department": {
+      "type": "string",
+      "required": true
+    },
+    "location": {
+      "type": "string",
+      "required": true
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "full-time",
+        "part-time",
+        "contract",
+        "internship"
+      ],
+      "default": "full-time"
+    },
+    "salary": {
+      "type": "string"
+    },
+    "deadline": {
+      "type": "date"
+    },
+    "contact_email": {
+      "type": "email",
+      "default": "rh@gpcqm.ca"
+    },
     "requirements": {
       "type": "richtext",
       "pluginOptions": {
@@ -70,49 +69,13 @@
         }
       }
     },
-    "salary": {
-      "type": "string",
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      }
-    },
-    "deadline": {
-      "type": "date",
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      }
-    },
-    "contact_email": {
-      "type": "email",
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      }
-    },
-    "featured": {
-      "type": "boolean",
-      "default": false,
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      }
-    },
     "pdf_attachment": {
       "type": "media",
       "multiple": false,
       "required": false,
-      "allowedTypes": ["files"],
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      }
+      "allowedTypes": [
+        "files"
+      ]
     }
   }
 }
