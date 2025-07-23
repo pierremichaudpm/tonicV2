@@ -103,7 +103,7 @@
         // Check if Strapi is available
         async function checkStrapiStatus() {
             const statusEl = document.getElementById('status');
-            statusEl.textContent = 'Assurez-vous que Strapi fonctionne: cd cms && PORT=3001 npm run develop';
+            statusEl.textContent = 'Assurez-vous que Strapi fonctionne: ./start-cms.sh ou cd cms && NODE_ENV=production PORT=3001 npm run develop';
             statusEl.className = 'text-blue-600 text-sm font-medium';
         }
         
