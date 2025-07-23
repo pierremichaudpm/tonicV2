@@ -14,7 +14,8 @@
         </div>
         
         <div class="space-y-4">
-            <a href="http://localhost:1337/admin" 
+            <a href="#" 
+               id="cms-link"
                target="_blank"
                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition duration-200 block text-center">
                 Ouvrir le CMS Strapi
@@ -42,27 +43,67 @@
     </div>
 
     <script>
+        // Generate Replit CMS URL
+        function generateCMSUrl() {
+            const hostname = window.location.hostname;
+            
+            // If running locally in Replit development
+            if (hostname === 'localhost' || hostname.includes('127.0.0.1')) {
+                return 'http://localhost:1337/admin';
+            }
+            
+            // If deployed on Replit
+            if (hostname.includes('.replit.app') || hostname.includes('.repl.co')) {
+                // Extract the base domain and create port 1337 URL
+                const baseUrl = hostname.replace(/:\d+/, '');
+                return `https://${baseUrl}:1337/admin`;
+            }
+            
+            // Fallback - try direct port access
+            return `${window.location.protocol}//${hostname}:1337/admin`;
+        }
+        
         // Check if Strapi is available
         async function checkStrapiStatus() {
+            const cmsUrl = generateCMSUrl();
+            const statusEl = document.getElementById('status');
+            
             try {
-                const response = await fetch('http://localhost:1337/admin', {mode: 'no-cors'});
-                document.getElementById('status').textContent = 'Strapi est accessible';
-                document.getElementById('status').className = 'text-green-600 text-sm font-medium';
+                // Try to fetch Strapi admin page
+                const response = await fetch(cmsUrl.replace('/admin', '/_health'), {
+                    method: 'GET',
+                    mode: 'no-cors'
+                });
+                
+                statusEl.textContent = 'CMS accessible - Prêt à utiliser';
+                statusEl.className = 'text-green-600 text-sm font-medium';
             } catch (error) {
-                document.getElementById('status').textContent = 'Vérifiez que Strapi fonctionne dans le terminal';
-                document.getElementById('status').className = 'text-orange-600 text-sm font-medium';
+                statusEl.textContent = 'Démarrez Strapi dans le terminal: cd cms && PORT=1337 npm run develop';
+                statusEl.className = 'text-orange-600 text-sm font-medium';
             }
         }
         
-        // Add status indicator
+        // Set up the page
         document.addEventListener('DOMContentLoaded', function() {
+            // Set the CMS link URL
+            const cmsUrl = generateCMSUrl();
+            document.getElementById('cms-link').href = cmsUrl;
+            
+            // Add status indicator
             const statusDiv = document.createElement('div');
             statusDiv.id = 'status';
             statusDiv.className = 'text-gray-500 text-sm text-center mt-2';
-            statusDiv.textContent = 'Vérification du statut...';
+            statusDiv.textContent = 'Vérification du statut du CMS...';
             document.querySelector('.space-y-4').appendChild(statusDiv);
             
-            checkStrapiStatus();
+            // Show the generated URL for debugging
+            const urlDiv = document.createElement('div');
+            urlDiv.className = 'text-xs text-gray-400 text-center mt-1';
+            urlDiv.textContent = `URL: ${cmsUrl}`;
+            document.querySelector('.space-y-4').appendChild(urlDiv);
+            
+            // Check status
+            setTimeout(checkStrapiStatus, 1000);
         });
     </script>
 </body>
