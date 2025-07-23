@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accès CMS | Groupe Tonic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center">
+    <div class="max-w-md w-full bg-white rounded-lg shadow-md p-8">
+        <div class="text-center mb-8">
+            <h1 class="text-2xl font-bold text-gray-900 mb-2">Accès au CMS</h1>
+            <p class="text-gray-600">Cliquez sur le lien ci-dessous pour accéder à l'interface d'administration</p>
+        </div>
+        
+        <div class="space-y-4">
+            <a href="http://localhost:1337/admin" 
+               target="_blank"
+               class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition duration-200 block text-center">
+                Ouvrir le CMS Strapi
+            </a>
+            
+            <div class="text-sm text-gray-500 text-center">
+                <p>Interface entièrement en français</p>
+                <p>Première visite : créez votre compte administrateur</p>
+            </div>
+        </div>
+        
+        <div class="mt-8 p-4 bg-gray-50 rounded-lg">
+            <h3 class="font-medium text-gray-900 mb-2">Instructions :</h3>
+            <ol class="text-sm text-gray-600 space-y-1">
+                <li>1. Assurez-vous que Strapi fonctionne dans le terminal</li>
+                <li>2. Cliquez sur "Ouvrir le CMS Strapi"</li>
+                <li>3. Créez votre compte administrateur</li>
+                <li>4. Commencez à gérer le contenu</li>
+            </ol>
+        </div>
+        
+        <div class="mt-4 text-center">
+            <a href="/" class="text-blue-600 hover:text-blue-800 text-sm">← Retour au site web</a>
+        </div>
+    </div>
+
+    <script>
+        // Check if Strapi is available
+        async function checkStrapiStatus() {
+            try {
+                const response = await fetch('http://localhost:1337/admin', {mode: 'no-cors'});
+                document.getElementById('status').textContent = 'Strapi est accessible';
+                document.getElementById('status').className = 'text-green-600 text-sm font-medium';
+            } catch (error) {
+                document.getElementById('status').textContent = 'Vérifiez que Strapi fonctionne dans le terminal';
+                document.getElementById('status').className = 'text-orange-600 text-sm font-medium';
+            }
+        }
+        
+        // Add status indicator
+        document.addEventListener('DOMContentLoaded', function() {
+            const statusDiv = document.createElement('div');
+            statusDiv.id = 'status';
+            statusDiv.className = 'text-gray-500 text-sm text-center mt-2';
+            statusDiv.textContent = 'Vérification du statut...';
+            document.querySelector('.space-y-4').appendChild(statusDiv);
+            
+            checkStrapiStatus();
+        });
+    </script>
+</body>
+</html>
