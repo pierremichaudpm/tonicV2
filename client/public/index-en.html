@@ -843,7 +843,10 @@
                                     opacity: state.isTransitioning ? .7 : 1,
                                     transition: 'opacity 0.5s ease-in-out'
                                 }} />
-
+                                <div className={`absolute inset-0 bg-gradient-to-r ${currentProperty.theme.primary} opacity-50`} style={{
+                                    opacity: state.isTransitioning ? .3 : .5,
+                                    transition: 'opacity 0.5s ease-in-out'
+                                }} />
                                 <div className={`absolute inset-0 bg-gradient-to-br ${currentProperty.theme.secondary} opacity-25`} />
                                 <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/70" />
                                 {state.currentView === VIEWS.HERO && !state.isMobileView && (
