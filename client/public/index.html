@@ -214,7 +214,9 @@
             @media(max-width:768px){
                 header{padding-top:env(safe-area-inset-top)}
                 .hero-content{max-height:calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 8rem)}
-                .grid-wrapper{height:calc(100vh - 65px - env(safe-area-inset-top));padding-top:calc(65px + 2rem)}
+            }
+            @media(max-width:768px) and (min-width:480px){
+                .grid-wrapper{height:calc(100vh - 80px - env(safe-area-inset-top));padding-top:calc(80px + 2rem)}
             }
         }
         @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
