@@ -2,8 +2,8 @@
   "kind": "collectionType",
   "collectionName": "news",
   "info": {
-    "singularName": "news",
-    "pluralName": "news",
+    "singularName": "news-article",
+    "pluralName": "news-articles",
     "displayName": "News",
     "description": "News articles and press releases"
   },
