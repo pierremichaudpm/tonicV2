@@ -10,28 +10,70 @@
 
 /* Override the problematic 7-column layout for 4K screens */
 @media (min-width: 3000px) and (min-height: 1200px) {
-    /* Grid: Cap at 4 columns for better readability */
+    /* Grid: 2x3 layout as shown in screenshot */
     .selection-grid {
-        grid-template-columns: repeat(4, 1fr) !important;
-        grid-template-rows: repeat(2, 1fr) !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        grid-template-rows: repeat(3, 1fr) !important;
         grid-auto-flow: row !important;
-        gap: 2rem !important; /* Larger gaps for 4K */
+        gap: 1.5rem !important; /* Moderate gaps for 4K */
+        grid-template-areas: 
+            "a b c"
+            "d e f"
+            "g . ." !important;
     }
+    
+    /* Assign grid areas to match the layout */
+    .selection-tile:nth-child(1) { grid-area: a !important; }
+    .selection-tile:nth-child(2) { grid-area: b !important; }
+    .selection-tile:nth-child(3) { grid-area: c !important; }
+    .selection-tile:nth-child(4) { grid-area: d !important; }
+    .selection-tile:nth-child(5) { grid-area: e !important; }
+    .selection-tile:nth-child(6) { grid-area: f !important; }
+    .selection-tile:nth-child(7) { grid-area: g !important; }
     
     /* Make tiles bigger with better spacing */
     .selection-tile {
-        min-height: 300px !important;
+        min-height: 400px !important;
         grid-column: auto !important;
         grid-row: auto !important;
     }
     
-    /* Scale up text in grid tiles */
-    .selection-tile h3 {
-        font-size: clamp(1.5rem, 2vw, 2.5rem) !important;
+    /* Scale up text in grid tiles for 4K */
+    .selection-tile-title {
+        font-size: clamp(1.75rem, 2.5vw, 2.75rem) !important;
+        line-height: 1.1 !important;
+        margin-bottom: 0.5rem !important;
     }
     
-    .selection-tile .tile-category {
-        font-size: clamp(0.875rem, 1vw, 1.25rem) !important;
+    .selection-tile-date {
+        font-size: clamp(1rem, 1.25vw, 1.5rem) !important;
+        opacity: 0.9 !important;
+    }
+    
+    .selection-tile-tagline {
+        font-size: clamp(1.125rem, 1.5vw, 1.75rem) !important;
+        line-height: 1.2 !important;
+    }
+    
+    /* Larger logos in tiles */
+    .selection-tile-logo {
+        max-height: clamp(60px, 8vh, 100px) !important;
+        max-width: clamp(120px, 20vw, 200px) !important;
+    }
+    
+    /* Better content spacing */
+    .selection-tile-overlay {
+        padding: clamp(1.5rem, 3vw, 2.5rem) !important;
+    }
+    
+    /* Make the entire grid take up more screen space */
+    .grid-wrapper {
+        padding: 2rem 3rem !important;
+    }
+    
+    .selection-grid {
+        max-width: 90vw !important;
+        max-height: 85vh !important;
     }
     
     /* Hero view improvements */
