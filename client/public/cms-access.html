@@ -14,12 +14,25 @@
         </div>
         
         <div class="space-y-4">
-            <a href="#" 
-               id="cms-link"
-               target="_blank"
-               class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition duration-200 block text-center">
-                Ouvrir le CMS Strapi
-            </a>
+            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
+                <h3 class="font-medium text-yellow-800 mb-2">Instructions pour accéder au CMS :</h3>
+                <ol class="text-sm text-yellow-700 space-y-1">
+                    <li>1. Ouvrez une nouvelle fenêtre/onglet dans votre navigateur</li>
+                    <li>2. Dans la barre d'adresse, tapez exactement :</li>
+                    <li class="font-mono bg-yellow-100 px-2 py-1 rounded text-xs break-all">
+                        https://workspace--1337.prod1a.defang.dev/admin
+                    </li>
+                    <li>3. Ou essayez cette alternative :</li>
+                    <li class="font-mono bg-yellow-100 px-2 py-1 rounded text-xs break-all">
+                        https://1337-workspace-pmicho.replit.app/admin
+                    </li>
+                </ol>
+            </div>
+            
+            <button onclick="copyToClipboard()" 
+               class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition duration-200">
+                Copier l'URL du CMS
+            </button>
             
             <div class="text-sm text-gray-500 text-center">
                 <p>Interface entièrement en français</p>
@@ -62,24 +75,36 @@
             return replitUrls[0]; // Start with localhost
         }
         
+        // Copy CMS URL to clipboard
+        function copyToClipboard() {
+            const urls = [
+                'https://workspace--1337.prod1a.defang.dev/admin',
+                'https://1337-workspace-pmicho.replit.app/admin'
+            ];
+            
+            const textToCopy = urls.join('\n');
+            
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    alert('URLs copiées! Collez dans une nouvelle fenêtre de navigateur.');
+                });
+            } else {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = textToCopy;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                alert('URLs copiées! Collez dans une nouvelle fenêtre de navigateur.');
+            }
+        }
+        
         // Check if Strapi is available
         async function checkStrapiStatus() {
-            const cmsUrl = generateCMSUrl();
             const statusEl = document.getElementById('status');
-            
-            try {
-                // Try to fetch Strapi admin page
-                const response = await fetch(cmsUrl.replace('/admin', '/_health'), {
-                    method: 'GET',
-                    mode: 'no-cors'
-                });
-                
-                statusEl.textContent = 'CMS accessible - Prêt à utiliser';
-                statusEl.className = 'text-green-600 text-sm font-medium';
-            } catch (error) {
-                statusEl.textContent = 'Démarrez Strapi dans le terminal: cd cms && PORT=1337 npm run develop';
-                statusEl.className = 'text-orange-600 text-sm font-medium';
-            }
+            statusEl.textContent = 'Assurez-vous que Strapi fonctionne: cd cms && PORT=1337 npm run develop';
+            statusEl.className = 'text-blue-600 text-sm font-medium';
         }
         
         // Set up the page
