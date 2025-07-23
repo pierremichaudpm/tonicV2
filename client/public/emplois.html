@@ -354,6 +354,7 @@
     
     <!-- Load job data -->
     <script src="js/emplois-data.js"></script>
+    <script src="js/strapi-api.js"></script>
     
     <!-- Shared JavaScript -->
     <script src="js/shared.js"></script>
@@ -387,12 +388,10 @@
             return classMap[department] || 'dept-events';
         };
 
-        // Get all jobs
-        function getAllJobs() {
-            if (!jobListings || !Array.isArray(jobListings)) {
-                return [];
-            }
-            return jobListings;
+        // Get all jobs - Updated to use Strapi API
+        async function getAllJobs() {
+            const jobs = await loadJobsData();
+            return jobs || [];
         }
 
         // Get days since posting
@@ -418,8 +417,8 @@
         }
         
         // Render job listings - Optimized with template literals
-        function renderJobs() {
-            const jobs = getAllJobs();
+        async function renderJobs() {
+            const jobs = await getAllJobs();
             
             if (jobs.length === 0) {
                 DOM.jobsList.innerHTML = '<p class="text-white text-center py-8">Aucun poste disponible dans cette catégorie.</p>';
@@ -474,8 +473,9 @@
         }
         
         // Open job modal - Optimized
-        function openJobModal(jobId) {
-            const job = jobListings.find(j => j.id === parseInt(jobId));
+        async function openJobModal(jobId) {
+            const jobs = await getAllJobs();
+            const job = jobs.find(j => j.id === parseInt(jobId));
             if (!job) return;
             
             state.isModalOpen = true;
@@ -603,7 +603,7 @@
             });
             
             // Initial render
-            renderJobs();
+            renderJobs().catch(console.error);
         });
     </script>
 </body>

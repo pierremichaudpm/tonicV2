@@ -262,3 +262,16 @@ The website is now fully operational and matches the original local/Netlify func
 - **Timeline entries split**: 2022 now has two entries (Marathon Beneva + UCI Championships), 2025 has three entries (Volleyball Tour + DOCK 619 + Studio 76)
 - **Subtitle removal**: Removed "Un petit retour dans le passé" / "A little trip back in time" subtitles from history sections
 - **Contact form removal**: Removed "Écrivez-nous" / "Write to Us" contact form modules from both French and English contact pages due to no backend infrastructure
+
+### Strapi CMS Integration - July 23, 2025
+- **Strapi setup completed**: Configured Strapi v4.25.22 with PostgreSQL database integration
+- **Content types created**: Comprehensive Jobs and News content types with bilingual support
+- **i18n configuration**: French/English internationalization plugin configured with French as default
+- **Database integration**: Uses existing PostgreSQL database with proper environment variable setup
+- **API integration**: Frontend updated to load from Strapi APIs with fallback to local data files
+- **Smart fallback system**: Website functions normally whether Strapi is running or not
+- **Demo page created**: `/cms-demo.html` shows CMS integration status and functionality
+- **Admin panel ready**: Strapi admin available at `http://localhost:1337/admin` when running
+- **Bilingual content management**: Separate French/English versions for all localized content
+- **Rich media support**: File uploads for job PDFs and news featured images
+- **Production ready**: CMS can be deployed alongside main application
