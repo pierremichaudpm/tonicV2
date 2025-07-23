@@ -2,12 +2,15 @@
 
 ## Step 1: Start Strapi Server
 
-Open a new terminal and run:
+Open the Shell terminal in Replit and run:
 
 ```bash
 cd cms
+npm install pg
 npm run develop
 ```
+
+The first command installs the PostgreSQL driver. The second starts the CMS server.
 
 You'll see output like:
 ```
