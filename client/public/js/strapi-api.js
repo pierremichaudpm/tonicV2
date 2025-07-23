@@ -64,7 +64,7 @@ async function loadJobsFromStrapi() {
 // Load news from Strapi
 async function loadNewsFromStrapi() {
     try {
-        const response = await fetch(`${STRAPI_BASE_URL}/news?populate=featured_image&locale=fr&sort=publish_date:desc`);
+        const response = await fetch(`${STRAPI_BASE_URL}/news-articles?populate=featured_image&locale=fr&sort=publish_date:desc`);
         if (!response.ok) throw new Error('Failed to fetch news');
         
         const data = await response.json();
