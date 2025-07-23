@@ -26,6 +26,15 @@ PORT=3001 npm run develop
 
 4. The CMS will then be accessible at your deployed domain + `/admin`
 
+## Deployment Status
+
+If you see "Resource Not Found" after deployment, this is normal and means:
+- The deployment is still processing
+- Wait 2-3 minutes for full deployment completion
+- The deployed URL will become active once processing finishes
+
+Once deployment completes, you'll get a working URL like `https://your-project.replit.app`
+
 You'll see output like:
 ```
 [INFO] Including the following ENV variables as part of the JS bundle:
