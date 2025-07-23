@@ -472,7 +472,7 @@
                     <div className="selection-tile-bg" style={{backgroundImage:`url(${property.image})`,backgroundColor:property.color}}/>
                     <div className={`absolute inset-0 bg-gradient-to-r ${property.theme.primary} opacity-50`}/>
                     <div className="selection-tile-overlay">
-                        <div style={{paddingLeft:property.id===2?'2rem':property.id===4?'0.5rem':'0'}}>
+                        <div style={{paddingLeft:property.id===2?'clamp(2rem, 4vw, 3rem)':property.id===4?'0.5rem':'0'}}>
                             {property.logo && (
                                 <img src={property.logo} alt={property.name} className="selection-tile-logo" 
                                     style={{transform:property.id === 3 ? 'scale(1.15)' : property.id === 2 ? 'scale(1.885)' : property.id === 4 ? 'scale(1.20)' : 'scale(1)',margin:property.id === 3 ? '0.5rem' : '0'}} loading="lazy"/>
