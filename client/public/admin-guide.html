@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide Admin CMS | Groupe Tonic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .step-card { background: linear-gradient(135deg, #1f2937 0%, #374151 100%); border-left: 4px solid #3b82f6; }
+        .code-block { background: #0f172a; border: 1px solid #334155; }
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl font-bold mb-4 gradient-bg bg-clip-text text-transparent">
+                Guide d'Administration CMS
+            </h1>
+            <p class="text-gray-300 text-lg">
+                Instructions complètes pour démarrer et utiliser Strapi en français
+            </p>
+        </header>
+
+        <!-- Quick Start -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-bold mb-6">🚀 Démarrage Rapide</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="step-card rounded-lg p-6">
+                    <h3 class="text-xl font-bold mb-4 text-blue-400">1. Démarrer Strapi</h3>
+                    <div class="code-block rounded p-4 mb-4">
+                        <code class="text-green-400">cd cms</code><br>
+                        <code class="text-green-400">npm run develop</code>
+                    </div>
+                    <p class="text-sm text-gray-300">Démarre le serveur CMS sur le port 1337</p>
+                </div>
+                <div class="step-card rounded-lg p-6">
+                    <h3 class="text-xl font-bold mb-4 text-blue-400">2. Accès Admin</h3>
+                    <div class="code-block rounded p-4 mb-4">
+                        <code class="text-blue-400">http://localhost:1337/admin</code>
+                    </div>
+                    <p class="text-sm text-gray-300">Interface d'administration en français</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- First Time Setup -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-bold mb-6">👤 Premier Démarrage</h2>
+            <div class="bg-gray-800 rounded-lg p-6">
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="text-center">
+                        <div class="text-4xl mb-3">🔐</div>
+                        <h3 class="font-bold mb-2">Créer Admin</h3>
+                        <p class="text-sm text-gray-300">Première visite = création compte administrateur</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-4xl mb-3">🇫🇷</div>
+                        <h3 class="font-bold mb-2">Interface Française</h3>
+                        <p class="text-sm text-gray-300">Automatiquement configurée en français</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-4xl mb-3">📊</div>
+                        <h3 class="font-bold mb-2">Tableau de Bord</h3>
+                        <p class="text-sm text-gray-300">Accès direct aux Emplois et Actualités</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Management -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-bold mb-6">📝 Gestion de Contenu</h2>
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Jobs -->
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <h3 class="text-2xl font-bold mb-4 text-blue-400">📋 Gestion des Emplois</h3>
+                    <div class="space-y-4">
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <h4 class="font-bold">Créer un emploi</h4>
+                            <p class="text-sm text-gray-300">Menu "Gestionnaire de contenu" → "Job" → "Créer une entrée"</p>
+                        </div>
+                        <div class="border-l-4 border-green-500 pl-4">
+                            <h4 class="font-bold">Contenu bilingue</h4>
+                            <p class="text-sm text-gray-300">Sélecteur de langue en haut → Français/English</p>
+                        </div>
+                        <div class="border-l-4 border-yellow-500 pl-4">
+                            <h4 class="font-bold">Pièces jointes</h4>
+                            <p class="text-sm text-gray-300">Upload PDF directement dans le formulaire</p>
+                        </div>
+                        <div class="border-l-4 border-purple-500 pl-4">
+                            <h4 class="font-bold">Publication</h4>
+                            <p class="text-sm text-gray-300">Brouillon → "Publier" pour mise en ligne</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- News -->
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <h3 class="text-2xl font-bold mb-4 text-green-400">📰 Gestion des Actualités</h3>
+                    <div class="space-y-4">
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <h4 class="font-bold">Créer une actualité</h4>
+                            <p class="text-sm text-gray-300">Menu "Gestionnaire de contenu" → "News" → "Créer une entrée"</p>
+                        </div>
+                        <div class="border-l-4 border-green-500 pl-4">
+                            <h4 class="font-bold">Éditeur riche</h4>
+                            <p class="text-sm text-gray-300">Formatage, images, liens dans le contenu</p>
+                        </div>
+                        <div class="border-l-4 border-yellow-500 pl-4">
+                            <h4 class="font-bold">Image à la une</h4>
+                            <p class="text-sm text-gray-300">Upload depuis la médiathèque française</p>
+                        </div>
+                        <div class="border-l-4 border-purple-500 pl-4">
+                            <h4 class="font-bold">Catégories</h4>
+                            <p class="text-sm text-gray-300">Communiqué, Événement, Annonce, Partenariat</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- French Interface Features -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-bold mb-6">🇫🇷 Fonctionnalités Françaises</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-gray-800 rounded-lg p-4">
+                    <h4 class="font-bold text-blue-400 mb-2">Navigation</h4>
+                    <ul class="text-sm text-gray-300 space-y-1">
+                        <li>• Gestionnaire de contenu</li>
+                        <li>• Médiathèque</li>
+                        <li>• Paramètres</li>
+                        <li>• Constructeur de types</li>
+                    </ul>
+                </div>
+                <div class="bg-gray-800 rounded-lg p-4">
+                    <h4 class="font-bold text-green-400 mb-2">Actions</h4>
+                    <ul class="text-sm text-gray-300 space-y-1">
+                        <li>• Créer une entrée</li>
+                        <li>• Modifier l'entrée</li>
+                        <li>• Enregistrer</li>
+                        <li>• Publier/Dépublier</li>
+                    </ul>
+                </div>
+                <div class="bg-gray-800 rounded-lg p-4">
+                    <h4 class="font-bold text-yellow-400 mb-2">États</h4>
+                    <ul class="text-sm text-gray-300 space-y-1">
+                        <li>• Brouillon</li>
+                        <li>• Publié</li>
+                        <li>• Enregistré avec succès</li>
+                        <li>• Publié avec succès</li>
+                    </ul>
+                </div>
+                <div class="bg-gray-800 rounded-lg p-4">
+                    <h4 class="font-bold text-purple-400 mb-2">Média</h4>
+                    <ul class="text-sm text-gray-300 space-y-1">
+                        <li>• Télécharger des fichiers</li>
+                        <li>• Depuis l'ordinateur</li>
+                        <li>• Texte alternatif</li>
+                        <li>• Nom du fichier</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- API Integration -->
+        <div class="bg-gray-800 rounded-lg p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-4 text-orange-400">🔌 Intégration Automatique</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="font-bold mb-2">Site Web</h3>
+                    <p class="text-sm text-gray-300 mb-4">Le contenu créé dans Strapi apparaît automatiquement sur votre site web sans intervention technique.</p>
+                    <div class="code-block rounded p-3">
+                        <code class="text-xs text-blue-400">Emplois: /emplois.html et /emplois-en.html</code><br>
+                        <code class="text-xs text-green-400">Actualités: /communiques.html et /communiques-en.html</code>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-2">Système de Secours</h3>
+                    <p class="text-sm text-gray-300 mb-4">Si Strapi est arrêté, le site utilise automatiquement les données locales existantes.</p>
+                    <div class="text-xs bg-green-900 text-green-200 rounded p-3">
+                        ✅ Pas de panne du site<br>
+                        ✅ Continuité de service<br>
+                        ✅ Transition transparente
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="text-center">
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="/cms-demo.html" class="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-semibold transition-colors">
+                    🔍 Test d'Intégration
+                </a>
+                <a href="/cms-status.html" class="bg-green-600 hover:bg-green-700 px-6 py-3 rounded-lg font-semibold transition-colors">
+                    📊 Statut CMS
+                </a>
+                <a href="/" class="bg-gray-600 hover:bg-gray-700 px-6 py-3 rounded-lg font-semibold transition-colors">
+                    🏠 Site Principal
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
