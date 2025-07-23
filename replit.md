@@ -241,3 +241,10 @@ The website is now fully operational and matches the original local/Netlify func
 - **Updated all static pages**: About, Jobs, Contact, News, Privacy Policy, Terms of Use
 - **Updated React homepage**: Both French and English versions use French tagline
 - **Mobile layout consistency**: Tagline appears under logo on mobile, beside logo on desktop
+
+### Grid Card Black Gradient Removal - July 23, 2025
+- **Resolved unwanted black gradient overlays** on grid cards while preserving brand colors
+- **Fixed multiple CSS gradient sources**: Removed `.selection-tile-overlay` background gradient and `.selection-tile::before` pseudo-element
+- **Maintained brand theming**: Kept event-specific color gradients (purple, red, blue, etc.) intact
+- **Hero view backgrounds preserved**: Only removed grid card overlays, maintained hero view theming
+- **Clean grid display**: Cards now show brand colors clearly without dark shading interference
