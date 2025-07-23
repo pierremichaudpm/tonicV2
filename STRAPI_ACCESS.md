@@ -6,11 +6,11 @@ Open the Shell terminal in Replit and run:
 
 ```bash
 cd cms
-npm install pg
+npm install
 npm run develop
 ```
 
-The first command installs the PostgreSQL driver. The second starts the CMS server.
+The first command installs all required dependencies. The second starts the CMS server.
 
 You'll see output like:
 ```
