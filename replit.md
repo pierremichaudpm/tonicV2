@@ -248,3 +248,10 @@ The website is now fully operational and matches the original local/Netlify func
 - **Maintained brand theming**: Kept event-specific color gradients (purple, red, blue, etc.) intact
 - **Hero view backgrounds preserved**: Only removed grid card overlays, maintained hero view theming
 - **Clean grid display**: Cards now show brand colors clearly without dark shading interference
+
+### Logo Enhancement & Positioning - July 23, 2025
+- **Grand Prix Cyclistes logo enlarged by 30%** (scale increased from 1.45 to 1.885)
+- **Beach Pro Tour volleyball logo enlarged by 20%** (scale increased from 1.0 to 1.20)
+- **Responsive positioning for Grand Prix Cyclistes**: Applied `clamp(2rem, 4vw, 3rem)` padding for optimal desktop/mobile alignment
+- **Header alignment standardization**: Fixed discrepancy between About pages and other secondary pages using consistent `py-6 sm:py-8` responsive padding
+- **Cross-browser consistency**: All logo enhancements applied to both French and English versions
