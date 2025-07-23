@@ -50,7 +50,7 @@
         .selection-tile:hover{transform:scale(1.02);z-index:10;box-shadow:0 10px 30px rgba(0,0,0,.5)}
         .selection-tile-bg{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .3s ease}
         .selection-tile:hover .selection-tile-bg{transform:scale(1.05)}
-        .selection-tile-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.2) 0%,rgba(0,0,0,.05) 50%,rgba(0,0,0,.4) 100%);display:flex;flex-direction:column;justify-content:space-between;padding:clamp(.75rem,2vw,1.25rem);padding-bottom:clamp(1rem,2.5vw,1.5rem)}
+        .selection-tile-overlay{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:clamp(.75rem,2vw,1.25rem);padding-bottom:clamp(1rem,2.5vw,1.5rem)}
         .selection-tile-overlay::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--brand-color,#000000) 0%,transparent 40%,transparent 60%,var(--brand-color,#000000) 100%);opacity:0.3;mix-blend-mode:overlay;z-index:1}
         .selection-tile-content{position:relative;z-index:2}
         .selection-tile-logo{max-height:clamp(30px,5vh,50px);max-width:clamp(80px,15vw,140px);object-fit:contain;filter:drop-shadow(0 2px 6px rgba(0,0,0,.8));opacity:.95}
