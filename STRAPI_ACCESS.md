@@ -6,11 +6,10 @@ Open the Shell terminal in Replit and run:
 
 ```bash
 cd cms
-npm install
-npm run develop
+PORT=1337 npm run develop
 ```
 
-The first command installs all required dependencies. The second starts the CMS server.
+This starts the CMS server on port 1337 (to avoid conflicts with your main website on port 5000).
 
 You'll see output like:
 ```
