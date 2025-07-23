@@ -12,30 +12,59 @@
 @media (min-width: 3000px) and (min-height: 1200px) {
     /* Grid: 2x3 layout as shown in screenshot */
     .selection-grid {
+        display: grid !important;
         grid-template-columns: repeat(3, 1fr) !important;
-        grid-template-rows: repeat(3, 1fr) !important;
-        grid-auto-flow: row !important;
-        gap: 1.5rem !important; /* Moderate gaps for 4K */
+        grid-template-rows: repeat(3, minmax(300px, 1fr)) !important;
+        grid-auto-flow: unset !important;
+        gap: 1.5rem !important;
         grid-template-areas: 
-            "a b c"
-            "d e f"
-            "g . ." !important;
+            "tile1 tile2 tile3"
+            "tile4 tile5 tile6"
+            "tile7 empty1 empty2" !important;
     }
     
-    /* Assign grid areas to match the layout */
-    .selection-tile:nth-child(1) { grid-area: a !important; }
-    .selection-tile:nth-child(2) { grid-area: b !important; }
-    .selection-tile:nth-child(3) { grid-area: c !important; }
-    .selection-tile:nth-child(4) { grid-area: d !important; }
-    .selection-tile:nth-child(5) { grid-area: e !important; }
-    .selection-tile:nth-child(6) { grid-area: f !important; }
-    .selection-tile:nth-child(7) { grid-area: g !important; }
+    /* Force specific positioning for each tile */
+    .selection-tile:nth-child(1) { 
+        grid-area: tile1 !important;
+        grid-column: 1 / 2 !important;
+        grid-row: 1 / 2 !important;
+    }
+    .selection-tile:nth-child(2) { 
+        grid-area: tile2 !important;
+        grid-column: 2 / 3 !important;
+        grid-row: 1 / 2 !important;
+    }
+    .selection-tile:nth-child(3) { 
+        grid-area: tile3 !important;
+        grid-column: 3 / 4 !important;
+        grid-row: 1 / 2 !important;
+    }
+    .selection-tile:nth-child(4) { 
+        grid-area: tile4 !important;
+        grid-column: 1 / 2 !important;
+        grid-row: 2 / 3 !important;
+    }
+    .selection-tile:nth-child(5) { 
+        grid-area: tile5 !important;
+        grid-column: 2 / 3 !important;
+        grid-row: 2 / 3 !important;
+    }
+    .selection-tile:nth-child(6) { 
+        grid-area: tile6 !important;
+        grid-column: 3 / 4 !important;
+        grid-row: 2 / 3 !important;
+    }
+    .selection-tile:nth-child(7) { 
+        grid-area: tile7 !important;
+        grid-column: 1 / 2 !important;
+        grid-row: 3 / 4 !important;
+    }
     
-    /* Make tiles bigger with better spacing */
+    /* Ensure proper tile sizing */
     .selection-tile {
-        min-height: 400px !important;
-        grid-column: auto !important;
-        grid-row: auto !important;
+        min-height: 350px !important;
+        width: 100% !important;
+        height: 100% !important;
     }
     
     /* Scale up text in grid tiles for 4K */
@@ -112,10 +141,21 @@
     }
 }
 
-/* Ultra-wide 4K displays (wider than 16:9) */
+/* More specific 4K override to ensure our layout takes precedence */
+@media screen and (min-width: 3000px) {
+    .grid-selection-container .selection-grid {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        grid-template-rows: repeat(3, 1fr) !important;
+        grid-auto-flow: initial !important;
+    }
+}
+
+/* Ultra-wide 4K displays (wider than 16:9) - keep at 3 columns */
 @media (min-width: 3840px) and (min-aspect-ratio: 21/9) {
     .selection-grid {
-        grid-template-columns: repeat(5, 1fr) !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        grid-template-rows: repeat(3, 1fr) !important;
         max-width: 3200px !important;
         margin: 0 auto !important;
     }

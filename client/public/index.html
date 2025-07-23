@@ -180,10 +180,7 @@
 
             .countdown-unit{padding:.5rem .75rem;min-width:50px}
         }
-        @media(min-width:3000px) and (min-height:1200px){
-            .selection-grid{grid-template-columns:repeat(7,1fr);grid-template-rows:1fr;grid-auto-flow:column}
-            .selection-tile{grid-column:auto!important;grid-row:1!important}
-        }
+        /* Removed 7-column layout - now handled by 4k-presentation.css */
         @media(min-width:640px){.grid-selection-container header{height:80px}}
         @media(min-width:768px){.selection-tile{aspect-ratio:auto}.desktop-progress{display:flex}}
         @media(max-width:767px){.selection-tile{aspect-ratio:16/9}}
