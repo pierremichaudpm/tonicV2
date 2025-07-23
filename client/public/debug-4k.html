@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug 4K Grid</title>
+    <style>
+        body {
+            margin: 0;
+            background: #000;
+            color: white;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        
+        .debug-info {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+            z-index: 1000;
+        }
+        
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 2rem;
+            width: 85vw;
+            height: 80vh;
+            margin: 100px auto 0;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+        }
+        
+        .tile {
+            background: #333;
+            border: 2px solid #666;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .tile:nth-child(1) { background: #ff0e9b; }
+        .tile:nth-child(2) { background: #b7d233; }
+        .tile:nth-child(3) { background: #463092; }
+        .tile:nth-child(4) { background: #e2493c; }
+        .tile:nth-child(5) { background: #da273b; }
+        .tile:nth-child(6) { background: #03b0f9; }
+        .tile:nth-child(7) { background: #666; }
+        
+        /* Test with actual site classes */
+        .selection-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr) !important;
+            grid-template-rows: repeat(3, 1fr) !important;
+            grid-auto-flow: row !important;
+            gap: 2rem !important;
+            width: 85vw !important;
+            height: 80vh !important;
+            margin: 100px auto 0 !important;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            max-width: 85vw !important;
+            max-height: 80vh !important;
+        }
+        
+        .selection-tile {
+            background: #333;
+            border: 2px solid #666;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            min-height: 280px !important;
+        }
+        
+        .selection-tile:nth-child(1) { background: #ff0e9b; }
+        .selection-tile:nth-child(2) { background: #b7d233; }
+        .selection-tile:nth-child(3) { background: #463092; }
+        .selection-tile:nth-child(4) { background: #e2493c; }
+        .selection-tile:nth-child(5) { background: #da273b; }
+        .selection-tile:nth-child(6) { background: #03b0f9; }
+        .selection-tile:nth-child(7) { background: #666; }
+    </style>
+</head>
+<body>
+    <div class="debug-info">
+        <h2>Grid Debug Info</h2>
+        <p>Window Width: <span id="width"></span>px</p>
+        <p>Window Height: <span id="height"></span>px</p>
+        <p>Grid Computed Style: <span id="gridStyle"></span></p>
+    </div>
+    
+    <h2 style="text-align: center; margin: 20px 0;">Test 1: Simple Grid</h2>
+    <div class="grid-container">
+        <div class="tile">1. Beach Pro Tour</div>
+        <div class="tile">2. Grands Prix</div>
+        <div class="tile">3. Marathon</div>
+        <div class="tile">4. 21K</div>
+        <div class="tile">5. UCI 2026</div>
+        <div class="tile">6. Studio 76</div>
+        <div class="tile">7. DOCK 619</div>
+    </div>
+    
+    <h2 style="text-align: center; margin: 40px 0 20px;">Test 2: With Site Classes</h2>
+    <div class="selection-grid">
+        <div class="selection-tile">1. Beach Pro Tour</div>
+        <div class="selection-tile">2. Grands Prix</div>
+        <div class="selection-tile">3. Marathon</div>
+        <div class="selection-tile">4. 21K</div>
+        <div class="selection-tile">5. UCI 2026</div>
+        <div class="selection-tile">6. Studio 76</div>
+        <div class="selection-tile">7. DOCK 619</div>
+    </div>
+    
+    <script>
+        document.getElementById('width').textContent = window.innerWidth;
+        document.getElementById('height').textContent = window.innerHeight;
+        
+        // Check computed styles
+        setTimeout(() => {
+            const grid = document.querySelector('.selection-grid');
+            const computed = window.getComputedStyle(grid);
+            document.getElementById('gridStyle').innerHTML = `
+                <br>columns: ${computed.gridTemplateColumns}
+                <br>rows: ${computed.gridTemplateRows}
+                <br>flow: ${computed.gridAutoFlow}
+            `;
+        }, 100);
+    </script>
+</body>
+</html>

@@ -143,14 +143,12 @@
         
         /* Grid layouts */
         @media(min-width:3000px){
-            .selection-grid{grid-template-columns:repeat(3,1fr)!important;grid-template-rows:repeat(3,1fr)!important;grid-auto-flow:dense;gap:2rem!important}
-            .selection-tile:nth-child(1){grid-column:1/2!important;grid-row:1/2!important}
-            .selection-tile:nth-child(2){grid-column:2/3!important;grid-row:1/2!important}
-            .selection-tile:nth-child(3){grid-column:3/4!important;grid-row:1/2!important}
-            .selection-tile:nth-child(4){grid-column:1/2!important;grid-row:2/3!important}
-            .selection-tile:nth-child(5){grid-column:2/3!important;grid-row:2/3!important}
-            .selection-tile:nth-child(6){grid-column:3/4!important;grid-row:2/3!important}
-            .selection-tile:nth-child(7){grid-column:1/2!important;grid-row:3/4!important}
+            .selection-grid{
+                grid-template-columns:repeat(3,1fr)!important;
+                grid-template-rows:repeat(3,1fr)!important;
+                grid-auto-flow:row!important;
+                gap:2rem!important
+            }
             .selection-tile{min-height:280px!important}
             .grid-wrapper{padding:2rem 3rem!important}
         }
@@ -276,26 +274,8 @@
         const getCSSVariable = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
         const debounce = (f, w) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => f(...a), w); }; };
         
-        // 4K Display Fix
-        if (window.innerWidth >= 3000) {
-            const style = document.createElement('style');
-            style.textContent = `
-                .selection-grid {
-                    display: grid !important;
-                    grid-template-columns: repeat(3, 1fr) !important;
-                    grid-template-rows: repeat(3, 1fr) !important;
-                    grid-auto-flow: row !important;
-                }
-                .selection-tile:nth-child(1) { grid-column: 1 !important; grid-row: 1 !important; }
-                .selection-tile:nth-child(2) { grid-column: 2 !important; grid-row: 1 !important; }
-                .selection-tile:nth-child(3) { grid-column: 3 !important; grid-row: 1 !important; }
-                .selection-tile:nth-child(4) { grid-column: 1 !important; grid-row: 2 !important; }
-                .selection-tile:nth-child(5) { grid-column: 2 !important; grid-row: 2 !important; }
-                .selection-tile:nth-child(6) { grid-column: 3 !important; grid-row: 2 !important; }
-                .selection-tile:nth-child(7) { grid-column: 1 !important; grid-row: 3 !important; }
-            `;
-            document.head.appendChild(style);
-        }
+        // 4K Display Fix - Disabled in favor of CSS media query
+        // JavaScript injection was causing conflicts with CSS rules
 
         // Color utilities
         const hexToRgb = (hex) => {
