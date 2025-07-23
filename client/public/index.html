@@ -443,6 +443,7 @@
             return (
                 <div className="selection-tile" style={{'--index':index,'--brand-color':property.color}} onClick={()=>onClick(index)}>
                     <div className="selection-tile-bg" style={{backgroundImage:property.image?`url(${property.image})`:'none',backgroundColor:property.color}}/>
+                    <div className={`absolute inset-0 bg-gradient-to-r ${property.theme.primary} opacity-50`}/>
                     <div className="selection-tile-overlay">{tileContent}</div>
                 </div>
             );

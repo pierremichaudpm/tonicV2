@@ -431,6 +431,7 @@
                 return (
                     <div className="selection-tile" style={{'--index':index,'--brand-color':property.color}} onClick={handleClick}>
                         <div className="selection-tile-bg" style={{backgroundImage:`url(${property.image})`,backgroundColor:property.color}}/>
+                        <div className={`absolute inset-0 bg-gradient-to-r ${property.theme.primary} opacity-50`}/>
                         <div className="selection-tile-overlay">
                             <div className="dock619-grid-content">
                                 <div className="dock619-grid-top" style={{marginLeft:'-0.25rem',marginTop:'1rem'}}>
@@ -450,6 +451,7 @@
                 return (
                     <div className="selection-tile" style={{'--index':index,'--brand-color':property.color}} onClick={handleClick}>
                         <div className="selection-tile-bg" style={{backgroundImage:`url(${property.image})`,backgroundColor:property.color}}/>
+                        <div className={`absolute inset-0 bg-gradient-to-r ${property.theme.primary} opacity-50`}/>
                         <div className="selection-tile-overlay">
                             <div className="studio76-grid-content">
                                 <div className="studio76-grid-top">
@@ -468,6 +470,7 @@
             return (
                 <div className="selection-tile" style={{'--index':index,'--brand-color':property.color}} onClick={handleClick}>
                     <div className="selection-tile-bg" style={{backgroundImage:`url(${property.image})`,backgroundColor:property.color}}/>
+                    <div className={`absolute inset-0 bg-gradient-to-r ${property.theme.primary} opacity-50`}/>
                     <div className="selection-tile-overlay">
                         <div style={{paddingLeft:property.id===2?'1.25rem':'0'}}>
                             {property.logo && (
