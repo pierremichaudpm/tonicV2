@@ -20,11 +20,11 @@
                     <li>1. Ouvrez une nouvelle fenêtre/onglet dans votre navigateur</li>
                     <li>2. Dans la barre d'adresse, tapez exactement :</li>
                     <li class="font-mono bg-yellow-100 px-2 py-1 rounded text-xs break-all">
-                        https://workspace--1337.prod1a.defang.dev/admin
+                        https://workspace--3001.prod1a.defang.dev/admin
                     </li>
                     <li>3. Ou essayez cette alternative :</li>
                     <li class="font-mono bg-yellow-100 px-2 py-1 rounded text-xs break-all">
-                        https://1337-workspace-pmicho.replit.app/admin
+                        https://3001-workspace-pmicho.replit.app/admin
                     </li>
                 </ol>
             </div>
@@ -78,8 +78,8 @@
         // Copy CMS URL to clipboard
         function copyToClipboard() {
             const urls = [
-                'https://workspace--1337.prod1a.defang.dev/admin',
-                'https://1337-workspace-pmicho.replit.app/admin'
+                'https://workspace--3001.prod1a.defang.dev/admin',
+                'https://3001-workspace-pmicho.replit.app/admin'
             ];
             
             const textToCopy = urls.join('\n');
@@ -103,7 +103,7 @@
         // Check if Strapi is available
         async function checkStrapiStatus() {
             const statusEl = document.getElementById('status');
-            statusEl.textContent = 'Assurez-vous que Strapi fonctionne: cd cms && PORT=1337 npm run develop';
+            statusEl.textContent = 'Assurez-vous que Strapi fonctionne: cd cms && PORT=3001 npm run develop';
             statusEl.className = 'text-blue-600 text-sm font-medium';
         }
         
