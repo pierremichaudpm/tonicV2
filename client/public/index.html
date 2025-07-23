@@ -144,12 +144,14 @@
         /* Grid layouts */
         @media(min-width:3000px){
             .selection-grid{
+                display:grid!important;
                 grid-template-columns:repeat(3,1fr)!important;
                 grid-template-rows:repeat(3,1fr)!important;
-                grid-auto-flow:row!important;
+                grid-auto-flow:unset!important;
                 gap:2rem!important
             }
             .selection-tile{min-height:280px!important}
+            .selection-tile:nth-child(n+8){display:none!important}
             .grid-wrapper{padding:2rem 3rem!important}
         }
         @media(min-width:1024px) and (max-width:2999px){
