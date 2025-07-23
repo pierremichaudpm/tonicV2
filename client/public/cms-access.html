@@ -45,22 +45,21 @@
     <script>
         // Generate Replit CMS URL
         function generateCMSUrl() {
-            const hostname = window.location.hostname;
+            // In Replit, you can access different ports using this format
+            const currentUrl = window.location.href;
+            const baseUrl = currentUrl.split('/')[0] + '//' + window.location.host;
             
-            // If running locally in Replit development
-            if (hostname === 'localhost' || hostname.includes('127.0.0.1')) {
-                return 'http://localhost:1337/admin';
-            }
+            // Try different Replit port access methods
+            const replitUrls = [
+                // Method 1: Direct localhost (works in development)
+                'http://localhost:1337/admin',
+                // Method 2: Replace port in current URL
+                baseUrl.replace(/:\d+/, ':1337') + '/admin',
+                // Method 3: Replit webview format
+                baseUrl + '/--port-1337--/admin'
+            ];
             
-            // If deployed on Replit
-            if (hostname.includes('.replit.app') || hostname.includes('.repl.co')) {
-                // Extract the base domain and create port 1337 URL
-                const baseUrl = hostname.replace(/:\d+/, '');
-                return `https://${baseUrl}:1337/admin`;
-            }
-            
-            // Fallback - try direct port access
-            return `${window.location.protocol}//${hostname}:1337/admin`;
+            return replitUrls[0]; // Start with localhost
         }
         
         // Check if Strapi is available
