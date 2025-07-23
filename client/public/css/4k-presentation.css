@@ -1,0 +1,108 @@
+/* 4K TV Presentation Enhancement - Safe Overlay CSS */
+/* This file can be easily removed if it causes issues */
+
+/* 
+ * Strategy: For 4K displays (3840x2160), we want:
+ * - Maximum 4-5 columns in grid (not 7)
+ * - Larger text and elements for readability
+ * - Maintain aspect ratios and visual hierarchy
+ */
+
+/* Override the problematic 7-column layout for 4K screens */
+@media (min-width: 3000px) and (min-height: 1200px) {
+    /* Grid: Cap at 4 columns for better readability */
+    .selection-grid {
+        grid-template-columns: repeat(4, 1fr) !important;
+        grid-template-rows: repeat(2, 1fr) !important;
+        grid-auto-flow: row !important;
+        gap: 2rem !important; /* Larger gaps for 4K */
+    }
+    
+    /* Make tiles bigger with better spacing */
+    .selection-tile {
+        min-height: 300px !important;
+        grid-column: auto !important;
+        grid-row: auto !important;
+    }
+    
+    /* Scale up text in grid tiles */
+    .selection-tile h3 {
+        font-size: clamp(1.5rem, 2vw, 2.5rem) !important;
+    }
+    
+    .selection-tile .tile-category {
+        font-size: clamp(0.875rem, 1vw, 1.25rem) !important;
+    }
+    
+    /* Hero view improvements */
+    .hero-content h2 {
+        font-size: clamp(3rem, 4vw, 5rem) !important;
+    }
+    
+    .hero-content p {
+        font-size: clamp(1.25rem, 1.5vw, 2rem) !important;
+        max-width: 1200px !important;
+    }
+    
+    .hero-content .hero-button {
+        font-size: clamp(1.125rem, 1.25vw, 1.5rem) !important;
+        padding: 1.25rem 2.5rem !important;
+    }
+    
+    /* Larger logos for 4K */
+    .hero-logo-container img {
+        max-height: 12rem !important;
+        width: auto !important;
+    }
+    
+    /* Header improvements */
+    header {
+        padding: 2rem 3rem !important;
+    }
+    
+    .header-logo {
+        width: clamp(200px, 15vw, 300px) !important;
+    }
+    
+    /* Navigation text larger */
+    nav a {
+        font-size: clamp(1rem, 1.25vw, 1.5rem) !important;
+    }
+}
+
+/* Ultra-wide 4K displays (wider than 16:9) */
+@media (min-width: 3840px) and (min-aspect-ratio: 21/9) {
+    .selection-grid {
+        grid-template-columns: repeat(5, 1fr) !important;
+        max-width: 3200px !important;
+        margin: 0 auto !important;
+    }
+}
+
+/* Specific 4K TV optimization (common TV resolution) */
+@media (min-width: 3840px) and (min-height: 2160px) {
+    /* Even larger text for TV viewing distance */
+    .hero-content h2 {
+        font-size: 5.5rem !important;
+        line-height: 1.1 !important;
+    }
+    
+    .hero-content p {
+        font-size: 2.25rem !important;
+        line-height: 1.4 !important;
+    }
+    
+    /* Countdown larger */
+    .countdown-unit {
+        padding: 1.5rem 2rem !important;
+        min-width: 120px !important;
+    }
+    
+    .countdown-unit .countdown-value {
+        font-size: 3rem !important;
+    }
+    
+    .countdown-unit .countdown-label {
+        font-size: 1.25rem !important;
+    }
+}
