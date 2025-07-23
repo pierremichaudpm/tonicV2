@@ -292,6 +292,27 @@
                 timeout = setTimeout(() => fn(...args), wait);
             };
         };
+        
+        // 4K Display Fix
+        if (window.innerWidth >= 3000) {
+            const style = document.createElement('style');
+            style.textContent = `
+                .selection-grid {
+                    display: grid !important;
+                    grid-template-columns: repeat(3, 1fr) !important;
+                    grid-template-rows: repeat(3, 1fr) !important;
+                    grid-auto-flow: row !important;
+                }
+                .selection-tile:nth-child(1) { grid-column: 1 !important; grid-row: 1 !important; }
+                .selection-tile:nth-child(2) { grid-column: 2 !important; grid-row: 1 !important; }
+                .selection-tile:nth-child(3) { grid-column: 3 !important; grid-row: 1 !important; }
+                .selection-tile:nth-child(4) { grid-column: 1 !important; grid-row: 2 !important; }
+                .selection-tile:nth-child(5) { grid-column: 2 !important; grid-row: 2 !important; }
+                .selection-tile:nth-child(6) { grid-column: 3 !important; grid-row: 2 !important; }
+                .selection-tile:nth-child(7) { grid-column: 1 !important; grid-row: 3 !important; }
+            `;
+            document.head.appendChild(style);
+        }
 
         const generateColorShades = (baseColor) => {
             const hex2rgb = h => h.match(/[A-Za-z0-9]{2}/g)?.map(v => parseInt(v, 16)) || [0,0,0];
