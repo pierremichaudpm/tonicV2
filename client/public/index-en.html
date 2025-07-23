@@ -431,7 +431,6 @@
                 return (
                     <div className="selection-tile" style={{'--index':index,'--brand-color':property.color}} onClick={handleClick}>
                         <div className="selection-tile-bg" style={{backgroundImage:`url(${property.image})`,backgroundColor:property.color}}/>
-                        <div className={`absolute inset-0 bg-gradient-to-r ${property.theme.primary} opacity-50`}/>
                         <div className="selection-tile-overlay">
                             <div className="dock619-grid-content">
                                 <div className="dock619-grid-top" style={{marginLeft:'-0.25rem',marginTop:'1rem'}}>
@@ -451,7 +450,6 @@
                 return (
                     <div className="selection-tile" style={{'--index':index,'--brand-color':property.color}} onClick={handleClick}>
                         <div className="selection-tile-bg" style={{backgroundImage:`url(${property.image})`,backgroundColor:property.color}}/>
-                        <div className={`absolute inset-0 bg-gradient-to-r ${property.theme.primary} opacity-50`}/>
                         <div className="selection-tile-overlay">
                             <div className="studio76-grid-content">
                                 <div className="studio76-grid-top">
@@ -470,7 +468,6 @@
             return (
                 <div className="selection-tile" style={{'--index':index,'--brand-color':property.color}} onClick={handleClick}>
                     <div className="selection-tile-bg" style={{backgroundImage:`url(${property.image})`,backgroundColor:property.color}}/>
-                    <div className={`absolute inset-0 bg-gradient-to-r ${property.theme.primary} opacity-50`}/>
                     <div className="selection-tile-overlay">
                         <div style={{paddingLeft:property.id===2?'1.25rem':'0'}}>
                             {property.logo && (
@@ -846,10 +843,7 @@
                                     opacity: state.isTransitioning ? .7 : 1,
                                     transition: 'opacity 0.5s ease-in-out'
                                 }} />
-                                <div className={`absolute inset-0 bg-gradient-to-r ${currentProperty.theme.primary} opacity-50`} style={{
-                                    opacity: state.isTransitioning ? .3 : .5,
-                                    transition: 'opacity 0.5s ease-in-out'
-                                }} />
+
                                 <div className={`absolute inset-0 bg-gradient-to-br ${currentProperty.theme.secondary} opacity-25`} />
                                 <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/70" />
                                 {state.currentView === VIEWS.HERO && !state.isMobileView && (
