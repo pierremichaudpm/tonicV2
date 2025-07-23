@@ -173,6 +173,7 @@ The website is now fully operational and matches the original local/Netlify func
 - **21k-hero.jpg**: 1.7MB → optimized with resize and quality compression  
 - **marathon-beneva-hero.jpg**: 858KB → 796KB (7% reduction)
 - **dock619-hero-optimized.jpg**: 7.8MB → 567KB (93% size reduction) - new corporate event image
+- **dock619-hero-new.jpg**: 98MB TIF → 360KB JPG (99.6% size reduction) - updated venue interior image
 - **Performance impact**: Significantly faster page loading, especially on mobile devices
 - **Total image size reduction**: ~70% smaller hero images
 
