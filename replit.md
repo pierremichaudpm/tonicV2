@@ -264,7 +264,7 @@ The website is now fully operational and matches the original local/Netlify func
 - **Contact form removal**: Removed "Écrivez-nous" / "Write to Us" contact form modules from both French and English contact pages due to no backend infrastructure
 
 ### Strapi CMS Integration - July 23, 2025
-- **Strapi setup completed**: Configured Strapi v4.25.22 with PostgreSQL database integration
+- **Strapi setup completed**: Configured Strapi v5.19.0 with PostgreSQL database integration
 - **Content types created**: Comprehensive Jobs and News content types with bilingual support
 - **i18n configuration**: French/English internationalization plugin configured with French as default
 - **Database integration**: Uses existing PostgreSQL database with proper environment variable setup
@@ -279,3 +279,6 @@ The website is now fully operational and matches the original local/Netlify func
 - **Localized content management**: French menus, buttons, validation messages, and workflows
 - **Content types in French**: Job and News management with French terminology
 - **Media library in French**: File upload and management interface translated
+- **Version upgrade**: Successfully migrated from v4 to v5.19.0 with proper dependency resolution
+- **Database configuration**: Simplified PostgreSQL configuration for Strapi v5 compatibility
+- **Dependency management**: Resolved all missing plugin dependencies for stable operation
