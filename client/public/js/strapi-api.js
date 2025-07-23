@@ -2,7 +2,9 @@
 // This file provides functions to load data from Strapi CMS
 // Falls back to local data files if Strapi is unavailable
 
-const STRAPI_BASE_URL = 'http://localhost:1337/api';
+// Update this URL after deploying Strapi to Render:
+const STRAPI_BASE_URL = 'https://your-cms-name.onrender.com/api'; // TODO: Replace with your Render URL
+// For local development: 'http://localhost:1337/api'
 
 // Check if Strapi is available
 async function isStrapiAvailable() {
