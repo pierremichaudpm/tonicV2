@@ -14,8 +14,24 @@
         </div>
         
         <div class="space-y-4">
+            <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
+                <h3 class="font-medium text-red-800 mb-2">🚨 Configuration requise pour le déploiement :</h3>
+                <ol class="text-sm text-red-700 space-y-2">
+                    <li><strong>1. Ajoutez ces variables d'environnement dans Replit :</strong></li>
+                    <li class="font-mono bg-red-100 px-2 py-1 rounded text-xs">
+                        ADMIN_URL=https://VOTRE-DOMAINE-DEPLOYE.com/admin
+                    </li>
+                    <li class="font-mono bg-red-100 px-2 py-1 rounded text-xs">
+                        PUBLIC_URL=https://VOTRE-DOMAINE-DEPLOYE.com
+                    </li>
+                    <li><strong>2. Remplacez "VOTRE-DOMAINE-DEPLOYE.com" par votre vraie URL</strong></li>
+                    <li><strong>3. Redéployez le projet après avoir ajouté ces variables</strong></li>
+                    <li><strong>4. Le CMS sera alors accessible à :</strong> <span class="font-mono">VOTRE-URL/admin</span></li>
+                </ol>
+            </div>
+
             <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
-                <h3 class="font-medium text-yellow-800 mb-2">Instructions pour accéder au CMS :</h3>
+                <h3 class="font-medium text-yellow-800 mb-2">Pour le développement local :</h3>
                 <ol class="text-sm text-yellow-700 space-y-1">
                     <li>1. Ouvrez une nouvelle fenêtre/onglet dans votre navigateur</li>
                     <li>2. Dans la barre d'adresse, tapez exactement :</li>

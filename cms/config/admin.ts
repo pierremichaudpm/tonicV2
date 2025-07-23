@@ -20,7 +20,7 @@ export default ({ env }) => ({
   // Set French as default admin language
   locales: ['fr', 'en'],
   // Fix admin URL and CORS for production deployment
-  url: env('ADMIN_URL') || '/admin',
+  url: env('ADMIN_URL'),
   serveAdminPanel: env.bool('SERVE_ADMIN', true),
   forgotPassword: {
     from: env('FROM_EMAIL', 'no-reply@groupetonic.ca'),

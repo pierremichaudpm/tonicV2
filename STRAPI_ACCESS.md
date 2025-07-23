@@ -11,7 +11,20 @@ PORT=3001 npm run develop
 ```
 
 ## For Deployed Site:
-Once deployed, the CMS will be accessible through your deployed URL at `/cms-access.html` which provides direct links to the admin interface.
+
+**IMPORTANT**: You need to set environment variables for your deployed domain:
+
+1. In your Replit deployment settings, add these environment variables:
+   ```
+   ADMIN_URL=https://YOUR-DEPLOYED-DOMAIN.com/admin
+   PUBLIC_URL=https://YOUR-DEPLOYED-DOMAIN.com
+   ```
+
+2. Replace `YOUR-DEPLOYED-DOMAIN.com` with your actual deployed URL
+
+3. After setting these variables, redeploy the project
+
+4. The CMS will then be accessible at your deployed domain + `/admin`
 
 You'll see output like:
 ```

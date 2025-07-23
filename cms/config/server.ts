@@ -12,5 +12,5 @@ export default ({ env }) => ({
   admin: {
     autoOpen: false,
   },
-  url: env('PUBLIC_URL', ''),
+  url: env('PUBLIC_URL'),
 });
