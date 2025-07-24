@@ -312,3 +312,14 @@ The website is now fully operational and matches the original local/Netlify func
 - **Final implementation**: 4 tiles on top row (25% width each), 3 tiles on bottom row (33% width each)
 - **Coverage**: Applied to all breakpoints 768px+ (tablet, desktop, 4K) while preserving mobile layouts
 - **Result**: Bottom tiles are wider than top tiles, covering same total territory in clean rectangular grid
+
+### Category Standardization System - July 24, 2025 ✅ COMPLETED
+- **Problem solved**: Eliminated inconsistent category names across jobs and news content in both languages
+- **8 Standardized Categories Implemented**: Beach Pro Tour, Grands Prix Cyclistes, Marathon Beneva 21K, UCI 2026, Studio 76, Dock 619, 21K de Montréal, Groupe Tonic
+- **CMS Interface Updated**: Fixed dropdown menus to display exact 8 categories instead of extracting from existing content
+- **Image Mapping Standardized**: All 8 categories automatically assign correct hero images with Groupe Tonic temporarily using Studio 76 image
+- **CSS Styling Complete**: Added missing category styles (.cat-21k, .cat-dock, etc.) for both French and English pages with consistent color scheme
+- **Data Consistency**: Updated all job and news data files to use standardized category names across both languages
+- **Category Class Mapping**: Updated getCategoryClass functions and categoryMap objects for proper visual styling
+- **Authentication Working**: Simple password-based CMS continues to function reliably with admin123 password
+- **Status**: ✅ FULLY FUNCTIONAL - All content creators can now select from exactly 8 consistent categories with automatic image assignment and proper styling

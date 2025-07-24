@@ -48,8 +48,8 @@ const communiquesData = [
     "id": 1753393226124,
     "title": "test anglais",
     "date": "",
-    "category": "Beach Pro Tour",
-    "image": "images/beach-pro-tour-hero.webp",
+    "category": "Groupe Tonic",
+    "image": "images/studio-76-hero.jpg",
     "summary": "wferfqev",
     "content": "qvbqtgwtqrbwqrtbwrbwrytbwyrtbwyrteb"
   }
