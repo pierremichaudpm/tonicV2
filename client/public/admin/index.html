@@ -251,14 +251,14 @@
             const response = await fetch(url, {
                 ...options,
                 headers: {
-                    'Authorization': `Bearer ${authToken}`,
+                    'Authorization': `Bearer ${localStorage.getItem('cms_token')}`,
                     'Content-Type': 'application/json',
                     ...options.headers
                 }
             });
 
             if (response.status === 401) {
-                localStorage.removeItem('adminToken');
+                localStorage.removeItem('cms_token');
                 showLogin();
                 throw new Error('Session expirée');
             }
