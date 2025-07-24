@@ -51,6 +51,6 @@ const pressReleases = [
     "category": "Groupe Tonic",
     "summary": "VERGFGQVG",
     "content": "wferq3f3qegqeagveg",
-    "image": "images/groupe-tonic-logo.svg"
+    "image": "images/tonic-logo.png"
   }
 ];
