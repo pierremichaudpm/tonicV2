@@ -3,8 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CMS Simple - Groupe Tonic</title>
+    <title>CMS - Groupe Tonic</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .content-preview {
+            line-height: 1.6;
+        }
+        .content-preview h3 {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin: 1em 0 0.5em 0;
+        }
+        .content-preview ul {
+            list-style-type: disc;
+            margin-left: 2em;
+        }
+        .content-preview p {
+            margin: 0.5em 0;
+        }
+        .editor-toolbar {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+        .editor-btn {
+            padding: 4px 8px;
+            background: #e5e7eb;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .editor-btn:hover {
+            background: #d1d5db;
+        }
+    </style>
 </head>
 <body class="bg-gray-100">
     <div class="min-h-screen">
@@ -28,30 +62,132 @@
             </div>
         </header>
 
-        <!-- Summary Stats -->
-        <div class="max-w-7xl mx-auto px-4 py-4">
-            <div id="summary" class="bg-blue-100 border border-blue-300 rounded p-4 text-sm"></div>
-        </div>
-
         <!-- Main Content -->
-        <main class="max-w-7xl mx-auto px-4 py-4">
-            <div id="content" class="space-y-4">
+        <main class="max-w-7xl mx-auto px-4 py-8">
+            <div class="mb-6 flex justify-between items-center">
+                <h2 class="text-xl font-semibold text-gray-700">
+                    <span id="contentTitle">Contenu</span>
+                </h2>
+                <button onclick="showAddForm()" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    Ajouter nouveau
+                </button>
+            </div>
+            <div id="content" class="space-y-6">
                 <!-- Content will be loaded here -->
             </div>
         </main>
+
+        <!-- Edit Modal -->
+        <div id="editModal" class="hidden fixed inset-0 bg-black bg-opacity-50 overflow-y-auto">
+            <div class="min-h-screen flex items-center justify-center p-4">
+                <div class="bg-white rounded-lg w-full max-w-5xl max-h-[90vh] overflow-y-auto">
+                    <div class="p-6">
+                        <h2 id="modalTitle" class="text-2xl font-bold mb-4">Éditer</h2>
+                        <form id="editForm" class="space-y-4">
+                            <input type="hidden" id="itemId">
+                            
+                            <!-- Job Fields -->
+                            <div id="jobFields" class="hidden">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Titre du poste</label>
+                                        <input type="text" id="title" class="w-full p-2 border rounded-md" required>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Département</label>
+                                        <input type="text" id="department" class="w-full p-2 border rounded-md">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Lieu</label>
+                                        <input type="text" id="location" class="w-full p-2 border rounded-md">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Type d'emploi</label>
+                                        <input type="text" id="type" class="w-full p-2 border rounded-md">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Salaire</label>
+                                        <input type="text" id="salary" class="w-full p-2 border rounded-md">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Date limite</label>
+                                        <input type="text" id="deadline" class="w-full p-2 border rounded-md">
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Description complète</label>
+                                    <div class="editor-toolbar">
+                                        <button type="button" class="editor-btn" onclick="insertHTML('<h3>', '</h3>')">Titre</button>
+                                        <button type="button" class="editor-btn" onclick="insertHTML('<p>', '</p>')">Paragraphe</button>
+                                        <button type="button" class="editor-btn" onclick="insertHTML('<ul>\n<li>', '</li>\n</ul>')">Liste</button>
+                                        <button type="button" class="editor-btn" onclick="insertHTML('<strong>', '</strong>')">Gras</button>
+                                    </div>
+                                    <textarea id="jobDescription" rows="15" class="w-full p-3 border rounded-md font-mono text-sm"></textarea>
+                                </div>
+                            </div>
+
+                            <!-- News Fields -->
+                            <div id="newsFields" class="hidden">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Titre</label>
+                                        <input type="text" id="newsTitle" class="w-full p-2 border rounded-md" required>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Date</label>
+                                        <input type="date" id="date" class="w-full p-2 border rounded-md">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Catégorie</label>
+                                        <input type="text" id="category" class="w-full p-2 border rounded-md">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Résumé</label>
+                                        <input type="text" id="summary" class="w-full p-2 border rounded-md">
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Contenu</label>
+                                    <div class="editor-toolbar">
+                                        <button type="button" class="editor-btn" onclick="insertHTML('<h3>', '</h3>')">Titre</button>
+                                        <button type="button" class="editor-btn" onclick="insertHTML('<p>', '</p>')">Paragraphe</button>
+                                        <button type="button" class="editor-btn" onclick="insertHTML('<ul>\n<li>', '</li>\n</ul>')">Liste</button>
+                                        <button type="button" class="editor-btn" onclick="insertHTML('<strong>', '</strong>')">Gras</button>
+                                    </div>
+                                    <textarea id="newsContent" rows="15" class="w-full p-3 border rounded-md font-mono text-sm"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="flex gap-2 justify-end pt-4 border-t">
+                                <button type="button" onclick="closeModal()" class="px-4 py-2 border rounded hover:bg-gray-100">
+                                    Annuler
+                                </button>
+                                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                                    Sauvegarder
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
         let token = localStorage.getItem('cms_token');
         let currentType = 'jobs';
         let currentLang = 'fr';
+        let currentData = [];
 
-        // Check if logged in
         if (!token) {
             window.location.href = '/admin/';
         }
 
-        // Event listeners
         document.getElementById('contentType').addEventListener('change', (e) => {
             currentType = e.target.value;
             loadContent();
@@ -62,15 +198,14 @@
             loadContent();
         });
 
+        document.getElementById('editForm').addEventListener('submit', saveItem);
+
         function logout() {
             localStorage.removeItem('cms_token');
             window.location.href = '/admin/';
         }
 
         async function loadContent() {
-            const summaryDiv = document.getElementById('summary');
-            summaryDiv.innerHTML = 'Chargement...';
-            
             try {
                 const response = await fetch(`/api/cms/${currentType}?lang=${currentLang}`, {
                     headers: {
@@ -78,28 +213,14 @@
                     }
                 });
 
-                if (!response.ok) {
-                    if (response.status === 401) {
-                        logout();
-                        return;
-                    }
-                    throw new Error('Failed to load content');
-                }
+                if (!response.ok) throw new Error('Failed to load content');
 
                 const data = await response.json();
-                const items = currentType === 'jobs' ? data.jobs : data.news;
-                
-                // Update summary
-                summaryDiv.innerHTML = `
-                    <strong>Type:</strong> ${currentType === 'jobs' ? 'Emplois' : 'Communiqués'} | 
-                    <strong>Langue:</strong> ${currentLang.toUpperCase()} | 
-                    <strong>Total:</strong> ${items.length} éléments
-                `;
-                
-                displayContent(items);
+                currentData = currentType === 'jobs' ? data.jobs : data.news;
+                displayContent(currentData);
             } catch (error) {
                 console.error('Error:', error);
-                summaryDiv.innerHTML = `<span class="text-red-600">Erreur: ${error.message}</span>`;
+                alert('Erreur de chargement');
             }
         }
 
@@ -107,69 +228,229 @@
             const container = document.getElementById('content');
             
             if (!items || items.length === 0) {
-                container.innerHTML = '<p class="text-gray-500 text-center py-8">Aucun contenu trouvé</p>';
+                container.innerHTML = '<p class="text-gray-500 text-center py-8">Aucun contenu</p>';
                 return;
             }
 
-            container.innerHTML = items.map((item, index) => {
+            container.innerHTML = items.map(item => {
                 if (currentType === 'jobs') {
-                    // For jobs, show ALL fields that exist
-                    const allText = [
-                        item.description || '',
-                        item.summary || '',
-                        item.content || ''
-                    ].filter(t => t.length > 0).join('\n\n');
-                    
                     return `
-                        <div class="bg-white rounded-lg shadow p-6 border-l-4 border-blue-500">
-                            <div class="flex justify-between items-start mb-2">
-                                <h3 class="text-xl font-bold text-blue-600">${item.title || 'Sans titre'}</h3>
-                                <span class="text-sm text-gray-500">ID: ${item.id}</span>
+                        <div class="bg-white rounded-lg shadow-md p-6">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="flex-1">
+                                    <h3 class="text-2xl font-bold text-gray-800">${item.title || 'Sans titre'}</h3>
+                                    <div class="text-gray-600 mt-2 space-y-1">
+                                        <p><span class="font-medium">Département:</span> ${item.department || '-'}</p>
+                                        <p><span class="font-medium">Lieu:</span> ${item.location || item.lieu || '-'}</p>
+                                        <p><span class="font-medium">Type:</span> ${item.type || '-'}</p>
+                                        <p><span class="font-medium">Salaire:</span> ${item.salary || item.salaire || '-'}</p>
+                                        <p><span class="font-medium">Date limite:</span> ${item.deadline || '-'}</p>
+                                    </div>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button onclick="editItem(${item.id})" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                                        Éditer
+                                    </button>
+                                    <button onclick="deleteItem(${item.id})" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                                        Supprimer
+                                    </button>
+                                </div>
                             </div>
-                            
-                            <div class="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm mb-4 bg-gray-50 p-3 rounded">
-                                ${item.department ? `<div><strong>Département:</strong> ${item.department}</div>` : ''}
-                                ${item.location || item.lieu ? `<div><strong>Lieu:</strong> ${item.location || item.lieu}</div>` : ''}
-                                ${item.type ? `<div><strong>Type:</strong> ${item.type}</div>` : ''}
-                                ${item.salary || item.salaire ? `<div><strong>Salaire:</strong> ${item.salary || item.salaire}</div>` : ''}
-                                ${item.datePosted ? `<div><strong>Publié:</strong> ${item.datePosted}</div>` : ''}
-                                ${item.deadline ? `<div><strong>Date limite:</strong> ${item.deadline}</div>` : ''}
-                            </div>
-                            
-                            <div class="bg-blue-50 p-4 rounded">
-                                <h4 class="font-semibold mb-2">Description complète:</h4>
-                                <div class="text-sm whitespace-pre-wrap max-h-64 overflow-y-auto">${allText || 'Aucune description'}</div>
+                            <div class="border-t pt-4">
+                                <h4 class="font-semibold mb-2">Aperçu de la description:</h4>
+                                <div class="content-preview bg-gray-50 p-4 rounded">
+                                    ${item.description || '<p class="text-gray-500">Aucune description</p>'}
+                                </div>
                             </div>
                         </div>
                     `;
                 } else {
-                    // For news
-                    const allText = [
-                        item.content || '',
-                        item.summary || '',
-                        item.description || ''
-                    ].filter(t => t.length > 0).join('\n\n');
-                    
                     return `
-                        <div class="bg-white rounded-lg shadow p-6 border-l-4 border-purple-500">
-                            <div class="flex justify-between items-start mb-2">
-                                <h3 class="text-xl font-bold text-purple-600">${item.title || 'Sans titre'}</h3>
-                                <span class="text-sm text-gray-500">ID: ${item.id}</span>
+                        <div class="bg-white rounded-lg shadow-md p-6">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="flex-1">
+                                    <h3 class="text-2xl font-bold text-gray-800">${item.title || 'Sans titre'}</h3>
+                                    <div class="text-gray-600 mt-2 space-y-1">
+                                        <p><span class="font-medium">Date:</span> ${item.date || '-'}</p>
+                                        <p><span class="font-medium">Catégorie:</span> ${item.category || '-'}</p>
+                                        <p><span class="font-medium">Résumé:</span> ${item.summary || '-'}</p>
+                                    </div>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button onclick="editItem(${item.id})" class="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600">
+                                        Éditer
+                                    </button>
+                                    <button onclick="deleteItem(${item.id})" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                                        Supprimer
+                                    </button>
+                                </div>
                             </div>
-                            
-                            <div class="text-sm text-gray-600 mb-4 bg-gray-50 p-3 rounded">
-                                ${item.date ? `<span><strong>Date:</strong> ${item.date}</span> | ` : ''}
-                                ${item.category ? `<span><strong>Catégorie:</strong> ${item.category}</span>` : ''}
-                            </div>
-                            
-                            <div class="bg-purple-50 p-4 rounded">
-                                <h4 class="font-semibold mb-2">Contenu:</h4>
-                                <div class="text-sm whitespace-pre-wrap max-h-64 overflow-y-auto">${allText || 'Aucun contenu'}</div>
+                            <div class="border-t pt-4">
+                                <h4 class="font-semibold mb-2">Aperçu du contenu:</h4>
+                                <div class="content-preview bg-gray-50 p-4 rounded">
+                                    ${item.content || '<p class="text-gray-500">Aucun contenu</p>'}
+                                </div>
                             </div>
                         </div>
                     `;
                 }
             }).join('');
+        }
+
+        function showAddForm() {
+            document.getElementById('modalTitle').textContent = 'Ajouter nouveau';
+            document.getElementById('editForm').reset();
+            document.getElementById('itemId').value = '';
+
+            if (currentType === 'jobs') {
+                document.getElementById('jobFields').classList.remove('hidden');
+                document.getElementById('newsFields').classList.add('hidden');
+            } else {
+                document.getElementById('jobFields').classList.add('hidden');
+                document.getElementById('newsFields').classList.remove('hidden');
+            }
+
+            document.getElementById('editModal').classList.remove('hidden');
+        }
+
+        function editItem(id) {
+            const item = currentData.find(i => i.id == id);
+            if (!item) return;
+
+            document.getElementById('modalTitle').textContent = 'Éditer';
+            document.getElementById('itemId').value = id;
+
+            if (currentType === 'jobs') {
+                document.getElementById('title').value = item.title || '';
+                document.getElementById('department').value = item.department || '';
+                document.getElementById('location').value = item.location || item.lieu || '';
+                document.getElementById('type').value = item.type || '';
+                document.getElementById('salary').value = item.salary || item.salaire || '';
+                document.getElementById('deadline').value = item.deadline || '';
+                document.getElementById('jobDescription').value = item.description || '';
+                
+                document.getElementById('jobFields').classList.remove('hidden');
+                document.getElementById('newsFields').classList.add('hidden');
+            } else {
+                document.getElementById('newsTitle').value = item.title || '';
+                document.getElementById('date').value = item.date || '';
+                document.getElementById('category').value = item.category || '';
+                document.getElementById('summary').value = item.summary || '';
+                document.getElementById('newsContent').value = item.content || '';
+                
+                document.getElementById('jobFields').classList.add('hidden');
+                document.getElementById('newsFields').classList.remove('hidden');
+            }
+
+            document.getElementById('editModal').classList.remove('hidden');
+        }
+
+        async function saveItem(e) {
+            e.preventDefault();
+            
+            const id = document.getElementById('itemId').value;
+            const isNew = !id;
+            
+            let data = { lang: currentLang };
+            
+            if (currentType === 'jobs') {
+                data = {
+                    ...data,
+                    title: document.getElementById('title').value,
+                    department: document.getElementById('department').value,
+                    location: document.getElementById('location').value,
+                    type: document.getElementById('type').value,
+                    salary: document.getElementById('salary').value,
+                    deadline: document.getElementById('deadline').value,
+                    description: document.getElementById('jobDescription').value,
+                    datePosted: new Date().toISOString().split('T')[0]
+                };
+            } else {
+                data = {
+                    ...data,
+                    title: document.getElementById('newsTitle').value,
+                    date: document.getElementById('date').value || new Date().toISOString().split('T')[0],
+                    category: document.getElementById('category').value,
+                    summary: document.getElementById('summary').value,
+                    content: document.getElementById('newsContent').value
+                };
+            }
+
+            try {
+                const url = isNew 
+                    ? `/api/cms/${currentType}` 
+                    : `/api/cms/${currentType}/${id}`;
+                
+                const response = await fetch(url, {
+                    method: isNew ? 'POST' : 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (!response.ok) throw new Error('Save failed');
+                
+                closeModal();
+                loadContent();
+                alert(isNew ? 'Créé avec succès' : 'Modifié avec succès');
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Erreur de sauvegarde');
+            }
+        }
+
+        async function deleteItem(id) {
+            if (!confirm('Êtes-vous sûr de vouloir supprimer cet élément?')) return;
+
+            try {
+                const response = await fetch(`/api/cms/${currentType}/${id}?lang=${currentLang}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) throw new Error('Delete failed');
+                
+                loadContent();
+                alert('Supprimé avec succès');
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Erreur de suppression');
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('editModal').classList.add('hidden');
+        }
+
+        function insertHTML(openTag, closeTag) {
+            const textarea = currentType === 'jobs' 
+                ? document.getElementById('jobDescription')
+                : document.getElementById('newsContent');
+            
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const text = textarea.value;
+            const selectedText = text.substring(start, end);
+            
+            const newText = text.substring(0, start) + 
+                            openTag + selectedText + closeTag + 
+                            text.substring(end);
+            
+            textarea.value = newText;
+            textarea.focus();
+            
+            // Position cursor inside the tags if no text was selected
+            if (selectedText === '') {
+                const newPosition = start + openTag.length;
+                textarea.setSelectionRange(newPosition, newPosition);
+            } else {
+                const newPosition = start + openTag.length + selectedText.length + closeTag.length;
+                textarea.setSelectionRange(newPosition, newPosition);
+            }
         }
 
         // Load initial content

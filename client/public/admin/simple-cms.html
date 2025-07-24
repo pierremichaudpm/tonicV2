@@ -146,32 +146,49 @@
 
         // Initialize CKEditor
         function initEditors() {
-            if (jobEditor) jobEditor.destroy();
-            if (newsEditor) newsEditor.destroy();
+            // Wait for CKEDITOR to be available
+            if (typeof CKEDITOR === 'undefined') {
+                setTimeout(initEditors, 100);
+                return;
+            }
             
-            jobEditor = CKEDITOR.replace('jobDescription', {
-                height: 400,
-                toolbar: [
-                    { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline'] },
-                    { name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent'] },
-                    { name: 'styles', items: ['Format'] },
-                    { name: 'tools', items: ['Maximize'] }
-                ]
-            });
+            if (jobEditor) {
+                jobEditor.destroy();
+                jobEditor = null;
+            }
+            if (newsEditor) {
+                newsEditor.destroy();
+                newsEditor = null;
+            }
             
-            newsEditor = CKEDITOR.replace('newsContent', {
-                height: 400,
-                toolbar: [
-                    { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline'] },
-                    { name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent'] },
-                    { name: 'styles', items: ['Format'] },
-                    { name: 'tools', items: ['Maximize'] }
-                ]
-            });
+            try {
+                jobEditor = CKEDITOR.replace('jobDescription', {
+                    height: 400,
+                    toolbar: [
+                        { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline'] },
+                        { name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent'] },
+                        { name: 'styles', items: ['Format'] },
+                        { name: 'tools', items: ['Maximize'] }
+                    ]
+                });
+                
+                newsEditor = CKEDITOR.replace('newsContent', {
+                    height: 400,
+                    toolbar: [
+                        { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline'] },
+                        { name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent'] },
+                        { name: 'styles', items: ['Format'] },
+                        { name: 'tools', items: ['Maximize'] }
+                    ]
+                });
+            } catch (e) {
+                console.error('Error initializing editors:', e);
+                setTimeout(initEditors, 100);
+            }
         }
 
         // Initialize editors on page load
-        setTimeout(initEditors, 100);
+        window.addEventListener('load', initEditors);
 
         document.getElementById('contentType').addEventListener('change', (e) => {
             currentType = e.target.value;
@@ -302,24 +319,32 @@
                 document.getElementById('salary').value = item.salary || item.salaire || '';
                 document.getElementById('deadline').value = item.deadline || '';
                 
-                // Decode HTML entities before setting in editor
-                const decodedDescription = decodeHtmlEntities(item.description || '');
-                jobEditor.setData(decodedDescription);
-                
                 document.querySelector('.jobFields').classList.remove('hidden');
                 document.querySelector('.newsFields').classList.add('hidden');
+                
+                // Set content after modal is visible
+                setTimeout(() => {
+                    if (jobEditor && jobEditor.setData) {
+                        const decodedDescription = decodeHtmlEntities(item.description || '');
+                        jobEditor.setData(decodedDescription);
+                    }
+                }, 100);
             } else {
                 document.getElementById('newsTitle').value = item.title || '';
                 document.getElementById('date').value = item.date || '';
                 document.getElementById('category').value = item.category || '';
                 document.getElementById('summary').value = item.summary || '';
                 
-                // Decode HTML entities before setting in editor
-                const decodedContent = decodeHtmlEntities(item.content || '');
-                newsEditor.setData(decodedContent);
-                
                 document.querySelector('.jobFields').classList.add('hidden');
                 document.querySelector('.newsFields').classList.remove('hidden');
+                
+                // Set content after modal is visible
+                setTimeout(() => {
+                    if (newsEditor && newsEditor.setData) {
+                        const decodedContent = decodeHtmlEntities(item.content || '');
+                        newsEditor.setData(decodedContent);
+                    }
+                }, 100);
             }
 
             document.getElementById('editModal').classList.remove('hidden');
@@ -391,13 +416,21 @@
             document.getElementById('itemId').value = '';
 
             if (currentType === 'jobs') {
-                jobEditor.setData('');
                 document.querySelector('.jobFields').classList.remove('hidden');
                 document.querySelector('.newsFields').classList.add('hidden');
+                setTimeout(() => {
+                    if (jobEditor && jobEditor.setData) {
+                        jobEditor.setData('');
+                    }
+                }, 100);
             } else {
-                newsEditor.setData('');
                 document.querySelector('.jobFields').classList.add('hidden');
                 document.querySelector('.newsFields').classList.remove('hidden');
+                setTimeout(() => {
+                    if (newsEditor && newsEditor.setData) {
+                        newsEditor.setData('');
+                    }
+                }, 100);
             }
 
             document.getElementById('editModal').classList.remove('hidden');
