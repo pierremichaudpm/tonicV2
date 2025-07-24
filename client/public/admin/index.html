@@ -274,6 +274,7 @@
         // Language selector
         document.getElementById('languageSelector').addEventListener('change', (e) => {
             currentLang = e.target.value;
+            console.log('Language changed to:', currentLang);
             loadJobs();
             loadNews();
         });

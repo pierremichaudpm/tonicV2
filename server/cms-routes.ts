@@ -61,23 +61,29 @@ router.post('/login', (req, res) => {
 async function readJobsData(lang: string = 'fr') {
   try {
     const file = lang === 'en' ? JOBS_FILE_EN : JOBS_FILE_FR;
+    console.log(`Reading jobs from: ${file}`);
     const content = await fs.readFile(file, 'utf8');
     
-    // Try different variable names
-    let match = content.match(/const jobListings = (\[[\s\S]*?\]);/);
+    // Look for jobListings or jobsData variable
+    let match = content.match(/const jobListings = (\[[^;]*\]);/s);
     if (!match) {
-      match = content.match(/const jobsData = (\[[\s\S]*?\]);/);
+      match = content.match(/const jobsData = (\[[^;]*\]);/s);
     }
     
     if (match) {
-      const data = JSON.parse(match[1]);
-      console.log(`Loaded ${data.length} jobs for ${lang}`);
-      return data;
+      try {
+        const data = JSON.parse(match[1]);
+        console.log(`Successfully loaded ${data.length} jobs for ${lang}`);
+        return data;
+      } catch (parseError) {
+        console.error(`JSON parse error for jobs (${lang}):`, parseError);
+        return [];
+      }
     }
-    console.log(`No jobs data found in ${file}`);
+    console.log(`No jobs array found in ${file}`);
     return [];
   } catch (error) {
-    console.error(`Error reading jobs data (${lang}):`, error);
+    console.error(`Error reading jobs file (${lang}):`, error);
     return [];
   }
 }
@@ -91,23 +97,29 @@ async function writeJobsData(jobs: any[], lang: string = 'fr') {
 async function readNewsData(lang: string = 'fr') {
   try {
     const file = lang === 'en' ? NEWS_FILE_EN : NEWS_FILE_FR;
+    console.log(`Reading news from: ${file}`);
     const content = await fs.readFile(file, 'utf8');
     
-    // Try different variable names
-    let match = content.match(/const pressReleases = (\[[\s\S]*?\]);/);
+    // Look for pressReleases or communiquesData variable
+    let match = content.match(/const pressReleases = (\[[^;]*\]);/s);
     if (!match) {
-      match = content.match(/const communiquesData = (\[[\s\S]*?\]);/);
+      match = content.match(/const communiquesData = (\[[^;]*\]);/s);
     }
     
     if (match) {
-      const data = JSON.parse(match[1]);
-      console.log(`Loaded ${data.length} news items for ${lang}`);
-      return data;
+      try {
+        const data = JSON.parse(match[1]);
+        console.log(`Successfully loaded ${data.length} news items for ${lang}`);
+        return data;
+      } catch (parseError) {
+        console.error(`JSON parse error for news (${lang}):`, parseError);
+        return [];
+      }
     }
-    console.log(`No news data found in ${file}`);
+    console.log(`No news array found in ${file}`);
     return [];
   } catch (error) {
-    console.error(`Error reading news data (${lang}):`, error);
+    console.error(`Error reading news file (${lang}):`, error);
     return [];
   }
 }
