@@ -119,13 +119,16 @@ router.post('/jobs', authenticateToken, async (req, res) => {
 
 router.put('/jobs/:id', authenticateToken, async (req, res) => {
   try {
-    const jobs = await readJobsData();
+    const lang = req.body.lang || 'fr';
+    const jobs = await readJobsData(lang);
     const index = jobs.findIndex((job: any) => job.id == req.params.id);
     if (index === -1) {
       return res.status(404).json({ message: 'Job not found' });
     }
-    jobs[index] = { ...jobs[index], ...req.body };
-    await writeJobsData(jobs);
+    const updatedJob = { ...jobs[index], ...req.body };
+    delete updatedJob.lang;
+    jobs[index] = updatedJob;
+    await writeJobsData(jobs, lang);
     res.json(jobs[index]);
   } catch (error) {
     res.status(500).json({ message: 'Error updating job' });
@@ -134,9 +137,10 @@ router.put('/jobs/:id', authenticateToken, async (req, res) => {
 
 router.delete('/jobs/:id', authenticateToken, async (req, res) => {
   try {
-    const jobs = await readJobsData();
+    const lang = req.query.lang as string || 'fr';
+    const jobs = await readJobsData(lang);
     const filtered = jobs.filter((job: any) => job.id != req.params.id);
-    await writeJobsData(filtered);
+    await writeJobsData(filtered, lang);
     res.json({ success: true });
   } catch (error) {
     res.status(500).json({ message: 'Error deleting job' });
@@ -146,8 +150,9 @@ router.delete('/jobs/:id', authenticateToken, async (req, res) => {
 // News endpoints
 router.get('/news', authenticateToken, async (req, res) => {
   try {
-    const news = await readNewsData();
-    res.json(news);
+    const lang = req.query.lang as string || 'fr';
+    const news = await readNewsData(lang);
+    res.json({ news, lang });
   } catch (error) {
     res.status(500).json({ message: 'Error reading news data' });
   }
@@ -155,13 +160,15 @@ router.get('/news', authenticateToken, async (req, res) => {
 
 router.post('/news', authenticateToken, async (req, res) => {
   try {
-    const news = await readNewsData();
+    const lang = req.body.lang || 'fr';
+    const news = await readNewsData(lang);
     const newArticle = {
       id: Date.now(),
       ...req.body
     };
+    delete newArticle.lang;
     news.push(newArticle);
-    await writeNewsData(news);
+    await writeNewsData(news, lang);
     res.json(newArticle);
   } catch (error) {
     res.status(500).json({ message: 'Error creating news article' });
@@ -170,13 +177,16 @@ router.post('/news', authenticateToken, async (req, res) => {
 
 router.put('/news/:id', authenticateToken, async (req, res) => {
   try {
-    const news = await readNewsData();
+    const lang = req.body.lang || 'fr';
+    const news = await readNewsData(lang);
     const index = news.findIndex((article: any) => article.id == req.params.id);
     if (index === -1) {
       return res.status(404).json({ message: 'Article not found' });
     }
-    news[index] = { ...news[index], ...req.body };
-    await writeNewsData(news);
+    const updatedArticle = { ...news[index], ...req.body };
+    delete updatedArticle.lang;
+    news[index] = updatedArticle;
+    await writeNewsData(news, lang);
     res.json(news[index]);
   } catch (error) {
     res.status(500).json({ message: 'Error updating article' });
@@ -185,9 +195,10 @@ router.put('/news/:id', authenticateToken, async (req, res) => {
 
 router.delete('/news/:id', authenticateToken, async (req, res) => {
   try {
-    const news = await readNewsData();
+    const lang = req.query.lang as string || 'fr';
+    const news = await readNewsData(lang);
     const filtered = news.filter((article: any) => article.id != req.params.id);
-    await writeNewsData(filtered);
+    await writeNewsData(filtered, lang);
     res.json({ success: true });
   } catch (error) {
     res.status(500).json({ message: 'Error deleting article' });

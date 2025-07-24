@@ -372,7 +372,7 @@
         async function deleteJob(id) {
             if (confirm('Êtes-vous sûr de vouloir supprimer cet emploi ?')) {
                 try {
-                    await apiRequest(`/api/cms/jobs/${id}`, { method: 'DELETE' });
+                    await apiRequest(`/api/cms/jobs/${id}?lang=${currentLang}`, { method: 'DELETE' });
                     loadJobs();
                 } catch (error) {
                     alert('Erreur lors de la suppression');
@@ -386,8 +386,9 @@
 
         async function loadNews() {
             try {
-                const response = await apiRequest('/api/cms/news');
-                news = await response.json();
+                const response = await apiRequest(`/api/cms/news?lang=${currentLang}`);
+                const data = await response.json();
+                news = data.news;
                 renderNews();
             } catch (error) {
                 console.error('Error loading news:', error);
@@ -419,7 +420,8 @@
             const newsData = {
                 title: document.getElementById('newsTitle').value,
                 date: document.getElementById('newsDate').value,
-                content: document.getElementById('newsContent').value
+                content: document.getElementById('newsContent').value,
+                lang: currentLang
             };
 
             try {
@@ -471,7 +473,7 @@
         async function deleteNews(id) {
             if (confirm('Êtes-vous sûr de vouloir supprimer cette actualité ?')) {
                 try {
-                    await apiRequest(`/api/cms/news/${id}`, { method: 'DELETE' });
+                    await apiRequest(`/api/cms/news/${id}?lang=${currentLang}`, { method: 'DELETE' });
                     loadNews();
                 } catch (error) {
                     alert('Erreur lors de la suppression');
