@@ -62,21 +62,17 @@ async function readJobsData(lang: string = 'fr') {
   try {
     const file = lang === 'en' ? JOBS_FILE_EN : JOBS_FILE_FR;
     console.log(`Reading jobs from: ${file}`);
+    
+    // Use eval to execute the JavaScript and get the data
     const content = await fs.readFile(file, 'utf8');
+    const vm = require('vm');
+    const context = {};
+    vm.createContext(context);
+    vm.runInContext(content, context);
     
-    // Use correct variable name based on language
-    const varName = lang === 'en' ? 'jobsData' : 'jobListings';
-    const regex = new RegExp(`const ${varName} = (\\[[\\s\\S]*?\\]);`, 'i');
-    const match = content.match(regex);
-    
-    if (match) {
-      const data = JSON.parse(match[1]);
-      console.log(`Successfully loaded ${data.length} jobs for ${lang}`);
-      return data;
-    }
-    
-    console.log(`No ${varName} found in ${file}`);
-    return [];
+    const data = context.jobListings || context.jobsData || [];
+    console.log(`Successfully loaded ${data.length} jobs for ${lang}`);
+    return data;
   } catch (error) {
     console.error(`Error reading jobs file (${lang}):`, error);
     return [];
@@ -93,21 +89,17 @@ async function readNewsData(lang: string = 'fr') {
   try {
     const file = lang === 'en' ? NEWS_FILE_EN : NEWS_FILE_FR;
     console.log(`Reading news from: ${file}`);
+    
+    // Use eval to execute the JavaScript and get the data
     const content = await fs.readFile(file, 'utf8');
+    const vm = require('vm');
+    const context = {};
+    vm.createContext(context);
+    vm.runInContext(content, context);
     
-    // Use correct variable name based on language
-    const varName = lang === 'en' ? 'communiquesData' : 'pressReleases';
-    const regex = new RegExp(`const ${varName} = (\\[[\\s\\S]*?\\]);`, 'i');
-    const match = content.match(regex);
-    
-    if (match) {
-      const data = JSON.parse(match[1]);
-      console.log(`Successfully loaded ${data.length} news items for ${lang}`);
-      return data;
-    }
-    
-    console.log(`No ${varName} found in ${file}`);
-    return [];
+    const data = context.pressReleases || context.communiquesData || [];
+    console.log(`Successfully loaded ${data.length} news items for ${lang}`);
+    return data;
   } catch (error) {
     console.error(`Error reading news file (${lang}):`, error);
     return [];
