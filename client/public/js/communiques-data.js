@@ -12,7 +12,7 @@ const pressReleases = [
     "id": 4,
     "date": "2024-10-22",
     "title": "Les Championnats du Monde Route UCI 2026 dévoilent leur parcours",
-    "category": "Championnats du Monde UCI",
+    "category": "UCI 2026",
     "summary": "Les tracés des épreuves sur route des Championnats du Monde UCI 2026 à Montréal ont été officiellement présentés, promettant des courses spectaculaires.",
     "content": "\n            <p>Montréal, le 22 octobre 2024 – Le comité organisateur des Championnats du Monde Route UCI Montréal 2026 a dévoilé aujourd'hui les parcours qui accueilleront l'élite mondiale du cyclisme du 19 au 27 septembre 2026.</p>\n            \n            <p>Les courses se dérouleront au cœur de la métropole, avec des départs et arrivées sur l'emblématique avenue du Parc, au pied du Mont-Royal.</p>\n            \n            <h3>Parcours élite</h3>\n            <p>Le parcours de la course sur route élite hommes totalisera 267 km avec 4 200 mètres de dénivelé positif, incluant 17 ascensions de la côte Camillien-Houde. L'épreuve élite femmes couvrira 162 km avec 2 600 mètres de dénivelé.</p>\n            \n            <blockquote>\"Ce parcours exigeant mettra en valeur les paysages iconiques de Montréal tout en offrant un défi technique à la hauteur d'un championnat du monde\"</blockquote>\n            \n            <p>Plus de 1 000 athlètes représentant 75 nations sont attendus pour ces championnats qui généreront des retombées économiques estimées à 80 millions de dollars.</p>\n        ",
     "image": "images/montreal-2026-uci-hero.jpg"
@@ -21,7 +21,7 @@ const pressReleases = [
     "id": 3,
     "date": "2024-09-30",
     "title": "Record de participation au Marathon Beneva de Montréal 2024",
-    "category": "Marathon Beneva",
+    "category": "Marathon Beneva 21K",
     "summary": "Plus de 25 000 coureurs ont pris part à la 31e édition du Marathon Beneva de Montréal, établissant un nouveau record de participation.",
     "content": "\n            <p>Montréal, le 30 septembre 2024 – La 31e édition du Marathon Beneva de Montréal s'est clôturée dimanche sur une note historique avec une participation record de plus de 25 000 coureurs répartis sur toutes les distances.</p>\n            \n            <p>Cette édition 2024 a été marquée par des conditions météorologiques parfaites et une organisation sans faille qui ont contribué à créer une atmosphère festive exceptionnelle dans les rues de Montréal.</p>\n            \n            <h3>Faits saillants de l'événement</h3>\n            <ul>\n                <li>25 347 participants au total (record absolu)</li>\n                <li>Représentation de 89 pays différents</li>\n                <li>Taux de complétion de 97,8% toutes distances confondues</li>\n                <li>Plus de 1 200 bénévoles mobilisés</li>\n            </ul>\n            \n            <p>L'événement continue de renforcer sa position comme l'un des marathons les plus prisés au Canada et confirme Montréal comme destination de choix pour les coureurs internationaux.</p>\n        ",
     "image": "images/marathon-beneva-hero.jpg"

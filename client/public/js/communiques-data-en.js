@@ -12,7 +12,7 @@ const communiquesData = [
     "id": 4,
     "date": "2024-10-22",
     "title": "UCI Road World Championships 2026 unveil their routes",
-    "category": "UCI World Championships",
+    "category": "UCI 2026",
     "summary": "The road race routes for the 2026 UCI World Championships in Montreal have been officially presented, promising spectacular races.",
     "content": "Montreal, October 22, 2024 – The organizing committee of the 2026 UCI Road World Championships Montreal today unveiled the routes that will host the world's cycling elite from September 19 to 27, 2026.\n\nThe races will take place in the heart of the metropolis, with starts and finishes on the iconic Parc Avenue, at the foot of Mount Royal.\n\nElite Course\nThe men's elite road race course will total 267 km with 4,200 meters of positive elevation gain, including 17 ascents of the Camillien-Houde climb. The women's elite event will cover 162 km with 2,600 meters of elevation gain.\n\n\"This demanding course will showcase Montreal's iconic landscapes while offering a technical challenge worthy of a world championship.\"\n\nMore than 1,000 athletes representing 75 nations are expected for these championships, which will generate an estimated economic impact of $80 million.",
     "image": "images/montreal-2026-uci-hero.jpg"
@@ -21,7 +21,7 @@ const communiquesData = [
     "id": 3,
     "date": "2024-09-30",
     "title": "Record participation at the 2024 Beneva Montreal Marathon",
-    "category": "Beneva Marathon",
+    "category": "Marathon Beneva 21K",
     "summary": "More than 25,000 runners took part in the 31st edition of the Beneva Montreal Marathon, setting a new participation record.",
     "content": "Montreal, September 30, 2024 – The 31st edition of the Beneva Montreal Marathon concluded Sunday on a historic note with a record participation of more than 25,000 runners across all distances.\n\nThis 2024 edition was marked by perfect weather conditions and flawless organization that contributed to creating an exceptional festive atmosphere in the streets of Montreal.\n\nEvent Highlights:\n- 25,347 total participants (absolute record)\n- Representation from 89 different countries\n- 97.8% completion rate across all distances\n- More than 1,200 volunteers mobilized\n\nThe event continues to strengthen its position as one of Canada's most popular marathons and confirms Montreal as a destination of choice for international runners.",
     "image": "images/marathon-beneva-hero.jpg"
@@ -30,7 +30,7 @@ const communiquesData = [
     "id": 2,
     "date": "2024-09-16",
     "title": "Resounding success for the 2024 Quebec and Montreal Cycling Grand Prix",
-    "category": "Cycling Grand Prix",
+    "category": "Grands Prix Cyclistes",
     "summary": "The UCI WorldTour events attracted the biggest names in world cycling and hundreds of thousands of spectators.",
     "content": "Montreal/Quebec, September 16, 2024 – The 14th editions of the Quebec and Montreal Cycling Grand Prix concluded with enthusiasm with the participation of the world's road cycling elite.\n\nThese two UCI WorldTour events, the only ones in North America, once again demonstrated their ability to bring together the world's best riders in an exceptional setting.\n\n2024 Edition Summary:\n- 19 UCI WorldTour teams present\n- More than 400,000 spectators at both sites\n- Broadcast in over 150 countries\n- Estimated economic impact of $35 million\n\nThe exemplary organization and warm atmosphere of the Quebec and Montreal public continue to make these events essential fixtures on the world cycling calendar.",
     "image": "images/grands-prix-cyclistes-hero.jpg"

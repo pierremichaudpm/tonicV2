@@ -18,7 +18,7 @@ const jobListings = [
     "id": 102,
     "datePosted": "2025-07-22",
     "title": "Coordonnateur, Événements – DOCK619",
-    "department": "Événements",
+    "department": "Dock 619",
     "type": "Permanent",
     "location": "Longueuil, QC",
     "summary": "Appuyer l'équipe dans l'organisation, la logistique et la réalisation des événements au DOCK619.",
