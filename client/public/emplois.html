@@ -75,6 +75,16 @@
             border-color: var(--glass-border-hover);
         }
 
+        /* Category Badge Colors - Using CSS custom properties */
+        .category-beach { --cat-color: #ff0e9b; background: linear-gradient(135deg, var(--cat-color), rgba(255, 14, 155, 0.4)); }
+        .category-marathon { --cat-color: #463092; background: linear-gradient(135deg, var(--cat-color), rgba(70, 48, 146, 0.4)); }
+        .category-cycling { --cat-color: #b7d233; background: linear-gradient(135deg, var(--cat-color), rgba(183, 210, 51, 0.4)); }
+        .category-uci { --cat-color: #da273b; background: linear-gradient(135deg, var(--cat-color), rgba(218, 39, 59, 0.4)); }
+        .category-studio { --cat-color: #06b6d4; background: linear-gradient(135deg, var(--cat-color), rgba(6, 182, 212, 0.4)); }
+        .category-dock { --cat-color: #6b7280; background: linear-gradient(135deg, var(--cat-color), rgba(107, 114, 128, 0.4)); }
+        .category-21k { --cat-color: #f59e0b; background: linear-gradient(135deg, var(--cat-color), rgba(245, 158, 11, 0.4)); }
+        .category-tonic { --cat-color: #f97316; background: linear-gradient(135deg, var(--cat-color), rgba(249, 115, 22, 0.4)); }
+
         /* Special styling for Tonic logo images in job cards */
         .job-card img[src*="tonic-logo.png"] {
             width: 180px !important;
@@ -418,18 +428,19 @@
             return categoryMap[department] || 'tonic';
         }
         
-        // Get department class for styling
+        // Get department class for styling based on category colors
         const getDepartmentClass = (department) => {
             const classMap = {
-                'Événements': 'dept-events',
-                'Events': 'dept-events',
-                'Production': 'dept-production',
-                'Administration': 'dept-tonic',
-                'Cuisine': 'dept-events',
-                'Kitchen': 'dept-events',
-                'Groupe Tonic': 'dept-tonic'
+                'Beach Pro Tour': 'category-beach',
+                'Grands Prix Cyclistes': 'category-cycling',
+                'Marathon Beneva 21K': 'category-marathon',
+                'UCI 2026': 'category-uci',
+                'Studio 76': 'category-studio',
+                'Dock 619': 'category-dock',
+                '21K de Montréal': 'category-21k',
+                'Groupe Tonic': 'category-tonic'
             };
-            return classMap[department] || 'dept-events';
+            return classMap[department] || 'category-tonic';
         };
 
         // Get all jobs - Updated to use Strapi API
