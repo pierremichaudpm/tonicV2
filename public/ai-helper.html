@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Code Assistant | Groupe Tonic</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/shared.css">
+    <style>
+        .terminal {
+            background: #0f0f0f;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            border-radius: 8px;
+            padding: 1rem;
+            height: 300px;
+            overflow-y: auto;
+            border: 1px solid #333;
+        }
+        
+        .success {
+            color: #00ff00;
+        }
+        
+        .error {
+            color: #ff4444;
+        }
+        
+        .warning {
+            color: #ffaa00;
+        }
+        
+        .ai-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .ai-card:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body class="bg-black text-white min-h-screen">
+    <!-- Header -->
+    <header class="header-main fixed top-0 left-0 right-0 z-40">
+        <div class="container mx-auto px-4 py-6 sm:py-8">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <a href="index-en.html" class="header-logo">
+                        <img src="images/tonic-logo.png" alt="Groupe Tonic" style="height: clamp(1.875rem, 3.75vw, 2.625rem); width: auto;" />
+                    </a>
+                    <span class="hidden sm:inline text-white text-sm">| AI Code Assistant</span>
+                </div>
+                <nav class="hidden md:flex items-center gap-6">
+                    <a href="<a href="index-en.html" class="nav-item"" data-tooltip="Accueil">
+                        <span>← Back to Site</span>
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="pt-24 sm:pt-28 pb-20">
+        <div class="container mx-auto px-4 max-w-6xl">
+            
+            <!-- Title -->
+            <div class="text-center mb-12">
+                <h1 class="text-5xl sm:text-6xl font-black mb-4">AI Code Assistant</h1>
+                <p class="text-xl text-white max-w-3xl mx-auto">
+                    Make changes to your grid layout once and apply to both French and English versions automatically
+                </p>
+            </div>
+
+            <!-- Grid Change Assistant -->
+            <div class="grid lg:grid-cols-2 gap-8 mb-12">
+                
+                <!-- Input Panel -->
+                <div class="ai-card rounded-2xl p-8">
+                    <h2 class="text-2xl font-bold mb-6">Grid Layout Changes</h2>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <label for="gridDescription" class="block text-sm font-medium text-white mb-2">
+                                Describe the change you want to make:
+                            </label>
+                            <textarea id="gridDescription" 
+                                      class="w-full p-4 bg-gray-900/50 border border-gray-600 rounded-lg text-white resize-none"
+                                      rows="4"
+                                      placeholder="Example: Change the grid from 3 columns to 4 columns on desktop, make logos smaller, add more spacing between cards..."></textarea>
+                        </div>
+                        
+                        <button onclick="applyGridChange()" 
+                                class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-bold py-4 px-6 rounded-lg transition-all duration-300 transform hover:scale-105">
+                            Apply Grid Changes
+                        </button>
+                        
+                        <div class="text-sm text-white">
+                            <p><strong>Examples of changes you can make:</strong></p>
+                            <ul class="list-disc list-inside space-y-1 mt-2">
+                                <li>Change grid columns (2, 3, 4, or 5 columns)</li>
+                                <li>Adjust spacing between cards</li>
+                                <li>Modify card sizes or aspect ratios</li>
+                                <li>Update responsive breakpoints</li>
+                                <li>Change logo treatments or scaling</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Output Terminal -->
+                <div class="ai-card rounded-2xl p-8">
+                    <h2 class="text-2xl font-bold mb-6">AI Assistant Output</h2>
+                    <div id="terminal" class="terminal">
+                        <div class="mb-2">🤖 Tonic AI Code Assistant Ready</div>
+                        <div class="mb-2">• Connected to Claude 4.0 Sonnet</div>
+                        <div class="mb-2">• Analyzing bilingual website structure</div>
+                        <div class="mb-4">• Ready to apply changes to both FR and EN versions</div>
+                        <div class="text-gray-400">Waiting for your grid change request...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="ai-card rounded-xl p-6">
+                    <h3 class="text-xl font-bold mb-3">🔍 Code Analysis</h3>
+                    <p class="text-white mb-4">Get AI suggestions for improving your code</p>
+                    <button onclick="showCodeAnalysis()" 
+                            class="w-full bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 rounded-lg transition-colors">
+                        Analyze Code
+                    </button>
+                </div>
+                
+                <div class="ai-card rounded-xl p-6">
+                    <h3 class="text-xl font-bold mb-3">🎨 Style Sync</h3>
+                    <p class="text-white mb-4">Synchronize styles between language versions</p>
+                    <button onclick="syncStyles()" 
+                            class="w-full bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 rounded-lg transition-colors">
+                        Sync Styles
+                    </button>
+                </div>
+                
+                <div class="ai-card rounded-xl p-6">
+                    <h3 class="text-xl font-bold mb-3">⚡ Quick Fix</h3>
+                    <p class="text-white mb-4">Apply common fixes and optimizations</p>
+                    <button onclick="quickFix()" 
+                            class="w-full bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 rounded-lg transition-colors">
+                        Quick Fix
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        const terminal = document.getElementById('terminal');
+        
+        function addToTerminal(message, className = '') {
+            const div = document.createElement('div');
+            div.className = className;
+            div.textContent = `> ${message}`;
+            terminal.appendChild(div);
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+        
+        function addHTMLToTerminal(html) {
+            const div = document.createElement('div');
+            div.innerHTML = html;
+            terminal.appendChild(div);
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+        
+        async function applyGridChange() {
+            const description = document.getElementById('gridDescription').value.trim();
+            
+            if (!description) {
+                addToTerminal('Please describe the change you want to make', 'error');
+                return;
+            }
+            
+            addToTerminal('🤖 Analyzing your request...', 'warning');
+            addToTerminal(`Request: ${description}`);
+            
+            try {
+                const response = await fetch('/api/ai/grid-change', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ changeDescription: description })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    addToTerminal('✅ Changes applied successfully!', 'success');
+                    addToTerminal(`📝 ${result.message}`, 'success');
+                    
+                    if (result.changes && result.changes.length > 0) {
+                        addToTerminal('📂 Files modified:', 'warning');
+                        result.changes.forEach(change => {
+                            if (change.applied) {
+                                addToTerminal(`  ✅ ${change.file} - ${change.reason}`, 'success');
+                            } else {
+                                addToTerminal(`  ❌ ${change.file} - ${change.error}`, 'error');
+                            }
+                        });
+                    }
+                    
+                    addToTerminal('🔄 Refresh your browser to see changes', 'warning');
+                } else {
+                    addToTerminal(`❌ Error: ${result.message}`, 'error');
+                }
+                
+            } catch (error) {
+                addToTerminal(`❌ Network error: ${error.message}`, 'error');
+            }
+        }
+        
+        function showCodeAnalysis() {
+            addToTerminal('🔍 Code analysis feature coming soon...', 'warning');
+        }
+        
+        function syncStyles() {
+            addToTerminal('🎨 Style synchronization feature coming soon...', 'warning');
+        }
+        
+        function quickFix() {
+            addToTerminal('⚡ Quick fix feature coming soon...', 'warning');
+        }
+    </script>
+</body>
+</html>

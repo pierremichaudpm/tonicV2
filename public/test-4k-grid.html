@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test 4K Grid Layout</title>
+    <style>
+        body {
+            margin: 0;
+            background: #000;
+            color: white;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        
+        .info {
+            margin-bottom: 20px;
+            padding: 20px;
+            background: #333;
+            border-radius: 8px;
+        }
+        
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 200px);
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .tile {
+            background: #444;
+            border: 2px solid #666;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .tile:nth-child(1) { background: #ff0e9b; }
+        .tile:nth-child(2) { background: #b7d233; }
+        .tile:nth-child(3) { background: #463092; }
+        .tile:nth-child(4) { background: #e2493c; }
+        .tile:nth-child(5) { background: #da273b; }
+        .tile:nth-child(6) { background: #03b0f9; }
+        .tile:nth-child(7) { background: #666; grid-column: 1; grid-row: 3; }
+        
+        /* Simulate 4K screen */
+        @media (min-width: 3000px) {
+            .test-grid {
+                max-width: 90vw;
+                grid-template-rows: repeat(3, 300px);
+            }
+            .info::after {
+                content: " (4K MODE ACTIVE)";
+                color: #0f0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="info">
+        <h1>4K Grid Test Page</h1>
+        <p>Screen width: <span id="width"></span>px</p>
+        <p>Screen height: <span id="height"></span>px</p>
+        <p>This page shows the desired 3x3 grid layout</p>
+    </div>
+    
+    <div class="test-grid">
+        <div class="tile">1. Beach Pro Tour</div>
+        <div class="tile">2. Grands Prix</div>
+        <div class="tile">3. Marathon</div>
+        <div class="tile">4. 21K</div>
+        <div class="tile">5. UCI 2026</div>
+        <div class="tile">6. Studio 76</div>
+        <div class="tile">7. DOCK 619</div>
+    </div>
+    
+    <script>
+        document.getElementById('width').textContent = window.innerWidth;
+        document.getElementById('height').textContent = window.innerHeight;
+        
+        // Force 4K simulation if requested
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('simulate4k') === 'true') {
+            document.body.style.zoom = '0.5';
+            document.querySelector('.info').innerHTML += '<p style="color: yellow;">SIMULATING 4K (zoom: 50%)</p>';
+        }
+    </script>
+</body>
+</html>

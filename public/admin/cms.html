@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS - Groupe Tonic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .prose h3 { font-size: 1.2rem; font-weight: bold; margin: 1rem 0 0.5rem 0; }
+        .prose ul { list-style: disc; margin-left: 1.5rem; }
+        .prose li { margin: 0.25rem 0; }
+        .prose p { margin: 0.5rem 0; }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="min-h-screen">
+        <!-- Header -->
+        <header class="bg-white shadow-sm border-b">
+            <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+                <h1 class="text-2xl font-bold text-gray-800">CMS - Groupe Tonic</h1>
+                <div class="flex items-center gap-4">
+                    <select id="contentType" class="border rounded px-3 py-2">
+                        <option value="jobs">Emplois / Jobs</option>
+                        <option value="news">Communiqués / News</option>
+                    </select>
+                    <select id="language" class="border rounded px-3 py-2">
+                        <option value="fr">Français</option>
+                        <option value="en">English</option>
+                    </select>
+                    <button onclick="logout()" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                        Déconnexion
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="max-w-7xl mx-auto px-4 py-8">
+            <div id="content" class="space-y-4">
+                <!-- Content will be loaded here -->
+            </div>
+        </main>
+    </div>
+
+    <script>
+        let token = localStorage.getItem('cms_token');
+        let currentType = 'jobs';
+        let currentLang = 'fr';
+
+        // Check if logged in
+        if (!token) {
+            window.location.href = '/admin/';
+        }
+
+        // Event listeners
+        document.getElementById('contentType').addEventListener('change', (e) => {
+            currentType = e.target.value;
+            loadContent();
+        });
+
+        document.getElementById('language').addEventListener('change', (e) => {
+            currentLang = e.target.value;
+            loadContent();
+        });
+
+        function logout() {
+            localStorage.removeItem('cms_token');
+            window.location.href = '/admin/';
+        }
+
+        async function loadContent() {
+            try {
+                const response = await fetch(`/api/cms/${currentType}?lang=${currentLang}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to load content');
+                }
+
+                const data = await response.json();
+                displayContent(data);
+            } catch (error) {
+                console.error('Error loading content:', error);
+                alert('Error loading content');
+            }
+        }
+
+        function displayContent(data) {
+            const container = document.getElementById('content');
+            const items = currentType === 'jobs' ? data.jobs : data.news;
+            
+            if (!items || items.length === 0) {
+                container.innerHTML = '<p class="text-gray-500">Aucun contenu trouvé</p>';
+                return;
+            }
+
+            container.innerHTML = items.map(item => {
+                if (currentType === 'jobs') {
+                    return `
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <h3 class="text-xl font-bold text-blue-600 mb-2">${item.title || ''}</h3>
+                            <div class="grid grid-cols-2 gap-2 text-sm mb-4">
+                                <div><strong>Département:</strong> ${item.department || ''}</div>
+                                <div><strong>Lieu:</strong> ${item.location || item.lieu || ''}</div>
+                                <div><strong>Type:</strong> ${item.type || ''}</div>
+                                <div><strong>Salaire:</strong> ${item.salary || item.salaire || ''}</div>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded">
+                                <h4 class="font-semibold mb-2">Description:</h4>
+                                <div class="prose text-sm">${item.description || item.summary || ''}</div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    return `
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <h3 class="text-xl font-bold text-purple-600 mb-2">${item.title || ''}</h3>
+                            <div class="text-sm text-gray-600 mb-4">
+                                <span><strong>Date:</strong> ${item.date || ''}</span> | 
+                                <span><strong>Catégorie:</strong> ${item.category || ''}</span>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded">
+                                <div class="prose text-sm">${item.content || item.summary || ''}</div>
+                            </div>
+                        </div>
+                    `;
+                }
+            }).join('');
+        }
+
+        // Load initial content
+        loadContent();
+    </script>
+</body>
+</html>
