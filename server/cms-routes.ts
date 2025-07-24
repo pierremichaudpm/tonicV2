@@ -62,9 +62,22 @@ async function readJobsData(lang: string = 'fr') {
   try {
     const file = lang === 'en' ? JOBS_FILE_EN : JOBS_FILE_FR;
     const content = await fs.readFile(file, 'utf8');
-    const match = content.match(/const jobsData = (\[.*?\]);/);
-    return match ? JSON.parse(match[1]) : [];
+    
+    // Try different variable names
+    let match = content.match(/const jobListings = (\[[\s\S]*?\]);/);
+    if (!match) {
+      match = content.match(/const jobsData = (\[[\s\S]*?\]);/);
+    }
+    
+    if (match) {
+      const data = JSON.parse(match[1]);
+      console.log(`Loaded ${data.length} jobs for ${lang}`);
+      return data;
+    }
+    console.log(`No jobs data found in ${file}`);
+    return [];
   } catch (error) {
+    console.error(`Error reading jobs data (${lang}):`, error);
     return [];
   }
 }
@@ -79,9 +92,22 @@ async function readNewsData(lang: string = 'fr') {
   try {
     const file = lang === 'en' ? NEWS_FILE_EN : NEWS_FILE_FR;
     const content = await fs.readFile(file, 'utf8');
-    const match = content.match(/const communiquesData = (\[.*?\]);/);
-    return match ? JSON.parse(match[1]) : [];
+    
+    // Try different variable names
+    let match = content.match(/const pressReleases = (\[[\s\S]*?\]);/);
+    if (!match) {
+      match = content.match(/const communiquesData = (\[[\s\S]*?\]);/);
+    }
+    
+    if (match) {
+      const data = JSON.parse(match[1]);
+      console.log(`Loaded ${data.length} news items for ${lang}`);
+      return data;
+    }
+    console.log(`No news data found in ${file}`);
+    return [];
   } catch (error) {
+    console.error(`Error reading news data (${lang}):`, error);
     return [];
   }
 }
