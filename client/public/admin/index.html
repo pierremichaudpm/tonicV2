@@ -162,7 +162,7 @@
     </div>
 
     <script>
-        let authToken = localStorage.getItem('adminToken');
+        let authToken = localStorage.getItem('cms_token');
         let currentUser = localStorage.getItem('currentUser');
 
         // Check if already logged in
@@ -187,7 +187,7 @@
                     const data = await response.json();
                     authToken = data.token;
                     currentUser = data.username;
-                    localStorage.setItem('adminToken', authToken);
+                    localStorage.setItem('cms_token', authToken);
                     localStorage.setItem('currentUser', currentUser);
                     showDashboard();
                 } else {
