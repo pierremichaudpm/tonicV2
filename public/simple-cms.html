@@ -106,6 +106,7 @@
                                     <option value="">Sélectionner une catégorie</option>
                                 </select>
                             </div>
+                            <input type="text" id="image" placeholder="Chemin de l'image (automatique pour catégories existantes)" class="w-full p-3 border rounded">
                             <textarea id="summary" placeholder="Résumé" rows="3" class="w-full p-3 border rounded"></textarea>
                             <textarea id="content" placeholder="Contenu complet" rows="8" class="w-full p-3 border rounded"></textarea>
                         </div>
@@ -133,6 +134,21 @@
         let availableCategories = {
             jobs: { fr: [], en: [] },
             news: { fr: [], en: [] }
+        };
+
+        // Category to image mapping for news
+        const categoryImageMap = {
+            // French categories
+            'Beach Pro Tour': 'images/beach-pro-tour-hero.webp',
+            'Championnats du Monde UCI': 'images/montreal-2026-uci-hero.jpg',
+            'Marathon Beneva': 'images/marathon-beneva-hero.jpg',
+            'Grands Prix Cyclistes': 'images/grands-prix-cyclistes-hero.jpg',
+            'Nouvelles corporatives': 'images/tonic-logo.png',
+            
+            // English categories
+            'UCI World Championships': 'images/montreal-2026-uci-hero.jpg',
+            'Beneva Marathon': 'images/marathon-beneva-hero.jpg',
+            'Cycling Grand Prix': 'images/grands-prix-cyclistes-hero.jpg'
         };
 
         // Authentication helpers
@@ -331,6 +347,7 @@
                 document.getElementById('newsTitle').value = item.title || '';
                 document.getElementById('date').value = item.date || '';
                 document.getElementById('category').value = item.category || '';
+                document.getElementById('image').value = item.image || '';
                 document.getElementById('summary').value = item.summary || '';
                 document.getElementById('content').value = (item.content || '').replace(/<[^>]*>/g, '');
             }
@@ -365,6 +382,7 @@
                         title: document.getElementById('newsTitle').value,
                         date: document.getElementById('date').value,
                         category: document.getElementById('category').value,
+                        image: document.getElementById('image').value,
                         summary: document.getElementById('summary').value,
                         content: document.getElementById('content').value
                     };
@@ -421,7 +439,7 @@
             document.getElementById('loginForm').reset();
         }
 
-        // Handle new category selection
+        // Handle new category selection and auto-assign images
         document.addEventListener('change', function(e) {
             if ((e.target.id === 'department' || e.target.id === 'category') && e.target.value === 'NEW_CATEGORY') {
                 const fieldType = e.target.id === 'department' ? 'département' : 'catégorie';
@@ -445,6 +463,17 @@
                 } else {
                     // Reset to empty if cancelled
                     e.target.value = '';
+                }
+            }
+            
+            // Auto-assign image when category is selected for news
+            if (e.target.id === 'category' && currentType === 'news' && e.target.value && e.target.value !== 'NEW_CATEGORY') {
+                const imageField = document.getElementById('image');
+                const associatedImage = categoryImageMap[e.target.value];
+                
+                if (associatedImage && imageField) {
+                    imageField.value = associatedImage;
+                    imageField.style.backgroundColor = '#f0f9ff'; // Light blue background to indicate auto-fill
                 }
             }
         });

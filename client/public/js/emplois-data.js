@@ -7,7 +7,7 @@ const jobListings = [
     "type": "Temps plein / poste permanent",
     "location": "Longueuil - Rive Sud",
     "summary": "Recherche d'un(e) adjoint(e) senior pour offrir un soutien stratégique et opérationnel auprès de la haute direction.",
-    "description": "<p>Relevant de la Vice-présidente directrice générale, l'adjoint·e senior agit à titre de soutien stratégique et opérationnel auprès de la haute direction. Il ou elle assure une coordination efficace des priorités, facilite la circulation de l'information, prépare les documents clés et participe activement à la gestion de projets transversaux.</p>\n<p>Responsabilités principales</p>\n<p>Assister la vice-présidence et les directions générales dans la planification, le suivi et la coordination de ses activités\n\tCoordonner les échanges avec les membres de l'équipe, les partenaires, les instances décisionnelles et les parties prenantes\n\tParticiper à la préparation des documents pour les demandes de subventions et les rééditions de compte\n\tParticiper à la préparation des réunions de direction, des conseils d'administration et des comités, et assurer la logistique associée\n\tGérer l'agenda, organiser les rencontres internes et externes, préparer les ordres du jour, les comptes rendus et les suivis\n\tRédiger, réviser et mettre en forme des documents, présentations, rapports, lettres et communications officielles\n\tSoutenir le déploiement et le suivi de projets spéciaux ou stratégiques</p>\n<p>Profil recherché</p>\n<p>Diplôme d'études universitaires ou collégiales en administration, gestion, communication ou domaine connexe\n\tMinimum de 5 à 7 ans d'expérience pertinente dans un poste similaire, idéalement dans un environnement complexe ou multi-projets\n\tExcellentes habiletés en communication écrite et orale en français et en anglais\n\tSens aigu de l'organisation, rigueur, discrétion et capacité à gérer plusieurs priorités\n\tMaîtrise des outils bureautiques (Suite Google, Microsoft 365, Powerpoint, Canva)\n\tEsprit d'initiative, autonomie, diplomatie et capacité à travailler sous pression</p>\n<p>Conditions de travail</p>\n<p>Salaire compétitif en fonction de l'expérience\n\tPoste à temps plein (37,5 h/semaine)\n\tMode de travail hybride avec présence au bureau requise 4 à 5 jours/semaine\n\tMilieu dynamique, stimulant et axé sur la collaboration\n\tAssurances collectives et REER + participation de l'employeur offerts après période de probation</p>\n",
+    "description": "Relevant de la Vice-présidente directrice générale, l'adjoint·e senior agit à titre de soutien stratégique et opérationnel auprès de la haute direction. Il ou elle assure une coordination efficace des priorités, facilite la circulation de l'information, prépare les documents clés et participe activement à la gestion de projets transversaux.\nResponsabilités principales\nAssister la vice-présidence et les directions générales dans la planification, le suivi et la coordination de ses activités\n\tCoordonner les échanges avec les membres de l'équipe, les partenaires, les instances décisionnelles et les parties prenantes\n\tParticiper à la préparation des documents pour les demandes de subventions et les rééditions de compte\n\tParticiper à la préparation des réunions de direction, des conseils d'administration et des comités, et assurer la logistique associée\n\tGérer l'agenda, organiser les rencontres internes et externes, préparer les ordres du jour, les comptes rendus et les suivis\n\tRédiger, réviser et mettre en forme des documents, présentations, rapports, lettres et communications officielles\n\tSoutenir le déploiement et le suivi de projets spéciaux ou stratégiques\nProfil recherché\nDiplôme d'études universitaires ou collégiales en administration, gestion, communication ou domaine connexe\n\tMinimum de 5 à 7 ans d'expérience pertinente dans un poste similaire, idéalement dans un environnement complexe ou multi-projets\n\tExcellentes habiletés en communication écrite et orale en français et en anglais\n\tSens aigu de l'organisation, rigueur, discrétion et capacité à gérer plusieurs priorités\n\tMaîtrise des outils bureautiques (Suite Google, Microsoft 365, Powerpoint, Canva)\n\tEsprit d'initiative, autonomie, diplomatie et capacité à travailler sous pression\nConditions de travail\nSalaire compétitif en fonction de l'expérience\n\tPoste à temps plein (37,5 h/semaine)\n\tMode de travail hybride avec présence au bureau requise 4 à 5 jours/semaine\n\tMilieu dynamique, stimulant et axé sur la collaboration\n\tAssurances collectives et REER + participation de l'employeur offerts après période de probation\n",
     "salary": "Compétitif en fonction de l'expérience",
     "startDate": "Dès que possible",
     "emailSubject": "Candidature - Adjoint(e) senior à la Direction",
@@ -44,15 +44,13 @@ const jobListings = [
     "deadline": ""
   },
   {
-    "id": 1753385838262,
-    "title": "test",
-    "department": "Administration",
-    "location": "Longueil",
-    "type": "",
-    "salary": "",
-    "deadline": "",
-    "description": "<p>ontréal, le 15 novembre 2024 – Groupe Tonic est fier d'annoncer le retour du Beach Pro Tour à Montréal pour une cinquième édition qui se tiendra du 13 au 17 août 2025 au parc Jean-Drapeau.</p>\n<p>Cette étape Elite16 du circuit mondial de volleyball de plage réunira les 16 meilleures équipes masculines et féminines de la planète pour cinq jours de compétition de haut niveau.\nPoints saillants de l'édition 2025</p>\n<p>Prize money total de 300 000$ USD\n    Diffusion internationale dans plus de 100 pays\n    Village des partenaires et activités familiales\n    Cliniques de volleyball avec les athlètes professionnels</p>\n<p>\"Nous sommes ravis d'accueillir à nouveau l'élite mondiale du volleyball de plage à Montréal. L'engouement du public montréalais pour cet événement ne cesse de croître année après année\", déclare [Nom], directeur général du Beach Pro Tour Montréal.</p>\n<p>Les billets seront mis en vente le 1er février 2025 sur le site officiel de l'événement.</p>",
-    "datePosted": "2025-07-24",
-    "summary": ""
+    "id": 1753392830642,
+    "title": "test emploi",
+    "department": "Groupe Tonic",
+    "location": "lgueil",
+    "type": "qef",
+    "salary": "a voir",
+    "description": "fqbaertgbvterwagtebawbrrtbw",
+    "datePosted": "2025-07-24"
   }
 ];
