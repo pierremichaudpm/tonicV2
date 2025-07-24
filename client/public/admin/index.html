@@ -56,6 +56,17 @@
         </nav>
 
         <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+            <!-- Language Selector -->
+            <div class="mb-4">
+                <div class="flex items-center space-x-4">
+                    <label class="text-sm font-medium text-gray-700">Langue / Language:</label>
+                    <select id="languageSelector" class="border border-gray-300 rounded px-3 py-1">
+                        <option value="fr">Français</option>
+                        <option value="en">English</option>
+                    </select>
+                </div>
+            </div>
+
             <!-- Tabs -->
             <div class="border-b border-gray-200 mb-6">
                 <nav class="-mb-px flex space-x-8">
@@ -258,11 +269,20 @@
         // Jobs management
         let jobs = [];
         let editingJobId = null;
+        let currentLang = 'fr';
+
+        // Language selector
+        document.getElementById('languageSelector').addEventListener('change', (e) => {
+            currentLang = e.target.value;
+            loadJobs();
+            loadNews();
+        });
 
         async function loadJobs() {
             try {
-                const response = await apiRequest('/api/cms/jobs');
-                jobs = await response.json();
+                const response = await apiRequest(`/api/cms/jobs?lang=${currentLang}`);
+                const data = await response.json();
+                jobs = data.jobs;
                 renderJobs();
             } catch (error) {
                 console.error('Error loading jobs:', error);
@@ -297,7 +317,8 @@
                 department: document.getElementById('jobDepartment').value,
                 location: document.getElementById('jobLocation').value,
                 deadline: document.getElementById('jobDeadline').value,
-                description: document.getElementById('jobDescription').value
+                description: document.getElementById('jobDescription').value,
+                lang: currentLang
             };
 
             try {

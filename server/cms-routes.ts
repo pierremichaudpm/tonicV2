@@ -15,8 +15,10 @@ const ADMIN_USER = {
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-this';
 
 // Data file paths
-const JOBS_FILE = path.join(process.cwd(), 'client/public/js/emplois-data.js');
-const NEWS_FILE = path.join(process.cwd(), 'client/public/js/communiques-data.js');
+const JOBS_FILE_FR = path.join(process.cwd(), 'client/public/js/emplois-data.js');
+const NEWS_FILE_FR = path.join(process.cwd(), 'client/public/js/communiques-data.js');
+const JOBS_FILE_EN = path.join(process.cwd(), 'client/public/js/emplois-data-en.js');
+const NEWS_FILE_EN = path.join(process.cwd(), 'client/public/js/communiques-data-en.js');
 
 // Authentication middleware
 const authenticateToken = (req: any, res: any, next: any) => {
@@ -52,9 +54,10 @@ router.post('/login', async (req, res) => {
 });
 
 // Helper functions to read/write data files
-async function readJobsData() {
+async function readJobsData(lang: string = 'fr') {
   try {
-    const content = await fs.readFile(JOBS_FILE, 'utf8');
+    const file = lang === 'en' ? JOBS_FILE_EN : JOBS_FILE_FR;
+    const content = await fs.readFile(file, 'utf8');
     const match = content.match(/const jobsData = (\[.*?\]);/);
     return match ? JSON.parse(match[1]) : [];
   } catch (error) {
@@ -62,14 +65,16 @@ async function readJobsData() {
   }
 }
 
-async function writeJobsData(jobs: any[]) {
+async function writeJobsData(jobs: any[], lang: string = 'fr') {
   const content = `const jobsData = ${JSON.stringify(jobs, null, 2)};`;
-  await fs.writeFile(JOBS_FILE, content, 'utf8');
+  const file = lang === 'en' ? JOBS_FILE_EN : JOBS_FILE_FR;
+  await fs.writeFile(file, content, 'utf8');
 }
 
-async function readNewsData() {
+async function readNewsData(lang: string = 'fr') {
   try {
-    const content = await fs.readFile(NEWS_FILE, 'utf8');
+    const file = lang === 'en' ? NEWS_FILE_EN : NEWS_FILE_FR;
+    const content = await fs.readFile(file, 'utf8');
     const match = content.match(/const communiquesData = (\[.*?\]);/);
     return match ? JSON.parse(match[1]) : [];
   } catch (error) {
@@ -77,16 +82,18 @@ async function readNewsData() {
   }
 }
 
-async function writeNewsData(news: any[]) {
+async function writeNewsData(news: any[], lang: string = 'fr') {
   const content = `const communiquesData = ${JSON.stringify(news, null, 2)};`;
-  await fs.writeFile(NEWS_FILE, content, 'utf8');
+  const file = lang === 'en' ? NEWS_FILE_EN : NEWS_FILE_FR;
+  await fs.writeFile(file, content, 'utf8');
 }
 
 // Jobs endpoints
 router.get('/jobs', authenticateToken, async (req, res) => {
   try {
-    const jobs = await readJobsData();
-    res.json(jobs);
+    const lang = req.query.lang as string || 'fr';
+    const jobs = await readJobsData(lang);
+    res.json({ jobs, lang });
   } catch (error) {
     res.status(500).json({ message: 'Error reading jobs data' });
   }
@@ -94,14 +101,16 @@ router.get('/jobs', authenticateToken, async (req, res) => {
 
 router.post('/jobs', authenticateToken, async (req, res) => {
   try {
-    const jobs = await readJobsData();
+    const lang = req.body.lang || 'fr';
+    const jobs = await readJobsData(lang);
     const newJob = {
       id: Date.now(),
       ...req.body,
       datePosted: new Date().toISOString().split('T')[0]
     };
+    delete newJob.lang; // Remove lang from job data
     jobs.push(newJob);
-    await writeJobsData(jobs);
+    await writeJobsData(jobs, lang);
     res.json(newJob);
   } catch (error) {
     res.status(500).json({ message: 'Error creating job' });
