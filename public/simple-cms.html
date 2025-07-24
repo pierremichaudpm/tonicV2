@@ -106,7 +106,7 @@
                                     <option value="">Sélectionner une catégorie</option>
                                 </select>
                             </div>
-                            <input type="text" id="image" placeholder="Chemin de l'image (automatique pour catégories existantes)" class="w-full p-3 border rounded">
+                            <input type="hidden" id="image">
                             <textarea id="summary" placeholder="Résumé" rows="3" class="w-full p-3 border rounded"></textarea>
                             <textarea id="content" placeholder="Contenu complet" rows="8" class="w-full p-3 border rounded"></textarea>
                         </div>
@@ -473,7 +473,6 @@
                 
                 if (associatedImage && imageField) {
                     imageField.value = associatedImage;
-                    imageField.style.backgroundColor = '#f0f9ff'; // Light blue background to indicate auto-fill
                 }
             }
         });

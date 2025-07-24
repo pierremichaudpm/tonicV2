@@ -48,8 +48,9 @@ const pressReleases = [
     "id": 1753392858618,
     "title": "test nouvelles",
     "date": "2025-07-26",
-    "category": "Championnats du Monde UCI",
+    "category": "Grands Prix Cyclistes",
     "summary": "VERGFGQVG",
-    "content": "wferq3f3qegqeagveg"
+    "content": "wferq3f3qegqeagveg",
+    "image": "images/grands-prix-cyclistes-hero.jpg"
   }
 ];
