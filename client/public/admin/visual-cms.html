@@ -52,6 +52,21 @@
                 + Ajouter nouveau
             </button>
         </div>
+        
+        <!-- Department Filter for News -->
+        <div id="departmentFilter" class="hidden mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Filtrer par département:</label>
+            <select id="filterDepartment" class="p-2 border rounded w-full md:w-auto" onchange="filterByDepartment()">
+                <option value="">Tous les départements</option>
+                <option value="Administration">Administration</option>
+                <option value="Événements">Événements</option>
+                <option value="Marketing">Marketing</option>
+                <option value="Opérations">Opérations</option>
+                <option value="Production">Production</option>
+                <option value="Groupe Tonic">Groupe Tonic</option>
+            </select>
+        </div>
+        
         <div id="content" class="space-y-4">
             <!-- Content will be loaded here -->
         </div>
@@ -144,6 +159,8 @@
         let currentType = 'jobs';
         let currentLang = 'fr';
         let token = localStorage.getItem('cmsToken');
+        let allItems = []; // Store all loaded items
+        let currentFilter = ''; // Store current department filter
 
         // Check authentication
         if (!token) {
@@ -190,13 +207,27 @@
                 const data = await response.json();
                 const items = currentType === 'jobs' ? data.jobs : data.news;
                 
+                // Store all items
+                allItems = items;
+                
                 // Filter items by language
                 const filteredItems = items.filter(item => {
                     // For existing items without lang property, show in French by default
-                    return (item.lang || 'fr') === currentLang;
+                    if (!item.lang) {
+                        return currentLang === 'fr';
+                    }
+                    return item.lang === currentLang;
                 });
                 
-                renderContent(filteredItems);
+                // Apply department filter if active
+                if (currentType === 'news' && currentFilter) {
+                    const departmentFilteredItems = filteredItems.filter(item => 
+                        item.department === currentFilter
+                    );
+                    renderContent(departmentFilteredItems);
+                } else {
+                    renderContent(filteredItems);
+                }
             } catch (error) {
                 console.error('Error loading content:', error);
             }
@@ -485,6 +516,13 @@
             document.getElementById('newsBtn').classList.toggle('text-white', type === 'news');
             document.getElementById('newsBtn').classList.toggle('text-gray-600', type !== 'news');
             
+            // Show/hide department filter
+            document.getElementById('departmentFilter').classList.toggle('hidden', type !== 'news');
+            
+            // Reset filter when switching
+            currentFilter = '';
+            document.getElementById('filterDepartment').value = '';
+            
             loadContent();
         }
 
@@ -492,6 +530,29 @@
         function changeLanguage() {
             currentLang = document.getElementById('langSelect').value;
             loadContent();
+        }
+        
+        // Filter by department
+        function filterByDepartment() {
+            currentFilter = document.getElementById('filterDepartment').value;
+            
+            // Get filtered items
+            const langFilteredItems = allItems.filter(item => {
+                if (!item.lang) {
+                    return currentLang === 'fr';
+                }
+                return item.lang === currentLang;
+            });
+            
+            // Apply department filter
+            if (currentFilter) {
+                const departmentFilteredItems = langFilteredItems.filter(item => 
+                    item.department === currentFilter
+                );
+                renderContent(departmentFilteredItems);
+            } else {
+                renderContent(langFilteredItems);
+            }
         }
 
         // Format date
