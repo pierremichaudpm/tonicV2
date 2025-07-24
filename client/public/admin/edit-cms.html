@@ -227,6 +227,7 @@
             document.getElementById('modalTitle').textContent = 'Ajouter';
             document.getElementById('editForm').reset();
             document.getElementById('itemId').value = '';
+            toggleFieldVisibility();
             document.getElementById('editModal').classList.remove('hidden');
         }
 
@@ -255,6 +256,7 @@
                 document.getElementById('content').value = item.content || '';
             }
 
+            toggleFieldVisibility();
             document.getElementById('editModal').classList.remove('hidden');
         }
 
