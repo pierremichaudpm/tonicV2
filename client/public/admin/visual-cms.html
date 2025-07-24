@@ -5,10 +5,82 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CMS Visuel - Groupe Tonic</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <style>
+        .visual-editor {
+            min-height: 400px;
+            padding: 1rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.375rem;
+            background: white;
+            outline: none;
+            line-height: 1.6;
+        }
+        .visual-editor:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        .visual-editor h3 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 1rem 0 0.5rem 0;
+        }
+        .visual-editor p {
+            margin: 0.5rem 0;
+        }
+        .visual-editor ul {
+            list-style-type: disc;
+            margin-left: 2rem;
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .visual-editor li {
+            margin: 0.25rem 0;
+        }
+        .visual-editor strong {
+            font-weight: bold;
+        }
+        .editor-button {
+            padding: 0.5rem 1rem;
+            background: #f3f4f6;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+        .editor-button:hover {
+            background: #e5e7eb;
+        }
+        .editor-button.active {
+            background: #3b82f6;
+            color: white;
+        }
+        .content-card {
+            background: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .format-button {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f3f4f6;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .format-button:hover {
+            background: #e5e7eb;
+            transform: translateY(-1px);
+        }
+    </style>
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-50">
     <div class="min-h-screen">
         <!-- Header -->
         <header class="bg-white shadow-sm border-b">
@@ -23,9 +95,6 @@
                         <option value="fr">Français</option>
                         <option value="en">English</option>
                     </select>
-                    <button onclick="showAddForm()" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
-                        + Ajouter
-                    </button>
                     <button onclick="logout()" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
                         Déconnexion
                     </button>
@@ -35,72 +104,147 @@
 
         <!-- Main Content -->
         <main class="max-w-7xl mx-auto px-4 py-8">
+            <div class="mb-6 flex justify-between items-center">
+                <h2 class="text-xl font-semibold text-gray-700">
+                    <span id="contentTitle">Gestion du contenu</span>
+                </h2>
+                <button onclick="showAddForm()" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    Ajouter nouveau
+                </button>
+            </div>
             <div id="content" class="space-y-4">
                 <!-- Content will be loaded here -->
             </div>
         </main>
 
-        <!-- Edit Modal -->
-        <div id="editModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <div class="bg-white rounded-lg w-full max-w-5xl max-h-[90vh] overflow-y-auto">
-                <div class="p-6">
-                    <h2 id="modalTitle" class="text-2xl font-bold mb-4">Éditer</h2>
-                    <form id="editForm" class="space-y-4">
-                        <input type="hidden" id="itemId">
-                        
-                        <!-- Job Fields -->
-                        <div class="jobFields">
-                            <div class="bg-gray-50 p-4 rounded-lg space-y-4">
-                                <h3 class="font-semibold text-lg">Informations principales</h3>
-                                <input type="text" id="title" placeholder="Titre du poste" class="w-full p-3 border rounded">
-                                <div class="grid grid-cols-2 gap-4">
-                                    <input type="text" id="department" placeholder="Département" class="p-3 border rounded">
-                                    <input type="text" id="location" placeholder="Lieu de travail" class="p-3 border rounded">
-                                    <input type="text" id="type" placeholder="Type (Temps plein, etc.)" class="p-3 border rounded">
-                                    <input type="text" id="salary" placeholder="Salaire" class="p-3 border rounded">
-                                    <input type="date" id="datePosted" placeholder="Date de publication" class="p-3 border rounded">
-                                    <input type="text" id="deadline" placeholder="Date limite (ex: 28 juillet 2025)" class="p-3 border rounded">
-                                </div>
-                                <textarea id="summary" placeholder="Résumé court (optionnel)" rows="2" class="w-full p-3 border rounded"></textarea>
-                            </div>
+        <!-- Visual Edit Modal -->
+        <div id="editModal" class="hidden fixed inset-0 bg-black bg-opacity-50 overflow-y-auto z-50">
+            <div class="min-h-screen flex items-center justify-center p-4">
+                <div class="bg-white rounded-lg w-full max-w-5xl max-h-[90vh] overflow-y-auto">
+                    <div class="p-6">
+                        <h2 id="modalTitle" class="text-2xl font-bold mb-6">Éditer le contenu</h2>
+                        <form id="editForm" onsubmit="saveItem(event)">
+                            <input type="hidden" id="itemId">
                             
-                            <div class="bg-blue-50 p-4 rounded-lg">
-                                <h3 class="font-semibold text-lg mb-2">Description complète</h3>
-                                <p class="text-sm text-gray-600 mb-3">Utilisez l'éditeur visuel pour formater votre texte</p>
-                                <div id="jobEditor" style="background: white; min-height: 300px;"></div>
-                                <textarea id="description" class="hidden"></textarea>
-                            </div>
-                        </div>
-
-                        <!-- News Fields -->
-                        <div class="newsFields hidden">
-                            <div class="bg-gray-50 p-4 rounded-lg space-y-4">
-                                <h3 class="font-semibold text-lg">Informations principales</h3>
-                                <input type="text" id="newsTitle" placeholder="Titre du communiqué" class="w-full p-3 border rounded">
-                                <div class="grid grid-cols-2 gap-4">
-                                    <input type="date" id="date" placeholder="Date" class="p-3 border rounded">
-                                    <input type="text" id="category" placeholder="Catégorie" class="p-3 border rounded">
+                            <!-- Job Fields -->
+                            <div id="jobFields" class="hidden space-y-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Titre du poste</label>
+                                        <input type="text" id="title" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Département</label>
+                                        <input type="text" id="department" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Lieu</label>
+                                        <input type="text" id="location" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Type d'emploi</label>
+                                        <input type="text" id="type" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Salaire</label>
+                                        <input type="text" id="salary" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Date limite</label>
+                                        <input type="text" id="deadline" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    </div>
                                 </div>
-                                <textarea id="newsSummary" placeholder="Résumé court" rows="2" class="w-full p-3 border rounded"></textarea>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Description du poste</label>
+                                    <div class="border rounded-lg overflow-hidden">
+                                        <div class="bg-gray-50 p-2 border-b flex gap-2">
+                                            <button type="button" onclick="formatText('bold')" class="format-button" title="Gras">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"></path>
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"></path>
+                                                </svg>
+                                            </button>
+                                            <button type="button" onclick="formatText('heading')" class="format-button" title="Titre">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h10M7 12h10m-7 5h4"></path>
+                                                </svg>
+                                            </button>
+                                            <button type="button" onclick="formatText('list')" class="format-button" title="Liste">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                        <div id="jobEditor" contenteditable="true" class="visual-editor">
+                                            Cliquez ici pour commencer à écrire...
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            
-                            <div class="bg-purple-50 p-4 rounded-lg">
-                                <h3 class="font-semibold text-lg mb-2">Contenu complet</h3>
-                                <p class="text-sm text-gray-600 mb-3">Utilisez l'éditeur visuel pour formater votre texte</p>
-                                <div id="newsEditor" style="background: white; min-height: 300px;"></div>
-                                <textarea id="content" class="hidden"></textarea>
-                            </div>
-                        </div>
 
-                        <div class="flex gap-2 justify-end">
-                            <button type="button" onclick="closeModal()" class="px-4 py-2 border rounded hover:bg-gray-100">
-                                Annuler
-                            </button>
-                            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-                                Sauvegarder
-                            </button>
-                        </div>
-                    </form>
+                            <!-- News Fields -->
+                            <div id="newsFields" class="hidden space-y-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Titre</label>
+                                        <input type="text" id="newsTitle" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Date</label>
+                                        <input type="date" id="date" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Catégorie</label>
+                                        <input type="text" id="category" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Résumé</label>
+                                        <input type="text" id="summary" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Contenu de l'article</label>
+                                    <div class="border rounded-lg overflow-hidden">
+                                        <div class="bg-gray-50 p-2 border-b flex gap-2">
+                                            <button type="button" onclick="formatText('bold')" class="format-button" title="Gras">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"></path>
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"></path>
+                                                </svg>
+                                            </button>
+                                            <button type="button" onclick="formatText('heading')" class="format-button" title="Titre">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h10M7 12h10m-7 5h4"></path>
+                                                </svg>
+                                            </button>
+                                            <button type="button" onclick="formatText('list')" class="format-button" title="Liste">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                        <div id="newsEditor" contenteditable="true" class="visual-editor">
+                                            Cliquez ici pour commencer à écrire...
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex gap-3 justify-end pt-6 mt-6 border-t">
+                                <button type="button" onclick="closeModal()" class="px-6 py-2.5 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                                    Annuler
+                                </button>
+                                <button type="submit" class="px-6 py-2.5 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+                                    Sauvegarder
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -111,42 +255,14 @@
         let currentType = 'jobs';
         let currentLang = 'fr';
         let currentData = [];
-        let jobQuill, newsQuill;
+        let currentEditor = null;
 
         if (!token) {
             window.location.href = '/admin/';
         }
 
-        // Initialize Quill editors
-        jobQuill = new Quill('#jobEditor', {
-            theme: 'snow',
-            modules: {
-                toolbar: [
-                    [{ 'header': [3, false] }],
-                    ['bold', 'italic', 'underline'],
-                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                    ['clean']
-                ]
-            },
-            placeholder: 'Écrivez la description du poste ici...'
-        });
-
-        newsQuill = new Quill('#newsEditor', {
-            theme: 'snow',
-            modules: {
-                toolbar: [
-                    [{ 'header': [3, false] }],
-                    ['bold', 'italic', 'underline'],
-                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                    ['clean']
-                ]
-            },
-            placeholder: 'Écrivez le contenu du communiqué ici...'
-        });
-
         document.getElementById('contentType').addEventListener('change', (e) => {
             currentType = e.target.value;
-            toggleFieldVisibility();
             loadContent();
         });
 
@@ -155,20 +271,20 @@
             loadContent();
         });
 
-        document.getElementById('editForm').addEventListener('submit', saveItem);
-
-        function toggleFieldVisibility() {
-            const jobFields = document.querySelector('.jobFields');
-            const newsFields = document.querySelector('.newsFields');
-            
-            if (currentType === 'jobs') {
-                jobFields.classList.remove('hidden');
-                newsFields.classList.add('hidden');
-            } else {
-                jobFields.classList.add('hidden');
-                newsFields.classList.remove('hidden');
+        // Clear placeholder text on focus
+        document.getElementById('jobEditor').addEventListener('focus', function() {
+            if (this.textContent.trim() === 'Cliquez ici pour commencer à écrire...') {
+                this.textContent = '';
             }
-        }
+            currentEditor = 'job';
+        });
+
+        document.getElementById('newsEditor').addEventListener('focus', function() {
+            if (this.textContent.trim() === 'Cliquez ici pour commencer à écrire...') {
+                this.textContent = '';
+            }
+            currentEditor = 'news';
+        });
 
         function logout() {
             localStorage.removeItem('cms_token');
@@ -190,7 +306,7 @@
                 displayContent(currentData);
             } catch (error) {
                 console.error('Error:', error);
-                alert('Erreur de chargement');
+                alert('Erreur de chargement du contenu');
             }
         }
 
@@ -198,49 +314,71 @@
             const container = document.getElementById('content');
             
             if (!items || items.length === 0) {
-                container.innerHTML = '<p class="text-gray-500 text-center py-8">Aucun contenu</p>';
+                container.innerHTML = '<p class="text-gray-500 text-center py-8">Aucun contenu disponible</p>';
                 return;
             }
 
             container.innerHTML = items.map(item => {
                 if (currentType === 'jobs') {
                     return `
-                        <div class="bg-white rounded-lg shadow p-6">
+                        <div class="content-card">
                             <div class="flex justify-between items-start">
                                 <div class="flex-1">
-                                    <h3 class="text-xl font-bold text-blue-600">${item.title || ''}</h3>
-                                    <div class="text-sm text-gray-600 mt-2">
-                                        ${item.department || ''} | ${item.location || item.lieu || ''} | ${item.type || ''}
+                                    <h3 class="text-xl font-bold text-gray-800 mb-3">${item.title || 'Sans titre'}</h3>
+                                    <div class="grid grid-cols-2 gap-x-8 gap-y-2 text-sm text-gray-600 mb-4">
+                                        <div><span class="font-medium">Département:</span> ${item.department || '-'}</div>
+                                        <div><span class="font-medium">Lieu:</span> ${item.location || item.lieu || '-'}</div>
+                                        <div><span class="font-medium">Type:</span> ${item.type || '-'}</div>
+                                        <div><span class="font-medium">Salaire:</span> ${item.salary || item.salaire || '-'}</div>
+                                        <div><span class="font-medium">Date limite:</span> ${item.deadline || '-'}</div>
                                     </div>
                                 </div>
-                                <div class="flex gap-2">
-                                    <button onclick="editItem(${item.id})" class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600">
+                                <div class="flex gap-2 ml-4">
+                                    <button onclick="editItem(${item.id})" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
                                         Éditer
                                     </button>
-                                    <button onclick="deleteItem(${item.id})" class="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600">
+                                    <button onclick="deleteItem(${item.id})" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors">
                                         Supprimer
                                     </button>
+                                </div>
+                            </div>
+                            <div class="pt-4 border-t">
+                                <div class="text-sm font-medium text-gray-700 mb-2">Aperçu de la description:</div>
+                                <div class="bg-gray-50 p-4 rounded-lg">
+                                    <div class="visual-editor" style="background: transparent; border: none; padding: 0;">
+                                        ${item.description || '<p class="text-gray-500">Aucune description</p>'}
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     `;
                 } else {
                     return `
-                        <div class="bg-white rounded-lg shadow p-6">
+                        <div class="content-card">
                             <div class="flex justify-between items-start">
                                 <div class="flex-1">
-                                    <h3 class="text-xl font-bold text-purple-600">${item.title || ''}</h3>
-                                    <div class="text-sm text-gray-600 mt-2">
-                                        ${item.date || ''} | ${item.category || ''}
+                                    <h3 class="text-xl font-bold text-gray-800 mb-3">${item.title || 'Sans titre'}</h3>
+                                    <div class="grid grid-cols-2 gap-x-8 gap-y-2 text-sm text-gray-600 mb-4">
+                                        <div><span class="font-medium">Date:</span> ${item.date || '-'}</div>
+                                        <div><span class="font-medium">Catégorie:</span> ${item.category || '-'}</div>
+                                        <div class="col-span-2"><span class="font-medium">Résumé:</span> ${item.summary || '-'}</div>
                                     </div>
                                 </div>
-                                <div class="flex gap-2">
-                                    <button onclick="editItem(${item.id})" class="bg-purple-500 text-white px-3 py-1 rounded text-sm hover:bg-purple-600">
+                                <div class="flex gap-2 ml-4">
+                                    <button onclick="editItem(${item.id})" class="px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors">
                                         Éditer
                                     </button>
-                                    <button onclick="deleteItem(${item.id})" class="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600">
+                                    <button onclick="deleteItem(${item.id})" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors">
                                         Supprimer
                                     </button>
+                                </div>
+                            </div>
+                            <div class="pt-4 border-t">
+                                <div class="text-sm font-medium text-gray-700 mb-2">Aperçu du contenu:</div>
+                                <div class="bg-gray-50 p-4 rounded-lg">
+                                    <div class="visual-editor" style="background: transparent; border: none; padding: 0;">
+                                        ${item.content || '<p class="text-gray-500">Aucun contenu</p>'}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -250,17 +388,20 @@
         }
 
         function showAddForm() {
-            document.getElementById('modalTitle').textContent = 'Ajouter';
+            document.getElementById('modalTitle').textContent = 'Ajouter nouveau contenu';
             document.getElementById('editForm').reset();
             document.getElementById('itemId').value = '';
-            
+
             if (currentType === 'jobs') {
-                jobQuill.setText('');
+                document.getElementById('jobEditor').innerHTML = 'Cliquez ici pour commencer à écrire...';
+                document.getElementById('jobFields').classList.remove('hidden');
+                document.getElementById('newsFields').classList.add('hidden');
             } else {
-                newsQuill.setText('');
+                document.getElementById('newsEditor').innerHTML = 'Cliquez ici pour commencer à écrire...';
+                document.getElementById('jobFields').classList.add('hidden');
+                document.getElementById('newsFields').classList.remove('hidden');
             }
-            
-            toggleFieldVisibility();
+
             document.getElementById('editModal').classList.remove('hidden');
         }
 
@@ -268,7 +409,7 @@
             const item = currentData.find(i => i.id == id);
             if (!item) return;
 
-            document.getElementById('modalTitle').textContent = 'Éditer';
+            document.getElementById('modalTitle').textContent = 'Éditer le contenu';
             document.getElementById('itemId').value = id;
 
             if (currentType === 'jobs') {
@@ -277,36 +418,63 @@
                 document.getElementById('location').value = item.location || item.lieu || '';
                 document.getElementById('type').value = item.type || '';
                 document.getElementById('salary').value = item.salary || item.salaire || '';
-                document.getElementById('datePosted').value = item.datePosted || '';
                 document.getElementById('deadline').value = item.deadline || '';
-                document.getElementById('summary').value = item.summary || '';
+                document.getElementById('jobEditor').innerHTML = item.description || '';
                 
-                // Set content in Quill editor
-                if (item.description) {
-                    jobQuill.root.innerHTML = item.description;
-                } else {
-                    jobQuill.setText('');
-                }
+                document.getElementById('jobFields').classList.remove('hidden');
+                document.getElementById('newsFields').classList.add('hidden');
             } else {
                 document.getElementById('newsTitle').value = item.title || '';
                 document.getElementById('date').value = item.date || '';
                 document.getElementById('category').value = item.category || '';
-                document.getElementById('newsSummary').value = item.summary || '';
+                document.getElementById('summary').value = item.summary || '';
+                document.getElementById('newsEditor').innerHTML = item.content || '';
                 
-                // Set content in Quill editor
-                if (item.content) {
-                    newsQuill.root.innerHTML = item.content;
-                } else {
-                    newsQuill.setText('');
-                }
+                document.getElementById('jobFields').classList.add('hidden');
+                document.getElementById('newsFields').classList.remove('hidden');
             }
 
-            toggleFieldVisibility();
             document.getElementById('editModal').classList.remove('hidden');
         }
 
-        async function saveItem(e) {
-            e.preventDefault();
+        function formatText(command) {
+            const selection = window.getSelection();
+            const selectedText = selection.toString();
+            
+            if (command === 'bold') {
+                document.execCommand('bold', false, null);
+            } else if (command === 'heading') {
+                if (selectedText) {
+                    document.execCommand('formatBlock', false, 'h3');
+                } else {
+                    const h3 = document.createElement('h3');
+                    h3.textContent = 'Nouveau titre';
+                    insertNodeAtCursor(h3);
+                }
+            } else if (command === 'list') {
+                const ul = document.createElement('ul');
+                const li = document.createElement('li');
+                li.textContent = selectedText || 'Nouvel élément';
+                ul.appendChild(li);
+                insertNodeAtCursor(ul);
+            }
+        }
+
+        function insertNodeAtCursor(node) {
+            const selection = window.getSelection();
+            if (selection.rangeCount) {
+                const range = selection.getRangeAt(0);
+                range.deleteContents();
+                range.insertNode(node);
+                range.setStartAfter(node);
+                range.collapse(true);
+                selection.removeAllRanges();
+                selection.addRange(range);
+            }
+        }
+
+        async function saveItem(event) {
+            event.preventDefault();
             
             const id = document.getElementById('itemId').value;
             const isNew = !id;
@@ -314,6 +482,10 @@
             let data = { lang: currentLang };
             
             if (currentType === 'jobs') {
+                const editorContent = document.getElementById('jobEditor').innerHTML;
+                // Clean up the content but keep formatting
+                const cleanContent = editorContent.replace(/Cliquez ici pour commencer à écrire\.\.\./, '').trim();
+                
                 data = {
                     ...data,
                     title: document.getElementById('title').value,
@@ -321,19 +493,22 @@
                     location: document.getElementById('location').value,
                     type: document.getElementById('type').value,
                     salary: document.getElementById('salary').value,
-                    datePosted: document.getElementById('datePosted').value,
                     deadline: document.getElementById('deadline').value,
-                    summary: document.getElementById('summary').value,
-                    description: jobQuill.root.innerHTML
+                    description: cleanContent,
+                    datePosted: new Date().toISOString().split('T')[0]
                 };
             } else {
+                const editorContent = document.getElementById('newsEditor').innerHTML;
+                // Clean up the content but keep formatting
+                const cleanContent = editorContent.replace(/Cliquez ici pour commencer à écrire\.\.\./, '').trim();
+                
                 data = {
                     ...data,
                     title: document.getElementById('newsTitle').value,
-                    date: document.getElementById('date').value,
+                    date: document.getElementById('date').value || new Date().toISOString().split('T')[0],
                     category: document.getElementById('category').value,
-                    summary: document.getElementById('newsSummary').value,
-                    content: newsQuill.root.innerHTML
+                    summary: document.getElementById('summary').value,
+                    content: cleanContent
                 };
             }
 
@@ -351,14 +526,17 @@
                     body: JSON.stringify(data)
                 });
 
-                if (!response.ok) throw new Error('Save failed');
+                if (!response.ok) {
+                    const error = await response.text();
+                    throw new Error(error || 'Save failed');
+                }
                 
                 closeModal();
                 loadContent();
-                alert(isNew ? 'Créé avec succès' : 'Modifié avec succès');
+                alert(isNew ? 'Contenu créé avec succès!' : 'Contenu modifié avec succès!');
             } catch (error) {
                 console.error('Error:', error);
-                alert('Erreur de sauvegarde');
+                alert('Erreur lors de la sauvegarde: ' + error.message);
             }
         }
 
@@ -376,10 +554,10 @@
                 if (!response.ok) throw new Error('Delete failed');
                 
                 loadContent();
-                alert('Supprimé avec succès');
+                alert('Contenu supprimé avec succès!');
             } catch (error) {
                 console.error('Error:', error);
-                alert('Erreur de suppression');
+                alert('Erreur lors de la suppression');
             }
         }
 
@@ -388,7 +566,6 @@
         }
 
         // Load initial content
-        toggleFieldVisibility();
         loadContent();
     </script>
 </body>
