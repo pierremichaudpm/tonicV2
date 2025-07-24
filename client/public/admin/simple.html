@@ -58,6 +58,13 @@
         let token = null;
         let currentLang = 'fr';
 
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
         async function login() {
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
@@ -158,11 +165,17 @@
 
         function displayNews(news) {
             const container = document.getElementById('newsList');
+            console.log('Displaying news:', news);
+            if (!news || news.length === 0) {
+                container.innerHTML = '<p class="text-gray-500">Aucune actualité trouvée pour cette langue.</p>';
+                return;
+            }
             container.innerHTML = news.map(article => `
                 <div class="border p-4 mb-4 rounded">
-                    <h3 class="font-bold">${article.title}</h3>
-                    <p>Date: ${article.date}</p>
-                    <p>${article.category || article.section || 'N/A'}</p>
+                    <h3 class="font-bold">${article.title || 'Titre manquant'}</h3>
+                    <p><strong>Date:</strong> ${article.date || 'N/A'}</p>
+                    <p><strong>Catégorie:</strong> ${article.category || article.section || 'N/A'}</p>
+                    <p><strong>Description:</strong> ${(article.description || article.summary || 'Aucune description').substring(0, 100)}...</p>
                     <button onclick="editNews(${article.id})" class="bg-blue-500 text-white px-3 py-1 rounded text-sm mt-2">Modifier</button>
                 </div>
             `).join('');
@@ -180,10 +193,23 @@
                 editingType = 'job';
                 document.getElementById('editTitle').textContent = 'Modifier l\'emploi';
                 document.getElementById('editForm').innerHTML = `
-                    <input type="text" id="editJobTitle" value="${job.title}" placeholder="Titre" class="w-full p-2 border rounded mb-3">
-                    <input type="text" id="editJobDept" value="${job.department}" placeholder="Département" class="w-full p-2 border rounded mb-3">
-                    <input type="text" id="editJobLocation" value="${job.location || job.lieu || ''}" placeholder="Lieu" class="w-full p-2 border rounded mb-3">
-                    <textarea id="editJobDesc" placeholder="Description" class="w-full p-2 border rounded mb-3 h-24">${job.description || job.summary || ''}</textarea>
+                    <label class="block text-sm font-medium mb-1">Titre:</label>
+                    <input type="text" id="editJobTitle" value="${escapeHtml(job.title || '')}" placeholder="Titre" class="w-full p-2 border rounded mb-3">
+                    
+                    <label class="block text-sm font-medium mb-1">Département:</label>
+                    <input type="text" id="editJobDept" value="${escapeHtml(job.department || '')}" placeholder="Département" class="w-full p-2 border rounded mb-3">
+                    
+                    <label class="block text-sm font-medium mb-1">Lieu:</label>
+                    <input type="text" id="editJobLocation" value="${escapeHtml(job.location || job.lieu || '')}" placeholder="Lieu" class="w-full p-2 border rounded mb-3">
+                    
+                    <label class="block text-sm font-medium mb-1">Type:</label>
+                    <input type="text" id="editJobType" value="${escapeHtml(job.type || '')}" placeholder="Type d'emploi" class="w-full p-2 border rounded mb-3">
+                    
+                    <label class="block text-sm font-medium mb-1">Salaire:</label>
+                    <input type="text" id="editJobSalary" value="${escapeHtml(job.salary || job.salaire || '')}" placeholder="Salaire" class="w-full p-2 border rounded mb-3">
+                    
+                    <label class="block text-sm font-medium mb-1">Description/Résumé:</label>
+                    <textarea id="editJobDesc" placeholder="Description complète" class="w-full p-2 border rounded mb-3 h-32">${escapeHtml(job.description || job.summary || '')}</textarea>
                 `;
                 document.getElementById('editModal').classList.remove('hidden');
             }
@@ -201,10 +227,17 @@
                 editingType = 'news';
                 document.getElementById('editTitle').textContent = 'Modifier l\'actualité';
                 document.getElementById('editForm').innerHTML = `
-                    <input type="text" id="editNewsTitle" value="${article.title}" placeholder="Titre" class="w-full p-2 border rounded mb-3">
-                    <input type="date" id="editNewsDate" value="${article.date}" class="w-full p-2 border rounded mb-3">
-                    <input type="text" id="editNewsCategory" value="${article.category || article.section || ''}" placeholder="Catégorie" class="w-full p-2 border rounded mb-3">
-                    <textarea id="editNewsDesc" placeholder="Description" class="w-full p-2 border rounded mb-3 h-24">${article.description || article.summary || ''}</textarea>
+                    <label class="block text-sm font-medium mb-1">Titre:</label>
+                    <input type="text" id="editNewsTitle" value="${escapeHtml(article.title || '')}" placeholder="Titre" class="w-full p-2 border rounded mb-3">
+                    
+                    <label class="block text-sm font-medium mb-1">Date:</label>
+                    <input type="date" id="editNewsDate" value="${article.date || ''}" class="w-full p-2 border rounded mb-3">
+                    
+                    <label class="block text-sm font-medium mb-1">Catégorie:</label>
+                    <input type="text" id="editNewsCategory" value="${escapeHtml(article.category || article.section || '')}" placeholder="Catégorie" class="w-full p-2 border rounded mb-3">
+                    
+                    <label class="block text-sm font-medium mb-1">Description/Contenu:</label>
+                    <textarea id="editNewsDesc" placeholder="Description complète" class="w-full p-2 border rounded mb-3 h-32">${escapeHtml(article.description || article.summary || article.content || '')}</textarea>
                 `;
                 document.getElementById('editModal').classList.remove('hidden');
             }
