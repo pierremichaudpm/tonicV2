@@ -87,7 +87,9 @@
                         <div id="jobFields" class="space-y-4">
                             <input type="text" id="title" placeholder="Titre du poste" class="w-full p-3 border rounded">
                             <div class="grid grid-cols-2 gap-4">
-                                <input type="text" id="department" placeholder="Département" class="p-3 border rounded">
+                                <select id="department" class="p-3 border rounded">
+                                    <option value="">Sélectionner un département</option>
+                                </select>
                                 <input type="text" id="location" placeholder="Lieu" class="p-3 border rounded">
                                 <input type="text" id="type" placeholder="Type" class="p-3 border rounded">
                                 <input type="text" id="salary" placeholder="Salaire" class="p-3 border rounded">
@@ -100,7 +102,9 @@
                             <input type="text" id="newsTitle" placeholder="Titre" class="w-full p-3 border rounded">
                             <div class="grid grid-cols-2 gap-4">
                                 <input type="date" id="date" class="p-3 border rounded">
-                                <input type="text" id="category" placeholder="Catégorie" class="p-3 border rounded">
+                                <select id="category" class="p-3 border rounded">
+                                    <option value="">Sélectionner une catégorie</option>
+                                </select>
                             </div>
                             <textarea id="summary" placeholder="Résumé" rows="3" class="w-full p-3 border rounded"></textarea>
                             <textarea id="content" placeholder="Contenu complet" rows="8" class="w-full p-3 border rounded"></textarea>
@@ -200,6 +204,9 @@
                 document.getElementById('jobFields').classList.add('hidden');
                 document.getElementById('newsFields').classList.remove('hidden');
             }
+            
+            // Update dropdown categories for current type/language
+            updateCategoryDropdowns();
         }
 
         async function loadContent() {
@@ -212,10 +219,50 @@
 
                 const data = await response.json();
                 currentData = data[currentType] || [];
+                
+                // Extract and store categories
+                extractCategories(currentData);
+                updateCategoryDropdowns();
+                
                 displayContent(currentData);
             } catch (error) {
                 console.error('Error:', error);
                 document.getElementById('contentList').innerHTML = '<p class="text-red-500">Erreur de chargement</p>';
+            }
+        }
+
+        function extractCategories(data) {
+            const categories = new Set();
+            
+            data.forEach(item => {
+                if (currentType === 'jobs' && item.department) {
+                    categories.add(item.department);
+                } else if (currentType === 'news' && item.category) {
+                    categories.add(item.category);
+                }
+            });
+            
+            // Store categories for current type and language
+            availableCategories[currentType][currentLang] = Array.from(categories).sort();
+        }
+
+        function updateCategoryDropdowns() {
+            const categories = availableCategories[currentType][currentLang];
+            
+            if (currentType === 'jobs') {
+                const select = document.getElementById('department');
+                const placeholder = currentLang === 'fr' ? 'Sélectionner un département' : 'Select a department';
+                const newOption = currentLang === 'fr' ? '+ Nouveau département' : '+ New department';
+                select.innerHTML = `<option value="">${placeholder}</option>` + 
+                    categories.map(cat => `<option value="${cat}">${cat}</option>`).join('') +
+                    `<option value="NEW_CATEGORY">${newOption}</option>`;
+            } else {
+                const select = document.getElementById('category');
+                const placeholder = currentLang === 'fr' ? 'Sélectionner une catégorie' : 'Select a category';
+                const newOption = currentLang === 'fr' ? '+ Nouvelle catégorie' : '+ New category';
+                select.innerHTML = `<option value="">${placeholder}</option>` + 
+                    categories.map(cat => `<option value="${cat}">${cat}</option>`).join('') +
+                    `<option value="NEW_CATEGORY">${newOption}</option>`;
             }
         }
 
@@ -373,6 +420,34 @@
             document.getElementById('loginScreen').classList.remove('hidden');
             document.getElementById('loginForm').reset();
         }
+
+        // Handle new category selection
+        document.addEventListener('change', function(e) {
+            if ((e.target.id === 'department' || e.target.id === 'category') && e.target.value === 'NEW_CATEGORY') {
+                const fieldType = e.target.id === 'department' ? 'département' : 'catégorie';
+                const fieldTypeEn = e.target.id === 'department' ? 'department' : 'category';
+                const prompt = currentLang === 'fr' 
+                    ? `Entrez le nom du nouveau ${fieldType}:` 
+                    : `Enter the new ${fieldTypeEn} name:`;
+                
+                const newValue = window.prompt(prompt);
+                
+                if (newValue && newValue.trim()) {
+                    // Add new option to the select
+                    const option = document.createElement('option');
+                    option.value = newValue.trim();
+                    option.textContent = newValue.trim();
+                    option.selected = true;
+                    
+                    // Insert before the "NEW_CATEGORY" option
+                    const newCategoryOption = e.target.querySelector('option[value="NEW_CATEGORY"]');
+                    e.target.insertBefore(option, newCategoryOption);
+                } else {
+                    // Reset to empty if cancelled
+                    e.target.value = '';
+                }
+            }
+        });
 
         // Initialize
         updateUI();
