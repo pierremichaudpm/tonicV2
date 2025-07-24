@@ -9,7 +9,7 @@ const router = express.Router();
 // Simple user store - in production, use a proper database
 const ADMIN_USER = {
   username: 'admin',
-  password: '$2a$10$rOzC8YJnV5yKx9U3Q8XQc.x8vQH4H8vH4H8vH4H8vH4H8vH4H8vH4' // 'admin123'
+  password: '$2a$10$8K1p/a0dHCEW0FHPJHQ9eOeSYgL4UMwuS/JhBe0xE3VFkTg5U8fvi' // 'admin123'
 };
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-this';
@@ -55,7 +55,7 @@ router.post('/login', async (req, res) => {
 async function readJobsData() {
   try {
     const content = await fs.readFile(JOBS_FILE, 'utf8');
-    const match = content.match(/const jobsData = (\[.*?\]);/s);
+    const match = content.match(/const jobsData = (\[.*?\]);/);
     return match ? JSON.parse(match[1]) : [];
   } catch (error) {
     return [];
@@ -70,7 +70,7 @@ async function writeJobsData(jobs: any[]) {
 async function readNewsData() {
   try {
     const content = await fs.readFile(NEWS_FILE, 'utf8');
-    const match = content.match(/const communiquesData = (\[.*?\]);/s);
+    const match = content.match(/const communiquesData = (\[.*?\]);/);
     return match ? JSON.parse(match[1]) : [];
   } catch (error) {
     return [];

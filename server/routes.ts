@@ -3,8 +3,12 @@ import { createServer, type Server } from "http";
 import { AICodeAssistant } from "./ai-assistant";
 import path from "path";
 import express from "express";
+import cmsRoutes from "./cms-routes";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // CMS Routes
+  app.use('/api/cms', cmsRoutes);
+  
   // Serve static files from the public directory
   const publicPath = path.join(process.cwd(), "client", "public");
   
