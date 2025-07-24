@@ -51,6 +51,6 @@ const pressReleases = [
     "category": "Nouvelles corporatives",
     "department": "Groupe Tonic",
     "summary": "8go88o",
-    "content": ""
+    "content": "eqgfqevqe4rg24g5bv4g52gefvr4qtqfr4"
   }
 ];
