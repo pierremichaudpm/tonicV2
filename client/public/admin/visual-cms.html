@@ -108,7 +108,16 @@
                                 <option value="Prix et distinctions">Prix et distinctions</option>
                                 <option value="Communauté">Communauté</option>
                             </select>
-                            <input type="text" id="summary" placeholder="Résumé" class="p-2 border rounded">
+                            <select id="newsDepartment" class="p-2 border rounded">
+                                <option value="">Sélectionner un département</option>
+                                <option value="Administration">Administration</option>
+                                <option value="Événements">Événements</option>
+                                <option value="Marketing">Marketing</option>
+                                <option value="Opérations">Opérations</option>
+                                <option value="Production">Production</option>
+                                <option value="Groupe Tonic">Groupe Tonic</option>
+                            </select>
+                            <input type="text" id="summary" placeholder="Résumé" class="p-2 border rounded" style="grid-column: span 2;">
                         </div>
                         <div class="border rounded p-4 bg-gray-50">
                             <label class="block text-sm font-medium text-gray-700 mb-2">Contenu de l'article</label>
@@ -169,7 +178,7 @@
         // Load content
         async function loadContent() {
             try {
-                const endpoint = currentType === 'jobs' ? '/api/cms/jobs' : '/api/cms/news';
+                const endpoint = currentType === 'jobs' ? `/api/cms/jobs?lang=${currentLang}` : `/api/cms/news?lang=${currentLang}`;
                 const response = await fetch(endpoint, {
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -181,7 +190,13 @@
                 const data = await response.json();
                 const items = currentType === 'jobs' ? data.jobs : data.news;
                 
-                renderContent(items);
+                // Filter items by language
+                const filteredItems = items.filter(item => {
+                    // For existing items without lang property, show in French by default
+                    return (item.lang || 'fr') === currentLang;
+                });
+                
+                renderContent(filteredItems);
             } catch (error) {
                 console.error('Error loading content:', error);
             }
@@ -272,6 +287,7 @@
                     document.getElementById('newsTitle').value = item.title || '';
                     document.getElementById('date').value = item.date || '';
                     document.getElementById('category').value = item.category || '';
+                    document.getElementById('newsDepartment').value = item.department || '';
                     document.getElementById('summary').value = item.summary || '';
                 }
                 
@@ -392,15 +408,18 @@
                         salary: document.getElementById('salary').value,
                         deadline: document.getElementById('deadline').value,
                         description: htmlContent,
-                        datePosted: new Date().toISOString().split('T')[0]
+                        datePosted: new Date().toISOString().split('T')[0],
+                        lang: currentLang
                     };
                 } else {
                     body = {
                         title: document.getElementById('newsTitle').value,
                         date: document.getElementById('date').value,
                         category: document.getElementById('category').value,
+                        department: document.getElementById('newsDepartment').value,
                         summary: document.getElementById('summary').value,
-                        content: htmlContent
+                        content: htmlContent,
+                        lang: currentLang
                     };
                 }
                 

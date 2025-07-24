@@ -48,6 +48,6 @@ const communiquesData = [
     "id": 1753385453230,
     "title": "test",
     "date": "2025-07-26",
-    "content": "tets"
+    "content": "tets;lqihebrvpqipoi BPOABILEVWPWERV"
   }
 ];
