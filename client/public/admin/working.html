@@ -141,13 +141,21 @@
 
         function renderJobs() {
             const langText = currentLang === 'fr' ? 'Français' : 'English';
-            let html = `<h2 class="text-xl font-bold mb-4">Emplois (${langText})</h2>`;
+            let html = `
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold">Emplois (${langText})</h2>
+                    <button onclick="addJob()" class="bg-green-500 text-white px-4 py-2 rounded">Ajouter un emploi</button>
+                </div>
+            `;
             
             if (allJobs.length === 0) {
                 html += '<p class="text-gray-500">Aucun emploi trouvé pour cette langue.</p>';
             } else {
                 html += '<div class="grid gap-4">';
                 allJobs.forEach(job => {
+                    const description = job.description || job.summary || 'Aucune description';
+                    const truncatedDesc = description.length > 200 ? description.substring(0, 200) + '...' : description;
+                    
                     html += `
                         <div class="border p-4 rounded-lg bg-gray-50">
                             <h3 class="font-bold text-lg text-blue-600">${job.title || 'Titre manquant'}</h3>
@@ -159,8 +167,11 @@
                                 <p><strong>Publié:</strong> ${job.datePosted || 'N/A'}</p>
                                 <p><strong>Échéance:</strong> ${job.deadline || 'N/A'}</p>
                             </div>
-                            <p class="mt-2"><strong>Description:</strong> ${job.description || job.summary || 'Aucune description'}</p>
-                            <button onclick="editJob(${job.id})" class="bg-blue-500 text-white px-4 py-2 rounded text-sm mt-3">Modifier</button>
+                            <p class="mt-2"><strong>Description:</strong> ${truncatedDesc}</p>
+                            <div class="flex gap-2 mt-3">
+                                <button onclick="editJob(${job.id})" class="bg-blue-500 text-white px-4 py-2 rounded text-sm">Modifier</button>
+                                <button onclick="deleteJob(${job.id})" class="bg-red-500 text-white px-4 py-2 rounded text-sm">Supprimer</button>
+                            </div>
                         </div>
                     `;
                 });
@@ -172,13 +183,21 @@
 
         function renderNews() {
             const langText = currentLang === 'fr' ? 'Français' : 'English';
-            let html = `<h2 class="text-xl font-bold mb-4">Actualités (${langText})</h2>`;
+            let html = `
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold">Actualités (${langText})</h2>
+                    <button onclick="addNews()" class="bg-green-500 text-white px-4 py-2 rounded">Ajouter une actualité</button>
+                </div>
+            `;
             
             if (allNews.length === 0) {
                 html += '<p class="text-gray-500">Aucune actualité trouvée pour cette langue.</p>';
             } else {
                 html += '<div class="grid gap-4">';
                 allNews.forEach(article => {
+                    const description = article.description || article.summary || article.content || 'Aucune description';
+                    const truncatedDesc = description.length > 200 ? description.substring(0, 200) + '...' : description;
+                    
                     html += `
                         <div class="border p-4 rounded-lg bg-gray-50">
                             <h3 class="font-bold text-lg text-green-600">${article.title || 'Titre manquant'}</h3>
@@ -186,8 +205,11 @@
                                 <p><strong>Date:</strong> ${article.date || 'N/A'}</p>
                                 <p><strong>Catégorie:</strong> ${article.category || article.section || 'N/A'}</p>
                             </div>
-                            <p class="mt-2"><strong>Description:</strong> ${article.description || article.summary || article.content || 'Aucune description'}</p>
-                            <button onclick="editNews(${article.id})" class="bg-green-500 text-white px-4 py-2 rounded text-sm mt-3">Modifier</button>
+                            <p class="mt-2"><strong>Description:</strong> ${truncatedDesc}</p>
+                            <div class="flex gap-2 mt-3">
+                                <button onclick="editNews(${article.id})" class="bg-green-500 text-white px-4 py-2 rounded text-sm">Modifier</button>
+                                <button onclick="deleteNews(${article.id})" class="bg-red-500 text-white px-4 py-2 rounded text-sm">Supprimer</button>
+                            </div>
                         </div>
                     `;
                 });
@@ -348,6 +370,147 @@
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
+        }
+
+        function addJob() {
+            const modal = createModal('Ajouter un emploi', `
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Titre:</label>
+                        <input type="text" id="editTitle" placeholder="Titre du poste" class="w-full p-2 border rounded">
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Département:</label>
+                            <input type="text" id="editDept" placeholder="Administration, Événements, etc." class="w-full p-2 border rounded">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Lieu:</label>
+                            <input type="text" id="editLocation" placeholder="Montréal, QC" class="w-full p-2 border rounded">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Type:</label>
+                            <input type="text" id="editType" placeholder="Temps plein, Temps partiel" class="w-full p-2 border rounded">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Salaire:</label>
+                            <input type="text" id="editSalary" placeholder="Compétitif, 25$/heure" class="w-full p-2 border rounded">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Description:</label>
+                        <textarea id="editDesc" placeholder="Description complète du poste" class="w-full p-2 border rounded h-32"></textarea>
+                    </div>
+                </div>
+            `, () => saveNewJob());
+        }
+
+        function addNews() {
+            const modal = createModal('Ajouter une actualité', `
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Titre:</label>
+                        <input type="text" id="editTitle" placeholder="Titre de l'actualité" class="w-full p-2 border rounded">
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Date:</label>
+                            <input type="date" id="editDate" value="${new Date().toISOString().split('T')[0]}" class="w-full p-2 border rounded">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Catégorie:</label>
+                            <input type="text" id="editCategory" placeholder="Beach Pro Tour, Marathon, etc." class="w-full p-2 border rounded">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Description:</label>
+                        <textarea id="editDesc" placeholder="Contenu de l'actualité" class="w-full p-2 border rounded h-32"></textarea>
+                    </div>
+                </div>
+            `, () => saveNewNews());
+        }
+
+        async function saveNewJob() {
+            const data = {
+                title: document.getElementById('editTitle').value,
+                department: document.getElementById('editDept').value,
+                location: document.getElementById('editLocation').value,
+                type: document.getElementById('editType').value,
+                salary: document.getElementById('editSalary').value,
+                description: document.getElementById('editDesc').value,
+                datePosted: new Date().toISOString().split('T')[0],
+                lang: currentLang
+            };
+
+            const response = await fetch('/api/cms/jobs', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+                await loadData();
+            } else {
+                throw new Error('Save failed');
+            }
+        }
+
+        async function saveNewNews() {
+            const data = {
+                title: document.getElementById('editTitle').value,
+                date: document.getElementById('editDate').value,
+                category: document.getElementById('editCategory').value,
+                description: document.getElementById('editDesc').value,
+                lang: currentLang
+            };
+
+            const response = await fetch('/api/cms/news', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+                await loadData();
+            } else {
+                throw new Error('Save failed');
+            }
+        }
+
+        async function deleteJob(jobId) {
+            if (confirm('Êtes-vous sûr de vouloir supprimer cet emploi?')) {
+                const response = await fetch(`/api/cms/jobs/${jobId}?lang=${currentLang}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (response.ok) {
+                    await loadData();
+                } else {
+                    alert('Erreur lors de la suppression');
+                }
+            }
+        }
+
+        async function deleteNews(newsId) {
+            if (confirm('Êtes-vous sûr de vouloir supprimer cette actualité?')) {
+                const response = await fetch(`/api/cms/news/${newsId}?lang=${currentLang}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (response.ok) {
+                    await loadData();
+                } else {
+                    alert('Erreur lors de la suppression');
+                }
+            }
         }
     </script>
 </body>
