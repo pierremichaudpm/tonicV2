@@ -37,26 +37,24 @@ const authenticateToken = (req: any, res: any, next: any) => {
 };
 
 // Login endpoint
-router.post('/login', async (req, res) => {
-  const { username, password } = req.body;
-  
-  console.log('Login attempt:', { username, password: password?.length });
-  console.log('Expected username:', ADMIN_USER.username);
-
-  if (username !== ADMIN_USER.username) {
-    console.log('Username mismatch');
+router.post('/login', (req, res) => {
+  try {
+    console.log('CMS Login request received:', req.body);
+    const { username, password } = req.body;
+    
+    // Direct comparison
+    if (username === 'admin' && password === 'admin123') {
+      const token = jwt.sign({ username: 'admin' }, JWT_SECRET, { expiresIn: '24h' });
+      console.log('Login successful, token generated');
+      return res.json({ token, username: 'admin' });
+    }
+    
+    console.log('Login failed - wrong credentials');
     return res.status(401).json({ message: 'Invalid credentials' });
+  } catch (error) {
+    console.error('Login error:', error);
+    return res.status(500).json({ message: 'Server error' });
   }
-
-  // Simple password check for now
-  if (password === 'admin123') {
-    console.log('Password accepted');
-    const token = jwt.sign({ username }, JWT_SECRET, { expiresIn: '24h' });
-    return res.json({ token, username });
-  }
-
-  console.log('Password rejected');
-  return res.status(401).json({ message: 'Invalid credentials' });
 });
 
 // Helper functions to read/write data files
