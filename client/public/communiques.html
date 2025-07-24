@@ -382,6 +382,17 @@
             return categoryMap[category] || 'category-beach';
         }
         
+        // Get press release by ID
+        function getPressReleaseById(id) {
+            return pressReleases.find(pr => pr.id === parseInt(id));
+        }
+        
+        // Format date to French format
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString('fr-FR', options);
+        }
+        
         // Show list view
         function showListView() {
             DOM.listView.classList.add('active');
