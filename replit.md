@@ -294,6 +294,9 @@ The website is now fully operational and matches the original local/Netlify func
 - **Data integration**: CMS reads/writes directly to existing JavaScript data files (emplois-data.js, communiques-data.js, etc.)
 - **Login credentials**: Password: `admin123` (simple, reliable authentication)
 - **Status**: ✅ FULLY FUNCTIONAL - CMS system now works reliably without authentication corruption issues
+- **Category-image integration**: Automatic image assignment for news categories working seamlessly behind the scenes
+- **Clean interface**: Hidden technical fields, showing only essential content management options
+- **Production ready**: Stable, simple system successfully managing real website content
 
 ### 4K Display Grid Layout - July 23, 2025 ✅ RESOLVED
 - **Initial issue**: Grid showing all 7 tiles in single row on 4K screens

@@ -45,9 +45,12 @@ const communiquesData = [
     "image": "images/beach-pro-tour-hero.webp"
   },
   {
-    "id": 1753385453230,
-    "title": "test",
-    "date": "2025-07-26",
-    "content": "tets;lqihebrvpqipoi BPOABILEVWPWERV"
+    "id": 1753393226124,
+    "title": "test anglais",
+    "date": "",
+    "category": "Beach Pro Tour",
+    "image": "images/beach-pro-tour-hero.webp",
+    "summary": "wferfqev",
+    "content": "qvbqtgwtqrbwqrtbwrbwrytbwyrtbwyrteb"
   }
 ];
