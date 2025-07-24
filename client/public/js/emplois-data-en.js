@@ -2,7 +2,7 @@ const jobsData = [
   {
     "id": 101,
     "title": "Senior Executive Assistant",
-    "department": "Administration",
+    "department": "Groupe Tonic",
     "type": "Full-time / Permanent position",
     "location": "Longueuil - South Shore",
     "summary": "Seeking a senior executive assistant to provide strategic and operational support to senior management.",
@@ -17,7 +17,7 @@ const jobsData = [
   {
     "id": 102,
     "title": "Event Coordinator - DOCK619",
-    "department": "Events",
+    "department": "Dock 619",
     "type": "Permanent",
     "location": "Longueuil, QC",
     "summary": "Support the team in organizing, logistics and execution of events at DOCK619.",
@@ -32,7 +32,7 @@ const jobsData = [
   {
     "id": 103,
     "title": "Dishwasher machine",
-    "department": "",
+    "department": "Dock 619",
     "type": "Part-time",
     "location": "Montreal, QC",
     "summary": "Dishwasher position in our kitchen team.",

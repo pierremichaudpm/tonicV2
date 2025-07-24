@@ -136,19 +136,17 @@
             news: { fr: [], en: [] }
         };
 
-        // Category to image mapping for news
+        // Category to image mapping - 8 standardized categories
         const categoryImageMap = {
-            // French categories
+            // Standardized categories for both languages
             'Beach Pro Tour': 'images/beach-pro-tour-hero.webp',
-            'Championnats du Monde UCI': 'images/montreal-2026-uci-hero.jpg',
-            'Marathon Beneva': 'images/marathon-beneva-hero.jpg',
             'Grands Prix Cyclistes': 'images/grands-prix-cyclistes-hero.jpg',
-            'Nouvelles corporatives': 'images/tonic-logo.png',
-            
-            // English categories
-            'UCI World Championships': 'images/montreal-2026-uci-hero.jpg',
-            'Beneva Marathon': 'images/marathon-beneva-hero.jpg',
-            'Cycling Grand Prix': 'images/grands-prix-cyclistes-hero.jpg'
+            'Marathon Beneva 21K': 'images/marathon-beneva-hero.jpg',
+            'UCI 2026': 'images/montreal-2026-uci-hero.jpg',
+            'Studio 76': 'images/studio-76-hero.jpg',
+            'Dock 619': 'images/dock619-hero-optimized.jpg',
+            '21K de Montréal': 'images/21k-hero.jpg',
+            'Groupe Tonic': 'images/studio-76-hero.jpg' // Temporarily using Studio 76 image
         };
 
         // Authentication helpers
@@ -263,22 +261,28 @@
         }
 
         function updateCategoryDropdowns() {
-            const categories = availableCategories[currentType][currentLang];
+            // Use the standardized 8 categories instead of extracted ones
+            const standardizedCategories = [
+                'Beach Pro Tour',
+                'Grands Prix Cyclistes',
+                'Marathon Beneva 21K',
+                'UCI 2026',
+                'Studio 76',
+                'Dock 619',
+                '21K de Montréal',
+                'Groupe Tonic'
+            ];
             
             if (currentType === 'jobs') {
                 const select = document.getElementById('department');
                 const placeholder = currentLang === 'fr' ? 'Sélectionner un département' : 'Select a department';
-                const newOption = currentLang === 'fr' ? '+ Nouveau département' : '+ New department';
                 select.innerHTML = `<option value="">${placeholder}</option>` + 
-                    categories.map(cat => `<option value="${cat}">${cat}</option>`).join('') +
-                    `<option value="NEW_CATEGORY">${newOption}</option>`;
+                    standardizedCategories.map(cat => `<option value="${cat}">${cat}</option>`).join('');
             } else {
                 const select = document.getElementById('category');
                 const placeholder = currentLang === 'fr' ? 'Sélectionner une catégorie' : 'Select a category';
-                const newOption = currentLang === 'fr' ? '+ Nouvelle catégorie' : '+ New category';
                 select.innerHTML = `<option value="">${placeholder}</option>` + 
-                    categories.map(cat => `<option value="${cat}">${cat}</option>`).join('') +
-                    `<option value="NEW_CATEGORY">${newOption}</option>`;
+                    standardizedCategories.map(cat => `<option value="${cat}">${cat}</option>`).join('');
             }
         }
 

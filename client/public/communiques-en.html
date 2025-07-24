@@ -64,11 +64,14 @@
             border-color: rgba(255, 255, 255, 0.2);
         }
         
-        /* Category colors */
-        .cat-beach { background: linear-gradient(135deg, #06b6d4, #06b6d433); }
-        .cat-marathon { background: linear-gradient(135deg, #10b981, #10b98133); }
-        .cat-uci { background: linear-gradient(135deg, #f59e0b, #f59e0b33); }
-        .cat-cycling { background: linear-gradient(135deg, #8b5cf6, #8b5cf633); }
+        /* Category colors for 8 standardized categories */
+        .cat-beach { background: linear-gradient(135deg, #ff0e9b, #ff0e9b33); }
+        .cat-cycling { background: linear-gradient(135deg, #b7d233, #b7d23333); }
+        .cat-marathon { background: linear-gradient(135deg, #463092, #46309233); }
+        .cat-uci { background: linear-gradient(135deg, #da273b, #da273b33); }
+        .cat-studio { background: linear-gradient(135deg, #06b6d4, #06b6d433); }
+        .cat-dock { background: linear-gradient(135deg, #6b7280, #6b728033); }
+        .cat-21k { background: linear-gradient(135deg, #f59e0b, #f59e0b33); }
         .cat-tonic { background: linear-gradient(135deg, #ff0e9b, #ff0e9b33); }
         
         /* Modal styles */
@@ -293,13 +296,16 @@
     
     <!-- Page specific JavaScript -->
     <script>
-        // Get category class for styling
+        // Get category class for styling - 8 standardized categories
         function getCategoryClass(category) {
             const classMap = {
                 'Beach Pro Tour': 'cat-beach',
-                'Marathon Beneva': 'cat-marathon',
-                'UCI World Championships': 'cat-uci',
-                'Cycling Events': 'cat-cycling',
+                'Grands Prix Cyclistes': 'cat-cycling',
+                'Marathon Beneva 21K': 'cat-marathon',
+                'UCI 2026': 'cat-uci',
+                'Studio 76': 'cat-studio',
+                'Dock 619': 'cat-dock',
+                '21K de Montréal': 'cat-21k',
                 'Groupe Tonic': 'cat-tonic'
             };
             return classMap[category] || 'cat-tonic';
