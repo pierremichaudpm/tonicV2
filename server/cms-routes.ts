@@ -66,19 +66,30 @@ router.post('/login', (req, res) => {
 
 // Helper functions to read/write data files
 async function readJobsData(lang: string = 'fr') {
-  if (lang === 'en') {
-    return [
-      { id: 101, title: "Senior Executive Assistant", department: "Administration", location: "Longueuil, QC", deadline: "2025-07-28", description: "We are looking for a Senior Executive Assistant to support our management team.", datePosted: "2025-07-22" },
-      { id: 102, title: "Event Coordinator - DOCK619", department: "Events", location: "Montreal, QC", deadline: "2025-08-15", description: "Join our team as an Event Coordinator for DOCK619.", datePosted: "2025-07-22" },
-      { id: 103, title: "Dishwasher", department: "Kitchen", location: "Montreal, QC", deadline: "2025-08-01", description: "We are seeking a reliable dishwasher. $23/hour.", datePosted: "2025-07-22" }
-    ];
-  } else {
-    return [
-      { id: 101, datePosted: "2025-07-22", title: "Adjoint(e) senior à la Direction", department: "Administration", type: "Temps plein / poste permanent", location: "Longueuil - Rive Sud", summary: "Recherche d'un(e) adjoint(e) senior pour offrir un soutien stratégique", salary: "Compétitif", startDate: "Dès que possible", emailSubject: "Candidature - Adjoint(e) senior", applyEmail: "rh@gpcqm.ca", deadline: "28 juillet 2025" },
-      { id: 102, datePosted: "2025-07-22", title: "Coordonnateur, Événements – DOCK619", department: "Événements", type: "Permanent", location: "Longueuil, QC", summary: "Appuyer l'équipe dans l'organisation des événements au DOCK619", salary: "Selon expérience", startDate: "Dès que possible", emailSubject: "Candidature - Coordonnateur Événements DOCK619", applyEmail: "rh@gpcqm.ca" },
-      { id: 103, datePosted: "2025-07-22", title: "Plongeur", department: "Cuisine", type: "Temps partiel", location: "Montréal, QC", summary: "Poste de plongeur dans notre équipe de cuisine", salary: "23$/heure", startDate: "Dès que possible", emailSubject: "Candidature - Plongeur", applyEmail: "rh@gpcqm.ca" }
-    ];
+  try {
+    const file = lang === 'en' ? JOBS_FILE_EN : JOBS_FILE_FR;
+    const content = await fs.readFile(file, 'utf8');
+    
+    // Extract the data from the file content
+    if (lang === 'fr') {
+      // French file uses jobListings variable
+      const match = content.match(/const jobListings = (\[[\s\S]*?\]);/);
+      if (match) {
+        return eval(match[1]);
+      }
+    } else {
+      // English file uses jobsData variable
+      const match = content.match(/const jobsData = (\[[\s\S]*?\]);/);
+      if (match) {
+        return eval(match[1]);
+      }
+    }
+  } catch (error) {
+    console.error('Error reading jobs file:', error);
   }
+  
+  // Fallback to empty array if file reading fails
+  return [];
 }
 
 async function writeJobsData(jobs: any[], lang: string = 'fr') {
@@ -88,17 +99,30 @@ async function writeJobsData(jobs: any[], lang: string = 'fr') {
 }
 
 async function readNewsData(lang: string = 'fr') {
-  if (lang === 'en') {
-    return [
-      { id: 1, title: "Beach Pro Tour 2025 - Registration Open", date: "2025-03-15", content: "Registration is now open for the Beach Pro Tour 2025.", category: "volleyball" },
-      { id: 2, title: "DOCK619 Corporate Events - New Packages", date: "2025-02-28", content: "DOCK619 announces new corporate event packages for 2025.", category: "corporate" },
-      { id: 3, title: "Marathon Beneva 2025 - Route Announced", date: "2025-01-20", content: "The official route for Marathon Beneva 2025 has been announced.", category: "running" }
-    ];
-  } else {
-    return [
-      { id: 5, date: "2024-11-15", title: "Tonic annonce le retour du Beach Pro Tour Montréal pour 2025", category: "Beach Pro Tour", summary: "L'élite mondiale du volleyball de plage sera de retour à Montréal du 13 au 17 août 2025.", content: "Montréal, le 15 novembre 2024 – Groupe Tonic est fier d'annoncer le retour du Beach Pro Tour à Montréal.", image: "images/beach-pro-tour-news.jpg" }
-    ];
+  try {
+    const file = lang === 'en' ? NEWS_FILE_EN : NEWS_FILE_FR;
+    const content = await fs.readFile(file, 'utf8');
+    
+    // Extract the data from the file content
+    if (lang === 'fr') {
+      // French file uses pressReleases variable
+      const match = content.match(/const pressReleases = (\[[\s\S]*?\]);/);
+      if (match) {
+        return eval(match[1]);
+      }
+    } else {
+      // English file uses communiquesData variable
+      const match = content.match(/const communiquesData = (\[[\s\S]*?\]);/);
+      if (match) {
+        return eval(match[1]);
+      }
+    }
+  } catch (error) {
+    console.error('Error reading news file:', error);
   }
+  
+  // Fallback to empty array if file reading fails
+  return [];
 }
 
 async function writeNewsData(news: any[], lang: string = 'fr') {
