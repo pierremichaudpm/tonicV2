@@ -192,6 +192,42 @@
             color: var(--accent-hover) !important;
         }
         
+        /* Modal styles */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        .modal-backdrop.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .modal-content {
+            background: var(--bg-primary);
+            border-radius: 1rem;
+            max-width: 48rem;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+        }
+        
+        .modal-backdrop.active .modal-content {
+            transform: scale(1);
+        }
+        
         /* Update default accent color variable */
         :root {
             --default-accent: var(--accent-primary);
@@ -315,22 +351,24 @@
         </section>
     </main>
     
-    <!-- Detail View -->
-    <div id="detailView" class="view">
-        <section class="container mx-auto px-4 py-8">
-            <div class="max-w-4xl mx-auto">
-                <button onclick="showListView()" class="back-button mb-6 inline-flex">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                    </svg>
-                    <span>Retour aux communiqués</span>
-                </button>
-                
-                <div id="prDetail" class="pr-detail rounded-xl p-6 sm:p-8 lg:p-12">
-                    <!-- Press release detail will be inserted here by JavaScript -->
+    <!-- Press Release Modal -->
+    <div id="pressModal" class="modal-backdrop">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="sticky top-0 bg-black/80 backdrop-blur-lg border-b border-white/10 p-6 flex justify-between items-start">
+                <div>
+                    <h2 id="modalTitle" class="text-2xl font-bold pr-4"></h2>
+                    <p id="modalDate" class="text-white mt-1"></p>
                 </div>
+                <button onclick="closePressModal()" class="p-2 hover:bg-white/10 rounded-lg transition-colors" aria-label="Fermer">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
             </div>
-        </section>
+            <div id="modalContent" class="p-6">
+                <!-- Press release content will be inserted here -->
+            </div>
+        </div>
     </div>
     
     <!-- Footer -->
@@ -360,10 +398,7 @@
     <script>
         // Cache DOM elements for better performance
         const DOM = {
-            listView: null,
-            detailView: null,
-            prList: null,
-            prDetail: null
+            prList: null
         };
         
         // Category mapping
@@ -393,38 +428,29 @@
             return new Date(dateString).toLocaleDateString('fr-FR', options);
         }
         
-        // Show list view
-        function showListView() {
-            DOM.listView.classList.add('active');
-            DOM.detailView.classList.remove('active');
-            window.location.hash = '';
-            window.scrollTo({ top: 0, behavior: 'instant' });
+        // Open press release modal
+        function openPressModal(releaseId) {
+            const release = getPressReleaseById(releaseId);
+            if (!release) return;
+            
+            const modal = document.getElementById('pressModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalDate = document.getElementById('modalDate');
+            const modalContent = document.getElementById('modalContent');
+            
+            modalTitle.textContent = release.title;
+            modalDate.textContent = formatDate(release.date);
+            modalContent.innerHTML = release.content;
+            
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
         }
         
-        // Show detail view
-        function showDetailView(id) {
-            const pr = getPressReleaseById(id);
-            if (!pr) return;
-            
-            const detailHTML = `
-                <div class="mb-6">
-                    ${pr.image ? `<img src="${pr.image}" alt="${pr.title}" class="w-full h-64 sm:h-80 object-cover rounded-lg mb-6" loading="lazy">` : ''}
-                    <span class="inline-block px-3 py-1 rounded-full text-sm font-medium text-white ${getCategoryClass(pr.category)} mb-4">
-                        ${pr.category}
-                    </span>
-                    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black mb-4">${pr.title}</h1>
-                    <p class="text-white">${formatDate(pr.date)}</p>
-                </div>
-                <div class="pr-content text-white space-y-4">
-                    ${pr.content}
-                </div>
-            `;
-            
-            DOM.prDetail.innerHTML = detailHTML;
-            DOM.listView.classList.remove('active');
-            DOM.detailView.classList.add('active');
-            window.location.hash = `pr-${id}`;
-            window.scrollTo({ top: 0, behavior: 'instant' });
+        // Close press release modal
+        function closePressModal() {
+            const modal = document.getElementById('pressModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
         }
         
         // Render press releases list - Optimized with document fragment
@@ -484,28 +510,10 @@
             DOM.prList.appendChild(fragment);
         }
         
-        // Handle hash changes
-        function handleHashChange() {
-            const hash = window.location.hash;
-            if (hash.startsWith('#pr-')) {
-                const id = parseInt(hash.replace('#pr-', ''));
-                showDetailView(id);
-            } else {
-                showListView();
-            }
-        }
-        
-        // Initialize - Optimized
+        // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             // Cache DOM elements
-            DOM.listView = document.querySelector('main');
-            DOM.detailView = document.getElementById('detailView');
             DOM.prList = document.getElementById('prList');
-            DOM.prDetail = document.getElementById('prDetail');
-            
-            // Add the list view wrapper
-            DOM.listView.id = 'listView';
-            DOM.listView.classList.add('view', 'active');
             
             // Check if data is loaded
             if (typeof pressReleases === 'undefined' || !Array.isArray(pressReleases)) {
@@ -521,16 +529,24 @@
                 const prCard = e.target.closest('.pr-card');
                 if (prCard) {
                     const prId = parseInt(prCard.dataset.prId);
-                    showDetailView(prId);
+                    openPressModal(prId);
                 }
             });
             
-            // Handle initial hash
-            handleHashChange();
+            // Modal backdrop click to close
+            document.getElementById('pressModal').addEventListener('click', function(e) {
+                if (e.target === e.currentTarget) {
+                    closePressModal();
+                }
+            });
+            
+            // Keyboard events
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closePressModal();
+                }
+            });
         });
-        
-        // Listen for hash changes
-        window.addEventListener('hashchange', handleHashChange);
     </script>
 </body>
 </html>
