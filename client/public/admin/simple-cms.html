@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CMS Simple - Groupe Tonic</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+    <script src="https://cdn.ckeditor.com/4.25.1/standard/ckeditor.js"></script>
 </head>
 <body class="bg-gray-100">
     <div class="min-h-screen">
@@ -260,6 +260,12 @@
             }).join('');
         }
 
+        function decodeHtmlEntities(text) {
+            const textarea = document.createElement('textarea');
+            textarea.innerHTML = text;
+            return textarea.value;
+        }
+
         function editItem(id) {
             const item = currentData.find(i => i.id == id);
             if (!item) return;
@@ -275,7 +281,9 @@
                 document.getElementById('salary').value = item.salary || item.salaire || '';
                 document.getElementById('deadline').value = item.deadline || '';
                 
-                jobEditor.setData(item.description || '');
+                // Decode HTML entities before setting in editor
+                const decodedDescription = decodeHtmlEntities(item.description || '');
+                jobEditor.setData(decodedDescription);
                 
                 document.querySelector('.jobFields').classList.remove('hidden');
                 document.querySelector('.newsFields').classList.add('hidden');
@@ -285,7 +293,9 @@
                 document.getElementById('category').value = item.category || '';
                 document.getElementById('summary').value = item.summary || '';
                 
-                newsEditor.setData(item.content || '');
+                // Decode HTML entities before setting in editor
+                const decodedContent = decodeHtmlEntities(item.content || '');
+                newsEditor.setData(decodedContent);
                 
                 document.querySelector('.jobFields').classList.add('hidden');
                 document.querySelector('.newsFields').classList.remove('hidden');
