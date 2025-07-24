@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS - Groupe Tonic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="min-h-screen">
+        <!-- Header -->
+        <header class="bg-white shadow-sm border-b">
+            <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+                <h1 class="text-2xl font-bold text-gray-800">CMS - Groupe Tonic</h1>
+                <div class="flex items-center gap-4">
+                    <select id="contentType" class="border rounded px-3 py-2">
+                        <option value="jobs">Emplois / Jobs</option>
+                        <option value="news">Communiqués / News</option>
+                    </select>
+                    <select id="language" class="border rounded px-3 py-2">
+                        <option value="fr">Français</option>
+                        <option value="en">English</option>
+                    </select>
+                    <button onclick="logout()" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                        Déconnexion
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="max-w-7xl mx-auto px-4 py-8">
+            <div class="mb-6 flex justify-between items-center">
+                <h2 class="text-xl font-semibold text-gray-700">Contenu</h2>
+                <button onclick="addNew()" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                    + Ajouter nouveau
+                </button>
+            </div>
+            <div id="content" class="space-y-4">
+                <!-- Content will be loaded here -->
+            </div>
+        </main>
+
+        <!-- Modal -->
+        <div id="modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+            <div class="bg-white rounded-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+                <div class="p-6">
+                    <h2 id="modalTitle" class="text-2xl font-bold mb-4">Éditer</h2>
+                    <form id="editForm">
+                        <input type="hidden" id="itemId">
+                        
+                        <!-- Job Fields -->
+                        <div id="jobFields" class="hidden space-y-4">
+                            <div class="grid grid-cols-2 gap-4">
+                                <input type="text" id="title" placeholder="Titre du poste" class="p-2 border rounded">
+                                <input type="text" id="department" placeholder="Département" class="p-2 border rounded">
+                                <input type="text" id="location" placeholder="Lieu" class="p-2 border rounded">
+                                <input type="text" id="type" placeholder="Type" class="p-2 border rounded">
+                                <input type="text" id="salary" placeholder="Salaire" class="p-2 border rounded">
+                                <input type="text" id="deadline" placeholder="Date limite" class="p-2 border rounded">
+                            </div>
+                            <textarea id="description" placeholder="Description" rows="10" class="w-full p-2 border rounded"></textarea>
+                        </div>
+
+                        <!-- News Fields -->
+                        <div id="newsFields" class="hidden space-y-4">
+                            <div class="grid grid-cols-2 gap-4">
+                                <input type="text" id="newsTitle" placeholder="Titre" class="p-2 border rounded">
+                                <input type="date" id="date" class="p-2 border rounded">
+                                <input type="text" id="category" placeholder="Catégorie" class="p-2 border rounded">
+                                <input type="text" id="summary" placeholder="Résumé" class="p-2 border rounded">
+                            </div>
+                            <textarea id="content" placeholder="Contenu" rows="10" class="w-full p-2 border rounded"></textarea>
+                        </div>
+
+                        <div class="flex gap-2 justify-end mt-4">
+                            <button type="button" onclick="closeModal()" class="px-4 py-2 border rounded hover:bg-gray-100">
+                                Annuler
+                            </button>
+                            <button type="button" onclick="save()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                                Sauvegarder
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const token = localStorage.getItem('cms_token');
+        if (!token) {
+            window.location.href = '/admin/';
+        }
+
+        let currentType = 'jobs';
+        let currentLang = 'fr';
+        let currentData = [];
+
+        document.getElementById('contentType').addEventListener('change', (e) => {
+            currentType = e.target.value;
+            loadContent();
+        });
+
+        document.getElementById('language').addEventListener('change', (e) => {
+            currentLang = e.target.value;
+            loadContent();
+        });
+
+        function logout() {
+            localStorage.removeItem('cms_token');
+            window.location.href = '/admin/';
+        }
+
+        async function loadContent() {
+            try {
+                const response = await fetch(`/api/cms/${currentType}?lang=${currentLang}`, {
+                    headers: { 
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (!response.ok) {
+                    if (response.status === 401 || response.status === 403) {
+                        alert('Session expirée. Veuillez vous reconnecter.');
+                        logout();
+                        return;
+                    }
+                    throw new Error('Failed to load content');
+                }
+                
+                const data = await response.json();
+                currentData = currentType === 'jobs' ? data.jobs : data.news;
+                displayContent();
+            } catch (error) {
+                console.error('Error loading:', error);
+                alert('Erreur de chargement. Veuillez réessayer.');
+            }
+        }
+
+        function displayContent() {
+            const container = document.getElementById('content');
+            container.innerHTML = currentData.map(item => {
+                if (currentType === 'jobs') {
+                    return `
+                        <div class="bg-white p-4 rounded shadow">
+                            <h3 class="text-lg font-bold">${item.title || 'Sans titre'}</h3>
+                            <p class="text-gray-600">${item.department || ''} | ${item.location || item.lieu || ''}</p>
+                            <div class="mt-2 flex gap-2">
+                                <button onclick="edit(${item.id})" class="text-blue-500 hover:underline">Éditer</button>
+                                <button onclick="remove(${item.id})" class="text-red-500 hover:underline">Supprimer</button>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    return `
+                        <div class="bg-white p-4 rounded shadow">
+                            <h3 class="text-lg font-bold">${item.title || 'Sans titre'}</h3>
+                            <p class="text-gray-600">${item.date || ''} | ${item.category || ''}</p>
+                            <div class="mt-2 flex gap-2">
+                                <button onclick="edit(${item.id})" class="text-purple-500 hover:underline">Éditer</button>
+                                <button onclick="remove(${item.id})" class="text-red-500 hover:underline">Supprimer</button>
+                            </div>
+                        </div>
+                    `;
+                }
+            }).join('');
+        }
+
+        function addNew() {
+            document.getElementById('modalTitle').textContent = 'Ajouter nouveau';
+            document.getElementById('editForm').reset();
+            document.getElementById('itemId').value = '';
+            
+            if (currentType === 'jobs') {
+                document.getElementById('jobFields').classList.remove('hidden');
+                document.getElementById('newsFields').classList.add('hidden');
+            } else {
+                document.getElementById('jobFields').classList.add('hidden');
+                document.getElementById('newsFields').classList.remove('hidden');
+            }
+            
+            document.getElementById('modal').classList.remove('hidden');
+        }
+
+        function edit(id) {
+            const item = currentData.find(i => i.id == id);
+            if (!item) return;
+
+            document.getElementById('modalTitle').textContent = 'Éditer';
+            document.getElementById('itemId').value = id;
+
+            if (currentType === 'jobs') {
+                document.getElementById('title').value = item.title || '';
+                document.getElementById('department').value = item.department || '';
+                document.getElementById('location').value = item.location || item.lieu || '';
+                document.getElementById('type').value = item.type || '';
+                document.getElementById('salary').value = item.salary || item.salaire || '';
+                document.getElementById('deadline').value = item.deadline || '';
+                document.getElementById('description').value = item.description || '';
+                
+                document.getElementById('jobFields').classList.remove('hidden');
+                document.getElementById('newsFields').classList.add('hidden');
+            } else {
+                document.getElementById('newsTitle').value = item.title || '';
+                document.getElementById('date').value = item.date || '';
+                document.getElementById('category').value = item.category || '';
+                document.getElementById('summary').value = item.summary || '';
+                document.getElementById('content').value = item.content || '';
+                
+                document.getElementById('jobFields').classList.add('hidden');
+                document.getElementById('newsFields').classList.remove('hidden');
+            }
+
+            document.getElementById('modal').classList.remove('hidden');
+        }
+
+        async function save() {
+            const id = document.getElementById('itemId').value;
+            const isNew = !id;
+            
+            let data = { lang: currentLang };
+            
+            if (currentType === 'jobs') {
+                data.title = document.getElementById('title').value;
+                data.department = document.getElementById('department').value;
+                data.location = document.getElementById('location').value;
+                data.type = document.getElementById('type').value;
+                data.salary = document.getElementById('salary').value;
+                data.deadline = document.getElementById('deadline').value;
+                data.description = document.getElementById('description').value;
+                if (isNew) data.datePosted = new Date().toISOString().split('T')[0];
+            } else {
+                data.title = document.getElementById('newsTitle').value;
+                data.date = document.getElementById('date').value || new Date().toISOString().split('T')[0];
+                data.category = document.getElementById('category').value;
+                data.summary = document.getElementById('summary').value;
+                data.content = document.getElementById('content').value;
+            }
+
+            try {
+                const url = isNew ? `/api/cms/${currentType}` : `/api/cms/${currentType}/${id}`;
+                const method = isNew ? 'POST' : 'PUT';
+                
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    closeModal();
+                    loadContent();
+                    alert(isNew ? 'Créé avec succès!' : 'Modifié avec succès!');
+                } else {
+                    throw new Error('Failed to save');
+                }
+            } catch (error) {
+                console.error('Save error:', error);
+                alert('Erreur lors de la sauvegarde');
+            }
+        }
+
+        async function remove(id) {
+            if (!confirm('Êtes-vous sûr?')) return;
+
+            try {
+                const response = await fetch(`/api/cms/${currentType}/${id}?lang=${currentLang}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (response.ok) {
+                    loadContent();
+                    alert('Supprimé avec succès!');
+                }
+            } catch (error) {
+                console.error('Delete error:', error);
+                alert('Erreur lors de la suppression');
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.add('hidden');
+        }
+
+        loadContent();
+    </script>
+</body>
+</html>
