@@ -31,7 +31,7 @@ const jobListings = [
   {
     "id": 103,
     "datePosted": "2025-07-22",
-    "title": "Plongeur",
+    "title": "Plongeur test edit",
     "department": "Cuisine",
     "type": "Horaire",
     "location": "Longueuil, QC",
@@ -40,7 +40,8 @@ const jobListings = [
     "salary": "23$/heure",
     "startDate": "Dès que possible",
     "emailSubject": "Candidature - Plongeur",
-    "applyEmail": "rh@gpcqm.ca"
+    "applyEmail": "rh@gpcqm.ca",
+    "deadline": ""
   },
   {
     "id": 1753385838262,

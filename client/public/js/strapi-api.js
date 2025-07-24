@@ -85,9 +85,14 @@ async function loadJobsData() {
         return strapiJobs;
     }
     
-    // Fallback to local data
+    // Fallback to local data - check both French and English variable names
     console.log('📄 Using local jobs data');
-    return typeof jobListings !== 'undefined' ? jobListings : [];
+    if (typeof jobListings !== 'undefined') {
+        return jobListings; // French variable name
+    } else if (typeof jobsData !== 'undefined') {
+        return jobsData; // English variable name
+    }
+    return [];
 }
 
 // Main function to load news (tries Strapi first, falls back to local data)
@@ -98,9 +103,14 @@ async function loadNewsData() {
         return strapiNews;
     }
     
-    // Fallback to local data
+    // Fallback to local data - check both French and English variable names
     console.log('📄 Using local news data');
-    return typeof pressReleases !== 'undefined' ? pressReleases : [];
+    if (typeof pressReleases !== 'undefined') {
+        return pressReleases; // French variable name
+    } else if (typeof communiquesData !== 'undefined') {
+        return communiquesData; // English variable name
+    }
+    return [];
 }
 
 // Export functions for use in other scripts

@@ -43,5 +43,12 @@ const pressReleases = [
     "summary": "La 4e édition du Beach Pro Tour Montréal a accueilli plus de 45 000 spectateurs et confirmé Montréal comme destination privilégiée du volleyball de plage mondial.",
     "content": "\n            <p>Montréal, le 20 août 2024 – La 4e édition du Beach Pro Tour Montréal s'est achevée dimanche soir sur une note triomphale, confirmant une fois de plus la place de Montréal sur la scène internationale du volleyball de plage.</p>\n            \n            <p>Organisé du 14 au 18 août au parc Jean-Drapeau, cet événement Elite16 a réuni les 16 meilleures paires masculines et féminines du circuit mondial pour cinq jours de compétition intense sous les projecteurs du Center Court.</p>\n            \n            <h3>Une édition record</h3>\n            <ul>\n                <li>Plus de 45 000 spectateurs sur les cinq jours</li>\n                <li>16 paires par catégorie représentant 20 nations</li>\n                <li>Diffusion en direct dans 100+ pays</li>\n                <li>Prize money de 300 000$ USD distribué</li>\n            </ul>\n            \n            <blockquote>\"L'atmosphère électrisante du public montréalais et l'organisation impeccable font de cette étape l'une des préférées des athlètes sur le circuit\"</blockquote>\n            \n            <p>Cette réussite confirme l'engagement de Groupe Tonic à positionner Montréal comme une destination de choix pour les grands événements sportifs internationaux.</p>\n        ",
     "image": "images/beach-pro-tour-hero.webp"
+  },
+  {
+    "id": 1753385955676,
+    "title": "test francais",
+    "date": "2025-07-26",
+    "category": "",
+    "summary": "tesrt"
   }
 ];
