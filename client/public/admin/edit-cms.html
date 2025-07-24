@@ -40,7 +40,7 @@
 
         <!-- Edit Modal -->
         <div id="editModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <div class="bg-white rounded-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+            <div class="bg-white rounded-lg w-full max-w-5xl max-h-[90vh] overflow-y-auto">
                 <div class="p-6">
                     <h2 id="modalTitle" class="text-2xl font-bold mb-4">Éditer</h2>
                     <form id="editForm" class="space-y-4">
@@ -48,28 +48,50 @@
                         
                         <!-- Job Fields -->
                         <div class="jobFields">
-                            <input type="text" id="title" placeholder="Titre" class="w-full p-2 border rounded">
-                            <div class="grid grid-cols-2 gap-4">
-                                <input type="text" id="department" placeholder="Département" class="p-2 border rounded">
-                                <input type="text" id="location" placeholder="Lieu" class="p-2 border rounded">
-                                <input type="text" id="type" placeholder="Type" class="p-2 border rounded">
-                                <input type="text" id="salary" placeholder="Salaire" class="p-2 border rounded">
-                                <input type="date" id="datePosted" placeholder="Date publiée" class="p-2 border rounded">
-                                <input type="text" id="deadline" placeholder="Date limite" class="p-2 border rounded">
+                            <div class="bg-gray-50 p-4 rounded-lg space-y-4">
+                                <h3 class="font-semibold text-lg">Informations principales</h3>
+                                <input type="text" id="title" placeholder="Titre du poste" class="w-full p-3 border rounded">
+                                <div class="grid grid-cols-2 gap-4">
+                                    <input type="text" id="department" placeholder="Département" class="p-3 border rounded">
+                                    <input type="text" id="location" placeholder="Lieu de travail" class="p-3 border rounded">
+                                    <input type="text" id="type" placeholder="Type (Temps plein, etc.)" class="p-3 border rounded">
+                                    <input type="text" id="salary" placeholder="Salaire" class="p-3 border rounded">
+                                    <input type="date" id="datePosted" placeholder="Date de publication" class="p-3 border rounded">
+                                    <input type="text" id="deadline" placeholder="Date limite (ex: 28 juillet 2025)" class="p-3 border rounded">
+                                </div>
+                                <textarea id="summary" placeholder="Résumé court (optionnel)" rows="2" class="w-full p-3 border rounded"></textarea>
                             </div>
-                            <textarea id="summary" placeholder="Résumé" rows="2" class="w-full p-2 border rounded"></textarea>
-                            <textarea id="description" placeholder="Description complète (HTML accepté)" rows="10" class="w-full p-2 border rounded font-mono text-sm"></textarea>
+                            
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <h3 class="font-semibold text-lg mb-2">Description complète</h3>
+                                <p class="text-sm text-gray-600 mb-3">Vous pouvez utiliser du HTML pour formater le texte. Exemple: &lt;h3&gt;Titre&lt;/h3&gt;, &lt;ul&gt;&lt;li&gt;Point&lt;/li&gt;&lt;/ul&gt;</p>
+                                <div class="mb-2 flex gap-2">
+                                    <button type="button" onclick="insertTag('h3')" class="px-3 py-1 bg-gray-200 rounded text-sm hover:bg-gray-300">Titre H3</button>
+                                    <button type="button" onclick="insertTag('p')" class="px-3 py-1 bg-gray-200 rounded text-sm hover:bg-gray-300">Paragraphe</button>
+                                    <button type="button" onclick="insertList()" class="px-3 py-1 bg-gray-200 rounded text-sm hover:bg-gray-300">Liste</button>
+                                    <button type="button" onclick="insertTag('strong')" class="px-3 py-1 bg-gray-200 rounded text-sm hover:bg-gray-300">Gras</button>
+                                </div>
+                                <textarea id="description" placeholder="Description complète du poste..." rows="15" class="w-full p-3 border rounded font-mono text-sm bg-white"></textarea>
+                            </div>
                         </div>
 
                         <!-- News Fields -->
                         <div class="newsFields hidden">
-                            <input type="text" id="newsTitle" placeholder="Titre" class="w-full p-2 border rounded">
-                            <div class="grid grid-cols-2 gap-4">
-                                <input type="date" id="date" placeholder="Date" class="p-2 border rounded">
-                                <input type="text" id="category" placeholder="Catégorie" class="p-2 border rounded">
+                            <div class="bg-gray-50 p-4 rounded-lg space-y-4">
+                                <h3 class="font-semibold text-lg">Informations principales</h3>
+                                <input type="text" id="newsTitle" placeholder="Titre du communiqué" class="w-full p-3 border rounded">
+                                <div class="grid grid-cols-2 gap-4">
+                                    <input type="date" id="date" placeholder="Date" class="p-3 border rounded">
+                                    <input type="text" id="category" placeholder="Catégorie" class="p-3 border rounded">
+                                </div>
+                                <textarea id="newsSummary" placeholder="Résumé court" rows="2" class="w-full p-3 border rounded"></textarea>
                             </div>
-                            <textarea id="newsSummary" placeholder="Résumé" rows="2" class="w-full p-2 border rounded"></textarea>
-                            <textarea id="content" placeholder="Contenu complet (HTML accepté)" rows="10" class="w-full p-2 border rounded font-mono text-sm"></textarea>
+                            
+                            <div class="bg-purple-50 p-4 rounded-lg">
+                                <h3 class="font-semibold text-lg mb-2">Contenu complet</h3>
+                                <p class="text-sm text-gray-600 mb-3">Format texte simple ou HTML pour le formatage</p>
+                                <textarea id="content" placeholder="Contenu complet du communiqué..." rows="15" class="w-full p-3 border rounded bg-white"></textarea>
+                            </div>
                         </div>
 
                         <div class="flex gap-2 justify-end">
@@ -316,6 +338,29 @@
 
         function closeModal() {
             document.getElementById('editModal').classList.add('hidden');
+        }
+
+        // Helper functions for HTML editing
+        function insertTag(tag) {
+            const textarea = document.getElementById('description');
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const selectedText = textarea.value.substring(start, end);
+            const replacement = `<${tag}>${selectedText}</${tag}>`;
+            
+            textarea.value = textarea.value.substring(0, start) + replacement + textarea.value.substring(end);
+            textarea.focus();
+            textarea.setSelectionRange(start + tag.length + 2, start + tag.length + 2 + selectedText.length);
+        }
+
+        function insertList() {
+            const textarea = document.getElementById('description');
+            const start = textarea.selectionStart;
+            const listTemplate = '<ul>\n  <li></li>\n  <li></li>\n  <li></li>\n</ul>';
+            
+            textarea.value = textarea.value.substring(0, start) + listTemplate + textarea.value.substring(start);
+            textarea.focus();
+            textarea.setSelectionRange(start + 9, start + 9);
         }
 
         // Load initial content
