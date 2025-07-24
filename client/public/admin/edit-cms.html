@@ -33,6 +33,19 @@
 
         <!-- Main Content -->
         <main class="max-w-7xl mx-auto px-4 py-8">
+            <!-- Department Filter for News -->
+            <div id="departmentFilter" style="display: none;" class="mb-6">
+                <label class="text-sm font-medium text-gray-700 mr-2">Filtrer par département:</label>
+                <select id="deptFilter" onchange="filterByDepartment()" class="border rounded px-3 py-2">
+                    <option value="">Tous les départements</option>
+                    <option value="Administration">Administration</option>
+                    <option value="Événements">Événements</option>
+                    <option value="Marketing">Marketing</option>
+                    <option value="Production">Production</option>
+                    <option value="Groupe Tonic">Groupe Tonic</option>
+                </select>
+            </div>
+            
             <div id="content" class="space-y-4">
                 <!-- Content will be loaded here -->
             </div>
@@ -121,6 +134,13 @@
         document.getElementById('contentType').addEventListener('change', (e) => {
             currentType = e.target.value;
             toggleFieldVisibility();
+            // Show/hide department filter
+            const deptFilter = document.getElementById('departmentFilter');
+            if (currentType === 'news') {
+                deptFilter.style.display = 'block';
+            } else {
+                deptFilter.style.display = 'none';
+            }
             loadContent();
         });
 
@@ -147,6 +167,16 @@
         function logout() {
             localStorage.removeItem('cms_token');
             window.location.href = '/admin/';
+        }
+        
+        function filterByDepartment() {
+            const dept = document.getElementById('deptFilter').value;
+            if (!dept) {
+                displayContent(currentData);
+            } else {
+                const filtered = currentData.filter(item => item.department === dept);
+                displayContent(filtered);
+            }
         }
 
         async function loadContent() {
