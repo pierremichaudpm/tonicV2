@@ -64,24 +64,36 @@ async function readJobsData(lang: string = 'fr') {
     console.log(`Reading jobs from: ${file}`);
     const content = await fs.readFile(file, 'utf8');
     
-    // Look for jobListings or jobsData variable
-    let match = content.match(/const jobListings = (\[[^;]*\]);/s);
-    if (!match) {
-      match = content.match(/const jobsData = (\[[^;]*\]);/s);
+    // Find the start of the array
+    const startIndex = content.indexOf('const jobListings = [') !== -1 ? content.indexOf('const jobListings = [') + 20 : 
+                      content.indexOf('const jobsData = [') !== -1 ? content.indexOf('const jobsData = [') + 17 : -1;
+    
+    if (startIndex === -1) {
+      console.log(`No jobs array variable found in ${file}`);
+      return [];
     }
     
-    if (match) {
-      try {
-        const data = JSON.parse(match[1]);
-        console.log(`Successfully loaded ${data.length} jobs for ${lang}`);
-        return data;
-      } catch (parseError) {
-        console.error(`JSON parse error for jobs (${lang}):`, parseError);
-        return [];
-      }
+    // Find the matching closing bracket
+    let bracketCount = 1;
+    let endIndex = startIndex;
+    
+    for (let i = startIndex; i < content.length && bracketCount > 0; i++) {
+      if (content[i] === '[') bracketCount++;
+      if (content[i] === ']') bracketCount--;
+      endIndex = i;
     }
-    console.log(`No jobs array found in ${file}`);
-    return [];
+    
+    const arrayContent = '[' + content.substring(startIndex, endIndex + 1);
+    
+    try {
+      const data = JSON.parse(arrayContent);
+      console.log(`Successfully loaded ${data.length} jobs for ${lang}`);
+      return data;
+    } catch (parseError) {
+      console.error(`JSON parse error for jobs (${lang}):`, parseError);
+      console.log('Array content preview:', arrayContent.substring(0, 200));
+      return [];
+    }
   } catch (error) {
     console.error(`Error reading jobs file (${lang}):`, error);
     return [];
@@ -100,24 +112,36 @@ async function readNewsData(lang: string = 'fr') {
     console.log(`Reading news from: ${file}`);
     const content = await fs.readFile(file, 'utf8');
     
-    // Look for pressReleases or communiquesData variable
-    let match = content.match(/const pressReleases = (\[[^;]*\]);/s);
-    if (!match) {
-      match = content.match(/const communiquesData = (\[[^;]*\]);/s);
+    // Find the start of the array
+    const startIndex = content.indexOf('const pressReleases = [') !== -1 ? content.indexOf('const pressReleases = [') + 22 : 
+                      content.indexOf('const communiquesData = [') !== -1 ? content.indexOf('const communiquesData = [') + 24 : -1;
+    
+    if (startIndex === -1) {
+      console.log(`No news array variable found in ${file}`);
+      return [];
     }
     
-    if (match) {
-      try {
-        const data = JSON.parse(match[1]);
-        console.log(`Successfully loaded ${data.length} news items for ${lang}`);
-        return data;
-      } catch (parseError) {
-        console.error(`JSON parse error for news (${lang}):`, parseError);
-        return [];
-      }
+    // Find the matching closing bracket
+    let bracketCount = 1;
+    let endIndex = startIndex;
+    
+    for (let i = startIndex; i < content.length && bracketCount > 0; i++) {
+      if (content[i] === '[') bracketCount++;
+      if (content[i] === ']') bracketCount--;
+      endIndex = i;
     }
-    console.log(`No news array found in ${file}`);
-    return [];
+    
+    const arrayContent = '[' + content.substring(startIndex, endIndex + 1);
+    
+    try {
+      const data = JSON.parse(arrayContent);
+      console.log(`Successfully loaded ${data.length} news items for ${lang}`);
+      return data;
+    } catch (parseError) {
+      console.error(`JSON parse error for news (${lang}):`, parseError);
+      console.log('Array content preview:', arrayContent.substring(0, 200));
+      return [];
+    }
   } catch (error) {
     console.error(`Error reading news file (${lang}):`, error);
     return [];
