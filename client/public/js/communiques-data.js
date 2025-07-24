@@ -50,7 +50,7 @@ const pressReleases = [
     "date": "2025-07-26",
     "category": "Nouvelles corporatives",
     "department": "Groupe Tonic",
-    "summary": "",
+    "summary": "8go88o",
     "content": ""
   }
 ];
