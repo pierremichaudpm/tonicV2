@@ -41,5 +41,16 @@ const jobListings = [
     "startDate": "Dès que possible",
     "emailSubject": "Candidature - Plongeur",
     "applyEmail": "rh@gpcqm.ca"
+  },
+  {
+    "id": 1753385838262,
+    "title": "test",
+    "department": "Administration",
+    "location": "Longueil",
+    "type": "",
+    "salary": "",
+    "deadline": "",
+    "description": "",
+    "datePosted": "2025-07-24"
   }
 ];

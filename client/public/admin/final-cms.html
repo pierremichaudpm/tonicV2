@@ -77,7 +77,16 @@
                             <div class="grid grid-cols-2 gap-4">
                                 <input type="text" id="newsTitle" placeholder="Titre" class="p-2 border rounded">
                                 <input type="date" id="date" class="p-2 border rounded">
-                                <input type="text" id="category" placeholder="Catégorie" class="p-2 border rounded">
+                                <select id="category" class="p-2 border rounded">
+                                    <option value="">Sélectionner une catégorie</option>
+                                    <option value="Événements">Événements</option>
+                                    <option value="Nouvelles corporatives">Nouvelles corporatives</option>
+                                    <option value="Partenariats">Partenariats</option>
+                                    <option value="Médias">Médias</option>
+                                    <option value="Annonces">Annonces</option>
+                                    <option value="Prix et distinctions">Prix et distinctions</option>
+                                    <option value="Communauté">Communauté</option>
+                                </select>
                                 <input type="text" id="summary" placeholder="Résumé" class="p-2 border rounded">
                             </div>
                             <textarea id="content" placeholder="Contenu" rows="10" class="w-full p-2 border rounded"></textarea>
