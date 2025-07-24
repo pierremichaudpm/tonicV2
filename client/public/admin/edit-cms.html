@@ -95,8 +95,25 @@
                                 <input type="text" id="newsTitle" placeholder="Titre du communiqué" class="w-full p-3 border rounded">
                                 <div class="grid grid-cols-2 gap-4">
                                     <input type="date" id="date" placeholder="Date" class="p-3 border rounded">
-                                    <input type="text" id="category" placeholder="Catégorie" class="p-3 border rounded">
+                                    <select id="category" class="p-3 border rounded">
+                                        <option value="">Sélectionner une catégorie</option>
+                                        <option value="Événements">Événements</option>
+                                        <option value="Nouvelles corporatives">Nouvelles corporatives</option>
+                                        <option value="Partenariats">Partenariats</option>
+                                        <option value="Médias">Médias</option>
+                                        <option value="Annonces">Annonces</option>
+                                        <option value="Prix et distinctions">Prix et distinctions</option>
+                                        <option value="Communauté">Communauté</option>
+                                    </select>
                                 </div>
+                                <select id="newsDepartment" class="w-full p-3 border rounded">
+                                    <option value="">Sélectionner un département</option>
+                                    <option value="Administration">Administration</option>
+                                    <option value="Événements">Événements</option>
+                                    <option value="Marketing">Marketing</option>
+                                    <option value="Production">Production</option>
+                                    <option value="Groupe Tonic">Groupe Tonic</option>
+                                </select>
                                 <textarea id="newsSummary" placeholder="Résumé court" rows="2" class="w-full p-3 border rounded"></textarea>
                             </div>
                             
@@ -130,15 +147,25 @@
         if (!token) {
             window.location.href = '/admin/';
         }
+        
+        // Strip HTML tags from text
+        function stripHtml(html) {
+            const tmp = document.createElement('DIV');
+            tmp.innerHTML = html;
+            return tmp.textContent || tmp.innerText || '';
+        }
 
         document.getElementById('contentType').addEventListener('change', (e) => {
             currentType = e.target.value;
+            console.log('Content type changed to:', currentType);
             toggleFieldVisibility();
             // Show/hide department filter
             const deptFilter = document.getElementById('departmentFilter');
             if (currentType === 'news') {
+                console.log('Showing department filter');
                 deptFilter.style.display = 'block';
             } else {
+                console.log('Hiding department filter');
                 deptFilter.style.display = 'none';
             }
             loadContent();
@@ -191,6 +218,16 @@
 
                 const data = await response.json();
                 currentData = currentType === 'jobs' ? data.jobs : data.news;
+                console.log('Loaded data:', currentData);
+                
+                // Show department filter for news
+                const deptFilter = document.getElementById('departmentFilter');
+                if (currentType === 'news') {
+                    deptFilter.style.display = 'block';
+                } else {
+                    deptFilter.style.display = 'none';
+                }
+                
                 displayContent(currentData);
             } catch (error) {
                 console.error('Error:', error);
@@ -208,15 +245,28 @@
 
             container.innerHTML = items.map(item => {
                 if (currentType === 'jobs') {
+                    // Extract plain text from description
+                    let descText = '';
+                    if (item.description) {
+                        const temp = document.createElement('div');
+                        temp.innerHTML = item.description;
+                        descText = temp.textContent || temp.innerText || '';
+                        descText = descText.substring(0, 200) + (descText.length > 200 ? '...' : '');
+                    }
+                    
                     return `
                         <div class="bg-white rounded-lg shadow p-6">
                             <div class="flex justify-between items-start">
                                 <div class="flex-1">
                                     <h3 class="text-xl font-bold text-blue-600">${item.title || ''}</h3>
                                     <div class="text-sm text-gray-600 mt-2">
-                                        ${item.department || ''} | ${item.location || item.lieu || ''} | ${item.type || ''}
+                                        <strong>Department:</strong> ${item.department || 'N/A'} | 
+                                        <strong>Location:</strong> ${item.location || item.lieu || 'N/A'} | 
+                                        <strong>Type:</strong> ${item.type || 'N/A'}
                                     </div>
-                                    ${item.description ? `<div class="mt-3 text-gray-700">${item.description.substring(0, 200)}...</div>` : ''}
+                                    ${descText ? `<div class="mt-3 text-gray-700 border-l-4 border-blue-200 pl-4">
+                                        <strong>Description:</strong><br>${descText}
+                                    </div>` : '<div class="mt-3 text-gray-500 italic">No description available</div>'}
                                 </div>
                                 <div class="flex gap-2">
                                     <button onclick="editItem(${item.id})" class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600">
@@ -230,14 +280,28 @@
                         </div>
                     `;
                 } else {
+                    // Extract plain text from content
+                    let contentText = '';
+                    if (item.content) {
+                        const temp = document.createElement('div');
+                        temp.innerHTML = item.content;
+                        contentText = temp.textContent || temp.innerText || '';
+                        contentText = contentText.substring(0, 200) + (contentText.length > 200 ? '...' : '');
+                    }
+                    
                     return `
                         <div class="bg-white rounded-lg shadow p-6">
                             <div class="flex justify-between items-start">
                                 <div class="flex-1">
                                     <h3 class="text-xl font-bold text-purple-600">${item.title || ''}</h3>
                                     <div class="text-sm text-gray-600 mt-2">
-                                        ${item.date || ''} | ${item.category || ''}
+                                        <strong>Date:</strong> ${item.date || 'N/A'} | 
+                                        <strong>Category:</strong> ${item.category || 'N/A'} | 
+                                        <strong>Department:</strong> ${item.department || 'N/A'}
                                     </div>
+                                    ${contentText ? `<div class="mt-3 text-gray-700 border-l-4 border-purple-200 pl-4">
+                                        <strong>Content:</strong><br>${contentText}
+                                    </div>` : '<div class="mt-3 text-gray-500 italic">No content available</div>'}
                                 </div>
                                 <div class="flex gap-2">
                                     <button onclick="editItem(${item.id})" class="bg-purple-500 text-white px-3 py-1 rounded text-sm hover:bg-purple-600">
@@ -278,13 +342,20 @@
                 document.getElementById('datePosted').value = item.datePosted || '';
                 document.getElementById('deadline').value = item.deadline || '';
                 document.getElementById('summary').value = item.summary || '';
-                document.getElementById('description').value = item.description || '';
+                // Convert HTML to plain text for editing
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = item.description || '';
+                document.getElementById('description').value = tempDiv.textContent || tempDiv.innerText || '';
             } else {
                 document.getElementById('newsTitle').value = item.title || '';
                 document.getElementById('date').value = item.date || '';
                 document.getElementById('category').value = item.category || '';
+                document.getElementById('newsDepartment').value = item.department || '';
                 document.getElementById('newsSummary').value = item.summary || '';
-                document.getElementById('content').value = item.content || '';
+                // Convert HTML to plain text for editing
+                const tempDiv2 = document.createElement('div');
+                tempDiv2.innerHTML = item.content || '';
+                document.getElementById('content').value = tempDiv2.textContent || tempDiv2.innerText || '';
             }
 
             toggleFieldVisibility();
@@ -318,6 +389,7 @@
                     title: document.getElementById('newsTitle').value,
                     date: document.getElementById('date').value,
                     category: document.getElementById('category').value,
+                    department: document.getElementById('newsDepartment').value,
                     summary: document.getElementById('newsSummary').value,
                     content: document.getElementById('content').value
                 };
@@ -405,6 +477,11 @@
         // Load initial content
         toggleFieldVisibility();
         loadContent();
+        
+        // Check initial content type and show department filter if needed
+        if (document.getElementById('contentType').value === 'news') {
+            document.getElementById('departmentFilter').style.display = 'block';
+        }
     </script>
 </body>
 </html>
