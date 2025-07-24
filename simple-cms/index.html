@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS Tonic Productions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-8 text-center">CMS Tonic Productions</h1>
+        
+        <!-- Jobs Management -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-semibold mb-4">Gestion des Emplois</h2>
+            <form id="jobForm" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input type="text" id="jobTitle" placeholder="Titre du poste" class="border rounded px-3 py-2">
+                    <input type="text" id="jobDepartment" placeholder="Département" class="border rounded px-3 py-2">
+                    <input type="text" id="jobLocation" placeholder="Lieu" class="border rounded px-3 py-2">
+                    <input type="date" id="jobDeadline" class="border rounded px-3 py-2">
+                </div>
+                <textarea id="jobDescription" placeholder="Description du poste" rows="4" class="w-full border rounded px-3 py-2"></textarea>
+                <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">Ajouter Emploi</button>
+            </form>
+            <div id="jobsList" class="mt-6"></div>
+        </div>
+
+        <!-- News Management -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-semibold mb-4">Gestion des Actualités</h2>
+            <form id="newsForm" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input type="text" id="newsTitle" placeholder="Titre de l'actualité" class="border rounded px-3 py-2">
+                    <input type="date" id="newsDate" class="border rounded px-3 py-2">
+                </div>
+                <textarea id="newsContent" placeholder="Contenu de l'actualité" rows="6" class="w-full border rounded px-3 py-2"></textarea>
+                <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700">Ajouter Actualité</button>
+            </form>
+            <div id="newsList" class="mt-6"></div>
+        </div>
+    </div>
+
+    <script>
+        // Simple CMS functionality
+        let jobs = JSON.parse(localStorage.getItem('cmsJobs') || '[]');
+        let news = JSON.parse(localStorage.getItem('cmsNews') || '[]');
+
+        // Jobs management
+        document.getElementById('jobForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const job = {
+                id: Date.now(),
+                title: document.getElementById('jobTitle').value,
+                department: document.getElementById('jobDepartment').value,
+                location: document.getElementById('jobLocation').value,
+                deadline: document.getElementById('jobDeadline').value,
+                description: document.getElementById('jobDescription').value,
+                datePosted: new Date().toISOString().split('T')[0]
+            };
+            jobs.push(job);
+            localStorage.setItem('cmsJobs', JSON.stringify(jobs));
+            this.reset();
+            renderJobs();
+        });
+
+        // News management
+        document.getElementById('newsForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const article = {
+                id: Date.now(),
+                title: document.getElementById('newsTitle').value,
+                date: document.getElementById('newsDate').value,
+                content: document.getElementById('newsContent').value
+            };
+            news.push(article);
+            localStorage.setItem('cmsNews', JSON.stringify(news));
+            this.reset();
+            renderNews();
+        });
+
+        function renderJobs() {
+            const jobsList = document.getElementById('jobsList');
+            jobsList.innerHTML = jobs.map(job => `
+                <div class="border rounded p-4 mb-4">
+                    <h3 class="font-semibold">${job.title}</h3>
+                    <p class="text-gray-600">${job.department} • ${job.location}</p>
+                    <p class="text-sm text-gray-500">Échéance: ${job.deadline}</p>
+                    <button onclick="deleteJob(${job.id})" class="text-red-600 text-sm mt-2">Supprimer</button>
+                </div>
+            `).join('');
+        }
+
+        function renderNews() {
+            const newsList = document.getElementById('newsList');
+            newsList.innerHTML = news.map(article => `
+                <div class="border rounded p-4 mb-4">
+                    <h3 class="font-semibold">${article.title}</h3>
+                    <p class="text-gray-600">${article.date}</p>
+                    <p class="text-sm mt-2">${article.content.substring(0, 100)}...</p>
+                    <button onclick="deleteNews(${article.id})" class="text-red-600 text-sm mt-2">Supprimer</button>
+                </div>
+            `).join('');
+        }
+
+        function deleteJob(id) {
+            jobs = jobs.filter(job => job.id !== id);
+            localStorage.setItem('cmsJobs', JSON.stringify(jobs));
+            renderJobs();
+        }
+
+        function deleteNews(id) {
+            news = news.filter(article => article.id !== id);
+            localStorage.setItem('cmsNews', JSON.stringify(news));
+            renderNews();
+        }
+
+        // Initial render
+        renderJobs();
+        renderNews();
+    </script>
+</body>
+</html>
