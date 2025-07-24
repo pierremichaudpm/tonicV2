@@ -126,6 +126,10 @@
         let currentType = 'jobs';
         let currentLang = 'fr';
         let currentData = [];
+        let availableCategories = {
+            jobs: { fr: [], en: [] },
+            news: { fr: [], en: [] }
+        };
 
         // Authentication helpers
         function makeAuthenticatedRequest(url, options = {}) {
