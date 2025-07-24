@@ -294,7 +294,8 @@ The website is now fully operational and matches the original local/Netlify func
 - **Data integration**: CMS reads/writes directly to existing JavaScript data files (emplois-data.js, communiques-data.js, etc.)
 - **Login credentials**: Password: `admin123` (simple, reliable authentication)
 - **Status**: ✅ FULLY FUNCTIONAL - CMS system now works reliably without authentication corruption issues
-- **Category-image integration**: Automatic image assignment for news categories working seamlessly behind the scenes
+- **Category-image integration**: Automatic image assignment for news categories working seamlessly behind the scenes - images display correctly on website
+- **Image mapping confirmed working**: Beach Pro Tour→beach-pro-tour-hero.webp, Marathon Beneva→marathon-beneva-hero.jpg, Grands Prix Cyclistes→grands-prix-cyclistes-hero.jpg, UCI Championships→montreal-2026-uci-hero.jpg
 - **Clean interface**: Hidden technical fields, showing only essential content management options
 - **Production ready**: Stable, simple system successfully managing real website content
 
