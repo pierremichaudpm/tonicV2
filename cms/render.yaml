@@ -1,19 +1,18 @@
 services:
+  # Strapi CMS Service
   - type: web
     name: tonic-cms
     env: node
-    region: oregon
     plan: free
     buildCommand: npm install && npm run build
     startCommand: npm start
+    healthCheckPath: /_health
     envVars:
-      - key: NODE_VERSION
-        value: 18.17.0
       - key: NODE_ENV
         value: production
       - key: DATABASE_URL
         fromDatabase:
-          name: tonic-db
+          name: tonic-cms-db
           property: connectionString
       - key: APP_KEYS
         generateValue: true
@@ -25,14 +24,18 @@ services:
         generateValue: true
       - key: JWT_SECRET
         generateValue: true
-      - key: ADMIN_URL
-        value: https://tonic-cms.onrender.com/admin
+      - key: HOST
+        value: 0.0.0.0
+      - key: PORT
+        value: 10000
       - key: PUBLIC_URL
         value: https://tonic-cms.onrender.com
+      - key: ADMIN_URL
+        value: https://tonic-cms.onrender.com/admin
 
 databases:
-  - name: tonic-db
-    region: oregon
+  # PostgreSQL Database
+  - name: tonic-cms-db
     plan: free
     databaseName: tonic_cms
-    user: tonic_admin
+    user: tonic_cms_user
