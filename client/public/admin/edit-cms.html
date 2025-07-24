@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS Éditable - Groupe Tonic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="min-h-screen">
+        <!-- Header -->
+        <header class="bg-white shadow-sm border-b">
+            <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+                <h1 class="text-2xl font-bold text-gray-800">CMS Éditable - Groupe Tonic</h1>
+                <div class="flex items-center gap-4">
+                    <select id="contentType" class="border rounded px-3 py-2">
+                        <option value="jobs">Emplois / Jobs</option>
+                        <option value="news">Communiqués / News</option>
+                    </select>
+                    <select id="language" class="border rounded px-3 py-2">
+                        <option value="fr">Français</option>
+                        <option value="en">English</option>
+                    </select>
+                    <button onclick="showAddForm()" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                        + Ajouter
+                    </button>
+                    <button onclick="logout()" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                        Déconnexion
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="max-w-7xl mx-auto px-4 py-8">
+            <div id="content" class="space-y-4">
+                <!-- Content will be loaded here -->
+            </div>
+        </main>
+
+        <!-- Edit Modal -->
+        <div id="editModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+            <div class="bg-white rounded-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+                <div class="p-6">
+                    <h2 id="modalTitle" class="text-2xl font-bold mb-4">Éditer</h2>
+                    <form id="editForm" class="space-y-4">
+                        <input type="hidden" id="itemId">
+                        
+                        <!-- Job Fields -->
+                        <div class="jobFields">
+                            <input type="text" id="title" placeholder="Titre" class="w-full p-2 border rounded">
+                            <div class="grid grid-cols-2 gap-4">
+                                <input type="text" id="department" placeholder="Département" class="p-2 border rounded">
+                                <input type="text" id="location" placeholder="Lieu" class="p-2 border rounded">
+                                <input type="text" id="type" placeholder="Type" class="p-2 border rounded">
+                                <input type="text" id="salary" placeholder="Salaire" class="p-2 border rounded">
+                                <input type="date" id="datePosted" placeholder="Date publiée" class="p-2 border rounded">
+                                <input type="text" id="deadline" placeholder="Date limite" class="p-2 border rounded">
+                            </div>
+                            <textarea id="summary" placeholder="Résumé" rows="2" class="w-full p-2 border rounded"></textarea>
+                            <textarea id="description" placeholder="Description complète (HTML accepté)" rows="10" class="w-full p-2 border rounded font-mono text-sm"></textarea>
+                        </div>
+
+                        <!-- News Fields -->
+                        <div class="newsFields hidden">
+                            <input type="text" id="newsTitle" placeholder="Titre" class="w-full p-2 border rounded">
+                            <div class="grid grid-cols-2 gap-4">
+                                <input type="date" id="date" placeholder="Date" class="p-2 border rounded">
+                                <input type="text" id="category" placeholder="Catégorie" class="p-2 border rounded">
+                            </div>
+                            <textarea id="newsSummary" placeholder="Résumé" rows="2" class="w-full p-2 border rounded"></textarea>
+                            <textarea id="content" placeholder="Contenu complet (HTML accepté)" rows="10" class="w-full p-2 border rounded font-mono text-sm"></textarea>
+                        </div>
+
+                        <div class="flex gap-2 justify-end">
+                            <button type="button" onclick="closeModal()" class="px-4 py-2 border rounded hover:bg-gray-100">
+                                Annuler
+                            </button>
+                            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                                Sauvegarder
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let token = localStorage.getItem('cms_token');
+        let currentType = 'jobs';
+        let currentLang = 'fr';
+        let currentData = [];
+
+        if (!token) {
+            window.location.href = '/admin/';
+        }
+
+        document.getElementById('contentType').addEventListener('change', (e) => {
+            currentType = e.target.value;
+            toggleFieldVisibility();
+            loadContent();
+        });
+
+        document.getElementById('language').addEventListener('change', (e) => {
+            currentLang = e.target.value;
+            loadContent();
+        });
+
+        document.getElementById('editForm').addEventListener('submit', saveItem);
+
+        function toggleFieldVisibility() {
+            const jobFields = document.querySelector('.jobFields');
+            const newsFields = document.querySelector('.newsFields');
+            
+            if (currentType === 'jobs') {
+                jobFields.classList.remove('hidden');
+                newsFields.classList.add('hidden');
+            } else {
+                jobFields.classList.add('hidden');
+                newsFields.classList.remove('hidden');
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('cms_token');
+            window.location.href = '/admin/';
+        }
+
+        async function loadContent() {
+            try {
+                const response = await fetch(`/api/cms/${currentType}?lang=${currentLang}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) throw new Error('Failed to load content');
+
+                const data = await response.json();
+                currentData = currentType === 'jobs' ? data.jobs : data.news;
+                displayContent(currentData);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Erreur de chargement');
+            }
+        }
+
+        function displayContent(items) {
+            const container = document.getElementById('content');
+            
+            if (!items || items.length === 0) {
+                container.innerHTML = '<p class="text-gray-500 text-center py-8">Aucun contenu</p>';
+                return;
+            }
+
+            container.innerHTML = items.map(item => {
+                if (currentType === 'jobs') {
+                    return `
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <div class="flex justify-between items-start">
+                                <div class="flex-1">
+                                    <h3 class="text-xl font-bold text-blue-600">${item.title || ''}</h3>
+                                    <div class="text-sm text-gray-600 mt-2">
+                                        ${item.department || ''} | ${item.location || item.lieu || ''} | ${item.type || ''}
+                                    </div>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button onclick="editItem(${item.id})" class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600">
+                                        Éditer
+                                    </button>
+                                    <button onclick="deleteItem(${item.id})" class="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600">
+                                        Supprimer
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    return `
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <div class="flex justify-between items-start">
+                                <div class="flex-1">
+                                    <h3 class="text-xl font-bold text-purple-600">${item.title || ''}</h3>
+                                    <div class="text-sm text-gray-600 mt-2">
+                                        ${item.date || ''} | ${item.category || ''}
+                                    </div>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button onclick="editItem(${item.id})" class="bg-purple-500 text-white px-3 py-1 rounded text-sm hover:bg-purple-600">
+                                        Éditer
+                                    </button>
+                                    <button onclick="deleteItem(${item.id})" class="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600">
+                                        Supprimer
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            }).join('');
+        }
+
+        function showAddForm() {
+            document.getElementById('modalTitle').textContent = 'Ajouter';
+            document.getElementById('editForm').reset();
+            document.getElementById('itemId').value = '';
+            document.getElementById('editModal').classList.remove('hidden');
+        }
+
+        function editItem(id) {
+            const item = currentData.find(i => i.id == id);
+            if (!item) return;
+
+            document.getElementById('modalTitle').textContent = 'Éditer';
+            document.getElementById('itemId').value = id;
+
+            if (currentType === 'jobs') {
+                document.getElementById('title').value = item.title || '';
+                document.getElementById('department').value = item.department || '';
+                document.getElementById('location').value = item.location || item.lieu || '';
+                document.getElementById('type').value = item.type || '';
+                document.getElementById('salary').value = item.salary || item.salaire || '';
+                document.getElementById('datePosted').value = item.datePosted || '';
+                document.getElementById('deadline').value = item.deadline || '';
+                document.getElementById('summary').value = item.summary || '';
+                document.getElementById('description').value = item.description || '';
+            } else {
+                document.getElementById('newsTitle').value = item.title || '';
+                document.getElementById('date').value = item.date || '';
+                document.getElementById('category').value = item.category || '';
+                document.getElementById('newsSummary').value = item.summary || '';
+                document.getElementById('content').value = item.content || '';
+            }
+
+            document.getElementById('editModal').classList.remove('hidden');
+        }
+
+        async function saveItem(e) {
+            e.preventDefault();
+            
+            const id = document.getElementById('itemId').value;
+            const isNew = !id;
+            
+            let data = { lang: currentLang };
+            
+            if (currentType === 'jobs') {
+                data = {
+                    ...data,
+                    title: document.getElementById('title').value,
+                    department: document.getElementById('department').value,
+                    location: document.getElementById('location').value,
+                    type: document.getElementById('type').value,
+                    salary: document.getElementById('salary').value,
+                    datePosted: document.getElementById('datePosted').value,
+                    deadline: document.getElementById('deadline').value,
+                    summary: document.getElementById('summary').value,
+                    description: document.getElementById('description').value
+                };
+            } else {
+                data = {
+                    ...data,
+                    title: document.getElementById('newsTitle').value,
+                    date: document.getElementById('date').value,
+                    category: document.getElementById('category').value,
+                    summary: document.getElementById('newsSummary').value,
+                    content: document.getElementById('content').value
+                };
+            }
+
+            try {
+                const url = isNew 
+                    ? `/api/cms/${currentType}` 
+                    : `/api/cms/${currentType}/${id}`;
+                
+                const response = await fetch(url, {
+                    method: isNew ? 'POST' : 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (!response.ok) throw new Error('Save failed');
+                
+                closeModal();
+                loadContent();
+                alert(isNew ? 'Créé avec succès' : 'Modifié avec succès');
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Erreur de sauvegarde');
+            }
+        }
+
+        async function deleteItem(id) {
+            if (!confirm('Êtes-vous sûr de vouloir supprimer cet élément?')) return;
+
+            try {
+                const response = await fetch(`/api/cms/${currentType}/${id}?lang=${currentLang}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) throw new Error('Delete failed');
+                
+                loadContent();
+                alert('Supprimé avec succès');
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Erreur de suppression');
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('editModal').classList.add('hidden');
+        }
+
+        // Load initial content
+        toggleFieldVisibility();
+        loadContent();
+    </script>
+</body>
+</html>

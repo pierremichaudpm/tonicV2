@@ -93,7 +93,8 @@ async function readJobsData(lang: string = 'fr') {
 }
 
 async function writeJobsData(jobs: any[], lang: string = 'fr') {
-  const content = `const jobsData = ${JSON.stringify(jobs, null, 2)};`;
+  const variableName = lang === 'fr' ? 'jobListings' : 'jobsData';
+  const content = `const ${variableName} = ${JSON.stringify(jobs, null, 2)};`;
   const file = lang === 'en' ? JOBS_FILE_EN : JOBS_FILE_FR;
   await fs.writeFile(file, content, 'utf8');
 }
@@ -126,7 +127,8 @@ async function readNewsData(lang: string = 'fr') {
 }
 
 async function writeNewsData(news: any[], lang: string = 'fr') {
-  const content = `const communiquesData = ${JSON.stringify(news, null, 2)};`;
+  const variableName = lang === 'fr' ? 'pressReleases' : 'communiquesData';
+  const content = `const ${variableName} = ${JSON.stringify(news, null, 2)};`;
   const file = lang === 'en' ? NEWS_FILE_EN : NEWS_FILE_FR;
   await fs.writeFile(file, content, 'utf8');
 }
