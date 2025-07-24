@@ -489,7 +489,13 @@
             
             modalTitle.textContent = release.title;
             modalDate.textContent = formatDate(release.date);
-            modalContent.innerHTML = release.content;
+            
+            // Handle empty content
+            if (!release.content || release.content.trim() === '') {
+                modalContent.innerHTML = '<p class="text-white/70 italic">Contenu non disponible.</p>';
+            } else {
+                modalContent.innerHTML = release.content;
+            }
             
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';

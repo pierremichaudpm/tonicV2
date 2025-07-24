@@ -45,10 +45,12 @@ const pressReleases = [
     "image": "images/beach-pro-tour-hero.webp"
   },
   {
-    "id": 1753385955676,
-    "title": "test francais",
+    "id": 1753390779619,
+    "title": "TEST NOUVEAU",
     "date": "2025-07-26",
-    "category": "",
-    "summary": "tesrt"
+    "category": "Nouvelles corporatives",
+    "department": "Groupe Tonic",
+    "summary": "",
+    "content": ""
   }
 ];
