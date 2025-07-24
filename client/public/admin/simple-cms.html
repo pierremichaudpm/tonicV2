@@ -31,6 +31,17 @@
 
         <!-- Main Content -->
         <main class="max-w-7xl mx-auto px-4 py-8">
+            <div class="mb-6 flex justify-between items-center">
+                <h2 class="text-xl font-semibold text-gray-700">
+                    <span id="contentTitle">Contenu</span>
+                </h2>
+                <button onclick="showAddForm()" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    Ajouter nouveau
+                </button>
+            </div>
             <div id="content" class="space-y-6">
                 <!-- Content will be loaded here -->
             </div>
@@ -221,9 +232,14 @@
                                         <p><span class="font-medium">Date limite:</span> ${item.deadline || '-'}</p>
                                     </div>
                                 </div>
-                                <button onclick="editItem(${item.id})" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-                                    Éditer
-                                </button>
+                                <div class="flex gap-2">
+                                    <button onclick="editItem(${item.id})" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                                        Éditer
+                                    </button>
+                                    <button onclick="deleteItem(${item.id})" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                                        Supprimer
+                                    </button>
+                                </div>
                             </div>
                             <div class="border-t pt-4">
                                 <h4 class="font-semibold mb-2">Aperçu de la description:</h4>
@@ -244,9 +260,14 @@
                                         <p><span class="font-medium">Catégorie:</span> ${item.category || '-'}</p>
                                     </div>
                                 </div>
-                                <button onclick="editItem(${item.id})" class="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600">
-                                    Éditer
-                                </button>
+                                <div class="flex gap-2">
+                                    <button onclick="editItem(${item.id})" class="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600">
+                                        Éditer
+                                    </button>
+                                    <button onclick="deleteItem(${item.id})" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                                        Supprimer
+                                    </button>
+                                </div>
                             </div>
                             <div class="border-t pt-4">
                                 <h4 class="font-semibold mb-2">Aperçu du contenu:</h4>
@@ -308,6 +329,7 @@
             e.preventDefault();
             
             const id = document.getElementById('itemId').value;
+            const isNew = !id;
             
             let data = { lang: currentLang };
             
@@ -320,13 +342,14 @@
                     type: document.getElementById('type').value,
                     salary: document.getElementById('salary').value,
                     deadline: document.getElementById('deadline').value,
-                    description: jobEditor.getData()
+                    description: jobEditor.getData(),
+                    datePosted: new Date().toISOString().split('T')[0]
                 };
             } else {
                 data = {
                     ...data,
                     title: document.getElementById('newsTitle').value,
-                    date: document.getElementById('date').value,
+                    date: document.getElementById('date').value || new Date().toISOString().split('T')[0],
                     category: document.getElementById('category').value,
                     summary: document.getElementById('summary').value,
                     content: newsEditor.getData()
@@ -334,8 +357,12 @@
             }
 
             try {
-                const response = await fetch(`/api/cms/${currentType}/${id}`, {
-                    method: 'PUT',
+                const url = isNew 
+                    ? `/api/cms/${currentType}` 
+                    : `/api/cms/${currentType}/${id}`;
+                
+                const response = await fetch(url, {
+                    method: isNew ? 'POST' : 'PUT',
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
@@ -347,7 +374,7 @@
                 
                 closeModal();
                 loadContent();
-                alert('Modifié avec succès');
+                alert(isNew ? 'Créé avec succès' : 'Modifié avec succès');
             } catch (error) {
                 console.error('Error:', error);
                 alert('Erreur de sauvegarde');
@@ -356,6 +383,45 @@
 
         function closeModal() {
             document.getElementById('editModal').classList.add('hidden');
+        }
+
+        function showAddForm() {
+            document.getElementById('modalTitle').textContent = 'Ajouter nouveau';
+            document.getElementById('editForm').reset();
+            document.getElementById('itemId').value = '';
+
+            if (currentType === 'jobs') {
+                jobEditor.setData('');
+                document.querySelector('.jobFields').classList.remove('hidden');
+                document.querySelector('.newsFields').classList.add('hidden');
+            } else {
+                newsEditor.setData('');
+                document.querySelector('.jobFields').classList.add('hidden');
+                document.querySelector('.newsFields').classList.remove('hidden');
+            }
+
+            document.getElementById('editModal').classList.remove('hidden');
+        }
+
+        async function deleteItem(id) {
+            if (!confirm('Êtes-vous sûr de vouloir supprimer cet élément?')) return;
+
+            try {
+                const response = await fetch(`/api/cms/${currentType}/${id}?lang=${currentLang}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) throw new Error('Delete failed');
+                
+                loadContent();
+                alert('Supprimé avec succès');
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Erreur de suppression');
+            }
         }
 
         // Load initial content
