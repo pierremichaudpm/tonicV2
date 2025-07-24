@@ -33,18 +33,6 @@
 
         <!-- Main Content -->
         <main class="max-w-7xl mx-auto px-4 py-8">
-            <!-- Department Filter for News -->
-            <div id="departmentFilter" style="display: none;" class="mb-6">
-                <label class="text-sm font-medium text-gray-700 mr-2">Filtrer par département:</label>
-                <select id="deptFilter" onchange="filterByDepartment()" class="border rounded px-3 py-2">
-                    <option value="">Tous les départements</option>
-                    <option value="Administration">Administration</option>
-                    <option value="Événements">Événements</option>
-                    <option value="Marketing">Marketing</option>
-                    <option value="Production">Production</option>
-                    <option value="Groupe Tonic">Groupe Tonic</option>
-                </select>
-            </div>
             
             <div id="content" class="space-y-4">
                 <!-- Content will be loaded here -->
@@ -157,17 +145,7 @@
 
         document.getElementById('contentType').addEventListener('change', (e) => {
             currentType = e.target.value;
-            console.log('Content type changed to:', currentType);
             toggleFieldVisibility();
-            // Show/hide department filter
-            const deptFilter = document.getElementById('departmentFilter');
-            if (currentType === 'news') {
-                console.log('Showing department filter');
-                deptFilter.style.display = 'block';
-            } else {
-                console.log('Hiding department filter');
-                deptFilter.style.display = 'none';
-            }
             loadContent();
         });
 
@@ -196,15 +174,7 @@
             window.location.href = '/admin/';
         }
         
-        function filterByDepartment() {
-            const dept = document.getElementById('deptFilter').value;
-            if (!dept) {
-                displayContent(currentData);
-            } else {
-                const filtered = currentData.filter(item => item.department === dept);
-                displayContent(filtered);
-            }
-        }
+
 
         async function loadContent() {
             try {
@@ -218,16 +188,6 @@
 
                 const data = await response.json();
                 currentData = currentType === 'jobs' ? data.jobs : data.news;
-                console.log('Loaded data:', currentData);
-                
-                // Show department filter for news
-                const deptFilter = document.getElementById('departmentFilter');
-                if (currentType === 'news') {
-                    deptFilter.style.display = 'block';
-                } else {
-                    deptFilter.style.display = 'none';
-                }
-                
                 displayContent(currentData);
             } catch (error) {
                 console.error('Error:', error);
@@ -371,6 +331,12 @@
             let data = { lang: currentLang };
             
             if (currentType === 'jobs') {
+                // Convert plain text back to HTML with paragraphs
+                const descText = document.getElementById('description').value;
+                const descHtml = descText.split('\n\n').map(para => 
+                    para.trim() ? `<p>${para.trim()}</p>` : ''
+                ).join('\n');
+                
                 data = {
                     ...data,
                     title: document.getElementById('title').value,
@@ -381,9 +347,15 @@
                     datePosted: document.getElementById('datePosted').value,
                     deadline: document.getElementById('deadline').value,
                     summary: document.getElementById('summary').value,
-                    description: document.getElementById('description').value
+                    description: descHtml
                 };
             } else {
+                // Convert plain text back to HTML with paragraphs
+                const contentText = document.getElementById('content').value;
+                const contentHtml = contentText.split('\n\n').map(para => 
+                    para.trim() ? `<p>${para.trim()}</p>` : ''
+                ).join('\n');
+                
                 data = {
                     ...data,
                     title: document.getElementById('newsTitle').value,
@@ -391,7 +363,7 @@
                     category: document.getElementById('category').value,
                     department: document.getElementById('newsDepartment').value,
                     summary: document.getElementById('newsSummary').value,
-                    content: document.getElementById('content').value
+                    content: contentHtml
                 };
             }
 
