@@ -31,7 +31,7 @@ const jobsData = [
   },
   {
     "id": 103,
-    "title": "Dishwasher machine",
+    "title": "Dishwasher",
     "department": "Dock 619",
     "type": "Part-time",
     "location": "Montreal, QC",
