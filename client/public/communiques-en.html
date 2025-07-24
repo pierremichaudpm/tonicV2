@@ -73,8 +73,8 @@
         
         /* Modal styles */
         .modal-backdrop {
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(5px);
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(12px);
             position: fixed;
             inset: 0;
             z-index: 50;
@@ -93,20 +93,20 @@
         }
         
         .modal-content {
-            background: linear-gradient(135deg, rgba(20,20,20,0.95), rgba(10,10,10,0.95));
-            backdrop-filter: blur(20px);
+            background: linear-gradient(135deg, rgba(20, 20, 20, 0.98) 0%, rgba(30, 30, 30, 0.98) 100%);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 1rem;
+            border-radius: 1.5rem;
             max-width: 56rem;
             width: 100%;
             max-height: 90vh;
-            overflow-y: auto;
-            transform: scale(0.9);
-            transition: transform 0.3s ease;
+            overflow: hidden;
+            transform: scale(0.9) translateY(20px);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
         }
         
         .modal-backdrop.active .modal-content {
-            transform: scale(1);
+            transform: scale(1) translateY(0);
         }
         
         /* Article content styles */
@@ -310,17 +310,18 @@
             const pressList = document.getElementById('pressList');
             if (!pressList) return;
             
-            // Check if pressReleases data exists
-            if (typeof pressReleases === 'undefined') {
-                pressList.innerHTML = '<p class="text-white text-center py-8">Error loading press releases. Please refresh the page.</p>';
-                return;
-            }
-            
-            // Clear existing content
-            pressList.innerHTML = '';
-            
-            // Create press release cards
-            pressReleases.forEach((release, index) => {
+            // Load press releases data
+            loadNewsData().then(newsData => {
+                if (!newsData || newsData.length === 0) {
+                    pressList.innerHTML = '<p class="text-white text-center py-8">No news available at this time.</p>';
+                    return;
+                }
+                
+                // Store data globally for modal access
+                window.pressReleases = newsData;
+                
+                // Create press release cards
+                newsData.forEach((release, index) => {
                 const card = document.createElement('div');
                 card.className = `press-card p-6 rounded-xl cursor-pointer fade-in delay-${Math.min(index * 100, 500)}`;
                 card.dataset.releaseId = release.id;
@@ -345,6 +346,13 @@
                 card.addEventListener('click', () => openPressModal(release.id));
                 pressList.appendChild(card);
             });
+            });
+        }
+        
+        // Get press release by ID
+        function getPressReleaseById(id) {
+            if (!window.pressReleases) return null;
+            return window.pressReleases.find(pr => pr.id === parseInt(id));
         }
         
         // Open press release modal

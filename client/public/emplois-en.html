@@ -583,8 +583,8 @@
             DOM.modalTitle = document.getElementById('modalTitle');
             DOM.modalContent = document.getElementById('modalContent');
             
-            // Check if required functions and data are available
-            if (typeof getAllJobs !== 'function' || typeof jobListings === 'undefined') {
+            // Check if required functions are available
+            if (typeof loadJobsData !== 'function') {
                 DOM.jobsList.innerHTML = '<p class="text-white text-center py-8">Error loading. Please refresh the page.</p>';
                 return;
             }
