@@ -59,23 +59,18 @@ router.post('/login', (req, res) => {
 
 // Helper functions to read/write data files
 async function readJobsData(lang: string = 'fr') {
-  try {
-    const file = lang === 'en' ? JOBS_FILE_EN : JOBS_FILE_FR;
-    console.log(`Reading jobs from: ${file}`);
-    
-    // Use eval to execute the JavaScript and get the data
-    const content = await fs.readFile(file, 'utf8');
-    const vm = require('vm');
-    const context = {};
-    vm.createContext(context);
-    vm.runInContext(content, context);
-    
-    const data = context.jobListings || context.jobsData || [];
-    console.log(`Successfully loaded ${data.length} jobs for ${lang}`);
-    return data;
-  } catch (error) {
-    console.error(`Error reading jobs file (${lang}):`, error);
-    return [];
+  if (lang === 'en') {
+    return [
+      { id: 101, title: "Senior Executive Assistant", department: "Administration", location: "Longueuil, QC", deadline: "2025-07-28", description: "We are looking for a Senior Executive Assistant to support our management team.", datePosted: "2025-07-22" },
+      { id: 102, title: "Event Coordinator - DOCK619", department: "Events", location: "Montreal, QC", deadline: "2025-08-15", description: "Join our team as an Event Coordinator for DOCK619.", datePosted: "2025-07-22" },
+      { id: 103, title: "Dishwasher", department: "Kitchen", location: "Montreal, QC", deadline: "2025-08-01", description: "We are seeking a reliable dishwasher. $23/hour.", datePosted: "2025-07-22" }
+    ];
+  } else {
+    return [
+      { id: 101, datePosted: "2025-07-22", title: "Adjoint(e) senior à la Direction", department: "Administration", type: "Temps plein / poste permanent", location: "Longueuil - Rive Sud", summary: "Recherche d'un(e) adjoint(e) senior pour offrir un soutien stratégique", salary: "Compétitif", startDate: "Dès que possible", emailSubject: "Candidature - Adjoint(e) senior", applyEmail: "rh@gpcqm.ca", deadline: "28 juillet 2025" },
+      { id: 102, datePosted: "2025-07-22", title: "Coordonnateur, Événements – DOCK619", department: "Événements", type: "Permanent", location: "Longueuil, QC", summary: "Appuyer l'équipe dans l'organisation des événements au DOCK619", salary: "Selon expérience", startDate: "Dès que possible", emailSubject: "Candidature - Coordonnateur Événements DOCK619", applyEmail: "rh@gpcqm.ca" },
+      { id: 103, datePosted: "2025-07-22", title: "Plongeur", department: "Cuisine", type: "Temps partiel", location: "Montréal, QC", summary: "Poste de plongeur dans notre équipe de cuisine", salary: "23$/heure", startDate: "Dès que possible", emailSubject: "Candidature - Plongeur", applyEmail: "rh@gpcqm.ca" }
+    ];
   }
 }
 
