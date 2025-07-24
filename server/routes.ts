@@ -57,6 +57,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/nous-joindre-en", (req, res) => {
     res.sendFile(path.join(publicPath, "nous-joindre-en.html"));
   });
+
+  // CMS Admin Interface  
+  app.get("/admin", (req, res) => {
+    res.sendFile(path.join(process.cwd(), "public", "simple-cms.html"));
+  });
   
   app.get("/ai-helper", (req, res) => {
     res.sendFile(path.join(publicPath, "ai-helper.html"));

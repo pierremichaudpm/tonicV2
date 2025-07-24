@@ -1,18 +1,11 @@
 import express from 'express';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
 import fs from 'fs/promises';
 import path from 'path';
 
 const router = express.Router();
 
-// Simple user store - in production, use a proper database
-const ADMIN_USER = {
-  username: 'admin',
-  password: '$2b$10$pImuRuEJZcalS.0L.WNq/ezUJiSTN744i.e5sHTScIMXKCQWsg9ym' // 'admin123'
-};
-
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-this';
+// Simple password authentication
+const ADMIN_PASSWORD = 'admin123';
 
 // Data file paths
 const JOBS_FILE_FR = path.join(process.cwd(), 'client/public/js/emplois-data.js');
@@ -20,47 +13,41 @@ const NEWS_FILE_FR = path.join(process.cwd(), 'client/public/js/communiques-data
 const JOBS_FILE_EN = path.join(process.cwd(), 'client/public/js/emplois-data-en.js');
 const NEWS_FILE_EN = path.join(process.cwd(), 'client/public/js/communiques-data-en.js');
 
-// Authentication middleware
+// Simple authentication middleware
 const authenticateToken = (req: any, res: any, next: any) => {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
+  const password = req.headers['x-admin-password'];
 
-  console.log('Auth check - token present:', !!token);
-
-  if (!token) {
-    console.log('No token provided');
-    return res.sendStatus(401);
+  if (!password) {
+    console.log('No password provided');
+    return res.status(401).json({ message: 'Unauthorized' });
   }
 
-  jwt.verify(token, JWT_SECRET, (err: any, user: any) => {
-    if (err) {
-      console.log('Token verification failed:', err.message);
-      return res.sendStatus(403);
-    }
-    console.log('Token verified successfully for user:', user.username);
-    req.user = user;
+  if (password === ADMIN_PASSWORD) {
+    console.log('Authentication successful');
     next();
-  });
+  } else {
+    console.log('Authentication failed - wrong password');
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
 };
 
-// Login endpoint
+// Simple login endpoint (password only)
 router.post('/login', (req, res) => {
   try {
     console.log('CMS Login request received:', req.body);
-    const { username, password } = req.body;
+    const { password } = req.body;
     
-    // Direct comparison
-    if (username === 'admin' && password === 'admin123') {
-      const token = jwt.sign({ username: 'admin' }, JWT_SECRET, { expiresIn: '24h' });
-      console.log('Login successful, token generated');
-      return res.json({ token, username: 'admin' });
+    // Simple password check
+    if (password === ADMIN_PASSWORD) {
+      console.log('Login successful');
+      return res.json({ success: true, message: 'Login successful' });
     }
     
-    console.log('Login failed - wrong credentials');
-    return res.status(401).json({ message: 'Invalid credentials' });
+    console.log('Login failed - wrong password');
+    return res.status(401).json({ success: false, message: 'Invalid password' });
   } catch (error) {
     console.error('Login error:', error);
-    return res.status(500).json({ message: 'Server error' });
+    return res.status(500).json({ success: false, message: 'Server error' });
   }
 });
 
