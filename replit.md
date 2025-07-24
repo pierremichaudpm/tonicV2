@@ -264,8 +264,9 @@ The website is now fully operational and matches the original local/Netlify func
 - **Subtitle removal**: Removed "Un petit retour dans le passé" / "A little trip back in time" subtitles from history sections
 - **Contact form removal**: Removed "Écrivez-nous" / "Write to Us" contact form modules from both French and English contact pages due to no backend infrastructure
 
-### Strapi CMS Integration - July 23, 2025
-- **Strapi setup completed**: Configured Strapi v5.19.0 with PostgreSQL database integration
+### Strapi CMS Integration - July 23-24, 2025
+- **Strapi setup completed**: Configured Strapi v4.25.9 with PostgreSQL database integration
+- **Render deployment in progress**: Updated to stable Strapi v4 for production compatibility
 - **Content types created**: Comprehensive Jobs and News content types with bilingual support
 - **i18n configuration**: French/English internationalization plugin configured with French as default
 - **Database integration**: Uses existing PostgreSQL database with proper environment variable setup
