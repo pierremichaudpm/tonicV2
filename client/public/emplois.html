@@ -65,12 +65,62 @@
             border: 1px solid var(--glass-border);
             transition: var(--transition-default);
             cursor: pointer;
+            position: relative;
+            overflow: hidden;
         }
         
         .job-card:hover {
             transform: translateY(-4px);
             box-shadow: 0 20px 40px rgba(0,0,0,0.3);
             border-color: var(--glass-border-hover);
+        }
+
+        /* Job image container with overlay */
+        .job-image-container {
+            position: relative;
+            width: 100%;
+            height: 180px;
+            overflow: hidden;
+            border-radius: 0.75rem 0.75rem 0 0;
+        }
+
+        .job-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .job-card:hover .job-image {
+            transform: scale(1.05);
+        }
+
+        /* Category-specific overlays matching grid system */
+        .job-image-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, transparent 20%, rgba(0,0,0,0.6) 100%);
+            transition: opacity 0.3s ease;
+        }
+
+        /* Category color overlays */
+        .job-image-overlay.beach { background: linear-gradient(135deg, rgba(255, 14, 155, 0.4) 0%, rgba(0,0,0,0.6) 100%); }
+        .job-image-overlay.cycling { background: linear-gradient(135deg, rgba(183, 210, 51, 0.4) 0%, rgba(0,0,0,0.6) 100%); }
+        .job-image-overlay.marathon { background: linear-gradient(135deg, rgba(70, 48, 146, 0.4) 0%, rgba(0,0,0,0.6) 100%); }
+        .job-image-overlay.uci { background: linear-gradient(135deg, rgba(218, 39, 59, 0.4) 0%, rgba(0,0,0,0.6) 100%); }
+        .job-image-overlay.studio { background: linear-gradient(135deg, rgba(6, 182, 212, 0.4) 0%, rgba(0,0,0,0.6) 100%); }
+        .job-image-overlay.dock { background: linear-gradient(135deg, rgba(107, 114, 128, 0.4) 0%, rgba(0,0,0,0.6) 100%); }
+        .job-image-overlay.k21 { background: linear-gradient(135deg, rgba(245, 158, 11, 0.4) 0%, rgba(0,0,0,0.6) 100%); }
+        .job-image-overlay.tonic { background: linear-gradient(135deg, rgba(249, 115, 22, 0.4) 0%, rgba(0,0,0,0.6) 100%); }
+
+        /* Special styling for Tonic logo images in job cards */
+        .job-image[src*="tonic-logo.png"] {
+            object-fit: contain !important;
+            background: #000 !important;
+            padding: 20px !important;
         }
         
         /* Department colors */
@@ -373,6 +423,38 @@
         const state = {
             isModalOpen: false
         };
+
+        // Category image mapping (matching CMS system)
+        const categoryImageMap = {
+            'Beach Pro Tour': 'images/beach-pro-tour-hero.webp',
+            'Grands Prix Cyclistes': 'images/grands-prix-cyclistes-hero.jpg',
+            'Marathon Beneva 21K': 'images/marathon-beneva-hero.jpg',
+            'UCI 2026': 'images/montreal-2026-uci-hero.jpg',
+            'Studio 76': 'images/studio76-logo.png',
+            'Dock 619': 'images/dock619-hero-optimized.jpg',
+            '21K de Montréal': 'images/21k-hero.jpg',
+            'Groupe Tonic': 'images/tonic-logo.png'
+        };
+
+        // Get category image
+        function getCategoryImage(department) {
+            return categoryImageMap[department] || 'images/tonic-logo.png';
+        }
+
+        // Get category overlay class
+        function getCategoryOverlayClass(department) {
+            const categoryMap = {
+                'Beach Pro Tour': 'beach',
+                'Grands Prix Cyclistes': 'cycling',
+                'Marathon Beneva 21K': 'marathon',
+                'UCI 2026': 'uci',
+                'Studio 76': 'studio',
+                'Dock 619': 'dock',
+                '21K de Montréal': 'k21',
+                'Groupe Tonic': 'tonic'
+            };
+            return categoryMap[department] || 'tonic';
+        }
         
         // Get department class for styling
         const getDepartmentClass = (department) => {
@@ -430,36 +512,46 @@
             const tempDiv = document.createElement('div');
             
             tempDiv.innerHTML = jobs.map((job, index) => `
-                <div class="job-card p-6 rounded-xl cursor-pointer fade-in delay-${Math.min(index * 100, 500)}" 
+                <div class="job-card rounded-xl cursor-pointer fade-in delay-${Math.min(index * 100, 500)}" 
                      data-job-id="${job.id}">
-                    <div class="flex items-start justify-between mb-3">
-                        <span class="inline-block px-3 py-1 rounded-full text-xs font-medium text-white ${getDepartmentClass(job.department)}">
-                            ${job.department}
-                        </span>
-                        <span class="text-xs text-white">${getDaysSincePosting(job.datePosted)}</span>
+                    <!-- Job Image with Overlay -->
+                    <div class="job-image-container">
+                        <img src="${getCategoryImage(job.department)}" 
+                             alt="${job.department}" 
+                             class="job-image">
+                        <div class="job-image-overlay ${getCategoryOverlayClass(job.department)}"></div>
                     </div>
-                    <h3 class="text-xl font-bold mb-2">${job.title}</h3>
-                    <div class="flex flex-wrap gap-2 text-sm text-white mb-3">
-                        <span class="flex items-center gap-1">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    <!-- Job Content -->
+                    <div class="p-6">
+                        <div class="flex items-start justify-between mb-3">
+                            <span class="inline-block px-3 py-1 rounded-full text-xs font-medium text-white ${getDepartmentClass(job.department)}">
+                                ${job.department}
+                            </span>
+                            <span class="text-xs text-white">${getDaysSincePosting(job.datePosted)}</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">${job.title}</h3>
+                        <div class="flex flex-wrap gap-2 text-sm text-white mb-3">
+                            <span class="flex items-center gap-1">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg>
+                                ${job.location}
+                            </span>
+                            <span class="flex items-center gap-1">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                ${job.type}
+                            </span>
+                        </div>
+                        <p class="text-sm text-white line-clamp-2">${job.summary}</p>
+                        <div class="mt-4 flex items-center text-accent text-sm font-medium">
+                            <span>Voir les détails</span>
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                             </svg>
-                            ${job.location}
-                        </span>
-                        <span class="flex items-center gap-1">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            ${job.type}
-                        </span>
-                    </div>
-                    <p class="text-sm text-white line-clamp-2">${job.summary}</p>
-                    <div class="mt-4 flex items-center text-accent text-sm font-medium">
-                        <span>Voir les détails</span>
-                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                        </svg>
+                        </div>
                     </div>
                 </div>
             `).join('');
