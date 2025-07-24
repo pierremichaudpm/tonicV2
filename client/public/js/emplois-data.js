@@ -51,7 +51,8 @@ const jobListings = [
     "type": "",
     "salary": "",
     "deadline": "",
-    "description": "",
-    "datePosted": "2025-07-24"
+    "description": "<p>ontréal, le 15 novembre 2024 – Groupe Tonic est fier d'annoncer le retour du Beach Pro Tour à Montréal pour une cinquième édition qui se tiendra du 13 au 17 août 2025 au parc Jean-Drapeau.</p>\n<p>Cette étape Elite16 du circuit mondial de volleyball de plage réunira les 16 meilleures équipes masculines et féminines de la planète pour cinq jours de compétition de haut niveau.\nPoints saillants de l'édition 2025</p>\n<p>Prize money total de 300 000$ USD\n    Diffusion internationale dans plus de 100 pays\n    Village des partenaires et activités familiales\n    Cliniques de volleyball avec les athlètes professionnels</p>\n<p>\"Nous sommes ravis d'accueillir à nouveau l'élite mondiale du volleyball de plage à Montréal. L'engouement du public montréalais pour cet événement ne cesse de croître année après année\", déclare [Nom], directeur général du Beach Pro Tour Montréal.</p>\n<p>Les billets seront mis en vente le 1er février 2025 sur le site officiel de l'événement.</p>",
+    "datePosted": "2025-07-24",
+    "summary": ""
   }
 ];

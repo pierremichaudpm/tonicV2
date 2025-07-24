@@ -329,49 +329,51 @@
         async function saveItem(e) {
             e.preventDefault();
             
-            const id = document.getElementById('itemId').value;
-            const isNew = !id;
-            
-            let data = { lang: currentLang };
-            
-            if (currentType === 'jobs') {
-                // Convert plain text back to HTML with paragraphs
-                const descText = document.getElementById('description').value;
-                const descHtml = descText.split('\n\n').map(para => 
-                    para.trim() ? `<p>${para.trim()}</p>` : ''
-                ).join('\n');
-                
-                data = {
-                    ...data,
-                    title: document.getElementById('title').value,
-                    department: document.getElementById('department').value,
-                    location: document.getElementById('location').value,
-                    type: document.getElementById('type').value,
-                    salary: document.getElementById('salary').value,
-                    datePosted: document.getElementById('datePosted').value,
-                    deadline: document.getElementById('deadline').value,
-                    summary: document.getElementById('summary').value,
-                    description: descHtml
-                };
-            } else {
-                // Convert plain text back to HTML with paragraphs
-                const contentText = document.getElementById('content').value;
-                const contentHtml = contentText.split('\n\n').map(para => 
-                    para.trim() ? `<p>${para.trim()}</p>` : ''
-                ).join('\n');
-                
-                data = {
-                    ...data,
-                    title: document.getElementById('newsTitle').value,
-                    date: document.getElementById('date').value,
-                    category: document.getElementById('category').value,
-                    department: document.getElementById('newsDepartment').value,
-                    summary: document.getElementById('newsSummary').value,
-                    content: contentHtml
-                };
-            }
-
             try {
+                const id = document.getElementById('itemId').value;
+                const isNew = !id;
+                
+                let data = { lang: currentLang };
+                
+                if (currentType === 'jobs') {
+                    // Convert plain text back to HTML with paragraphs
+                    const descText = document.getElementById('description').value;
+                    const descHtml = descText.split('\n\n').map(para => 
+                        para.trim() ? `<p>${para.trim()}</p>` : ''
+                    ).join('\n');
+                    
+                    data = {
+                        ...data,
+                        title: document.getElementById('title').value,
+                        department: document.getElementById('department').value,
+                        location: document.getElementById('location').value,
+                        type: document.getElementById('type').value,
+                        salary: document.getElementById('salary').value,
+                        datePosted: document.getElementById('datePosted').value,
+                        deadline: document.getElementById('deadline').value,
+                        summary: document.getElementById('summary').value,
+                        description: descHtml
+                    };
+                } else {
+                    // Convert plain text back to HTML with paragraphs
+                    const contentText = document.getElementById('content').value;
+                    const contentHtml = contentText.split('\n\n').map(para => 
+                        para.trim() ? `<p>${para.trim()}</p>` : ''
+                    ).join('\n');
+                    
+                    data = {
+                        ...data,
+                        title: document.getElementById('newsTitle').value,
+                        date: document.getElementById('date').value,
+                        category: document.getElementById('category').value,
+                        department: document.getElementById('newsDepartment').value,
+                        summary: document.getElementById('newsSummary').value,
+                        content: contentHtml
+                    };
+                }
+
+                console.log('Saving data:', data);
+                
                 const url = isNew 
                     ? `/api/cms/${currentType}` 
                     : `/api/cms/${currentType}/${id}`;
@@ -385,14 +387,20 @@
                     body: JSON.stringify(data)
                 });
 
-                if (!response.ok) throw new Error('Save failed');
+                console.log('Response status:', response.status);
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('Response error:', errorText);
+                    throw new Error(`Save failed: ${response.status} ${errorText}`);
+                }
                 
                 closeModal();
-                loadContent();
+                await loadContent();
                 alert(isNew ? 'Créé avec succès' : 'Modifié avec succès');
             } catch (error) {
-                console.error('Error:', error);
-                alert('Erreur de sauvegarde');
+                console.error('Save error:', error);
+                alert(`Erreur de sauvegarde: ${error.message}`);
             }
         }
 
