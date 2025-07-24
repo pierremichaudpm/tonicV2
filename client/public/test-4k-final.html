@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test 4K Grid - Final Debug</title>
+    <style>
+        body {
+            margin: 0;
+            background: #000;
+            color: white;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        
+        .debug-info {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+            z-index: 1000;
+        }
+        
+        /* Exact copy of the site CSS */
+        .selection-grid {
+            display: grid;
+            gap: 12px;
+            width: 100%;
+            height: 100%;
+            max-width: min(1190px, 90vw);
+            max-height: min(85%, 85vh);
+            margin: auto;
+        }
+        
+        /* The 4K media query from the site */
+        @media(min-width:3000px){
+            .selection-grid{
+                display:grid!important;
+                grid-template-columns:repeat(4,1fr)!important;
+                grid-template-rows:repeat(2,1fr)!important;
+                gap:2rem!important;
+                max-width:90vw!important;
+                max-height:85vh!important
+            }
+            .selection-tile{
+                min-height:320px!important;
+                display:block!important;
+                visibility:visible!important;
+                opacity:1!important
+            }
+            .selection-tile:nth-child(1){grid-column:1/2!important;grid-row:1/2!important}
+            .selection-tile:nth-child(2){grid-column:2/3!important;grid-row:1/2!important}
+            .selection-tile:nth-child(3){grid-column:3/4!important;grid-row:1/2!important}
+            .selection-tile:nth-child(4){grid-column:4/5!important;grid-row:1/2!important}
+            .selection-tile:nth-child(5){grid-column:1/2!important;grid-row:2/3!important}
+            .selection-tile:nth-child(6){grid-column:2/3!important;grid-row:2/3!important}
+            .selection-tile:nth-child(7){grid-column:3/4!important;grid-row:2/3!important}
+        }
+        
+        .selection-tile {
+            background: #333;
+            border: 2px solid #666;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        /* Color each tile like the real site */
+        .selection-tile:nth-child(1) { background: #ff0e9b; } /* Beach Pro Tour */
+        .selection-tile:nth-child(2) { background: #b7d233; } /* Grands Prix */
+        .selection-tile:nth-child(3) { background: #463092; } /* Marathon */
+        .selection-tile:nth-child(4) { background: #e2493c; } /* 21K */
+        .selection-tile:nth-child(5) { background: #da273b; } /* UCI 2026 */
+        .selection-tile:nth-child(6) { background: #03b0f9; } /* Studio 76 */
+        .selection-tile:nth-child(7) { background: #666; }    /* DOCK 619 */
+        
+        .container {
+            max-width: 90vw;
+            margin: 0 auto;
+            height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="debug-info">
+        <h3>Debug Info</h3>
+        <p>Width: <span id="width"></span>px</p>
+        <p>Height: <span id="height"></span>px</p>
+        <p>Grid Style: <span id="gridStyle"></span></p>
+        <p>Tile Count: <span id="tileCount"></span></p>
+    </div>
+    
+    <h2 style="text-align: center;">Test 4K Grid Layout (4-3 arrangement)</h2>
+    
+    <div class="container">
+        <div class="selection-grid" id="testGrid">
+            <div class="selection-tile">1. BEACH PRO TOUR</div>
+            <div class="selection-tile">2. GRANDS PRIX CYCLISTES</div>
+            <div class="selection-tile">3. MARATHON BENEVA</div>
+            <div class="selection-tile">4. 21K DE MONTRÉAL</div>
+            <div class="selection-tile">5. UCI MONTRÉAL 2026</div>
+            <div class="selection-tile">6. STUDIO 76</div>
+            <div class="selection-tile">7. DOCK 619</div>
+        </div>
+    </div>
+    
+    <script>
+        // Update debug info
+        document.getElementById('width').textContent = window.innerWidth;
+        document.getElementById('height').textContent = window.innerHeight;
+        
+        // Check grid properties
+        setTimeout(() => {
+            const grid = document.getElementById('testGrid');
+            const tiles = grid.querySelectorAll('.selection-tile');
+            const computed = window.getComputedStyle(grid);
+            
+            document.getElementById('gridStyle').innerHTML = `
+                <br>columns: ${computed.gridTemplateColumns}
+                <br>rows: ${computed.gridTemplateRows}
+            `;
+            
+            document.getElementById('tileCount').textContent = tiles.length;
+            
+            // Log all tiles
+            console.log('All tiles found:', tiles.length);
+            tiles.forEach((tile, i) => {
+                console.log(`Tile ${i + 1}: ${tile.textContent.trim()}`);
+            });
+        }, 100);
+    </script>
+</body>
+</html>

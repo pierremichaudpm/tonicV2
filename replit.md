@@ -293,10 +293,12 @@ The website is now fully operational and matches the original local/Netlify func
 - **CMS limitation discovered**: Strapi requires separate hosting - Replit deployments only run single process
 - **Next phase required**: Deploy Strapi on dedicated server (Render, Railway, or similar) for production CMS functionality
 
-### 4K Display Grid Layout Fix - July 23, 2025
+### 4K Display Grid Layout - July 23, 2025
 - **Initial issue**: Grid showing all 7 tiles in single row on 4K screens
 - **Root cause**: max-width: 1190px constraint limiting grid width even on large displays
 - **JavaScript conflict**: Discovered JS code injecting CSS styles that conflicted with media queries
-- **Final solution**: Disabled JS injection, implemented pure CSS media query for 3000px+ screens
-- **Layout specification**: 4x3 grid (4 columns, 2 rows) - 4 tiles on top row, 3 tiles on bottom row
+- **Layout specification**: 4-3 grid (4 columns, 2 rows) - 4 tiles on top row, 3 tiles on bottom row
 - **User preference**: Matches exact layout from provided screenshot with proper tile positioning
+- **Current status**: Multiple attempts to fix layout have failed; tiles still showing in incorrect 3-2-1 pattern
+- **Investigation findings**: All 7 tiles exist in PROPERTIES array, CSS media queries are being applied but not producing desired 4-3 layout
+- **User frustration**: Expressed concern about responsive design complexity and time wasted on iterative fixes
