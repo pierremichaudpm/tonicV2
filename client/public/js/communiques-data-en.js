@@ -10,7 +10,7 @@ const communiquesData = [
   },
   {
     "id": 4,
-    "date": "2024-10-22", 
+    "date": "2024-10-22",
     "title": "UCI Road World Championships 2026 unveil their routes",
     "category": "UCI World Championships",
     "summary": "The road race routes for the 2026 UCI World Championships in Montreal have been officially presented, promising spectacular races.",
@@ -20,7 +20,7 @@ const communiquesData = [
   {
     "id": 3,
     "date": "2024-09-30",
-    "title": "Record participation at the 2024 Beneva Montreal Marathon", 
+    "title": "Record participation at the 2024 Beneva Montreal Marathon",
     "category": "Beneva Marathon",
     "summary": "More than 25,000 runners took part in the 31st edition of the Beneva Montreal Marathon, setting a new participation record.",
     "content": "Montreal, September 30, 2024 – The 31st edition of the Beneva Montreal Marathon concluded Sunday on a historic note with a record participation of more than 25,000 runners across all distances.\n\nThis 2024 edition was marked by perfect weather conditions and flawless organization that contributed to creating an exceptional festive atmosphere in the streets of Montreal.\n\nEvent Highlights:\n- 25,347 total participants (absolute record)\n- Representation from 89 different countries\n- 97.8% completion rate across all distances\n- More than 1,200 volunteers mobilized\n\nThe event continues to strengthen its position as one of Canada's most popular marathons and confirms Montreal as a destination of choice for international runners.",
@@ -30,7 +30,7 @@ const communiquesData = [
     "id": 2,
     "date": "2024-09-16",
     "title": "Resounding success for the 2024 Quebec and Montreal Cycling Grand Prix",
-    "category": "Cycling Grand Prix", 
+    "category": "Cycling Grand Prix",
     "summary": "The UCI WorldTour events attracted the biggest names in world cycling and hundreds of thousands of spectators.",
     "content": "Montreal/Quebec, September 16, 2024 – The 14th editions of the Quebec and Montreal Cycling Grand Prix concluded with enthusiasm with the participation of the world's road cycling elite.\n\nThese two UCI WorldTour events, the only ones in North America, once again demonstrated their ability to bring together the world's best riders in an exceptional setting.\n\n2024 Edition Summary:\n- 19 UCI WorldTour teams present\n- More than 400,000 spectators at both sites\n- Broadcast in over 150 countries\n- Estimated economic impact of $35 million\n\nThe exemplary organization and warm atmosphere of the Quebec and Montreal public continue to make these events essential fixtures on the world cycling calendar.",
     "image": "images/grands-prix-cyclistes-hero.jpg"
@@ -43,5 +43,11 @@ const communiquesData = [
     "summary": "The 4th edition of Beach Pro Tour Montreal welcomed more than 45,000 spectators and confirmed Montreal as a prime destination for world beach volleyball.",
     "content": "Montreal, August 20, 2024 – The 4th edition of Beach Pro Tour Montreal concluded Sunday evening on a triumphant note, once again confirming Montreal's place on the international beach volleyball scene.\n\nOrganized from August 14 to 18 at Parc Jean-Drapeau, this Elite16 event brought together the 16 best men's and women's pairs from the world circuit for five days of intense competition under the spotlights of Centre Court.\n\nA Record Edition:\n- More than 45,000 spectators over five days\n- 16 pairs per category representing 20 nations\n- Live broadcast in 100+ countries\n- $300,000 USD prize money distributed\n\n\"The electrifying atmosphere of the Montreal crowd and the impeccable organization make this stop one of the athletes' favorites on the circuit.\"\n\nThis success confirms Groupe Tonic's commitment to positioning Montreal as a destination of choice for major international sporting events.",
     "image": "images/beach-pro-tour-hero.webp"
+  },
+  {
+    "id": 1753385453230,
+    "title": "test",
+    "date": "2025-07-26",
+    "content": "tets"
   }
 ];
