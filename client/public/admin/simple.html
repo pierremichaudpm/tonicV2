@@ -30,13 +30,25 @@
                 </div>
 
                 <div id="jobsSection">
-                    <h2 class="text-xl font-bold mb-4">Emplois</h2>
+                    <h2 class="text-xl font-bold mb-4">Emplois (<span id="jobsLang">Français</span>)</h2>
                     <div id="jobsList"></div>
                 </div>
 
                 <div id="newsSection" class="hidden">
-                    <h2 class="text-xl font-bold mb-4">Actualités</h2>
+                    <h2 class="text-xl font-bold mb-4">Actualités (<span id="newsLang">Français</span>)</h2>
                     <div id="newsList"></div>
+                </div>
+
+                <!-- Edit Modal -->
+                <div id="editModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                    <div class="bg-white p-6 rounded-lg w-full max-w-2xl max-h-96 overflow-y-auto">
+                        <h3 class="text-lg font-bold mb-4" id="editTitle">Modifier</h3>
+                        <div id="editForm"></div>
+                        <div class="flex justify-end mt-4">
+                            <button onclick="closeEdit()" class="bg-gray-500 text-white px-4 py-2 rounded mr-2">Annuler</button>
+                            <button onclick="saveEdit()" class="bg-blue-500 text-white px-4 py-2 rounded">Sauvegarder</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -91,6 +103,10 @@
 
         async function loadData() {
             currentLang = document.getElementById('lang').value;
+            // Update language indicators
+            const langText = currentLang === 'fr' ? 'Français' : 'English';
+            document.getElementById('jobsLang').textContent = langText;
+            document.getElementById('newsLang').textContent = langText;
             await loadJobs();
             await loadNews();
         }
@@ -125,13 +141,17 @@
             }
         }
 
+        let editingItem = null;
+        let editingType = null;
+
         function displayJobs(jobs) {
             const container = document.getElementById('jobsList');
             container.innerHTML = jobs.map(job => `
                 <div class="border p-4 mb-4 rounded">
                     <h3 class="font-bold">${job.title}</h3>
-                    <p>${job.department} - ${job.location}</p>
+                    <p>${job.department} - ${job.location || job.lieu || 'N/A'}</p>
                     <p>Publié: ${job.datePosted}</p>
+                    <button onclick="editJob(${job.id})" class="bg-blue-500 text-white px-3 py-1 rounded text-sm mt-2">Modifier</button>
                 </div>
             `).join('');
         }
@@ -142,9 +162,106 @@
                 <div class="border p-4 mb-4 rounded">
                     <h3 class="font-bold">${article.title}</h3>
                     <p>Date: ${article.date}</p>
-                    <p>${article.category}</p>
+                    <p>${article.category || article.section || 'N/A'}</p>
+                    <button onclick="editNews(${article.id})" class="bg-blue-500 text-white px-3 py-1 rounded text-sm mt-2">Modifier</button>
                 </div>
             `).join('');
+        }
+
+        async function editJob(jobId) {
+            const response = await fetch(`/api/cms/jobs?lang=${currentLang}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await response.json();
+            const job = data.jobs.find(j => j.id == jobId);
+            
+            if (job) {
+                editingItem = job;
+                editingType = 'job';
+                document.getElementById('editTitle').textContent = 'Modifier l\'emploi';
+                document.getElementById('editForm').innerHTML = `
+                    <input type="text" id="editJobTitle" value="${job.title}" placeholder="Titre" class="w-full p-2 border rounded mb-3">
+                    <input type="text" id="editJobDept" value="${job.department}" placeholder="Département" class="w-full p-2 border rounded mb-3">
+                    <input type="text" id="editJobLocation" value="${job.location || job.lieu || ''}" placeholder="Lieu" class="w-full p-2 border rounded mb-3">
+                    <textarea id="editJobDesc" placeholder="Description" class="w-full p-2 border rounded mb-3 h-24">${job.description || job.summary || ''}</textarea>
+                `;
+                document.getElementById('editModal').classList.remove('hidden');
+            }
+        }
+
+        async function editNews(newsId) {
+            const response = await fetch(`/api/cms/news?lang=${currentLang}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await response.json();
+            const article = data.news.find(n => n.id == newsId);
+            
+            if (article) {
+                editingItem = article;
+                editingType = 'news';
+                document.getElementById('editTitle').textContent = 'Modifier l\'actualité';
+                document.getElementById('editForm').innerHTML = `
+                    <input type="text" id="editNewsTitle" value="${article.title}" placeholder="Titre" class="w-full p-2 border rounded mb-3">
+                    <input type="date" id="editNewsDate" value="${article.date}" class="w-full p-2 border rounded mb-3">
+                    <input type="text" id="editNewsCategory" value="${article.category || article.section || ''}" placeholder="Catégorie" class="w-full p-2 border rounded mb-3">
+                    <textarea id="editNewsDesc" placeholder="Description" class="w-full p-2 border rounded mb-3 h-24">${article.description || article.summary || ''}</textarea>
+                `;
+                document.getElementById('editModal').classList.remove('hidden');
+            }
+        }
+
+        function closeEdit() {
+            document.getElementById('editModal').classList.add('hidden');
+            editingItem = null;
+            editingType = null;
+        }
+
+        async function saveEdit() {
+            if (!editingItem || !editingType) return;
+
+            let updateData = { lang: currentLang };
+            
+            if (editingType === 'job') {
+                updateData = {
+                    ...editingItem,
+                    title: document.getElementById('editJobTitle').value,
+                    department: document.getElementById('editJobDept').value,
+                    location: document.getElementById('editJobLocation').value,
+                    description: document.getElementById('editJobDesc').value,
+                    lang: currentLang
+                };
+            } else if (editingType === 'news') {
+                updateData = {
+                    ...editingItem,
+                    title: document.getElementById('editNewsTitle').value,
+                    date: document.getElementById('editNewsDate').value,
+                    category: document.getElementById('editNewsCategory').value,
+                    description: document.getElementById('editNewsDesc').value,
+                    lang: currentLang
+                };
+            }
+
+            const endpoint = editingType === 'job' ? 'jobs' : 'news';
+            
+            try {
+                const response = await fetch(`/api/cms/${endpoint}/${editingItem.id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(updateData)
+                });
+
+                if (response.ok) {
+                    closeEdit();
+                    loadData(); // Refresh the data
+                } else {
+                    alert('Erreur lors de la sauvegarde');
+                }
+            } catch (error) {
+                alert('Erreur lors de la sauvegarde');
+            }
         }
     </script>
 </body>
