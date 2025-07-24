@@ -376,7 +376,7 @@
     
     <!-- Load job data -->
     <script src="js/emplois-data.js"></script>
-    <script src="js/strapi-api.js"></script>
+
     
     <!-- Shared JavaScript -->
     <script src="js/shared.js"></script>
@@ -443,7 +443,7 @@
             return classMap[department] || 'category-tonic';
         };
 
-        // Get all jobs - Updated to use Strapi API
+        // Get all jobs - Using local data
         async function getAllJobs() {
             const jobs = await loadJobsData();
             return jobs || [];

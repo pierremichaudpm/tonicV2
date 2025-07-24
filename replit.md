@@ -335,3 +335,13 @@ The website is now fully operational and matches the original local/Netlify func
 - **Authentication Working**: Simple password-based CMS continues to function reliably with admin123 password
 - **Groupe Tonic Logo Implementation**: Created proper logo sizing (180×120px) with black background for news cards
 - **Status**: ✅ FULLY FUNCTIONAL - All content creators can now select from exactly 8 consistent categories with automatic image assignment and proper styling
+
+### Codebase Cleanup - July 24, 2025 ✅ COMPLETED
+- **Removed entire Strapi CMS system**: Deleted cms/ directory, strapi-config/, and all Strapi-related files
+- **Cleaned package dependencies**: Uninstalled @strapi/strapi and removed 1257+ associated packages
+- **HTML cleanup**: Removed strapi-api.js script references from all job and news pages
+- **Updated comments**: Changed "Updated to use Strapi API" to "Using local data" in JavaScript
+- **File removal**: Deleted cms-status.html, admin-guide.html, cms-access.html, cms-demo.html
+- **Development files cleanup**: Removed Python files, migration scripts, and temporary documentation
+- **Clean architecture**: Website now runs purely on simple file-based CMS with password authentication
+- **Status**: ✅ PRODUCTION READY - Eliminated all unnecessary dependencies and complexity
