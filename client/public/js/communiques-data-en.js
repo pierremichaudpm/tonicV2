@@ -49,7 +49,7 @@ const communiquesData = [
     "title": "test anglais",
     "date": "",
     "category": "Groupe Tonic",
-    "image": "images/studio-76-hero.jpg",
+    "image": "images/studio76-logo.png",
     "summary": "wferfqev",
     "content": "qvbqtgwtqrbwqrtbwrbwrytbwyrtbwyrteb"
   }

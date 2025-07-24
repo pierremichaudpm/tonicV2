@@ -51,6 +51,6 @@ const pressReleases = [
     "category": "Groupe Tonic",
     "summary": "VERGFGQVG",
     "content": "wferq3f3qegqeagveg",
-    "image": "images/studio-76-hero.jpg"
+    "image": "images/studio76-logo.png"
   }
 ];
