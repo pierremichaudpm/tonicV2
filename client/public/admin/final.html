@@ -169,7 +169,16 @@
         }
 
         function renderJobCard(job) {
-            const description = job.description || job.summary || job.content || 'No description available';
+            // Get ALL possible description fields and show what's actually there
+            const allFields = [
+                job.description || '',
+                job.summary || '', 
+                job.content || '',
+                job.requirements || '',
+                job.responsibilities || ''
+            ].filter(f => f.length > 0);
+            
+            const fullDescription = allFields.join('\n\n') || 'No description available';
             
             return `
                 <div class="border rounded-lg p-6 bg-white shadow-sm">
@@ -184,10 +193,12 @@
                         <div><strong>Deadline:</strong> ${escapeHtml(job.deadline || 'N/A')}</div>
                     </div>
                     
-                    <div class="bg-gray-50 p-4 rounded border-l-4 border-blue-500 mb-4">
-                        <h4 class="font-semibold mb-2">Full Description:</h4>
-                        <div class="text-sm leading-relaxed whitespace-pre-wrap">${escapeHtml(description)}</div>
+                    <div class="bg-blue-50 p-4 rounded border border-blue-200 mb-4">
+                        <h4 class="font-semibold mb-3 text-blue-800">COMPLETE JOB DESCRIPTION:</h4>
+                        <div class="text-sm leading-relaxed bg-white p-3 rounded border max-h-40 overflow-y-auto">${escapeHtml(fullDescription).replace(/\n/g, '<br>')}</div>
                     </div>
+                    
+                    <div class="text-xs text-gray-500 mb-2">RAW DATA: ${JSON.stringify(job).substring(0, 200)}...</div>
                     
                     <div class="flex gap-2">
                         <button onclick="editItem(${job.id})" class="bg-blue-500 text-white px-4 py-2 rounded text-sm hover:bg-blue-600">Edit</button>
