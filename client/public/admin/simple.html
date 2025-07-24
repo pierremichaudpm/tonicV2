@@ -141,7 +141,12 @@
                 
                 if (response.ok) {
                     const data = await response.json();
+                    console.log('News loaded successfully:', data);
                     displayNews(data.news);
+                } else {
+                    console.error('Failed to load news:', response.status, response.statusText);
+                    const errorText = await response.text();
+                    console.error('Error details:', errorText);
                 }
             } catch (error) {
                 console.error('Error loading news:', error);
