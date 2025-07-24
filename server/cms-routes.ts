@@ -9,7 +9,7 @@ const router = express.Router();
 // Simple user store - in production, use a proper database
 const ADMIN_USER = {
   username: 'admin',
-  password: '$2a$10$8K1p/a0dHCEW0FHPJHQ9eOeSYgL4UMwuS/JhBe0xE3VFkTg5U8fvi' // 'admin123'
+  password: '$2b$10$pImuRuEJZcalS.0L.WNq/ezUJiSTN744i.e5sHTScIMXKCQWsg9ym' // 'admin123'
 };
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-this';
