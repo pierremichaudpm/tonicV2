@@ -53,7 +53,17 @@
                                 <h3 class="font-semibold text-lg">Informations principales</h3>
                                 <input type="text" id="title" placeholder="Titre du poste" class="w-full p-3 border rounded">
                                 <div class="grid grid-cols-2 gap-4">
-                                    <input type="text" id="department" placeholder="Département" class="p-3 border rounded">
+                                    <select id="department" class="p-3 border rounded">
+                                        <option value="">Sélectionner un département</option>
+                                        <option value="Administration">Administration</option>
+                                        <option value="Événements">Événements</option>
+                                        <option value="Marketing">Marketing</option>
+                                        <option value="Production">Production</option>
+                                        <option value="Cuisine">Cuisine</option>
+                                        <option value="Kitchen">Kitchen</option>
+                                        <option value="Direction">Direction</option>
+                                        <option value="Groupe Tonic">Groupe Tonic</option>
+                                    </select>
                                     <input type="text" id="location" placeholder="Lieu de travail" class="p-3 border rounded">
                                     <input type="text" id="type" placeholder="Type (Temps plein, etc.)" class="p-3 border rounded">
                                     <input type="text" id="salary" placeholder="Salaire" class="p-3 border rounded">
