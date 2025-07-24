@@ -136,8 +136,21 @@
         let currentLang = 'fr';
         let currentData = [];
 
+        // Improved token validation
+        function validateAndGetToken() {
+            const storedToken = localStorage.getItem('cms_token');
+            if (!storedToken || storedToken === 'null' || storedToken === 'undefined') {
+                console.log('No valid token found, redirecting to login');
+                window.location.href = '/admin/';
+                return null;
+            }
+            return storedToken;
+        }
+
+        // Initialize token check
+        token = validateAndGetToken();
         if (!token) {
-            window.location.href = '/admin/';
+            // Will redirect above
         }
         
         // Strip HTML tags from text
@@ -180,22 +193,46 @@
         
 
 
+        // Enhanced fetch with token error handling
+        async function fetchWithAuth(url, options = {}) {
+            const currentToken = validateAndGetToken();
+            if (!currentToken) return null;
+
+            const response = await fetch(url, {
+                ...options,
+                headers: {
+                    'Authorization': `Bearer ${currentToken}`,
+                    'Content-Type': 'application/json',
+                    ...options.headers
+                }
+            });
+
+            if (response.status === 401 || response.status === 403) {
+                console.log('Token expired or invalid, redirecting to login');
+                localStorage.removeItem('cms_token');
+                window.location.href = '/admin/';
+                return null;
+            }
+
+            return response;
+        }
+
         async function loadContent() {
             try {
-                const response = await fetch(`/api/cms/${currentType}?lang=${currentLang}`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
+                const response = await fetchWithAuth(`/api/cms/${currentType}?lang=${currentLang}`);
+                
+                if (!response) return; // Already handled redirect
 
-                if (!response.ok) throw new Error('Failed to load content');
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
 
                 const data = await response.json();
                 currentData = currentType === 'jobs' ? data.jobs : data.news;
                 displayContent(currentData);
             } catch (error) {
-                console.error('Error:', error);
-                alert('Erreur de chargement');
+                console.error('Error loading content:', error);
+                alert(`Erreur de chargement: ${error.message}`);
             }
         }
 
@@ -378,14 +415,12 @@
                     ? `/api/cms/${currentType}` 
                     : `/api/cms/${currentType}/${id}`;
                 
-                const response = await fetch(url, {
+                const response = await fetchWithAuth(url, {
                     method: isNew ? 'POST' : 'PUT',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    },
                     body: JSON.stringify(data)
                 });
+
+                if (!response) return; // Already handled redirect
 
                 console.log('Response status:', response.status);
                 
@@ -408,13 +443,11 @@
             if (!confirm('Êtes-vous sûr de vouloir supprimer cet élément?')) return;
 
             try {
-                const response = await fetch(`/api/cms/${currentType}/${id}?lang=${currentLang}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
+                const response = await fetchWithAuth(`/api/cms/${currentType}/${id}?lang=${currentLang}`, {
+                    method: 'DELETE'
                 });
 
+                if (!response) return; // Already handled redirect
                 if (!response.ok) throw new Error('Delete failed');
                 
                 loadContent();
