@@ -322,7 +322,7 @@
                 
                 // Create press release cards
                 newsData.forEach((release, index) => {
-                const card = document.createElement('div');
+                    const card = document.createElement('div');
                 card.className = `press-card p-6 rounded-xl cursor-pointer fade-in delay-${Math.min(index * 100, 500)}`;
                 card.dataset.releaseId = release.id;
                 
