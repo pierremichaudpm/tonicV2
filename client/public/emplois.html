@@ -669,17 +669,20 @@
             DOM.modalTitle = document.getElementById('modalTitle');
             DOM.modalContent = document.getElementById('modalContent');
             
-            // Check if required functions and data are available
-            if (typeof getAllJobs !== 'function' || typeof jobListings === 'undefined') {
+            // Check if required data loading function is available
+            if (typeof loadJobsData !== 'function') {
                 DOM.jobsList.innerHTML = '<p class="text-white text-center py-8">Erreur de chargement. Veuillez rafraîchir la page.</p>';
                 return;
             }
             
             // Event delegation for job cards
             DOM.jobsList.addEventListener('click', function(e) {
+                console.log('Click detected on:', e.target);
                 const jobCard = e.target.closest('.job-card');
+                console.log('Job card found:', jobCard);
                 if (jobCard) {
                     const jobId = jobCard.dataset.jobId;
+                    console.log('Opening modal for job ID:', jobId);
                     openJobModal(jobId);
                 }
             });
