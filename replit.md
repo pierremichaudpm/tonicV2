@@ -299,6 +299,17 @@ The website is now fully operational and matches the original local/Netlify func
 - **Clean interface**: Hidden technical fields, showing only essential content management options
 - **Production ready**: Stable, simple system successfully managing real website content
 
+### Jobs Page Visual Consistency - July 24, 2025 ✅ COMPLETED
+- **Layout standardization**: Updated job cards to match exact news format with horizontal layout (image left, content right)
+- **Image sizing**: Applied consistent sm:w-48 h-32 image dimensions matching news pages
+- **Logo optimization**: Fixed oversized Groupe Tonic logo using news page specifications (180px × 120px with proper containment)
+- **Image mapping correction**: Updated Dock 619 to use dock619-hero-new.jpg (same as hero section)
+- **Category color consistency**: Fixed category tags to use proper accent colors instead of generic department classes
+- **Color mapping**: Dock 619 shows gray (#6b7280), Beach Pro Tour shows pink (#ff0e9b), etc.
+- **Bilingual support**: Applied all fixes to both French and English job pages
+- **English category fix**: Removed translation logic that incorrectly showed "Administration" instead of proper category names
+- **Status**: ✅ COMPLETED - Job pages now visually match news pages with proper colors and layout
+
 ### 4K Display Grid Layout - July 23, 2025 ✅ RESOLVED
 - **Initial issue**: Grid showing all 7 tiles in single row on 4K screens
 - **Root cause**: Multiple conflicting CSS media queries causing tablet layout (2x3 grid) to override 4K layout
