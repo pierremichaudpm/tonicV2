@@ -97,6 +97,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.sendFile(path.join(publicPath, "index-en.html"));
   });
 
+  // Admin routes
+  app.get("/admin", (req, res) => {
+    res.sendFile(path.join(publicPath, "admin", "index.html"));
+  });
+
+  app.get("/admin/", (req, res) => {
+    res.sendFile(path.join(publicPath, "admin", "index.html"));
+  });
+
   const aiAssistant = new AICodeAssistant();
   
   // AI Code Assistant endpoint for grid changes
