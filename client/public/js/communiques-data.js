@@ -48,9 +48,9 @@ const pressReleases = [
     "id": 1753392858618,
     "title": "test nouvelles",
     "date": "2025-07-26",
-    "category": "Grands Prix Cyclistes",
+    "category": "Groupe Tonic",
     "summary": "VERGFGQVG",
     "content": "wferq3f3qegqeagveg",
-    "image": "images/grands-prix-cyclistes-hero.jpg"
+    "image": "images/studio-76-hero.jpg"
   }
 ];
