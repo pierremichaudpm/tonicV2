@@ -1,12 +1,12 @@
 {
-  "name": "cms",
-  "version": "0.1.0",
-  "private": true,
-  "description": "A Strapi application",
+  "name": "tonic-cms",
+  "version": "1.0.0",
+  "description": "Strapi CMS for Tonic Productions",
   "scripts": {
-    "build": "strapi build",
     "develop": "strapi develop",
-    "start": "strapi start"
+    "start": "strapi start",
+    "build": "strapi build",
+    "strapi": "strapi"
   },
   "dependencies": {
     "@strapi/strapi": "4.25.9",
@@ -17,8 +17,5 @@
   "engines": {
     "node": ">=16.0.0 <=20.x.x",
     "npm": ">=6.0.0"
-  },
-  "strapi": {
-    "uuid": "d9719036-a2c0-4466-a7e0-0af6d0ba303d"
   }
 }
