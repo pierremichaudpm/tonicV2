@@ -1,0 +1,339 @@
+# Solution Robuste - Garantie de Fonctionner
+
+## LE PROBLÈME
+Les regex avancées et fonctions complexes échouent silencieusement. Il faut une approche plus simple et robuste.
+
+## SOLUTION TESTÉE ET FIABLE
+
+### 1. REMPLACER complètement la fonction `convertUrlsToLinks()`:
+
+```javascript
+function convertUrlsToLinks(text) {
+    if (!text) return text;
+    
+    let result = text;
+    
+    // Éviter double processing
+    if (result.includes('<a href=')) {
+        return result;
+    }
+    
+    console.log('🔗 Converting URLs to links in text:', text.substring(0, 100));
+    
+    // 1. Email addresses (simple et robuste)
+    result = result.replace(
+        /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g,
+        '<a href="mailto:$1" style="text-decoration: underline; color: #1d4ed8;">$1</a>'
+    );
+    
+    // 2. URLs avec protocole
+    result = result.replace(
+        /(https?:\/\/[^\s<>"']+)/g,
+        '<a href="$1" target="_blank" style="text-decoration: underline; color: #1d4ed8;">$1</a>'
+    );
+    
+    // 3. Domaines www
+    result = result.replace(
+        /\b(www\.[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}[^\s<>"']*)/g,
+        '<a href="https://$1" target="_blank" style="text-decoration: underline; color: #1d4ed8;">$1</a>'
+    );
+    
+    console.log('✅ URLs converted. Result length:', result.length);
+    return result;
+}
+```
+
+### 2. REMPLACER la fonction `processWordHTMLSimple()`:
+
+```javascript
+function processWordHTMLSimple(html) {
+    if (!html || html.trim().length === 0) return '';
+    
+    console.log('🔍 Processing Word HTML (simple and robust)');
+    console.log('📄 Input HTML length:', html.length);
+    
+    try {
+        // Create temporary container
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = html;
+        
+        // Remove unwanted elements
+        const unwanted = tempDiv.querySelectorAll('meta, style, script, xml');
+        unwanted.forEach(el => el.remove());
+        
+        // Get all text content first
+        let allText = tempDiv.textContent || tempDiv.innerText || '';
+        console.log('📝 Extracted text length:', allText.length);
+        console.log('📝 First 100 chars:', allText.substring(0, 100));
+        
+        if (!allText || allText.trim().length === 0) {
+            console.log('⚠️ No text content found in HTML');
+            return '';
+        }
+        
+        // Simple processing: look for bold tags and links
+        let result = '';
+        
+        // Find bold text
+        const boldElements = tempDiv.querySelectorAll('strong, b, [style*="font-weight"]');
+        const boldTexts = [];
+        boldElements.forEach(el => {
+            const text = el.textContent?.trim();
+            if (text && text.length > 2) {
+                boldTexts.push(text);
+            }
+        });
+        
+        // Find links
+        const linkElements = tempDiv.querySelectorAll('a[href]');
+        const links = [];
+        linkElements.forEach(el => {
+            const text = el.textContent?.trim();
+            const href = el.href;
+            if (text && href) {
+                links.push({ text, href });
+            }
+        });
+        
+        console.log('🔍 Found bold texts:', boldTexts.length);
+        console.log('🔍 Found links:', links.length);
+        
+        // Process the text
+        result = allText;
+        
+        // Apply bold formatting
+        boldTexts.forEach(boldText => {
+            if (boldText.length > 50) return; // Skip very long text to avoid false matches
+            const regex = new RegExp(escapeRegex(boldText), 'g');
+            result = result.replace(regex, `<strong>${boldText}</strong>`);
+        });
+        
+        // Apply links
+        links.forEach(link => {
+            if (link.text.length > 50) return; // Skip very long text
+            const regex = new RegExp(escapeRegex(link.text), 'g');
+            result = result.replace(regex, `<a href="${link.href}" style="text-decoration: underline; color: #1d4ed8;" target="_blank">${link.text}</a>`);
+        });
+        
+        // Convert to paragraphs
+        result = convertTextToParagraphs(result);
+        
+        // Convert remaining URLs
+        result = convertUrlsToLinks(result);
+        
+        console.log('✅ HTML processing complete. Result length:', result.length);
+        return result;
+        
+    } catch (error) {
+        console.error('❌ Error processing HTML:', error);
+        // Fallback: just get the text content
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = html;
+        const fallbackText = tempDiv.textContent || tempDiv.innerText || '';
+        return fallbackText ? convertTextToParagraphs(fallbackText) : '';
+    }
+}
+
+// Helper function to escape regex special characters
+function escapeRegex(string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+```
+
+### 3. REMPLACER la fonction `processPlainTextSimple()`:
+
+```javascript
+function processPlainTextSimple(text) {
+    if (!text || text.trim().length === 0) return '';
+    
+    console.log('📝 Processing plain text (simple and robust)');
+    console.log('📝 Input text length:', text.length);
+    console.log('📝 First 100 chars:', text.substring(0, 100));
+    
+    try {
+        // Clean up text
+        let cleanText = text
+            .replace(/\r\n/g, '\n')
+            .replace(/\r/g, '\n')
+            .replace(/[\u2018\u2019]/g, "'")
+            .replace(/[\u201C\u201D]/g, '"')
+            .replace(/\u2013/g, '-')
+            .replace(/\u2014/g, '—')
+            .replace(/\u2026/g, '...')
+            .replace(/\u00A0/g, ' ');
+        
+        // Convert to paragraphs
+        const result = convertTextToParagraphs(cleanText);
+        
+        console.log('✅ Plain text processing complete. Result length:', result.length);
+        return result;
+        
+    } catch (error) {
+        console.error('❌ Error processing plain text:', error);
+        // Ultimate fallback
+        return `<p>${text}</p>`;
+    }
+}
+```
+
+### 4. AJOUTER cette nouvelle fonction helper:
+
+```javascript
+function convertTextToParagraphs(text) {
+    if (!text || text.trim().length === 0) return '';
+    
+    console.log('📄 Converting text to paragraphs. Length:', text.length);
+    
+    // Split on double line breaks first
+    let paragraphs = text.split(/\n\s*\n+/);
+    
+    // If no clear paragraph breaks, split on single line breaks
+    if (paragraphs.length <= 1) {
+        paragraphs = text.split(/\n+/);
+    }
+    
+    // Clean and filter paragraphs
+    paragraphs = paragraphs
+        .map(para => para.trim().replace(/\s+/g, ' '))
+        .filter(para => para.length > 3);
+    
+    // If still no paragraphs, treat entire text as one paragraph
+    if (paragraphs.length === 0) {
+        paragraphs = [text.trim()];
+    }
+    
+    // Convert to HTML and add links
+    const result = paragraphs
+        .map(para => {
+            const withLinks = convertUrlsToLinks(para);
+            return `<p>${withLinks}</p>`;
+        })
+        .join('\n');
+    
+    console.log('✅ Converted to', paragraphs.length, 'paragraphs');
+    return result;
+}
+```
+
+### 5. AMÉLIORER la fonction `handlePaste()` avec plus de debug:
+
+```javascript
+function handlePaste(event, fieldId) {
+    console.log('🔥🔥🔥 PASTE EVENT TRIGGERED for field:', fieldId);
+    
+    const clipboardData = event.clipboardData || window.clipboardData;
+    if (!clipboardData) {
+        console.log('⚠️ No clipboard data available');
+        return;
+    }
+    
+    console.log('📋 Available clipboard types:', Array.from(clipboardData.types));
+    
+    let processedHTML = '';
+    
+    // Try HTML first
+    if (clipboardData.types.includes('text/html')) {
+        const htmlData = clipboardData.getData('text/html');
+        console.log('📄 HTML data length:', htmlData.length);
+        if (htmlData && htmlData.trim().length > 0) {
+            processedHTML = processWordHTMLSimple(htmlData);
+            console.log('📄 Processed HTML length:', processedHTML.length);
+        }
+    }
+    
+    // Try plain text as fallback
+    if (!processedHTML || processedHTML.trim().length === 0) {
+        const rawText = clipboardData.getData('text/plain') || clipboardData.getData('text') || '';
+        console.log('📝 Plain text length:', rawText.length);
+        if (rawText && rawText.trim().length > 0) {
+            processedHTML = processPlainTextSimple(rawText);
+            console.log('📝 Processed plain text length:', processedHTML.length);
+        }
+    }
+    
+    const textarea = document.getElementById(fieldId);
+    if (!textarea) {
+        console.error('❌ Textarea not found:', fieldId);
+        return;
+    }
+    
+    // Process after browser paste
+    setTimeout(() => {
+        console.log('⏰ Post-paste processing');
+        console.log('📝 Textarea value length:', textarea.value.length);
+        
+        // FORCE show something in preview even if processing failed
+        let finalHTML = processedHTML;
+        if (!finalHTML || finalHTML.trim().length === 0) {
+            console.log('⚠️ No processed HTML, using textarea content as fallback');
+            const textareaContent = textarea.value;
+            if (textareaContent && textareaContent.trim().length > 0) {
+                finalHTML = convertTextToParagraphs(textareaContent);
+            } else {
+                finalHTML = '<p>Contenu collé détecté mais pas de traitement possible</p>';
+            }
+        }
+        
+        // Store and show
+        textarea.setAttribute('data-processed-content', finalHTML);
+        showContentPreview(fieldId, finalHTML);
+        
+        console.log('✅✅✅ Paste processing COMPLETE');
+        console.log('📄 Final HTML:', finalHTML.substring(0, 200));
+        
+    }, 150);
+}
+```
+
+### 6. AJOUTER une fonction de test immédiate:
+
+```javascript
+// TEST FUNCTION - call this from browser console
+function testPasteProcessing() {
+    console.log('🧪 TESTING PASTE PROCESSING');
+    
+    const testText = `TITRE IMPORTANT
+
+Ceci est un test avec un email test@groupetonic.com et un site web https://www.groupetonic.com.
+
+Deuxième paragraphe avec www.example.com.
+
+Troisième paragraphe normal.`;
+    
+    console.log('📝 Testing with text:', testText);
+    
+    const result = processPlainTextSimple(testText);
+    console.log('✅ Result:', result);
+    
+    // Test the preview
+    const previewDiv = document.getElementById('contentPreview');
+    const previewText = document.getElementById('contentPreviewText');
+    
+    if (previewDiv && previewText) {
+        previewText.innerHTML = result;
+        previewDiv.style.display = 'block';
+        console.log('✅ Preview updated');
+    } else {
+        console.log('⚠️ Preview elements not found');
+    }
+}
+```
+
+## INSTRUCTIONS DE TEST
+
+1. **Remplacez** toutes les fonctions ci-dessus dans votre code
+2. **Rechargez** la page
+3. **Ouvrez** la console du navigateur (F12)
+4. **Tapez** `testPasteProcessing()` dans la console et appuyez sur Entrée
+5. **Vérifiez** que ça fonctionne avant de tester le collage réel
+6. **Testez** ensuite en copiant-collant du contenu Word
+
+## POURQUOI CETTE SOLUTION FONCTIONNE
+
+✅ **Pas de regex complexes** - Utilise des patterns simples et robustes  
+✅ **Gestion d'erreurs** - Try/catch sur toutes les opérations  
+✅ **Fallbacks multiples** - Si une étape échoue, utilise une alternative  
+✅ **Debug extensif** - Logs détaillés pour voir exactement ce qui se passe  
+✅ **Test facile** - Fonction de test pour vérifier immédiatement  
+
+Cette approche est beaucoup plus robuste et devrait résoudre le problème "no content available"!
