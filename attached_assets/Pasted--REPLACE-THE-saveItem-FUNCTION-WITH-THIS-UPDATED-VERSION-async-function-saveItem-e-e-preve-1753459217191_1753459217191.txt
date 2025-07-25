@@ -1,0 +1,97 @@
+// REPLACE THE saveItem FUNCTION WITH THIS UPDATED VERSION
+
+async function saveItem(e) {
+    e.preventDefault();
+    
+    try {
+        const id = document.getElementById('itemId').value;
+        const isNew = !id;
+        
+        let data = { lang: currentLang };
+        
+        if (currentType === 'jobs') {
+            const descTextarea = document.getElementById('description');
+            const descText = descTextarea.value;
+            
+            // Use processed content if available, otherwise process the raw text
+            let descHtml = descTextarea.getAttribute('data-processed-content');
+            if (!descHtml || descHtml.trim() === '') {
+                descHtml = processWordContent(descText);
+            }
+            
+            console.log('💼 Job description - Raw length:', descText.length, 'Processed length:', descHtml.length);
+            
+            data = {
+                ...data,
+                title: document.getElementById('title').value,
+                department: document.getElementById('department').value,
+                location: document.getElementById('location').value,
+                type: document.getElementById('type').value,
+                salary: document.getElementById('salary').value,
+                datePosted: document.getElementById('datePosted').value,
+                deadline: document.getElementById('deadline').value,
+                summary: convertUrlsToLinks(document.getElementById('summary').value),
+                description: descHtml
+            };
+        } else {
+            const contentTextarea = document.getElementById('content');
+            const contentText = contentTextarea.value;
+            
+            // Use processed content if available, otherwise process the raw text
+            let contentHtml = contentTextarea.getAttribute('data-processed-content');
+            if (!contentHtml || contentHtml.trim() === '') {
+                contentHtml = processWordContent(contentText);
+            }
+            
+            // Fallback if still empty
+            if (!contentHtml || contentHtml.trim().length === 0) {
+                contentHtml = contentText ? `<p>${convertUrlsToLinks(contentText.replace(/\n+/g, '</p><p>'))}</p>` : '';
+            }
+            
+            console.log('📰 News content - Raw length:', contentText.length, 'Processed length:', contentHtml.length);
+            
+            data = {
+                ...data,
+                title: document.getElementById('newsTitle').value,
+                date: document.getElementById('date').value,
+                category: document.getElementById('category').value,
+                summary: convertUrlsToLinks(document.getElementById('newsSummary').value),
+                content: contentHtml
+            };
+        }
+
+        console.log('💾 Saving data:', data);
+        
+        const url = isNew 
+            ? `/api/cms/${currentType}` 
+            : `/api/cms/${currentType}/${id}`;
+        
+        const response = await fetchWithAuth(url, {
+            method: isNew ? 'POST' : 'PUT',
+            body: JSON.stringify(data)
+        });
+
+        if (!response) return; // Already handled redirect
+
+        console.log('📡 Response status:', response.status);
+        
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('❌ Response error:', errorText);
+            throw new Error(`Save failed: ${response.status} ${errorText}`);
+        }
+        
+        // Clear processed content attributes after successful save
+        const descField = document.getElementById('description');
+        const contentField = document.getElementById('content');
+        if (descField) descField.removeAttribute('data-processed-content');
+        if (contentField) contentField.removeAttribute('data-processed-content');
+        
+        closeModal();
+        await loadContent();
+        alert(isNew ? '✅ Créé avec succès' : '✅ Modifié avec succès');
+    } catch (error) {
+        console.error('❌ Save error:', error);
+        alert(`❌ Erreur de sauvegarde: ${error.message}`);
+    }
+}
