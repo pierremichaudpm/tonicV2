@@ -1,0 +1,38 @@
+Looking at your CMS code, I can see the issue with Word document pasting. The current text processing functions need improvement to handle Word's complex formatting. Here's what needs to be fixed and how to tell Replit to improve it:Now let me give you the exact JavaScript code to replace in your HTML file:## Summary for Replit
+
+Here's exactly what you need to tell Replit to fix the Word document pasting issues:
+
+### **Problem**: 
+When copying and pasting from Word documents (communiqués, news, jobs, emplois), the formatting is broken - links aren't clickable, paragraphs aren't properly separated, and emails/URLs aren't detected.
+
+### **Solution**: 
+Replace the existing JavaScript functions in your `edit-cms(1).html` file with the enhanced versions I provided above. These new functions will:
+
+1. **Properly capture Word content** - Including hidden links and formatting
+2. **Clean Word's messy HTML** - Remove Microsoft's proprietary formatting while preserving links
+3. **Auto-detect and link URLs** - Make web addresses clickable with underlines
+4. **Auto-detect and link emails** - Make email addresses clickable with underlines  
+5. **Smart paragraph detection** - Properly split Word content into HTML paragraphs
+6. **Preserve bold formatting** - Convert **bold** text to proper HTML
+
+### **What to Replace**:
+Find these existing functions in your HTML file and replace them entirely with the enhanced versions:
+
+- `handlePaste()`
+- `convertUrlsToLinks()` 
+- `processTextToParagraphs()` (rename to `processWordContent()`)
+
+### **Add These New Functions**:
+- `cleanWordHTML()` 
+- `showContentPreview()`
+
+### **Test Results Expected**:
+After the fix, when you copy-paste from Word:
+- ✅ Hyperlinks from Word remain clickable and underlined
+- ✅ Email addresses automatically become clickable mailto links  
+- ✅ URLs automatically become clickable web links
+- ✅ Content splits into proper paragraphs
+- ✅ Bold text is preserved
+- ✅ French accented characters work correctly
+
+The key improvement is that the new code intercepts the paste event, extracts Word's HTML (which contains the original links), cleans it up, and then processes it into proper HTML while preserving all the formatting and links that users expect.

@@ -316,36 +316,35 @@
             showContentPreview(fieldId, processedContent);
         }
         
-        // Clean Word's messy HTML
+        // Clean Word's messy HTML and extract links
         function cleanWordHTML(html) {
             if (!html) return '';
             
-            // Remove Word's XML namespaces and proprietary tags
-            html = html.replace(/<o:p\s*\/?>|<\/o:p>/gi, '');
-            html = html.replace(/<w:.*?>.*?<\/w:.*?>/gi, '');
-            html = html.replace(/<!--\[if gte mso.*?<!\[endif\]-->/gi, '');
-            html = html.replace(/<!--.*?-->/gi, '');
-            
-            // Clean up Word's span styling but preserve links
-            html = html.replace(/<span[^>]*?style="[^"]*"[^>]*?>(.*?)<\/span>/gi, '$1');
-            html = html.replace(/<span[^>]*?>(.*?)<\/span>/gi, '$1');
-            
-            // Preserve links but clean their attributes
-            html = html.replace(/<a\s+[^>]*href="([^"]*)"[^>]*>(.*?)<\/a>/gi, '<a href="$1">$2</a>');
-            
-            // Convert to plain text but preserve link information
+            // Create temporary div to safely work with HTML
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = html;
             
-            // Extract links and their text
+            // Extract links first before cleaning
             const links = tempDiv.querySelectorAll('a');
-            let plainText = tempDiv.textContent || tempDiv.innerText || '';
+            let linkMap = [];
             
-            // Mark where links should be restored
             links.forEach((link, index) => {
                 const linkText = link.textContent;
                 const linkUrl = link.href;
-                plainText = plainText.replace(linkText, `__LINK_${index}__${linkText}__LINKURL_${linkUrl}__`);
+                linkMap.push({
+                    text: linkText,
+                    url: linkUrl,
+                    placeholder: '___LINK_' + index + '___'
+                });
+                link.textContent = '___LINK_' + index + '___';
+            });
+            
+            // Get plain text (this removes all HTML formatting but preserves link placeholders)
+            let plainText = tempDiv.textContent || tempDiv.innerText || '';
+            
+            // Restore links with proper formatting
+            linkMap.forEach(link => {
+                plainText = plainText.replace(link.placeholder, '__LINK__' + link.text + '__LINKURL__' + link.url + '__');
             });
             
             return plainText;
@@ -356,7 +355,7 @@
             if (!text || text.trim().length === 0) return '';
             
             // First, restore links that were marked during Word HTML cleaning
-            text = text.replace(/__LINK_(\d+)__(.*?)__LINKURL_(.*?)__/g, '<a href="$3" style="text-decoration: underline; color: #1d4ed8;">$2</a>');
+            text = text.replace(/__LINK__(.*?)__LINKURL__(.*?)__/g, '<a href="$2" style="text-decoration: underline; color: #1d4ed8;">$1</a>');
             
             // Clean up Word's special characters
             text = text.replace(/[\u2018\u2019]/g, "'"); // Smart quotes
