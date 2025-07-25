@@ -336,6 +336,15 @@ The website is now fully operational and matches the original local/Netlify func
 - **Groupe Tonic Logo Implementation**: Created proper logo sizing (180×120px) with black background for news cards
 - **Status**: ✅ FULLY FUNCTIONAL - All content creators can now select from exactly 8 consistent categories with automatic image assignment and proper styling
 
+### Brand Color Overlay System - July 25, 2025 ✅ COMPLETED
+- **Transparent color overlays added**: Applied brand color overlays to all job and news card images for visual consistency
+- **Selective application**: Event categories receive 40% opacity brand color overlays, Groupe Tonic cards remain neutral without overlays
+- **Cross-platform implementation**: Applied to all four pages (French/English jobs and news) with conditional logic
+- **Enhanced visibility**: Increased overlay opacity from 20% to 40% for stronger brand color presence while maintaining image readability
+- **Brand consistency**: Each event category displays its signature color (Dock 619 gray, Beach Pro Tour pink, etc.) as overlay
+- **Data integrity fix**: Resolved job loading issue by correcting function calls from non-existent loadJobsData() to direct array access
+- **Status**: ✅ PRODUCTION READY - Complete visual brand consistency achieved across all content with working data display
+
 ### Codebase Cleanup - July 24, 2025 ✅ COMPLETED
 - **Removed entire Strapi CMS system**: Deleted cms/ directory, strapi-config/, and all Strapi-related files
 - **Cleaned package dependencies**: Uninstalled @strapi/strapi and removed 1257+ associated packages
