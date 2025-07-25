@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CMS Éditable - Groupe Tonic</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FORMATTING FIX: Now preserves bold, italic, and links in preview and saved content -->
     <style>
         .tonic-bg {
             background: linear-gradient(135deg, #fe4445 0%, #ff6667 50%, #fe4445 100%);
@@ -303,46 +304,37 @@
         function debugLog(message, data) {
             console.log(message, data);
             if (debugMode) {
-                const debugLogEl = document.getElementById('debugLog');
-                if (debugLogEl) {
-                    const timestamp = new Date().toLocaleTimeString();
-                    const entry = document.createElement('div');
-                    entry.style.marginBottom = '5px';
-                    entry.innerHTML = `<span style="color: #888;">[${timestamp}]</span> ${message}`;
-                    if (data !== undefined) {
-                        entry.innerHTML += ` <span style="color: #ff0;">${JSON.stringify(data, null, 2)}</span>`;
-                    }
-                    debugLogEl.appendChild(entry);
-                    debugLogEl.scrollTop = debugLogEl.scrollHeight;
+                const debugLog = document.getElementById('debugLog');
+                const timestamp = new Date().toLocaleTimeString();
+                const entry = document.createElement('div');
+                entry.style.marginBottom = '5px';
+                entry.innerHTML = `<span style="color: #888;">[${timestamp}]</span> ${message}`;
+                if (data !== undefined) {
+                    entry.innerHTML += ` <span style="color: #ff0;">${JSON.stringify(data, null, 2)}</span>`;
                 }
+                debugLog.appendChild(entry);
+                debugLog.scrollTop = debugLog.scrollHeight;
             }
         }
         
         function toggleDebugConsole() {
-            const consoleEl = document.getElementById('debugConsole');
+            const console = document.getElementById('debugConsole');
             debugMode = !debugMode;
             localStorage.setItem('debugMode', debugMode);
-            if (consoleEl) {
-                consoleEl.style.display = debugMode ? 'block' : 'none';
-            }
+            console.style.display = debugMode ? 'block' : 'none';
             debugLog('Debug mode ' + (debugMode ? 'enabled' : 'disabled'));
         }
         
         function clearDebugConsole() {
-            const debugLogEl = document.getElementById('debugLog');
-            if (debugLogEl) {
-                debugLogEl.innerHTML = '';
-            }
+            document.getElementById('debugLog').innerHTML = '';
         }
         
         // Initialize debug console state
         if (debugMode) {
-            const consoleEl = document.getElementById('debugConsole');
-            if (consoleEl) {
-                consoleEl.style.display = 'block';
-            }
+            document.getElementById('debugConsole').style.display = 'block';
         }
-
+        
+        // Initialize when page loads
         document.addEventListener('DOMContentLoaded', function() {
             debugLog('🚀 CMS Initialized');
             attachPasteHandlers();
@@ -351,10 +343,12 @@
         
         // Helper function to truncate HTML while preserving formatting
         function truncateHTML(html, maxLength) {
+            // Create a temporary div to work with
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = html;
             
             let textLength = 0;
+            let truncated = false;
             
             function truncateNode(node) {
                 if (textLength >= maxLength) {
@@ -368,6 +362,7 @@
                         return node.textContent;
                     } else {
                         textLength = maxLength;
+                        truncated = true;
                         return node.textContent.substring(0, remainingLength) + '...';
                     }
                 } else if (node.nodeType === Node.ELEMENT_NODE) {
@@ -425,7 +420,7 @@
                 return result;
             }
             
-            console.log('🔗 Converting URLs to links in text:', text.substring(0, 100));
+            debugLog('🔗 Converting URLs to links', text.substring(0, 50) + '...');
             
             // 1. Email addresses (simple et robuste)
             result = result.replace(
@@ -445,38 +440,30 @@
                 '<a href="https://$1" target="_blank" style="text-decoration: underline; color: #1d4ed8;">$1</a>'
             );
             
-            console.log('✅ URLs converted. Result length:', result.length);
             return result;
         }
         
-        // Properly attach paste handlers (backup - HTML onpaste should work)
+        // Properly attach paste handlers
         function attachPasteHandlers() {
             const descriptionField = document.getElementById('description');
             const contentField = document.getElementById('content');
             
             if (descriptionField) {
-                console.log('✅ Description field found for paste handling');
+                debugLog('✅ Description field found');
             }
             
             if (contentField) {
-                console.log('✅ Content field found for paste handling');
-            }
-            
-            // Test if handlePaste function exists
-            if (typeof handlePaste === 'function') {
-                console.log('✅ handlePaste function is available');
-            } else {
-                console.error('❌ handlePaste function not found!');
+                debugLog('✅ Content field found');
             }
         }
 
-        // Robust paste handler from your solution
+        // Enhanced paste handling with debugging
         function handlePaste(event, fieldId) {
-            debugLog('🔥 PASTE EVENT TRIGGERED for field:', fieldId);
+            debugLog('📋 PASTE EVENT for field:', fieldId);
             
             const clipboardData = event.clipboardData || window.clipboardData;
             if (!clipboardData) {
-                debugLog('⚠️ No clipboard data available');
+                debugLog('⚠️ No clipboard data');
                 return;
             }
             
@@ -537,7 +524,7 @@
             return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         }
 
-        // Simple Word HTML processing from your solution
+        // Simple Word HTML processing
         function processWordHTMLSimple(html) {
             if (!html || html.trim().length === 0) return '';
             
@@ -569,13 +556,13 @@
             }
         }
 
-        // Helper function to convert text to paragraphs
+        // Convert text to paragraphs
         function convertTextToParagraphs(text) {
             if (!text || text.trim().length === 0) return '';
             
-            console.log('📄 Converting text to paragraphs. Length:', text.length);
+            debugLog('📄 Converting to paragraphs');
             
-            // Split on double line breaks first
+            // Split on double line breaks
             let paragraphs = text.split(/\n\s*\n+/);
             
             // If no clear paragraph breaks, split on single line breaks
@@ -583,17 +570,16 @@
                 paragraphs = text.split(/\n+/);
             }
             
-            // Clean and filter paragraphs
+            // Clean and filter
             paragraphs = paragraphs
                 .map(para => para.trim().replace(/\s+/g, ' '))
                 .filter(para => para.length > 3);
             
-            // If still no paragraphs, treat entire text as one paragraph
             if (paragraphs.length === 0) {
                 paragraphs = [text.trim()];
             }
             
-            // Convert to HTML and add links
+            // Convert to HTML with links
             const result = paragraphs
                 .map(para => {
                     const withLinks = convertUrlsToLinks(para);
@@ -601,17 +587,15 @@
                 })
                 .join('\n');
             
-            console.log('✅ Converted to', paragraphs.length, 'paragraphs');
+            debugLog('✅ Created', paragraphs.length, 'paragraphs');
             return result;
         }
 
-        // Simple and robust plain text processing
+        // Process plain text
         function processPlainTextSimple(text) {
             if (!text || text.trim().length === 0) return '';
             
-            console.log('📝 Processing plain text (simple and robust)');
-            console.log('📝 Input text length:', text.length);
-            console.log('📝 First 100 chars:', text.substring(0, 100));
+            debugLog('📝 Processing plain text');
             
             try {
                 // Clean up text
@@ -625,183 +609,34 @@
                     .replace(/\u2026/g, '...')
                     .replace(/\u00A0/g, ' ');
                 
-                // Convert to paragraphs
                 const result = convertTextToParagraphs(cleanText);
-                
-                console.log('✅ Plain text processing complete. Result length:', result.length);
                 return result;
                 
             } catch (error) {
-                console.error('❌ Error processing plain text:', error);
-                // Ultimate fallback
+                debugLog('❌ Error processing text:', error.message);
                 return `<p>${text}</p>`;
             }
         }
         
-        // Process Word HTML content
-        function processWordHTML(html) {
-            if (!html || html.trim().length === 0) return '';
-            
-            console.log('🔍 Processing Word HTML');
-            
-            // Create temporary container
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = html;
-            
-            // Remove Word-specific elements safely
-            const unwantedElements = tempDiv.querySelectorAll('meta, style, script, xml');
-            unwantedElements.forEach(el => el.remove());
-            
-            // Process all elements to preserve formatting
-            const processedHTML = processElementsRecursively(tempDiv);
-            
-            // Convert to proper paragraphs and clean up
-            return cleanAndStructureParagraphs(processedHTML);
-        }
-
-        function processElementsRecursively(element) {
-            let result = '';
-            
-            for (let node of element.childNodes) {
-                if (node.nodeType === Node.TEXT_NODE) {
-                    const text = node.textContent.trim();
-                    if (text) {
-                        result += text + ' ';
-                    }
-                } else if (node.nodeType === Node.ELEMENT_NODE) {
-                    const tagName = node.tagName.toLowerCase();
-                    const style = node.style || {};
-                    const childContent = processElementsRecursively(node);
-                    
-                    if (!childContent.trim()) continue;
-                    
-                    // Handle different elements
-                    if (tagName === 'p' || tagName === 'div') {
-                        result += `\n${childContent}\n`;
-                    } else if (tagName === 'br') {
-                        result += '\n';
-                    } else if (tagName === 'a' && node.href) {
-                        result += `<a href="${node.href}" style="text-decoration: underline; color: #1d4ed8;" target="_blank">${childContent}</a>`;
-                    } else if (tagName === 'strong' || tagName === 'b' || 
-                               (style.fontWeight && (style.fontWeight === 'bold' || parseInt(style.fontWeight) >= 700))) {
-                        result += `<strong>${childContent}</strong>`;
-                    } else if (tagName === 'em' || tagName === 'i' || style.fontStyle === 'italic') {
-                        result += `<em>${childContent}</em>`;
-                    } else if (tagName.match(/^h[1-6]$/) || 
-                               (style.fontSize && (parseInt(style.fontSize) > 14 || style.fontSize.includes('large')))) {
-                        result += `<strong style="font-size: 1.2em; display: block; margin: 10px 0;">${childContent}</strong>`;
-                    } else {
-                        result += childContent;
-                    }
-                }
-            }
-            
-            return result;
-        }
-
-        function cleanAndStructureParagraphs(html) {
-            if (!html) return '';
-            
-            // Convert URLs and emails to links first
-            html = convertUrlsToLinks(html);
-            
-            // Split into paragraphs based on line breaks
-            const paragraphs = html.split(/\n\s*\n+/)
-                .map(para => para.trim().replace(/\n+/g, ' ').replace(/\s+/g, ' '))
-                .filter(para => para.length > 0);
-            
-            // Wrap non-HTML paragraphs in <p> tags
-            return paragraphs.map(para => {
-                // If already contains block elements, don't wrap
-                if (para.includes('<strong style="font-size') || para.includes('<h')) {
-                    return para;
-                }
-                return `<p>${para}</p>`;
-            }).join('\n');
-        }
-
-        function processPlainText(text) {
-            if (!text || text.trim().length === 0) return '';
-            
-            console.log('📝 Processing plain text');
-            
-            // Clean up Word special characters
-            text = text.replace(/[\u2018\u2019]/g, "'") // Smart quotes
-                        .replace(/[\u201C\u201D]/g, '"') // Smart quotes
-                        .replace(/\u2013/g, '-') // En dash
-                        .replace(/\u2014/g, '--') // Em dash
-                        .replace(/\u2026/g, '...') // Ellipsis
-                        .replace(/\u00A0/g, ' '); // Non-breaking space
-            
-            // Convert URLs and emails to links
-            text = convertUrlsToLinks(text);
-            
-            // Split into paragraphs
-            const paragraphs = text.split(/\n\s*\n+/)
-                .map(para => para.trim().replace(/\n+/g, ' ').replace(/\s+/g, ' '))
-                .filter(para => para.length > 10);
-            
-            // If no clear paragraphs, split on sentence patterns that indicate new paragraphs
-            if (paragraphs.length <= 1 && text.length > 100) {
-                const sentences = text.split(/(?<=[.!?])\s+(?=[A-ZÀÉÈÊËÏÎÔÖÙÚÛÜŸÇ])/);
-                return sentences.map(sentence => `<p>${sentence.trim()}</p>`).join('\n');
-            }
-            
-            return paragraphs.map(para => `<p>${para}</p>`).join('\n');
-        }
-
-
-        
-        // Enhanced Word content processing
+        // Process Word content (fallback)
         function processWordContent(text) {
             if (!text || text.trim().length === 0) return '';
             
-            // First, restore links that were marked during Word HTML cleaning
-            text = text.replace(/__LINK__(.*?)__LINKURL__(.*?)__/g, '<a href="$2" style="text-decoration: underline; color: #1d4ed8;">$1</a>');
+            debugLog('📝 Processing Word content (fallback)');
             
-            // Clean up Word's special characters
-            text = text.replace(/[\u2018\u2019]/g, "'"); // Smart quotes
-            text = text.replace(/[\u201C\u201D]/g, '"'); // Smart quotes
-            text = text.replace(/\u2013/g, '-'); // En dash
-            text = text.replace(/\u2014/g, '--'); // Em dash
-            text = text.replace(/\u2026/g, '...'); // Ellipsis
-            text = text.replace(/\u00A0/g, ' '); // Non-breaking space
+            // Clean up special characters
+            text = text.replace(/[\u2018\u2019]/g, "'");
+            text = text.replace(/[\u201C\u201D]/g, '"');
+            text = text.replace(/\u2013/g, '-');
+            text = text.replace(/\u2014/g, '--');
+            text = text.replace(/\u2026/g, '...');
+            text = text.replace(/\u00A0/g, ' ');
             
-            // Convert URLs and emails to links
-            text = convertUrlsToLinks(text);
-            
-            // Smart paragraph detection
-            let paragraphs = [];
-            
-            // Split on clear paragraph indicators
-            const sections = text.split(/\n\s*\n+/);
-            
-            sections.forEach(section => {
-                // Further split on specific patterns that indicate new paragraphs
-                const subParagraphs = section.split(/\n(?=[A-ZÀÉÈÊËÏÎÔÖÙÚÛÜŸÇ]|Montréal|COMMUNIQUÉ|CONTACT|Pour |Après |Les |En |De |Le |La |Ce |Cette |Dans |Selon |Nous |Il |Elle |Contact|Tel|Tél|Email|E-mail)/);
-                
-                subParagraphs.forEach(para => {
-                    const cleanPara = para.trim()
-                        .replace(/\n+/g, ' ')
-                        .replace(/\s+/g, ' ')
-                        .trim();
-                    
-                    if (cleanPara.length > 10) {
-                        paragraphs.push(cleanPara);
-                    }
-                });
-            });
-            
-            // If no paragraphs detected, treat entire text as one paragraph
-            if (paragraphs.length === 0 && text.trim().length > 0) {
-                paragraphs = [text.trim().replace(/\n+/g, ' ').replace(/\s+/g, ' ')];
-            }
-            
-            // Convert to HTML paragraphs
-            return paragraphs.map(para => `<p>${para}</p>`).join('\n');
+            // Convert to paragraphs
+            return convertTextToParagraphs(text);
         }
         
-        // Enhanced show content preview with HTML truncation
+        // Show content preview
         function showContentPreview(fieldId, content) {
             debugLog('👁️ Showing preview for:', fieldId);
             
@@ -809,15 +644,14 @@
             const previewText = document.getElementById(fieldId + 'PreviewText');
             
             if (previewDiv && previewText && content) {
-                // Use enhanced HTML truncation to preserve formatting
-                const shortPreview = truncateHTML(content, 300);
+                const shortPreview = content.length > 300 ? content.substring(0, 300) + '...' : content;
                 previewText.innerHTML = shortPreview;
                 previewDiv.style.display = 'block';
-                debugLog('✅ Preview shown with formatting preserved');
+                debugLog('✅ Preview shown');
             }
         }
         
-        // Validate content from your solution
+        // Validate content
         function validateContent() {
             try {
                 const contentField = document.getElementById('content');
@@ -834,14 +668,13 @@
             }
         }
 
-        // Sync mobile and desktop dropdowns
+        // Sync dropdowns
         function syncDropdowns() {
             const mobileContentType = document.getElementById('contentType');
             const desktopContentType = document.getElementById('contentTypeDesktop');
             const mobileLanguage = document.getElementById('language');
             const desktopLanguage = document.getElementById('languageDesktop');
             
-            // Mobile content type change
             mobileContentType.addEventListener('change', (e) => {
                 currentType = e.target.value;
                 desktopContentType.value = e.target.value;
@@ -849,7 +682,6 @@
                 loadContent();
             });
             
-            // Desktop content type change
             desktopContentType.addEventListener('change', (e) => {
                 currentType = e.target.value;
                 mobileContentType.value = e.target.value;
@@ -857,14 +689,12 @@
                 loadContent();
             });
             
-            // Mobile language change
             mobileLanguage.addEventListener('change', (e) => {
                 currentLang = e.target.value;
                 desktopLanguage.value = e.target.value;
                 loadContent();
             });
             
-            // Desktop language change
             desktopLanguage.addEventListener('change', (e) => {
                 currentLang = e.target.value;
                 mobileLanguage.value = e.target.value;
@@ -872,7 +702,6 @@
             });
         }
         
-        // Initialize dropdown sync
         syncDropdowns();
 
         document.getElementById('editForm').addEventListener('submit', saveItem);
@@ -893,10 +722,8 @@
         function logout() {
             window.location.href = '/admin/';
         }
-        
 
-
-        // Simple fetch with password authentication
+        // Fetch with auth
         async function fetchWithAuth(url, options = {}) {
             const response = await fetch(url, {
                 ...options,
@@ -940,20 +767,39 @@
         function displayContent(items) {
             const container = document.getElementById('content');
             
+            debugLog('🎨 Displaying items:', items.length);
+            
             if (!items || items.length === 0) {
                 container.innerHTML = '<p class="text-gray-500 text-center py-8">Aucun contenu</p>';
                 return;
             }
 
-            container.innerHTML = items.map(item => {
+            container.innerHTML = items.map((item, index) => {
+                debugLog(`📄 Item ${index}:`, {
+                    id: item.id,
+                    title: item.title || item.newsTitle,
+                    hasContent: !!(currentType === 'jobs' ? item.description : item.content),
+                    contentLength: currentType === 'jobs' ? 
+                        (item.description ? item.description.length : 0) : 
+                        (item.content ? item.content.length : 0)
+                });
+                
                 if (currentType === 'jobs') {
-                    // Extract plain text from description
-                    let descText = '';
+                    // Use HTML preview with formatting
+                    let descPreview = '';
                     if (item.description) {
+                        // Create a truncated HTML preview that preserves formatting
                         const temp = document.createElement('div');
                         temp.innerHTML = item.description;
-                        descText = temp.textContent || temp.innerText || '';
-                        descText = descText.substring(0, 200) + (descText.length > 200 ? '...' : '');
+                        
+                        // Get first 200 characters of text to know where to cut
+                        const fullText = temp.textContent || temp.innerText || '';
+                        if (fullText.length > 200) {
+                            // Truncate the HTML intelligently
+                            descPreview = truncateHTML(item.description, 200);
+                        } else {
+                            descPreview = item.description;
+                        }
                     }
                     
                     return `
@@ -966,8 +812,8 @@
                                         <strong>Location:</strong> ${item.location || item.lieu || 'N/A'} | 
                                         <strong>Type:</strong> ${item.type || 'N/A'}
                                     </div>
-                                    ${descText ? `<div class="mt-3 text-gray-700 border-l-4 border-blue-200 pl-4 text-sm leading-relaxed w-full">
-                                        <strong>Description:</strong><br><span class="block mt-1">${descText}</span>
+                                    ${descPreview ? `<div class="mt-3 text-gray-700 border-l-4 border-blue-200 pl-4 text-sm leading-relaxed w-full cms-content-preview">
+                                        <strong>Description:</strong><br><div class="mt-1">${descPreview}</div>
                                     </div>` : '<div class="mt-3 text-gray-500 italic">No description available</div>'}
                                 </div>
                                 <div class="flex gap-2 mt-4 md:mt-0 md:flex-col md:gap-2">
@@ -982,13 +828,21 @@
                         </div>
                     `;
                 } else {
-                    // Extract plain text from content
-                    let contentText = '';
+                    // Use HTML preview with formatting
+                    let contentPreview = '';
                     if (item.content) {
+                        // Create a truncated HTML preview that preserves formatting
                         const temp = document.createElement('div');
                         temp.innerHTML = item.content;
-                        contentText = temp.textContent || temp.innerText || '';
-                        contentText = contentText.substring(0, 200) + (contentText.length > 200 ? '...' : '');
+                        
+                        // Get first 200 characters of text to know where to cut
+                        const fullText = temp.textContent || temp.innerText || '';
+                        if (fullText.length > 200) {
+                            // Truncate the HTML intelligently
+                            contentPreview = truncateHTML(item.content, 200);
+                        } else {
+                            contentPreview = item.content;
+                        }
                     }
                     
                     return `
@@ -1000,8 +854,8 @@
                                         <strong>Date:</strong> ${item.date || 'N/A'} | 
                                         <strong>Category:</strong> ${item.category || 'N/A'}
                                     </div>
-                                    ${contentText ? `<div class="mt-3 text-gray-700 border-l-4 border-purple-200 pl-4 pr-2 text-sm leading-relaxed">
-                                        <strong>Content:</strong><br><span class="block mt-1">${contentText}</span>
+                                    ${contentPreview ? `<div class="mt-3 text-gray-700 border-l-4 border-purple-200 pl-4 pr-2 text-sm leading-relaxed cms-content-preview">
+                                        <strong>Content:</strong><br><div class="mt-1">${contentPreview}</div>
                                     </div>` : '<div class="mt-3 text-gray-500 italic">No content available</div>'}
                                 </div>
                                 <div class="flex gap-2 mt-4 md:mt-0 md:flex-col md:gap-2">
@@ -1020,11 +874,12 @@
         }
 
         function showAddForm() {
+            debugLog('➕ Showing add form');
             document.getElementById('modalTitle').textContent = 'Ajouter';
             document.getElementById('editForm').reset();
             document.getElementById('itemId').value = '';
             
-            // Clear any stored processed content
+            // Clear processed content
             const descField = document.getElementById('description');
             const contentField = document.getElementById('content');
             if (descField) descField.removeAttribute('data-processed-content');
@@ -1035,8 +890,12 @@
         }
 
         function editItem(id) {
+            debugLog('✏️ Editing item:', id);
             const item = currentData.find(i => i.id == id);
-            if (!item) return;
+            if (!item) {
+                debugLog('❌ Item not found:', id);
+                return;
+            }
 
             document.getElementById('modalTitle').textContent = 'Éditer';
             document.getElementById('itemId').value = id;
@@ -1051,14 +910,14 @@
                 document.getElementById('deadline').value = item.deadline || '';
                 document.getElementById('summary').value = item.summary || '';
                 
-                // Convert HTML to plain text for editing
+                // Convert HTML to plain text
                 const tempDiv = document.createElement('div');
                 tempDiv.innerHTML = item.description || '';
                 const plainText = tempDiv.textContent || tempDiv.innerText || '';
                 const descField = document.getElementById('description');
                 descField.value = plainText;
                 
-                // Clear any stored processed content and store the original HTML
+                // Store original HTML
                 descField.removeAttribute('data-processed-content');
                 if (item.description) {
                     descField.setAttribute('data-processed-content', item.description);
@@ -1069,14 +928,14 @@
                 document.getElementById('category').value = item.category || '';
                 document.getElementById('newsSummary').value = item.summary || '';
                 
-                // Convert HTML to plain text for editing
+                // Convert HTML to plain text
                 const tempDiv2 = document.createElement('div');
                 tempDiv2.innerHTML = item.content || '';
                 const plainText = tempDiv2.textContent || tempDiv2.innerText || '';
                 const contentField = document.getElementById('content');
                 contentField.value = plainText;
                 
-                // Clear any stored processed content and store the original HTML
+                // Store original HTML
                 contentField.removeAttribute('data-processed-content');
                 if (item.content) {
                     contentField.setAttribute('data-processed-content', item.content);
@@ -1090,6 +949,8 @@
         async function saveItem(e) {
             e.preventDefault();
             
+            debugLog('💾 Starting save...');
+            
             try {
                 const id = document.getElementById('itemId').value;
                 const isNew = !id;
@@ -1099,26 +960,28 @@
                 if (currentType === 'jobs') {
                     const descTextarea = document.getElementById('description');
                     if (!descTextarea) {
-                        console.error('❌ Description textarea not found!');
                         throw new Error('Description field not found');
                     }
                     
                     const descText = descTextarea.value || '';
+                    debugLog('📝 Description text length:', descText.length);
                     
-                    // Use processed content if available, otherwise process the raw text
+                    // Get processed content
                     let descHtml = descTextarea.getAttribute('data-processed-content');
+                    debugLog('📄 Stored HTML:', descHtml ? descHtml.length + ' chars' : 'none');
+                    
+                    // If no processed content, process the text
                     if (!descHtml || descHtml.trim() === '') {
-                        debugLog('🔧 Processing raw description text:', descText.length + ' chars');
-                        descHtml = processPlainTextSimple(descText);
+                        debugLog('⚙️ Processing raw text...');
+                        descHtml = processWordContent(descText);
                     }
                     
-                    // Final fallback if still empty
-                    if (!descHtml || descHtml.trim().length === 0) {
-                        descHtml = descText ? convertTextToParagraphs(descText) : '';
-                        debugLog('⚠️ Used fallback processing for description');
+                    // Final fallback
+                    if (!descHtml || descHtml.trim() === '') {
+                        descHtml = descText ? `<p>${descText}</p>` : '';
                     }
                     
-                    debugLog('💼 Job description - Raw length:', descText.length + ', Processed length: ' + descHtml.length);
+                    debugLog('✅ Final HTML length:', descHtml.length);
                     
                     data = {
                         ...data,
@@ -1135,26 +998,28 @@
                 } else {
                     const contentTextarea = document.getElementById('content');
                     if (!contentTextarea) {
-                        console.error('❌ Content textarea not found!');
                         throw new Error('Content field not found');
                     }
                     
                     const contentText = contentTextarea.value || '';
+                    debugLog('📝 Content text length:', contentText.length);
                     
-                    // Use processed content if available, otherwise process the raw text
+                    // Get processed content
                     let contentHtml = contentTextarea.getAttribute('data-processed-content');
+                    debugLog('📄 Stored HTML:', contentHtml ? contentHtml.length + ' chars' : 'none');
+                    
+                    // If no processed content, process the text
                     if (!contentHtml || contentHtml.trim() === '') {
-                        debugLog('🔧 Processing raw content text:', contentText.length + ' chars');
-                        contentHtml = processPlainTextSimple(contentText);
+                        debugLog('⚙️ Processing raw text...');
+                        contentHtml = processWordContent(contentText);
                     }
                     
-                    // Final fallback if still empty
-                    if (!contentHtml || contentHtml.trim().length === 0) {
-                        contentHtml = contentText ? convertTextToParagraphs(contentText) : '';
-                        debugLog('⚠️ Used fallback processing for content');
+                    // Final fallback
+                    if (!contentHtml || contentHtml.trim() === '') {
+                        contentHtml = contentText ? `<p>${contentText}</p>` : '';
                     }
                     
-                    debugLog('📰 News content - Raw length:', contentText.length + ', Processed length: ' + contentHtml.length);
+                    debugLog('✅ Final HTML length:', contentHtml.length);
                     
                     data = {
                         ...data,
@@ -1166,7 +1031,7 @@
                     };
                 }
 
-                debugLog('💾 Saving data:', data);
+                debugLog('📦 Sending data:', data);
                 
                 const url = isNew 
                     ? `/api/cms/${currentType}` 
@@ -1177,17 +1042,20 @@
                     body: JSON.stringify(data)
                 });
 
-                if (!response) return; // Already handled redirect
+                if (!response) return;
 
-                console.log('📡 Response status:', response.status);
+                debugLog('📡 Response status:', response.status);
                 
                 if (!response.ok) {
                     const errorText = await response.text();
-                    console.error('❌ Response error:', errorText);
+                    debugLog('❌ Server error:', errorText);
                     throw new Error(`Save failed: ${response.status} ${errorText}`);
                 }
                 
-                // Clear processed content attributes after successful save
+                const result = await response.json();
+                debugLog('✅ Save successful:', result);
+                
+                // Clear processed content
                 const descField = document.getElementById('description');
                 const contentField = document.getElementById('content');
                 if (descField) descField.removeAttribute('data-processed-content');
@@ -1197,48 +1065,29 @@
                 await loadContent();
                 alert(isNew ? '✅ Créé avec succès' : '✅ Modifié avec succès');
             } catch (error) {
-                console.error('❌ Save error:', error);
-                console.error('❌ Error details:', error.message, error.stack);
-                alert(`❌ Erreur de sauvegarde: ${error.message || 'Erreur inconnue'}`);
+                debugLog('❌ Save error:', error.message);
+                alert(`❌ Erreur: ${error.message}`);
             }
-        }
-
-        // Test function to verify paste handling works
-        function testPasteHandling() {
-            console.log('🧪 Testing paste handling...');
-            
-            // Test text with links and paragraphs
-            const testText = `Voici un test avec un lien vers https://example.com et un email test@example.com.
-
-Ceci est un deuxième paragraphe avec du texte en **gras**.
-
-Pour plus d'informations, visitez www.groupetonic.com.`;
-            
-            // Simulate processing
-            const processed = processWordContent(testText);
-            console.log('📝 Original text:', testText);
-            console.log('🔧 Processed HTML:', processed);
-            
-            // Test link conversion
-            const withLinks = convertUrlsToLinks(testText);
-            console.log('🔗 With links:', withLinks);
         }
 
         async function deleteItem(id) {
             if (!await showConfirmDialog('Êtes-vous sûr de vouloir supprimer cet élément?')) return;
 
+            debugLog('🗑️ Deleting item:', id);
+            
             try {
                 const response = await fetchWithAuth(`/api/cms/${currentType}/${id}?lang=${currentLang}`, {
                     method: 'DELETE'
                 });
 
-                if (!response) return; // Already handled redirect
+                if (!response) return;
                 if (!response.ok) throw new Error('Delete failed');
                 
+                debugLog('✅ Delete successful');
                 loadContent();
                 alert('Supprimé avec succès');
             } catch (error) {
-                console.error('Error:', error);
+                debugLog('❌ Delete error:', error.message);
                 alert('Erreur de suppression');
             }
         }
@@ -1253,7 +1102,6 @@ Pour plus d'informations, visitez www.groupetonic.com.`;
             }
         }
 
-        // Custom confirmation dialog
         function showConfirmDialog(message) {
             return new Promise((resolve) => {
                 document.getElementById('confirmMessage').textContent = message;
@@ -1271,36 +1119,44 @@ Pour plus d'informations, visitez www.groupetonic.com.`;
             });
         }
 
-        // Helper functions for HTML editing
-        function insertTag(tag) {
-            const textarea = document.getElementById('description');
-            const start = textarea.selectionStart;
-            const end = textarea.selectionEnd;
-            const selectedText = textarea.value.substring(start, end);
-            const replacement = `<${tag}>${selectedText}</${tag}>`;
-            
-            textarea.value = textarea.value.substring(0, start) + replacement + textarea.value.substring(end);
-            textarea.focus();
-            textarea.setSelectionRange(start + tag.length + 2, start + tag.length + 2 + selectedText.length);
-        }
-
-        function insertList() {
-            const textarea = document.getElementById('description');
-            const start = textarea.selectionStart;
-            const listTemplate = '<ul>\n  <li></li>\n  <li></li>\n  <li></li>\n</ul>';
-            
-            textarea.value = textarea.value.substring(0, start) + listTemplate + textarea.value.substring(start);
-            textarea.focus();
-            textarea.setSelectionRange(start + 9, start + 9);
-        }
-
-        // Load initial content
+        // Initial load
         toggleFieldVisibility();
         
-        // Check initial content type and show department filter if needed
+        // Check initial content type
         if (document.getElementById('contentType').value === 'news') {
             document.getElementById('departmentFilter').style.display = 'block';
         }
+        
+        // TEST FUNCTIONS FOR DEBUGGING
+        window.testHTMLProcessing = function() {
+            const testHTML = `<p><strong>Titre Important</strong></p>
+<p>Ceci est un paragraphe avec du texte <strong>en gras</strong> et un lien: <a href="https://example.com">cliquez ici</a>.</p>
+<p>Un autre paragraphe avec <em>italique</em> et <strong>gras combiné</strong>.</p>`;
+            
+            console.log('🧪 Testing HTML processing');
+            console.log('📄 Input HTML:', testHTML);
+            
+            const processed = processWordHTMLSimple(testHTML);
+            console.log('✅ Processed:', processed);
+            
+            // Show in description field
+            const descField = document.getElementById('description');
+            if (descField) {
+                descField.value = 'Test content with formatting';
+                descField.setAttribute('data-processed-content', processed);
+                showContentPreview('description', processed);
+            }
+        };
+        
+        window.forceProcessContent = function(fieldId) {
+            const field = document.getElementById(fieldId);
+            if (field && field.value) {
+                const processed = processPlainTextSimple(field.value);
+                field.setAttribute('data-processed-content', processed);
+                showContentPreview(fieldId, processed);
+                console.log('✅ Content processed and preview updated');
+            }
+        };
     </script>
 </body>
 </html>
