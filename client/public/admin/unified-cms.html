@@ -56,16 +56,16 @@
             <!-- Header -->
             <header class="text-center mb-8">
                 <h1 class="text-4xl font-bold mb-2">Groupe Tonic - CMS Unifié</h1>
-                <p class="text-gray-400">Gestion complète du contenu: Emplois, Nouvelles et Documents PDF</p>
+                <p class="text-gray-400">Système PDF-uniquement - Gestion des Documents PDF pour Emplois et Nouvelles</p>
             </header>
 
             <!-- Content Type Tabs -->
             <div class="flex flex-wrap gap-2 mb-8 justify-center">
-                <button onclick="switchTab('jobs')" id="tab-jobs" class="tab-button px-6 py-2 rounded-lg border border-white/20 transition-colors">
-                    Emplois
+                <button onclick="switchTab('jobs')" id="tab-jobs" class="tab-button px-6 py-2 rounded-lg border border-white/20 transition-colors opacity-50 cursor-not-allowed">
+                    Emplois (PDF uniquement)
                 </button>
-                <button onclick="switchTab('news')" id="tab-news" class="tab-button px-6 py-2 rounded-lg border border-white/20 transition-colors">
-                    Nouvelles
+                <button onclick="switchTab('news')" id="tab-news" class="tab-button px-6 py-2 rounded-lg border border-white/20 transition-colors opacity-50 cursor-not-allowed">
+                    Nouvelles (PDF uniquement)
                 </button>
                 <button onclick="switchTab('pdfs')" id="tab-pdfs" class="tab-button px-6 py-2 rounded-lg border border-white/20 transition-colors active">
                     Documents PDF
@@ -143,9 +143,9 @@
 
                 <!-- PDF List -->
                 <div class="mb-8">
-                    <h2 class="text-2xl font-semibold mb-6">Documents PDF enregistrés</h2>
-                    <div id="pdfList" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <!-- PDF cards will be inserted here -->
+                    <h2 class="text-2xl font-semibold mb-6">Documents PDF existants</h2>
+                    <div id="pdfList" class="space-y-4">
+                        <!-- PDF items will be loaded here -->
                     </div>
                 </div>
             </div>
@@ -254,24 +254,29 @@
 
         // Tab Management
         function switchTab(tab) {
-            // Hide all sections
-            document.querySelectorAll('.section').forEach(section => {
-                section.classList.add('hidden');
-            });
+            // For PDF-only system, we only support 'pdfs' tab
+            if (tab === 'jobs' || tab === 'news') {
+                alert('Cette fonctionnalité n\'est plus disponible. Le système utilise maintenant exclusivement des PDFs.');
+                return;
+            }
             
             // Remove active class from all tabs
             document.querySelectorAll('.tab-button').forEach(button => {
                 button.classList.remove('active');
             });
             
-            // Show selected section and activate tab
-            document.getElementById(`${tab}-section`).classList.remove('hidden');
-            document.getElementById(`tab-${tab}`).classList.add('active');
-            currentTab = tab;
-            
-            if (tab === 'pdfs') {
-                loadPDFs();
+            // Show PDF section and activate tab
+            const pdfSection = document.getElementById('pdf-section');
+            if (pdfSection) {
+                pdfSection.classList.remove('hidden');
             }
+            const pdfTab = document.getElementById('tab-pdfs');
+            if (pdfTab) {
+                pdfTab.classList.add('active');
+            }
+            currentTab = 'pdfs';
+            
+            loadPDFs();
         }
 
         // File handling for PDFs
@@ -485,13 +490,53 @@
             loadPDFs();
         }
 
+        // Load PDFs
+        function loadPDFs() {
+            const pdfContainer = document.getElementById('pdfList');
+            if (!pdfContainer) return;
+            
+            const pdfs = getPDFData();
+            
+            if (pdfs.length === 0) {
+                pdfContainer.innerHTML = '<p class="text-center text-gray-400 py-8">Aucun PDF disponible</p>';
+                return;
+            }
+            
+            pdfContainer.innerHTML = pdfs.map(pdf => `
+                <div class="content-card rounded-xl p-6 mb-4">
+                    <div class="flex flex-col md:flex-row gap-4">
+                        <div class="flex-1">
+                            <div class="flex items-start justify-between mb-2">
+                                <span class="inline-block px-3 py-1 rounded-full text-xs font-medium text-white category-${pdf.category.toLowerCase().replace(/\s+/g, '')}">${pdf.category}</span>
+                                <span class="text-sm text-gray-400">${pdf.type}</span>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-2">${pdf.title}</h3>
+                            ${pdf.subtitle ? `<p class="text-gray-300 text-sm mb-2">${pdf.subtitle}</p>` : ''}
+                            <p class="text-gray-400 text-xs">${pdf.date}</p>
+                        </div>
+                        <div class="flex gap-2 flex-shrink-0">
+                            <button onclick="viewPDF(${pdf.id})" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-sm transition-colors">
+                                Voir
+                            </button>
+                            <button onclick="deletePDF(${pdf.id})" class="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg text-sm transition-colors">
+                                Supprimer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             // Set today's date as default
-            document.getElementById('pdf-date').valueAsDate = new Date();
+            const dateInput = document.getElementById('pdf-date');
+            if (dateInput) {
+                dateInput.valueAsDate = new Date();
+            }
             
             // Load existing PDFs
-            switchTab('pdfs');
+            loadPDFs();
         });
 
         // Close modal when clicking outside

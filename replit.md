@@ -299,6 +299,18 @@ The website is now fully operational and matches the original local/Netlify func
 - **Clean interface**: Hidden technical fields, showing only essential content management options
 - **Production ready**: Stable, simple system successfully managing real website content
 
+### PDF-Only Content Management System Migration - July 25, 2025 ✅ COMPLETED 
+- **Complete migration to PDF-only system**: All content areas (jobs and news) now display exclusively PDF documents across all four pages (French/English versions)
+- **Unified PDF data management**: Single pdf-data.js file manages all PDFs with simplified fields (title, subtitle, category, date, type)
+- **PDF-only CMS interface**: Fixed unified-cms.html at /admin/unified-cms.html with proper PDF upload, viewing, and management functionality
+- **Responsive PDF viewer modals**: Complete modal system with loading states, mobile fallbacks, download/new tab options, and keyboard support
+- **Visual PDF indicators**: Red PDF icons on card corners replacing "Read more" with "View PDF" text
+- **Authentication preserved**: Simple "admin123" password system maintained for CMS access
+- **Error handling**: Fixed JavaScript errors and duplicate initialization functions in CMS interface
+- **Category integration**: All 8 standardized categories work with automatic image assignment and proper color coding
+- **Mobile optimization**: PDF viewers work across desktop and mobile with appropriate fallback handling
+- **Status**: ✅ PRODUCTION READY - Complete PDF-only content management system operational
+
 ### Comprehensive Code Optimization & Architecture Cleanup - July 25, 2025 ✅ COMPLETED
 - **Test data pollution removed**: Eliminated test content from production data files (emplois-data.js, communiques-data.js)
 - **Unused AI assistant code eliminated**: Removed server/ai-assistant.ts and all AI endpoint routes to reduce complexity

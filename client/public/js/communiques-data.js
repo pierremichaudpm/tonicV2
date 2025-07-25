@@ -43,5 +43,14 @@ const pressReleases = [
     "summary": "etyhenhe3hy",
     "content": "etnh",
     "image": "images/beach-pro-tour-hero.webp"
+  },
+  {
+    "id": 1753477089690,
+    "title": "vrqeer",
+    "date": "2025-07-25",
+    "category": "Beach Pro Tour",
+    "summary": "veq",
+    "content": "f33vfqvffe",
+    "image": "images/beach-pro-tour-hero.webp"
   }
 ];
