@@ -327,8 +327,8 @@
                 const htmlData = clipboardData.getData('text/html');
                 console.log('📄 HTML data length:', htmlData.length);
                 if (htmlData && htmlData.trim().length > 0) {
-                    // Process HTML to preserve formatting
-                    pastedText = cleanAndPreserveWordFormatting(htmlData);
+                    // Simple approach: extract text but preserve basic formatting
+                    pastedText = simpleWordFormatPreservation(htmlData);
                     console.log('📝 Processed HTML with formatting:', pastedText.length);
                 }
             }
@@ -380,6 +380,42 @@
             console.log('✅ Paste processing completed successfully');
         }
         
+        // Simple Word format preservation
+        function simpleWordFormatPreservation(html) {
+            if (!html) return '';
+            
+            console.log('🔍 Original HTML sample:', html.substring(0, 500));
+            
+            // Create temporary div
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = html;
+            
+            // Simple approach: convert common formatting tags
+            let content = tempDiv.innerHTML;
+            
+            // Convert bold tags to our format
+            content = content.replace(/<b[^>]*>(.*?)<\/b>/gi, '**$1**');
+            content = content.replace(/<strong[^>]*>(.*?)<\/strong>/gi, '**$1**');
+            
+            // Convert italic tags
+            content = content.replace(/<i[^>]*>(.*?)<\/i>/gi, '*$1*');
+            content = content.replace(/<em[^>]*>(.*?)<\/em>/gi, '*$1*');
+            
+            // Get the text content
+            tempDiv.innerHTML = content;
+            let text = tempDiv.textContent || tempDiv.innerText || '';
+            
+            console.log('🎨 Text with markers:', text.substring(0, 300));
+            
+            // Convert back to HTML
+            text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
+            
+            console.log('✅ Final formatted text:', text.substring(0, 300));
+            
+            return text;
+        }
+        
         // Clean and preserve Word formatting (bold, italic, larger text)
         function cleanAndPreserveWordFormatting(html) {
             if (!html) return '';
@@ -389,8 +425,16 @@
             tempDiv.innerHTML = html;
             
             // Remove unwanted Word elements but preserve formatting
-            const elementsToRemove = tempDiv.querySelectorAll('meta, style, script, xml, o\\:*, w\\:*');
+            const elementsToRemove = tempDiv.querySelectorAll('meta, style, script, xml');
             elementsToRemove.forEach(el => el.remove());
+            
+            // Remove Word namespace elements separately
+            const wordElements = tempDiv.querySelectorAll('*');
+            wordElements.forEach(el => {
+                if (el.tagName && (el.tagName.startsWith('O:') || el.tagName.startsWith('W:'))) {
+                    el.remove();
+                }
+            });
             
             // Process and preserve formatting
             let result = '';
