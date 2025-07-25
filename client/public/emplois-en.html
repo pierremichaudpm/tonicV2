@@ -389,6 +389,9 @@
     
     <!-- Load job data -->
     <script src="js/emplois-data-en.js"></script>
+    
+    <!-- PDF Data -->
+    <script src="js/pdf-data.js"></script>
 
     
     <!-- Shared JavaScript -->
@@ -456,9 +459,26 @@
             return classMap[department] || 'category-tonic';
         };
 
-        // Get all jobs - Using local data
+        // Get all jobs - PDF content only
         async function getAllJobs() {
-            return jobsData || [];
+            // Get PDF job content only
+            const pdfJobs = getPDFsByType('job');
+            
+            // Convert PDF jobs to the expected format
+            return pdfJobs.map(pdf => ({
+                id: `pdf-${pdf.id}`,
+                title: pdf.title,
+                department: pdf.category,
+                location: 'Montreal, QC', // Default location
+                type: 'Full-time', // Default type
+                datePosted: pdf.date,
+                startDate: 'To be determined', // Default start date
+                description: pdf.subtitle || 'See PDF document for more details',
+                emailSubject: `Application - ${pdf.title}`,
+                salary: 'To be discussed', // Default salary
+                isPDF: true,
+                pdfData: pdf
+            }));
         }
 
         // Get days since posting

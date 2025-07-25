@@ -382,6 +382,9 @@
 
     <!-- Load press release data -->
     <script src="js/communiques-data-en.js"></script>
+    
+    <!-- PDF Data -->
+    <script src="js/pdf-data.js"></script>
 
     
     <!-- Shared JavaScript -->
@@ -404,13 +407,24 @@
             return classMap[category] || 'cat-tonic';
         }
         
-        // Render press releases
+        // Render press releases - PDF content only
         function renderPressReleases() {
             const pressList = document.getElementById('pressList');
             if (!pressList) return;
             
-            // Use local communiques data which includes images
-            const newsData = communiquesData;
+            // Get PDF news content only
+            const pdfNews = getPDFsByType('news');
+            const newsData = pdfNews.map(pdf => ({
+                id: `pdf-${pdf.id}`,
+                date: pdf.date,
+                title: pdf.title,
+                category: pdf.category,
+                summary: pdf.subtitle || 'PDF document available',
+                content: null, // Will trigger PDF viewer
+                image: pdf.image,
+                isPDF: true,
+                pdfData: pdf
+            }));
             if (!newsData || newsData.length === 0) {
                 pressList.innerHTML = '<p class="text-white text-center py-8">No news available at this time.</p>';
                 return;
@@ -431,6 +445,13 @@
                             <div class="sm:w-48 h-32 sm:h-32 flex-shrink-0 relative">
                                 <img src="${release.image}" alt="${release.title}" class="w-full h-full object-cover rounded-lg" loading="lazy">
                                 ${release.category !== 'Groupe Tonic' ? `<div class="absolute inset-0 rounded-lg ${getCategoryClass(release.category)} opacity-40"></div>` : ''}
+                                ${release.isPDF ? `
+                                    <div class="absolute top-2 left-2 bg-red-600 rounded-lg p-1.5">
+                                        <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M4 18h12a2 2 0 002-2V6.414A2 2 0 0017.414 5L14 1.586A2 2 0 0012.586 1H4a2 2 0 00-2 2v13a2 2 0 002 2z"/>
+                                        </svg>
+                                    </div>
+                                ` : ''}
                             </div>
                         ` : ''}
                         <div class="flex-1">
@@ -443,7 +464,7 @@
                             <h3 class="text-xl font-bold mb-2 text-white">${release.title}</h3>
                             <p class="text-white line-clamp-3">${release.summary}</p>
                             <div class="mt-4 flex items-center text-[#ff0e9b] text-sm font-medium">
-                                <span>Read more</span>
+                                <span>${release.isPDF ? 'View PDF' : 'Read more'}</span>
                                 <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                                 </svg>
@@ -452,7 +473,15 @@
                     </div>
                 `;
                 
-                card.addEventListener('click', () => openPressModal(release.id));
+                // Add event listener with PDF check
+                card.addEventListener('click', () => {
+                    if (release.isPDF) {
+                        const pdfId = parseInt(release.id.replace('pdf-', ''));
+                        viewPDF(pdfId);
+                    } else {
+                        openPressModal(release.id);
+                    }
+                });
                 pressList.appendChild(card);
             });
         }
