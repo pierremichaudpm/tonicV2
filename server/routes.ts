@@ -1,6 +1,5 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
-import { AICodeAssistant } from "./ai-assistant";
 import path from "path";
 import express from "express";
 import cmsRoutes from "./cms-routes";
@@ -60,11 +59,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // CMS Admin Interface (removed duplicate - using proper admin route below)
   
-  app.get("/ai-helper", (req, res) => {
-    res.sendFile(path.join(publicPath, "ai-helper.html"));
-  });
-  
-  // Add legal pages routes
+  // Legal pages routes
   app.get("/politique-de-confidentialite", (req, res) => {
     res.sendFile(path.join(publicPath, "politique-de-confidentialite.html"));
   });
@@ -79,15 +74,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   app.get("/terms-of-use", (req, res) => {
     res.sendFile(path.join(publicPath, "terms-of-use.html"));
-  });
-  
-  // CMS access test page
-  app.get("/test-strapi-access.html", (req, res) => {
-    res.sendFile(path.join(process.cwd(), "test-strapi-access.html"));
-  });
-  
-  app.get("/cms-access.html", (req, res) => {
-    res.sendFile(path.join(publicPath, "cms-access.html"));
   });
   
   // Handle legacy .html routes for compatibility  
@@ -112,62 +98,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.sendFile(path.join(publicPath, "admin", "edit-cms.html"));
   });
 
-  const aiAssistant = new AICodeAssistant();
-  
-  // AI Code Assistant endpoint for grid changes
-  app.post("/api/ai/grid-change", async (req, res) => {
-    try {
-      const { changeDescription } = req.body;
-      
-      if (!changeDescription) {
-        return res.status(400).json({ error: "changeDescription is required" });
-      }
-      
-      const result = await aiAssistant.applyGridChange(changeDescription);
-      res.json(result);
-    } catch (error) {
-      console.error("AI Assistant Error:", error);
-      res.status(500).json({ 
-        error: "Failed to process AI request",
-        details: error instanceof Error ? error.message : "Unknown error"
-      });
-    }
-  });
-  
-  // AI Code Suggestions endpoint
-  app.post("/api/ai/suggest", async (req, res) => {
-    try {
-      const { code, context } = req.body;
-      
-      if (!code) {
-        return res.status(400).json({ error: "code is required" });
-      }
-      
-      const suggestion = await aiAssistant.suggestCodeImprovement(code, context || "");
-      res.json({ suggestion });
-    } catch (error) {
-      console.error("AI Suggestion Error:", error);
-      res.status(500).json({ 
-        error: "Failed to get AI suggestions",
-        details: error instanceof Error ? error.message : "Unknown error"
-      });
-    }
-  });
 
-  // API route to show migration status
-  app.get("/api/migration-status", (req, res) => {
+
+  // Health check endpoint
+  app.get("/api/health", (req, res) => {
     res.json({ 
-      status: "complete",
-      pages: [
-        "index.html", "index-en.html", "about.html", "a-propos.html",
-        "communiques.html", "communiques-en.html", "emplois.html", 
-        "emplois-en.html", "nous-joindre.html", "nous-joindre-en.html"
-      ],
-      assets: {
-        css: ["shared.css"],
-        js: ["communiques-data.js", "communiques-data-en.js", "emplois-data.js", "shared.js"],
-        images: "16+ image files"
-      }
+      status: "ok"
     });
   });
 

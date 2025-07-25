@@ -43,14 +43,5 @@ const communiquesData = [
     "summary": "The 4th edition of Beach Pro Tour Montreal welcomed more than 45,000 spectators and confirmed Montreal as a prime destination for world beach volleyball.",
     "content": "Montreal, August 20, 2024 – The 4th edition of Beach Pro Tour Montreal concluded Sunday evening on a triumphant note, once again confirming Montreal's place on the international beach volleyball scene.\n\nOrganized from August 14 to 18 at Parc Jean-Drapeau, this Elite16 event brought together the 16 best men's and women's pairs from the world circuit for five days of intense competition under the spotlights of Centre Court.\n\nA Record Edition:\n- More than 45,000 spectators over five days\n- 16 pairs per category representing 20 nations\n- Live broadcast in 100+ countries\n- $300,000 USD prize money distributed\n\n\"The electrifying atmosphere of the Montreal crowd and the impeccable organization make this stop one of the athletes' favorites on the circuit.\"\n\nThis success confirms Groupe Tonic's commitment to positioning Montreal as a destination of choice for major international sporting events.",
     "image": "images/beach-pro-tour-hero.webp"
-  },
-  {
-    "id": 1753393226124,
-    "title": "test anglais",
-    "date": "",
-    "category": "Groupe Tonic",
-    "image": "images/tonic-logo.png",
-    "summary": "wferfqev",
-    "content": "qvbqtgwtqrbwqrtbwrbwrytbwyrtbwyrteb"
   }
 ];
