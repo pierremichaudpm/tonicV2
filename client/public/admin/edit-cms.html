@@ -334,40 +334,29 @@
                     
                     if (!content) return '';
                     
-                    // Split long content into paragraphs based on sentence breaks
-                    const sentences = content.split(/(?<=[.!?])\s+(?=[A-Z])/);
-                    if (sentences.length > 3) {
-                        // Create multiple paragraphs for better readability
-                        const paragraphs = [];
-                        let currentParagraph = '';
-                        
-                        sentences.forEach((sentence, index) => {
-                            currentParagraph += sentence;
-                            
-                            // Create new paragraph every 2-3 sentences or at natural breaks
-                            if ((index + 1) % 2 === 0 || sentence.includes('–') || sentence.includes('»')) {
-                                paragraphs.push(`<p>${currentParagraph.trim()}</p>`);
-                                currentParagraph = '';
-                            } else {
-                                currentParagraph += ' ';
-                            }
-                        });
-                        
-                        // Add any remaining content
-                        if (currentParagraph.trim()) {
-                            paragraphs.push(`<p>${currentParagraph.trim()}</p>`);
+                    // Split on natural Word paragraph breaks
+                    const naturalBreaks = [
+                        'L\'élite mondiale.',
+                        'L\'énergie de Montréal.',
+                        'Plus qu\'un simple',
+                        'Un événement',
+                        'Les billets',
+                        'Déclarations',
+                        'À propos'
+                    ];
+                    
+                    let foundBreak = naturalBreaks.find(breakText => content.includes(breakText));
+                    if (foundBreak) {
+                        const parts = content.split(foundBreak);
+                        if (parts.length > 1) {
+                            const result = [];
+                            result.push(`<p>${parts[0].trim()}</p>`);
+                            result.push(`<p>${foundBreak}${parts.slice(1).join(foundBreak)}</p>`);
+                            return result.filter(p => p !== '<p></p>').join('\n');
                         }
-                        
-                        return paragraphs.join('\n');
                     }
                     
-                    const fontSize = parseFloat(style.fontSize);
-                    const isBold = style.fontWeight === 'bold' || parseInt(style.fontWeight) >= 700;
-                    
-                    if (fontSize > 16 && isBold) {
-                        return `<h3>${content}</h3>`;
-                    }
-                    
+                    // Don't automatically make everything bold - preserve Word's actual formatting
                     return `<p>${content}</p>`;
                 }
                 
@@ -378,7 +367,8 @@
             processInlineElement(node, tag, style, parentFormatting) {
                 const formatting = [...parentFormatting];
                 
-                if (tag === 'strong' || tag === 'b' || (style.fontWeight === 'bold' || parseInt(style.fontWeight) >= 700)) {
+                // Only apply bold for explicit HTML tags, not computed styles from Word
+                if (tag === 'strong' || tag === 'b') {
                     formatting.push('strong');
                 }
                 if (tag === 'em' || tag === 'i' || style.fontStyle === 'italic') {
