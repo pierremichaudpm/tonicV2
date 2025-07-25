@@ -142,7 +142,12 @@
                                 <p class="text-sm text-gray-600 mb-3">
                                     Copiez-collez directement depuis Word. Le système créera automatiquement les paragraphes et liens.
                                 </p>
-                                <textarea id="description" placeholder="Copiez-collez la description ici..." rows="15" class="w-full p-3 border rounded bg-white"></textarea>
+                                <textarea id="description" placeholder="Copiez-collez la description ici..." rows="15" class="w-full p-3 border rounded bg-white"
+                                    onpaste="handlePaste(event, 'description')" 
+                                    oninput="validateContent()"></textarea>
+                                <div id="descriptionPreview" class="mt-2 p-3 bg-gray-50 border rounded text-sm text-gray-600" style="display: none;">
+                                    <strong>Aperçu:</strong> <span id="descriptionPreviewText"></span>
+                                </div>
                             </div>
                         </div>
 
@@ -173,7 +178,12 @@
                                 <p class="text-sm text-gray-600 mb-3">
                                     Copiez-collez directement depuis Word. Le système créera automatiquement les paragraphes et liens.
                                 </p>
-                                <textarea id="content" placeholder="Copiez-collez le contenu ici..." rows="15" class="w-full p-3 border rounded bg-white"></textarea>
+                                <textarea id="content" placeholder="Copiez-collez le contenu ici..." rows="15" class="w-full p-3 border rounded bg-white" 
+                                    onpaste="handlePaste(event, 'content')" 
+                                    oninput="validateContent()"></textarea>
+                                <div id="contentPreview" class="mt-2 p-3 bg-gray-50 border rounded text-sm text-gray-600" style="display: none;">
+                                    <strong>Aperçu:</strong> <span id="contentPreviewText"></span>
+                                </div>
                             </div>
                         </div>
 
@@ -297,6 +307,39 @@
             
             // Convert to HTML paragraphs
             return paragraphs.map(para => `<p>${para}</p>`).join('\n');
+        }
+
+        // Handle paste events to ensure Word content is captured
+        function handlePaste(event, fieldId) {
+            setTimeout(() => {
+                const textarea = document.getElementById(fieldId);
+                const content = textarea.value;
+                console.log(`Paste detected in ${fieldId}:`, content);
+                
+                // Show preview if content exists
+                if (content && content.trim().length > 0) {
+                    const previewDiv = document.getElementById(fieldId + 'Preview');
+                    const previewText = document.getElementById(fieldId + 'PreviewText');
+                    if (previewDiv && previewText) {
+                        const shortPreview = content.substring(0, 100) + (content.length > 100 ? '...' : '');
+                        previewText.textContent = shortPreview;
+                        previewDiv.style.display = 'block';
+                    }
+                }
+            }, 100); // Small delay to let paste complete
+        }
+        
+        // Validate content exists
+        function validateContent() {
+            const contentField = document.getElementById('content');
+            const descriptionField = document.getElementById('description');
+            
+            if (contentField && contentField.value.trim().length > 0) {
+                console.log('Content field has text:', contentField.value.length, 'characters');
+            }
+            if (descriptionField && descriptionField.value.trim().length > 0) {
+                console.log('Description field has text:', descriptionField.value.length, 'characters');
+            }
         }
 
         // Sync mobile and desktop dropdowns
