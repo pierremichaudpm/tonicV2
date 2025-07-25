@@ -1,0 +1,233 @@
+// THE FINAL FIX - Enhanced processBlockElement method
+
+processBlockElement(node, tag, style) {
+    if (tag.match(/^h[1-6]$/)) {
+        const content = this.extractInlineContent(node);
+        return content ? `<${tag}>${content}</${tag}>` : '';
+    }
+    
+    if (tag === 'ul' || tag === 'ol') {
+        const items = Array.from(node.querySelectorAll(':scope > li'))
+            .map(li => {
+                const content = this.extractInlineContent(li);
+                return content ? `<li>${content}</li>` : '';
+            })
+            .filter(item => item);
+        
+        return items.length ? `<${tag}>\n${items.join('\n')}\n</${tag}>` : '';
+    }
+    
+    if (tag === 'p' || tag === 'div') {
+        const content = this.extractInlineContent(node);
+        
+        if (!content) return '';
+        
+        // ENHANCED PARAGRAPH SPLITTING LOGIC
+        // Check if this is a mega-paragraph (very long content in single <p>)
+        if (content.length > 500 && !content.includes('</p>')) {
+            console.log('🔥 Splitting mega-paragraph intelligently');
+            
+            // Split on sentence endings followed by capital letters (French pattern)
+            let paragraphs = [];
+            let currentParagraph = '';
+            
+            // Split into sentences first
+            const sentences = content.split(/(?<=[.!?»])\s+/);
+            
+            sentences.forEach((sentence, index) => {
+                currentParagraph += sentence + ' ';
+                
+                // Create new paragraph based on multiple criteria:
+                const nextSentence = sentences[index + 1] || '';
+                const shouldBreak = 
+                    // 1. Next sentence starts with specific French patterns
+                    /^(L'élite|L'énergie|Les |Le |La |Plus |Un |Une |Après |Suite |Pour |Déclarations|CONTACT|À propos)/.test(nextSentence) ||
+                    // 2. Current sentence ends with closing quote and next starts with opening quote
+                    (/»$/.test(sentence.trim()) && /^«/.test(nextSentence)) ||
+                    // 3. Next sentence starts with a date pattern
+                    /^(Montréal|MONTRÉAL|Du |Le \d)/.test(nextSentence) ||
+                    // 4. Every 2-3 sentences for very long content
+                    (currentParagraph.length > 400 && /[.!?»]$/.test(sentence.trim()));
+                
+                if (shouldBreak && currentParagraph.trim()) {
+                    paragraphs.push(`<p>${currentParagraph.trim()}</p>`);
+                    currentParagraph = '';
+                }
+            });
+            
+            // Add any remaining content
+            if (currentParagraph.trim()) {
+                paragraphs.push(`<p>${currentParagraph.trim()}</p>`);
+            }
+            
+            return paragraphs.join('\n');
+        }
+        
+        // For shorter content or already well-structured content
+        return `<p>${content}</p>`;
+    }
+    
+    const content = this.extractInlineContent(node);
+    return content ? `<p>${content}</p>` : '';
+}
+
+// ALSO UPDATE THE PLAIN TEXT PROCESSOR for better paragraph detection
+processPlainText(text) {
+    text = text
+        .replace(/[\u2018\u2019]/g, "'")
+        .replace(/[\u201C\u201D]/g, '"')
+        .replace(/[\u2013]/g, '–')  // En dash
+        .replace(/[\u2014]/g, '—')  // Em dash
+        .replace(/\u2026/g, '...')
+        .replace(/\u00A0/g, ' ')
+        .replace(/[\u00AB]/g, '« ') // Opening guillemet with space
+        .replace(/[\u00BB]/g, ' »') // Closing guillemet with space
+        .trim();
+    
+    text = this.convertUrlsToLinks(text);
+    
+    // ENHANCED PARAGRAPH DETECTION
+    let paragraphs = [];
+    
+    // First try to split on double line breaks
+    let chunks = text.split(/\n\s*\n+/);
+    
+    // If we only get one chunk, try to split intelligently
+    if (chunks.length === 1 && text.length > 500) {
+        const longText = chunks[0];
+        let currentPara = '';
+        
+        // Split on sentences
+        const sentences = longText.split(/(?<=[.!?»])\s+/);
+        
+        sentences.forEach((sentence, index) => {
+            currentPara += sentence + ' ';
+            const nextSentence = sentences[index + 1] || '';
+            
+            // Smart break detection
+            const shouldBreak = 
+                /^(Montréal|MONTRÉAL|L'élite|L'énergie|Les |Le |La |Plus |Un |Une |Après |Suite |Pour |Déclarations|« )/.test(nextSentence) ||
+                (/»\s*$/.test(sentence) && /^«/.test(nextSentence)) ||
+                (currentPara.length > 400 && /[.!?»]$/.test(sentence.trim()));
+            
+            if (shouldBreak && currentPara.trim()) {
+                paragraphs.push(currentPara.trim());
+                currentPara = '';
+            }
+        });
+        
+        if (currentPara.trim()) {
+            paragraphs.push(currentPara.trim());
+        }
+    } else {
+        // Use the natural breaks
+        paragraphs = chunks.map(p => p.trim()).filter(p => p);
+    }
+    
+    // Convert to HTML paragraphs
+    return paragraphs.map(p => `<p>${p}</p>`).join('\n');
+}
+
+// CRITICAL: Update handlePaste to show plain text in textarea but store HTML
+function handlePaste(event, fieldId) {
+    event.preventDefault();
+    
+    const clipboardData = event.clipboardData || window.clipboardData;
+    if (!clipboardData) return;
+    
+    console.log('🔥 Enhanced paste handler triggered', fieldId);
+    
+    const processedHTML = wordProcessor.processContent(clipboardData, fieldId);
+    
+    if (processedHTML) {
+        const textarea = document.getElementById(fieldId);
+        if (!textarea) return;
+        
+        // Store the processed HTML
+        textarea.setAttribute('data-processed-content', processedHTML);
+        
+        // IMPORTANT: Show plain text in textarea, not HTML!
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = processedHTML;
+        textarea.value = tempDiv.textContent || tempDiv.innerText || '';
+        
+        // Show formatted preview
+        showContentPreview(fieldId, processedHTML);
+        
+        console.log('✅ Content processed successfully');
+        console.log('📄 HTML stored:', processedHTML.substring(0, 200) + '...');
+    }
+}
+
+// Make sure preview shows correctly
+function showContentPreview(fieldId, content) {
+    const previewDiv = document.getElementById(fieldId + 'Preview');
+    const previewText = document.getElementById(fieldId + 'PreviewText');
+    
+    if (previewDiv && previewText && content) {
+        previewText.innerHTML = content;
+        previewDiv.classList.remove('hidden');
+        previewDiv.style.display = 'block';
+        
+        console.log('👁️ Preview updated with', content.split('<p>').length - 1, 'paragraphs');
+    }
+}
+
+// When editing, show both plain text AND preview
+async function editItem(id) {
+    try {
+        const endpoint = currentType === 'jobs' ? '/api/cms/jobs' : '/api/cms/news';
+        const response = await fetch(endpoint, {
+            headers: { 'X-Admin-Password': 'admin123' }
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            const items = data[currentType] || data.jobs || data.news || [];
+            const item = items.find(i => i.id == id);
+            
+            if (item) {
+                currentEditId = id;
+                document.getElementById('formTitle').textContent = currentType === 'jobs' ? 'Modifier l\'emploi' : 'Modifier le communiqué';
+                document.getElementById('title').value = item.title;
+                document.getElementById('date').value = item.date;
+                document.getElementById('category').value = item.category;
+                document.getElementById('summary').value = item.summary;
+                
+                // Show plain text in textarea
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = item.content;
+                document.getElementById('content').value = tempDiv.textContent || tempDiv.innerText || '';
+                
+                // Store the HTML
+                document.getElementById('content').setAttribute('data-processed-content', item.content);
+                
+                // Show the preview immediately
+                showContentPreview('content', item.content);
+                
+                document.getElementById('formModal').classList.remove('hidden');
+            }
+        }
+    } catch (error) {
+        console.error('Erreur:', error);
+    }
+}
+
+// Test function you can run in console
+window.testParagraphSplit = function() {
+    const testText = `Montréal, le 17 juin 2025 – Le plus haut niveau du volleyball de plage est de retour à Montréal! Du 13 au 17 août 2025, le Beach Pro Tour – Elite transformera le légendaire circuit Gilles-Villeneuve en une arène spectaculaire où s'affronteront les meilleures équipes féminines et masculines au monde. Après une édition 2023 marquée par les victoires retentissantes des Canadiennes Melissa Humana-Paredes et Brandie Wilkerson, ainsi que des Norvégiens Anders Mol et Christian Sørum, le tournoi s'annonce encore plus électrisant cette année au Montréal Beach Pro Tour. Suite à une spectaculaire médaille d'argent aux Jeux de Paris 2024, Humana-Paredes et Wilkerson reviennent à Montréal en véritables héroïnes nationales du volleyball pour participer à la seule étape canadienne du circuit. L'élite mondiale. L'énergie de Montréal. Les 32 meilleures équipes au monde s'affronteront pendant 5 jours pour gravir le classement international et Montréal est la seule occasion de le faire en territoire nord-américain sur le calendrier mondial 2025. Les Montréalaises et Montréalais ont donc une chance unique d'assister à ces duels. Plus qu'un simple tournoi, Montréal Beach Pro Tour promet une ambiance survoltée : DJ sur place, zone gourmande, animations et expériences immersives. Un événement festif qui marie sport de haut niveau, culture urbaine et plaisir estival. Les billets sont en vente dès maintenant! Rendez-vous sur mtlbeachprotour.com pour accéder aux meilleurs sièges pour vivre l'événement au coeur de l'action.`;
+    
+    const processor = new WordProcessor();
+    const result = processor.processPlainText(testText);
+    
+    console.log('Original length:', testText.length);
+    console.log('Paragraphs created:', result.split('<p>').length - 1);
+    console.log('Result:', result);
+    
+    // Show in preview
+    document.getElementById('content').value = testText;
+    document.getElementById('content').setAttribute('data-processed-content', result);
+    showContentPreview('content', result);
+    
+    return result;
+};

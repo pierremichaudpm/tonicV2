@@ -334,33 +334,48 @@
                     
                     if (!content) return '';
                     
-                    // Split long content into proper paragraphs using multiple break patterns
-                    let processedContent = content;
-                    
-                    // Define break patterns that indicate new paragraphs
-                    const breakPatterns = [
-                        { pattern: /(\. )(L'élite mondiale\.)/g, replacement: '$1</p>\n<p>$2' },
-                        { pattern: /(\. )(L'énergie de Montréal\.)/g, replacement: '$1</p>\n<p>$2' },
-                        { pattern: /(\. )(Plus qu'un simple)/g, replacement: '$1</p>\n<p>$2' },
-                        { pattern: /(\. )(Un événement)/g, replacement: '$1</p>\n<p>$2' },
-                        { pattern: /(\. )(Les billets)/g, replacement: '$1</p>\n<p>$2' },
-                        { pattern: /(immersives\. )(Un événement)/g, replacement: '$1</p>\n<p>$2' },
-                        { pattern: /(action\. )(Déclarations)/g, replacement: '$1</p>\n<p>$2' },
-                        { pattern: /(" )(« )/g, replacement: '$1</p>\n<p>$2' }, // New quote after speaker
-                        { pattern: /(canadienne\. )(« )/g, replacement: '$1</p>\n<p>$2' }
-                    ];
-                    
-                    // Apply all break patterns
-                    breakPatterns.forEach(({ pattern, replacement }) => {
-                        processedContent = processedContent.replace(pattern, replacement);
-                    });
-                    
-                    // If we made any splits, wrap the whole thing and return
-                    if (processedContent !== content) {
-                        return `<p>${processedContent}</p>`;
+                    // ENHANCED PARAGRAPH SPLITTING LOGIC
+                    // Check if this is a mega-paragraph (very long content in single <p>)
+                    if (content.length > 500 && !content.includes('</p>')) {
+                        console.log('🔥 Splitting mega-paragraph intelligently');
+                        
+                        // Split on sentence endings followed by capital letters (French pattern)
+                        let paragraphs = [];
+                        let currentParagraph = '';
+                        
+                        // Split into sentences first
+                        const sentences = content.split(/(?<=[.!?»])\s+/);
+                        
+                        sentences.forEach((sentence, index) => {
+                            currentParagraph += sentence + ' ';
+                            
+                            // Create new paragraph based on multiple criteria:
+                            const nextSentence = sentences[index + 1] || '';
+                            const shouldBreak = 
+                                // 1. Next sentence starts with specific French patterns
+                                /^(L'élite|L'énergie|Les |Le |La |Plus |Un |Une |Après |Suite |Pour |Déclarations|CONTACT|À propos)/.test(nextSentence) ||
+                                // 2. Current sentence ends with closing quote and next starts with opening quote
+                                (/»$/.test(sentence.trim()) && /^«/.test(nextSentence)) ||
+                                // 3. Next sentence starts with a date pattern
+                                /^(Montréal|MONTRÉAL|Du |Le \d)/.test(nextSentence) ||
+                                // 4. Every 2-3 sentences for very long content
+                                (currentParagraph.length > 400 && /[.!?»]$/.test(sentence.trim()));
+                            
+                            if (shouldBreak && currentParagraph.trim()) {
+                                paragraphs.push(`<p>${currentParagraph.trim()}</p>`);
+                                currentParagraph = '';
+                            }
+                        });
+                        
+                        // Add any remaining content
+                        if (currentParagraph.trim()) {
+                            paragraphs.push(`<p>${currentParagraph.trim()}</p>`);
+                        }
+                        
+                        return paragraphs.join('\n');
                     }
                     
-                    // Don't automatically make everything bold - preserve Word's actual formatting
+                    // For shorter content or already well-structured content
                     return `<p>${content}</p>`;
                 }
                 
@@ -424,20 +439,56 @@
                 text = text
                     .replace(/[\u2018\u2019]/g, "'")
                     .replace(/[\u201C\u201D]/g, '"')
-                    .replace(/\u2013/g, '-')
-                    .replace(/\u2014/g, '—')
+                    .replace(/[\u2013]/g, '–')  // En dash
+                    .replace(/[\u2014]/g, '—')  // Em dash
                     .replace(/\u2026/g, '...')
                     .replace(/\u00A0/g, ' ')
+                    .replace(/[\u00AB]/g, '« ') // Opening guillemet with space
+                    .replace(/[\u00BB]/g, ' »') // Closing guillemet with space
                     .trim();
                 
                 text = this.convertUrlsToLinks(text);
                 
-                const paragraphs = text.split(/\n\s*\n+/)
-                    .map(p => p.trim())
-                    .filter(p => p)
-                    .map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`);
+                // ENHANCED PARAGRAPH DETECTION
+                let paragraphs = [];
                 
-                return paragraphs.join('\n');
+                // First try to split on double line breaks
+                let chunks = text.split(/\n\s*\n+/);
+                
+                // If we only get one chunk, try to split intelligently
+                if (chunks.length === 1 && text.length > 500) {
+                    const longText = chunks[0];
+                    let currentPara = '';
+                    
+                    // Split on sentences
+                    const sentences = longText.split(/(?<=[.!?»])\s+/);
+                    
+                    sentences.forEach((sentence, index) => {
+                        currentPara += sentence + ' ';
+                        const nextSentence = sentences[index + 1] || '';
+                        
+                        // Smart break detection
+                        const shouldBreak = 
+                            /^(Montréal|MONTRÉAL|L'élite|L'énergie|Les |Le |La |Plus |Un |Une |Après |Suite |Pour |Déclarations|« )/.test(nextSentence) ||
+                            (/»\s*$/.test(sentence) && /^«/.test(nextSentence)) ||
+                            (currentPara.length > 400 && /[.!?»]$/.test(sentence.trim()));
+                        
+                        if (shouldBreak && currentPara.trim()) {
+                            paragraphs.push(currentPara.trim());
+                            currentPara = '';
+                        }
+                    });
+                    
+                    if (currentPara.trim()) {
+                        paragraphs.push(currentPara.trim());
+                    }
+                } else {
+                    // Use the natural breaks
+                    paragraphs = chunks.map(p => p.trim()).filter(p => p);
+                }
+                
+                // Convert to HTML paragraphs
+                return paragraphs.map(p => `<p>${p}</p>`).join('\n');
             }
 
             convertUrlsToLinks(text) {
@@ -477,12 +528,19 @@
                 const textarea = document.getElementById(fieldId);
                 if (!textarea) return;
                 
+                // Store the processed HTML
                 textarea.setAttribute('data-processed-content', processedHTML);
-                textarea.value = processedHTML;
                 
+                // IMPORTANT: Show plain text in textarea, not HTML!
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = processedHTML;
+                textarea.value = tempDiv.textContent || tempDiv.innerText || '';
+                
+                // Show formatted preview
                 showContentPreview(fieldId, processedHTML);
                 
-                console.log('✅ Content processed successfully', `Length: ${processedHTML.length}`);
+                console.log('✅ Content processed successfully');
+                console.log('📄 HTML stored:', processedHTML.substring(0, 200) + '...');
             }
         }
 
@@ -493,7 +551,10 @@
             
             if (previewDiv && previewText && content) {
                 previewText.innerHTML = content;
+                previewDiv.classList.remove('hidden');
                 previewDiv.style.display = 'block';
+                
+                console.log('👁️ Preview updated with', content.split('<p>').length - 1, 'paragraphs');
             }
         }
 
@@ -695,8 +756,16 @@
                         document.getElementById('date').value = item.date;
                         document.getElementById('category').value = item.category;
                         document.getElementById('summary').value = item.summary;
-                        document.getElementById('content').value = item.content;
+                        // Show plain text in textarea
+                        const tempDiv = document.createElement('div');
+                        tempDiv.innerHTML = item.content;
+                        document.getElementById('content').value = tempDiv.textContent || tempDiv.innerText || '';
+                        
+                        // Store the HTML
                         document.getElementById('content').setAttribute('data-processed-content', item.content);
+                        
+                        // Show the preview immediately
+                        showContentPreview('content', item.content);
                         document.getElementById('formModal').classList.remove('hidden');
                     }
                 }
@@ -705,9 +774,31 @@
             }
         }
 
+        // Test function for paragraph splitting
+        window.testParagraphSplit = function() {
+            const testText = `Montréal, le 17 juin 2025 – Le plus haut niveau du volleyball de plage est de retour à Montréal! Du 13 au 17 août 2025, le Beach Pro Tour – Elite transformera le légendaire circuit Gilles-Villeneuve en une arène spectaculaire où s'affronteront les meilleures équipes féminines et masculines au monde. Après une édition 2023 marquée par les victoires retentissantes des Canadiennes Melissa Humana-Paredes et Brandie Wilkerson, ainsi que des Norvégiens Anders Mol et Christian Sørum, le tournoi s'annonce encore plus électrisant cette année au Montréal Beach Pro Tour. Suite à une spectaculaire médaille d'argent aux Jeux de Paris 2024, Humana-Paredes et Wilkerson reviennent à Montréal en véritables héroïnes nationales du volleyball pour participer à la seule étape canadienne de l'élite mondiale. L'énergie de Montréal. Les 32 meilleures équipes au monde s'affronteront pendant 5 jours pour gravier le classement international et Montréal est la seule occasion de le faire en territoire nord-américain sur le calendrier mondial 2025. Les Montréalaises et Montréalais ont donc une chance unique d'assister à ces duels. Plus qu'un simple tournoi, Montréal Beach Pro Tour promet une ambiance survoltée : DJ sur place, zone gourmande et expériences immersives. Un événement festif qui marie sport de haut niveau, culture urbaine et plaisir estival. Les billets sont en vente dès maintenant! Rendez-vous sur mtlbeachprotour.com pour accéder aux meilleurs sièges pour vivre l'événement au cœur de l'action. Déclarations « Montréal occupe une place bien spéciale dans nos cœurs, surtout depuis le succès retentissant du dernier tournoi organisé il y a deux ans », a déclaré Melissa Humana-Paredes.`;
+            
+            const processor = new WordProcessor();
+            const result = processor.processPlainText(testText);
+            
+            console.log('Original length:', testText.length);
+            console.log('Paragraphs created:', result.split('<p>').length - 1);
+            console.log('Result:', result);
+            
+            // Show in preview if form is open
+            if (document.getElementById('content')) {
+                document.getElementById('content').value = testText;
+                document.getElementById('content').setAttribute('data-processed-content', result);
+                showContentPreview('content', result);
+            }
+            
+            return result;
+        };
+
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             console.log('🚀 CMS Initialized');
+            console.log('💡 Test paragraph splitting by running: testParagraphSplit()');
             
             // Login form
             document.getElementById('loginForm').addEventListener('submit', function(e) {
