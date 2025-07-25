@@ -491,16 +491,12 @@
                     // Remove outer <p> tags
                     let innerContent = processedContent.slice(3, -4);
                     
-                    // Split only on major semantic breaks - be more conservative
+                    // Only split after complete speaker attributions (very minimal)
                     const breakPatterns = [
-                        /(», a déclaré <strong>)/g,  // Quote end with attribution
-                        /(», a affirmé <strong>)/g,  // Quote end with affirmation  
-                        /(», a mentionné <strong>)/g, // Quote end with mention
-                        /(», de dire <strong>)/g,     // Quote end with "de dire"
-                        /(<\/strong>\.<strong>«)/g,   // Period then new quote
-                        /(<\/strong><strong>Déclarations<\/strong>)/g, // Section header
-                        /(<\/strong><strong>À propos)/g,  // About section
-                        /(<\/strong><strong>CONTACT)/g    // Contact section
+                        /(<\/strong>\.<strong>«)/g,     // Period then new quote  
+                        /(<\/strong><strong>Déclarations<\/strong>)/g, // Major section
+                        /(<\/strong><strong>À propos)/g,     // About section
+                        /(<\/strong><strong>CONTACT)/g       // Contact section
                     ];
                     
                     // Apply breaks
