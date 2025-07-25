@@ -358,6 +358,17 @@ The website is now fully operational and matches the original local/Netlify func
 - **Data integrity fix**: Resolved job loading issue by correcting function calls from non-existent loadJobsData() to direct array access
 - **Status**: ✅ PRODUCTION READY - Complete visual brand consistency achieved across all content with working data display
 
+### Modal Header Opacity & Legal Page Navigation Fix - July 25, 2025 ✅ COMPLETED
+- **Modal header opacity fix**: Changed job/news modal headers from transparent (bg-black/80) to fully opaque (bg-black) per user preference
+- **Applied to all modal pages**: Fixed French/English jobs and news pages for consistent solid black modal headers
+- **Legal page navigation repair**: Fixed all broken footer links pointing to non-existent "LEGAL.html" across entire website
+- **Comprehensive link correction**: Updated all footer links to point to correct legal pages:
+  - French pages: politique-de-confidentialite.html, conditions-utilisation.html
+  - English pages: privacy-policy.html, terms-of-use.html
+- **Navigation structure fix**: Repaired corrupted HTML navigation links in legal pages with proper href attributes
+- **Cross-page language switching**: Fixed FR/EN toggle links between corresponding legal pages
+- **Status**: ✅ FULLY FUNCTIONAL - All modal headers opaque, all legal page navigation working properly
+
 ### Codebase Cleanup - July 24, 2025 ✅ COMPLETED
 - **Removed entire Strapi CMS system**: Deleted cms/ directory, strapi-config/, and all Strapi-related files
 - **Cleaned package dependencies**: Uninstalled @strapi/strapi and removed 1257+ associated packages
