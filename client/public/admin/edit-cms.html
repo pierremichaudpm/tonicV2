@@ -139,7 +139,7 @@
                             
                             <div class="bg-blue-50 p-4 rounded-lg">
                                 <h3 class="font-semibold text-lg mb-2">Description complète</h3>
-                                <p class="text-sm text-gray-600 mb-3">Écrivez la description en texte simple. Le formatage sera fait automatiquement.</p>
+                                <p class="text-sm text-gray-600 mb-3">Écrivez la description en texte simple. Le formatage sera fait automatiquement. Les URLs (http://... ou https://...) deviendront automatiquement des liens cliquables.</p>
                                 <textarea id="description" placeholder="Description complète du poste..." rows="15" class="w-full p-3 border rounded bg-white"></textarea>
                             </div>
                         </div>
@@ -175,7 +175,7 @@
                             
                             <div class="bg-purple-50 p-4 rounded-lg">
                                 <h3 class="font-semibold text-lg mb-2">Contenu complet</h3>
-                                <p class="text-sm text-gray-600 mb-3">Écrivez le contenu en texte simple. Le formatage sera fait automatiquement.</p>
+                                <p class="text-sm text-gray-600 mb-3">Écrivez le contenu en texte simple. Le formatage sera fait automatiquement. Les URLs (http://... ou https://...) deviendront automatiquement des liens cliquables.</p>
                                 <textarea id="content" placeholder="Contenu complet du communiqué..." rows="15" class="w-full p-3 border rounded bg-white"></textarea>
                             </div>
                         </div>
@@ -228,6 +228,20 @@
             const tmp = document.createElement('DIV');
             tmp.innerHTML = html;
             return tmp.textContent || tmp.innerText || '';
+        }
+
+        // Convert URLs in text to clickable links
+        function convertUrlsToLinks(text) {
+            // If text already contains HTML tags, don't process it
+            if (text.includes('<') && text.includes('>')) {
+                return text;
+            }
+            
+            // URL regex pattern to match http/https URLs
+            const urlRegex = /(https?:\/\/[^\s<>"']+)/gi;
+            
+            // Replace URLs with HTML links
+            return text.replace(urlRegex, '<a href="$1" target="_blank">$1</a>');
         }
 
         // Sync mobile and desktop dropdowns
@@ -466,9 +480,10 @@
                 let data = { lang: currentLang };
                 
                 if (currentType === 'jobs') {
-                    // Convert plain text back to HTML with paragraphs
+                    // Convert plain text back to HTML with paragraphs and convert URLs to links
                     const descText = document.getElementById('description').value;
-                    const descHtml = descText.split('\n\n').map(para => 
+                    const descWithLinks = convertUrlsToLinks(descText);
+                    const descHtml = descWithLinks.split('\n\n').map(para => 
                         para.trim() ? `<p>${para.trim()}</p>` : ''
                     ).join('\n');
                     
@@ -481,13 +496,14 @@
                         salary: document.getElementById('salary').value,
                         datePosted: document.getElementById('datePosted').value,
                         deadline: document.getElementById('deadline').value,
-                        summary: document.getElementById('summary').value,
+                        summary: convertUrlsToLinks(document.getElementById('summary').value),
                         description: descHtml
                     };
                 } else {
-                    // Convert plain text back to HTML with paragraphs
+                    // Convert plain text back to HTML with paragraphs and convert URLs to links
                     const contentText = document.getElementById('content').value;
-                    const contentHtml = contentText.split('\n\n').map(para => 
+                    const contentWithLinks = convertUrlsToLinks(contentText);
+                    const contentHtml = contentWithLinks.split('\n\n').map(para => 
                         para.trim() ? `<p>${para.trim()}</p>` : ''
                     ).join('\n');
                     
@@ -497,7 +513,7 @@
                         date: document.getElementById('date').value,
                         category: document.getElementById('category').value,
                         department: document.getElementById('newsDepartment').value,
-                        summary: document.getElementById('newsSummary').value,
+                        summary: convertUrlsToLinks(document.getElementById('newsSummary').value),
                         content: contentHtml
                     };
                 }
