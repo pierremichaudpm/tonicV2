@@ -105,9 +105,10 @@
 
                 <!-- Add/Edit Form Modal -->
                 <div id="formModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden z-50">
-                    <div class="flex items-center justify-center min-h-screen p-4">
-                        <div class="card w-full max-w-2xl rounded-xl p-6">
-                            <div class="flex justify-between items-center mb-6">
+                    <div class="flex items-start justify-center min-h-screen p-4 py-8">
+                        <div class="card w-full max-w-4xl max-h-[90vh] rounded-xl overflow-hidden flex flex-col">
+                            <!-- Fixed Header -->
+                            <div class="flex justify-between items-center p-6 border-b border-white/10">
                                 <h3 id="formTitle" class="text-xl font-semibold">Ajouter</h3>
                                 <button onclick="hideForm()" class="text-gray-400 hover:text-white">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -116,7 +117,9 @@
                                 </button>
                             </div>
 
-                            <form id="contentForm" class="space-y-4">
+                            <!-- Scrollable Form Content -->
+                            <div class="flex-1 overflow-y-auto p-6">
+                                <form id="contentForm" class="space-y-4">
                                 <div>
                                     <label class="block text-sm font-medium mb-2">Titre</label>
                                     <input type="text" id="title" class="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400" required>
@@ -155,25 +158,29 @@
                                             Le formatage (gras, italique, liens) sera automatiquement préservé.
                                         </p>
                                     </div>
-                                    <textarea id="content" rows="12" 
-                                              class="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400" 
+                                    <textarea id="content" rows="15" 
+                                              class="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 resize-none" 
                                               onpaste="handlePaste(event, 'content')"
                                               placeholder="Collez votre contenu Word ici..." required></textarea>
-                                    <div id="contentPreview" class="cms-content-preview hidden">
+                                    <div id="contentPreview" class="cms-content-preview hidden max-h-60 overflow-y-auto">
                                         <div class="text-sm text-gray-400 mb-2">Aperçu du formatage:</div>
                                         <div id="contentPreviewText"></div>
                                     </div>
                                 </div>
+                                </form>
+                            </div>
 
-                                <div class="flex gap-4 justify-end pt-4">
+                            <!-- Fixed Footer with Buttons -->
+                            <div class="border-t border-white/10 p-6">
+                                <div class="flex gap-4 justify-end">
                                     <button type="button" onclick="hideForm()" class="px-6 py-2 bg-gray-600 hover:bg-gray-700 rounded-lg">
                                         Annuler
                                     </button>
-                                    <button type="submit" class="px-6 py-2 btn-primary rounded-lg">
+                                    <button type="button" onclick="saveCurrentItem()" class="px-6 py-2 btn-primary rounded-lg">
                                         Enregistrer
                                     </button>
                                 </div>
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -576,9 +583,19 @@
             document.getElementById('contentPreview').style.display = 'none';
         }
 
+        // Save current item (called by button)
+        async function saveCurrentItem() {
+            const form = document.getElementById('contentForm');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+            await saveItem();
+        }
+
         // Save item
         async function saveItem(e) {
-            e.preventDefault();
+            if (e) e.preventDefault();
             
             const formData = {
                 lang: currentLang,
