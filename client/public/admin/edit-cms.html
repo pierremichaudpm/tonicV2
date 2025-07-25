@@ -143,7 +143,6 @@
                                     Copiez-collez directement depuis Word. Le système créera automatiquement les paragraphes et liens.
                                 </p>
                                 <textarea id="description" placeholder="Copiez-collez la description ici..." rows="15" class="w-full p-3 border rounded bg-white"
-                                    onpaste="handlePaste(event, 'description')" 
                                     oninput="validateContent()"></textarea>
                                 <div id="descriptionPreview" class="mt-2 p-3 bg-gray-50 border rounded text-sm text-gray-600" style="display: none;">
                                     <strong>Aperçu:</strong> <span id="descriptionPreviewText"></span>
@@ -179,7 +178,6 @@
                                     Copiez-collez directement depuis Word. Le système créera automatiquement les paragraphes et liens.
                                 </p>
                                 <textarea id="content" placeholder="Copiez-collez le contenu ici..." rows="15" class="w-full p-3 border rounded bg-white" 
-                                    onpaste="handlePaste(event, 'content')" 
                                     oninput="validateContent()"></textarea>
                                 <div id="contentPreview" class="mt-2 p-3 bg-gray-50 border rounded text-sm text-gray-600" style="display: none;">
                                     <strong>Aperçu:</strong> <span id="contentPreviewText"></span>
@@ -227,6 +225,8 @@
         
         // Initialize when page loads
         document.addEventListener('DOMContentLoaded', function() {
+            // Attach paste handlers properly
+            attachPasteHandlers();
             loadContent();
         });
         
@@ -282,68 +282,112 @@
             return result;
         }
         
-
+        // Properly attach paste handlers
+        function attachPasteHandlers() {
+            const descriptionField = document.getElementById('description');
+            const contentField = document.getElementById('content');
+            
+            if (descriptionField) {
+                // Remove any existing onpaste attribute and add proper event listener
+                descriptionField.removeAttribute('onpaste');
+                descriptionField.addEventListener('paste', (e) => handlePaste(e, 'description'));
+                console.log('✅ Paste handler attached to description field');
+            }
+            
+            if (contentField) {
+                // Remove any existing onpaste attribute and add proper event listener
+                contentField.removeAttribute('onpaste');
+                contentField.addEventListener('paste', (e) => handlePaste(e, 'content'));
+                console.log('✅ Paste handler attached to content field');
+            }
+        }
 
         // Enhanced paste handling for Word documents
         function handlePaste(event, fieldId) {
-            console.log('Paste event triggered for field:', fieldId);
+            console.log('🔥 PASTE EVENT TRIGGERED for field:', fieldId);
+            
+            // Prevent default paste behavior
+            event.preventDefault();
             
             try {
-                event.preventDefault();
-                
                 // Get clipboard data
-                const clipboardData = (event.clipboardData || window.clipboardData);
+                const clipboardData = event.clipboardData || window.clipboardData;
                 
                 if (!clipboardData) {
-                    console.error('No clipboard data available');
+                    console.error('❌ No clipboard data available');
                     return;
                 }
                 
-                let pastedData = '';
+                console.log('📋 Available clipboard types:', Array.from(clipboardData.types));
                 
-                console.log('Available clipboard types:', Array.from(clipboardData.types));
+                let pastedData = '';
+                let isHTML = false;
                 
                 // Try to get HTML first (preserves Word links), then fall back to plain text
-                if (clipboardData.types.includes('text/html')) {
+                if (clipboardData.types && clipboardData.types.includes('text/html')) {
                     pastedData = clipboardData.getData('text/html');
-                    console.log('Got HTML data:', pastedData.substring(0, 200));
-                    pastedData = cleanWordHTML(pastedData);
-                } else if (clipboardData.types.includes('text/plain')) {
-                    pastedData = clipboardData.getData('text/plain');
-                    console.log('Got plain text data:', pastedData.substring(0, 200));
+                    isHTML = true;
+                    console.log('📄 Got HTML data, length:', pastedData.length);
                 } else {
-                    console.log('No text data found in clipboard');
+                    pastedData = clipboardData.getData('text/plain') || clipboardData.getData('text');
+                    console.log('📝 Got plain text data, length:', pastedData.length);
+                }
+                
+                if (!pastedData) {
+                    console.error('❌ No paste data found');
                     return;
                 }
                 
                 // Process the content
-                const processedContent = processWordContent(pastedData);
-                console.log('Processed content length:', processedContent.length);
+                let processedContent = '';
+                
+                if (isHTML) {
+                    // Clean Word HTML and extract content
+                    const cleanedText = cleanWordHTML(pastedData);
+                    processedContent = processWordContent(cleanedText);
+                } else {
+                    // Process plain text
+                    processedContent = processWordContent(pastedData);
+                }
+                
+                console.log('🔧 Processed content length:', processedContent.length);
                 
                 // Insert into textarea
                 const textarea = document.getElementById(fieldId);
                 if (textarea) {
-                    textarea.value = processedContent;
-                    console.log('Content inserted into textarea');
+                    // For HTML content, we need to convert back to plain text for editing
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = processedContent;
+                    const plainText = tempDiv.textContent || tempDiv.innerText || processedContent;
+                    
+                    textarea.value = plainText;
+                    textarea.focus();
+                    
+                    console.log('✅ Content inserted successfully');
                     
                     // Show preview
                     showContentPreview(fieldId, processedContent);
+                    
+                    // Trigger input event to update any other handlers
+                    textarea.dispatchEvent(new Event('input', { bubbles: true }));
+                    
                 } else {
-                    console.error('Textarea not found:', fieldId);
+                    console.error('❌ Textarea not found:', fieldId);
                 }
                 
             } catch (error) {
-                console.error('Error in handlePaste:', error);
-                // Fallback: just get plain text
+                console.error('❌ Error in handlePaste:', error);
+                
+                // Simple fallback: just get plain text and insert it
                 try {
                     const plainText = (event.clipboardData || window.clipboardData).getData('text/plain');
                     const textarea = document.getElementById(fieldId);
                     if (textarea && plainText) {
                         textarea.value = plainText;
-                        console.log('Fallback: inserted plain text');
+                        console.log('✅ Fallback: inserted plain text');
                     }
                 } catch (fallbackError) {
-                    console.error('Fallback also failed:', fallbackError);
+                    console.error('❌ Fallback also failed:', fallbackError);
                 }
             }
         }

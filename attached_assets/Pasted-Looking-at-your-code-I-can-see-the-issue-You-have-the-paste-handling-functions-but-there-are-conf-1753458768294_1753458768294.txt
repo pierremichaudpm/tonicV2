@@ -1,0 +1,45 @@
+Looking at your code, I can see the issue. You have the paste handling functions, but there are conflicts between the inline `onpaste` attributes and the event handling. Let me give you a simpler, more reliable solution.Now you also need to **remove the inline paste handlers** from your HTML. In your HTML file, find these two lines and remove the `onpaste` attributes:
+
+**CHANGE THIS:**
+```html
+<textarea id="description" placeholder="Copiez-collez la description ici..." rows="15" class="w-full p-3 border rounded bg-white"
+    onpaste="handlePaste(event, 'description')" 
+    oninput="validateContent()"></textarea>
+```
+
+**TO THIS:**
+```html
+<textarea id="description" placeholder="Copiez-collez la description ici..." rows="15" class="w-full p-3 border rounded bg-white"
+    oninput="validateContent()"></textarea>
+```
+
+**AND CHANGE THIS:**
+```html
+<textarea id="content" placeholder="Copiez-collez le contenu ici..." rows="15" class="w-full p-3 border rounded bg-white" 
+    onpaste="handlePaste(event, 'content')" 
+    oninput="validateContent()"></textarea>
+```
+
+**TO THIS:**
+```html
+<textarea id="content" placeholder="Copiez-collez le contenu ici..." rows="15" class="w-full p-3 border rounded bg-white" 
+    oninput="validateContent()"></textarea>
+```
+
+## What This Fix Does:
+
+1. **🔧 Removes conflicts** - No more duplicate paste handlers
+2. **📋 Better clipboard detection** - Handles both HTML and plain text from Word
+3. **🔗 Preserves links** - Extracts and maintains clickable links from Word documents
+4. **📝 Console logging** - You can see what's happening in browser dev tools (F12)
+5. **⚡ Fallback handling** - If main paste fails, it falls back to simple text insertion
+6. **🔄 Re-attachment** - Paste handlers are reattached when modals open
+
+## To Test:
+
+1. **Replace your entire `<script>` section** with my code above
+2. **Remove the `onpaste` attributes** from the two textareas as shown
+3. **Open the browser dev tools** (F12) to see console messages
+4. **Try pasting from Word** - you should see messages like "🔥 PASTE EVENT TRIGGERED" 
+
+The console will show you exactly what's happening, so you can see if the paste is being detected and processed correctly.
