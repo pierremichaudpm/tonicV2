@@ -237,96 +237,178 @@
             return tmp.textContent || tmp.innerText || '';
         }
 
-        // Convert URLs and emails to clickable links and process bold formatting
+        // Enhanced link conversion with better Word document support
         function convertUrlsToLinks(text) {
-            // If text already contains HTML tags, don't process it
-            if (text.includes('<') && text.includes('>')) {
+            // Skip if already contains HTML links (already processed)
+            if (text.includes('<a href=')) {
                 return text;
             }
             
             let result = text;
             
-            // First, handle email addresses
+            // Handle email addresses (comprehensive regex)
             const emailRegex = /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/gi;
             result = result.replace(emailRegex, '<a href="mailto:$1" style="text-decoration: underline; color: #1d4ed8;">$1</a>');
             
-            // Then handle URLs (http/https)
-            const urlRegex = /(https?:\/\/[^\s<>"']+)/gi;
+            // Handle URLs with protocols (improved regex)
+            const urlRegex = /(https?:\/\/[^\s<>"'\[\]{}|\\^`]+)/gi;
             result = result.replace(urlRegex, '<a href="$1" target="_blank" style="text-decoration: underline; color: #1d4ed8;">$1</a>');
             
-            // Handle plain domain names (like mtlbeachprotour.com)
-            const domainRegex = /(?<![@\/])\b([a-zA-Z0-9-]+\.[a-zA-Z]{2,}(?:\.[a-zA-Z]{2,})?)\b(?![\/])/gi;
-            result = result.replace(domainRegex, (match) => {
-                // Don't convert if it's already part of an email or URL
-                if (result.includes(`@${match}`) || result.includes(`//${match}`)) {
+            // Handle www domains
+            const wwwRegex = /(www\.[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(?:\.[a-zA-Z]{2,})?(?:\/[^\s]*)?)/gi;
+            result = result.replace(wwwRegex, '<a href="https://$1" target="_blank" style="text-decoration: underline; color: #1d4ed8;">$1</a>');
+            
+            // Handle domain names (careful to avoid false positives)
+            const domainRegex = /(?<![@\/])\b([a-zA-Z0-9-]+\.[a-zA-Z]{2,}(?:\.[a-zA-Z]{2,})?)\b(?![@\/])/gi;
+            result = result.replace(domainRegex, (match, domain) => {
+                // Skip if already part of an email or URL
+                if (result.includes(`@${domain}`) || result.includes(`//${domain}`) || result.includes(`www.${domain}`)) {
                     return match;
                 }
-                return `<a href="https://${match}" target="_blank" style="text-decoration: underline; color: #1d4ed8;">${match}</a>`;
+                // Skip common file extensions
+                if (match.match(/\.(pdf|doc|docx|xls|xlsx|jpg|png|gif)$/i)) {
+                    return match;
+                }
+                return `<a href="https://${domain}" target="_blank" style="text-decoration: underline; color: #1d4ed8;">${domain}</a>`;
             });
             
             // Handle common hidden link patterns from Word documents
             result = result.replace(/DOSSIER DE PRESSE\s*>>>/gi, '<a href="#" target="_blank" style="text-decoration: underline; color: #1d4ed8;">DOSSIER DE PRESSE >>></a> <em style="color: #666; font-size: 0.9em;">(Remplacez # par l\'URL du dossier)</em>');
             result = result.replace(/FORMULAIRE D['''´]ACCRÉDITATION\s*>>>/gi, '<a href="#" target="_blank" style="text-decoration: underline; color: #1d4ed8;">FORMULAIRE D\'ACCRÉDITATION >>></a> <em style="color: #666; font-size: 0.9em;">(Remplacez # par l\'URL du formulaire)</em>');
             
-            // Convert **text** to bold formatting
+            // Handle bold formatting
             result = result.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
             
             return result;
         }
         
-        // Simple and reliable text processing for Word documents
-        function processTextToParagraphs(text) {
+
+
+        // Enhanced paste handling for Word documents
+        function handlePaste(event, fieldId) {
+            event.preventDefault();
+            
+            // Get clipboard data
+            const clipboardData = (event.clipboardData || window.clipboardData);
+            let pastedData = '';
+            
+            console.log('Available clipboard types:', clipboardData.types);
+            
+            // Try to get HTML first (preserves Word links), then fall back to plain text
+            if (clipboardData.types.includes('text/html')) {
+                pastedData = clipboardData.getData('text/html');
+                console.log('Got HTML data:', pastedData.substring(0, 200));
+                pastedData = cleanWordHTML(pastedData);
+            } else {
+                pastedData = clipboardData.getData('text/plain');
+                console.log('Got plain text data:', pastedData.substring(0, 200));
+            }
+            
+            // Process the content
+            const processedContent = processWordContent(pastedData);
+            console.log('Processed content:', processedContent);
+            
+            // Insert into textarea
+            const textarea = document.getElementById(fieldId);
+            textarea.value = processedContent;
+            
+            // Show preview
+            showContentPreview(fieldId, processedContent);
+        }
+        
+        // Clean Word's messy HTML
+        function cleanWordHTML(html) {
+            if (!html) return '';
+            
+            // Remove Word's XML namespaces and proprietary tags
+            html = html.replace(/<o:p\s*\/?>|<\/o:p>/gi, '');
+            html = html.replace(/<w:.*?>.*?<\/w:.*?>/gi, '');
+            html = html.replace(/<!--\[if gte mso.*?<!\[endif\]-->/gi, '');
+            html = html.replace(/<!--.*?-->/gi, '');
+            
+            // Clean up Word's span styling but preserve links
+            html = html.replace(/<span[^>]*?style="[^"]*"[^>]*?>(.*?)<\/span>/gi, '$1');
+            html = html.replace(/<span[^>]*?>(.*?)<\/span>/gi, '$1');
+            
+            // Preserve links but clean their attributes
+            html = html.replace(/<a\s+[^>]*href="([^"]*)"[^>]*>(.*?)<\/a>/gi, '<a href="$1">$2</a>');
+            
+            // Convert to plain text but preserve link information
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = html;
+            
+            // Extract links and their text
+            const links = tempDiv.querySelectorAll('a');
+            let plainText = tempDiv.textContent || tempDiv.innerText || '';
+            
+            // Mark where links should be restored
+            links.forEach((link, index) => {
+                const linkText = link.textContent;
+                const linkUrl = link.href;
+                plainText = plainText.replace(linkText, `__LINK_${index}__${linkText}__LINKURL_${linkUrl}__`);
+            });
+            
+            return plainText;
+        }
+        
+        // Enhanced Word content processing
+        function processWordContent(text) {
             if (!text || text.trim().length === 0) return '';
             
-            // First handle URLs and bold formatting
-            let processedText = convertUrlsToLinks(text);
+            // First, restore links that were marked during Word HTML cleaning
+            text = text.replace(/__LINK_(\d+)__(.*?)__LINKURL_(.*?)__/g, '<a href="$3" style="text-decoration: underline; color: #1d4ed8;">$2</a>');
             
-            // Simple but effective paragraph splitting
-            let paragraphs = processedText
-                // Split on double newlines first (clear paragraph breaks)
-                .split(/\n\s*\n/)
-                .map(section => {
-                    // Split on single newlines followed by capitals or specific patterns
-                    return section.split(/\n(?=[A-ZÀÉÈÊËÏÎÔÖÙÚÛÜŸÇ]|Montréal|Les |Pour |Après |COMMUNIQUÉ|CONTACT|Déclarations)/);
-                })
-                .flat()
-                .filter(para => para.trim().length > 3) // Keep anything with content
-                .map(para => {
-                    // Clean up each paragraph
-                    return para.trim()
-                        .replace(/\n+/g, ' ') // Replace newlines with spaces
-                        .replace(/\s+/g, ' ') // Normalize spaces
+            // Clean up Word's special characters
+            text = text.replace(/[\u2018\u2019]/g, "'"); // Smart quotes
+            text = text.replace(/[\u201C\u201D]/g, '"'); // Smart quotes
+            text = text.replace(/\u2013/g, '-'); // En dash
+            text = text.replace(/\u2014/g, '--'); // Em dash
+            text = text.replace(/\u2026/g, '...'); // Ellipsis
+            text = text.replace(/\u00A0/g, ' '); // Non-breaking space
+            
+            // Convert URLs and emails to links
+            text = convertUrlsToLinks(text);
+            
+            // Smart paragraph detection
+            let paragraphs = [];
+            
+            // Split on clear paragraph indicators
+            const sections = text.split(/\n\s*\n+/);
+            
+            sections.forEach(section => {
+                // Further split on specific patterns that indicate new paragraphs
+                const subParagraphs = section.split(/\n(?=[A-ZÀÉÈÊËÏÎÔÖÙÚÛÜŸÇ]|Montréal|COMMUNIQUÉ|CONTACT|Pour |Après |Les |En |De |Le |La |Ce |Cette |Dans |Selon |Nous |Il |Elle |Contact|Tel|Tél|Email|E-mail)/);
+                
+                subParagraphs.forEach(para => {
+                    const cleanPara = para.trim()
+                        .replace(/\n+/g, ' ')
+                        .replace(/\s+/g, ' ')
                         .trim();
-                })
-                .filter(para => para.length > 0);
+                    
+                    if (cleanPara.length > 10) {
+                        paragraphs.push(cleanPara);
+                    }
+                });
+            });
             
-            // If no paragraphs were created, treat the whole text as one paragraph
-            if (paragraphs.length === 0 && processedText.trim().length > 0) {
-                paragraphs = [processedText.trim().replace(/\n+/g, ' ').replace(/\s+/g, ' ')];
+            // If no paragraphs detected, treat entire text as one paragraph
+            if (paragraphs.length === 0 && text.trim().length > 0) {
+                paragraphs = [text.trim().replace(/\n+/g, ' ').replace(/\s+/g, ' ')];
             }
             
             // Convert to HTML paragraphs
             return paragraphs.map(para => `<p>${para}</p>`).join('\n');
         }
-
-        // Handle paste events to ensure Word content is captured
-        function handlePaste(event, fieldId) {
-            setTimeout(() => {
-                const textarea = document.getElementById(fieldId);
-                const content = textarea.value;
-                console.log(`Paste detected in ${fieldId}:`, content);
-                
-                // Show preview if content exists
-                if (content && content.trim().length > 0) {
-                    const previewDiv = document.getElementById(fieldId + 'Preview');
-                    const previewText = document.getElementById(fieldId + 'PreviewText');
-                    if (previewDiv && previewText) {
-                        const shortPreview = content.substring(0, 100) + (content.length > 100 ? '...' : '');
-                        previewText.textContent = shortPreview;
-                        previewDiv.style.display = 'block';
-                    }
-                }
-            }, 100); // Small delay to let paste complete
+        
+        // Show content preview
+        function showContentPreview(fieldId, content) {
+            const previewDiv = document.getElementById(fieldId + 'Preview');
+            const previewText = document.getElementById(fieldId + 'PreviewText');
+            if (previewDiv && previewText && content) {
+                const shortPreview = content.substring(0, 150) + (content.length > 150 ? '...' : '');
+                previewText.innerHTML = shortPreview; // Use innerHTML to show formatted content
+                previewDiv.style.display = 'block';
+            }
         }
         
         // Validate content exists
@@ -578,7 +660,7 @@
                 if (currentType === 'jobs') {
                     // Use enhanced text processing for job descriptions
                     const descText = document.getElementById('description').value;
-                    const descHtml = processTextToParagraphs(descText);
+                    const descHtml = processWordContent(descText);
                     
                     data = {
                         ...data,
@@ -598,7 +680,7 @@
                     console.log('Raw content text:', contentText); // Debug log
                     
                     // Fallback: if processing returns empty, use original text with basic formatting
-                    let contentHtml = processTextToParagraphs(contentText);
+                    let contentHtml = processWordContent(contentText);
                     if (!contentHtml || contentHtml.trim().length === 0) {
                         contentHtml = contentText ? `<p>${convertUrlsToLinks(contentText.replace(/\n+/g, '</p><p>'))}</p>` : '';
                     }
