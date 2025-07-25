@@ -358,8 +358,8 @@
                                         <strong>Location:</strong> ${item.location || item.lieu || 'N/A'} | 
                                         <strong>Type:</strong> ${item.type || 'N/A'}
                                     </div>
-                                    ${descText ? `<div class="mt-3 text-gray-700 border-l-4 border-blue-200 pl-4 text-sm leading-relaxed">
-                                        <strong>Description:</strong><br>${descText}
+                                    ${descText ? `<div class="mt-3 text-gray-700 border-l-4 border-blue-200 pl-4 pr-2 text-sm leading-relaxed">
+                                        <strong>Description:</strong><br><span class="block mt-1">${descText}</span>
                                     </div>` : '<div class="mt-3 text-gray-500 italic">No description available</div>'}
                                 </div>
                                 <div class="flex gap-2">
@@ -393,8 +393,8 @@
                                         <strong>Category:</strong> ${item.category || 'N/A'} | 
                                         <strong>Department:</strong> ${item.department || 'N/A'}
                                     </div>
-                                    ${contentText ? `<div class="mt-3 text-gray-700 border-l-4 border-purple-200 pl-4 text-sm leading-relaxed">
-                                        <strong>Content:</strong><br>${contentText}
+                                    ${contentText ? `<div class="mt-3 text-gray-700 border-l-4 border-purple-200 pl-4 pr-2 text-sm leading-relaxed">
+                                        <strong>Content:</strong><br><span class="block mt-1">${contentText}</span>
                                     </div>` : '<div class="mt-3 text-gray-500 italic">No content available</div>'}
                                 </div>
                                 <div class="flex gap-2">
