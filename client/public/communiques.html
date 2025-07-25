@@ -598,12 +598,17 @@
                     // Remove outer <p> tags
                     let innerContent = processedContent.slice(3, -4);
                     
-                    // Only split after complete speaker attributions (very minimal)
+                    // Split on natural Word paragraph breaks visible in the document
                     const breakPatterns = [
-                        /(<\/strong>\.<strong>«)/g,     // Period then new quote  
+                        /(<\/strong>\.<strong>L'élite mondiale)/g,   // Natural section break
+                        /(<\/strong>\.<strong>L'énergie de Montréal)/g, // Another natural break
+                        /(<\/strong>\.<strong>Plus qu'un simple)/g,   // Natural paragraph start
+                        /(<\/strong>\.<strong>Un événement)/g,       // Natural paragraph start
+                        /(<\/strong>\.<strong>Les billets)/g,        // Natural paragraph start
                         /(<\/strong><strong>Déclarations<\/strong>)/g, // Major section
-                        /(<\/strong><strong>À propos)/g,     // About section
-                        /(<\/strong><strong>CONTACT)/g       // Contact section
+                        /(<\/strong><strong>À propos)/g,             // About section
+                        /(<\/strong><strong>CONTACT)/g,              // Contact section
+                        /(<\/strong>\.<strong>«)/g                   // Period then new quote
                     ];
                     
                     // Apply breaks
