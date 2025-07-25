@@ -491,18 +491,16 @@
                     // Remove outer <p> tags
                     let innerContent = processedContent.slice(3, -4);
                     
-                    // Split on strong semantic breaks with better quote handling
+                    // Split only on major semantic breaks - be more conservative
                     const breakPatterns = [
-                        /(<\/strong><strong>)/g,  // Between bold sections
-                        /(\. <strong>)/g,         // Sentence end followed by bold
-                        /(<\/a><strong>)/g,       // Link end followed by bold
-                        /(« <strong>)/g,          // Quote start with bold
-                        /(» <strong>)/g,          // Quote end with bold
                         /(», a déclaré <strong>)/g,  // Quote end with attribution
-                        /(», a affirmé <strong>)/g,  // Quote end with affirmation
+                        /(», a affirmé <strong>)/g,  // Quote end with affirmation  
                         /(», a mentionné <strong>)/g, // Quote end with mention
-                        /(\. <strong>«)/g,        // New quote after sentence
-                        /(<\/strong>\.<strong>)/g // Period between bold sections
+                        /(», de dire <strong>)/g,     // Quote end with "de dire"
+                        /(<\/strong>\.<strong>«)/g,   // Period then new quote
+                        /(<\/strong><strong>Déclarations<\/strong>)/g, // Section header
+                        /(<\/strong><strong>À propos)/g,  // About section
+                        /(<\/strong><strong>CONTACT)/g    // Contact section
                     ];
                     
                     // Apply breaks
