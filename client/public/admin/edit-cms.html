@@ -139,8 +139,14 @@
                             
                             <div class="bg-blue-50 p-4 rounded-lg">
                                 <h3 class="font-semibold text-lg mb-2">Description complète</h3>
-                                <p class="text-sm text-gray-600 mb-3">Écrivez la description en texte simple. Le formatage sera fait automatiquement. Les URLs (http://... ou https://...) deviendront automatiquement des liens cliquables.</p>
-                                <textarea id="description" placeholder="Description complète du poste..." rows="15" class="w-full p-3 border rounded bg-white"></textarea>
+                                <p class="text-sm text-gray-600 mb-3">
+                                    <strong>📋 Instructions pour coller depuis Word :</strong><br>
+                                    • Séparez chaque paragraphe par une ligne vide<br>
+                                    • Les URLs seront automatiquement converties en liens<br>
+                                    • Utilisez **texte** pour le gras<br>
+                                    • Après coller de Word, ajoutez des lignes vides entre paragraphes
+                                </p>
+                                <textarea id="description" placeholder="Copiez-collez ici la description depuis Word. Ajoutez des lignes vides entre chaque paragraphe." rows="15" class="w-full p-3 border rounded bg-white"></textarea>
                             </div>
                         </div>
 
@@ -168,8 +174,14 @@
                             
                             <div class="bg-purple-50 p-4 rounded-lg">
                                 <h3 class="font-semibold text-lg mb-2">Contenu complet</h3>
-                                <p class="text-sm text-gray-600 mb-3">Écrivez le contenu en texte simple. Le formatage sera fait automatiquement. Les URLs (http://... ou https://...) deviendront automatiquement des liens cliquables.</p>
-                                <textarea id="content" placeholder="Contenu complet du communiqué..." rows="15" class="w-full p-3 border rounded bg-white"></textarea>
+                                <p class="text-sm text-gray-600 mb-3">
+                                    <strong>📋 Instructions pour coller depuis Word :</strong><br>
+                                    • Séparez chaque paragraphe par une ligne vide<br>
+                                    • Les URLs seront automatiquement converties en liens<br>
+                                    • Utilisez **texte** pour le gras<br>
+                                    • Après coller de Word, ajoutez des lignes vides entre paragraphes
+                                </p>
+                                <textarea id="content" placeholder="Copiez-collez ici le contenu depuis Word. Ajoutez des lignes vides entre chaque paragraphe." rows="15" class="w-full p-3 border rounded bg-white"></textarea>
                             </div>
                         </div>
 
@@ -223,7 +235,7 @@
             return tmp.textContent || tmp.innerText || '';
         }
 
-        // Convert URLs in text to clickable links
+        // Convert URLs in text to clickable links and process bold formatting
         function convertUrlsToLinks(text) {
             // If text already contains HTML tags, don't process it
             if (text.includes('<') && text.includes('>')) {
@@ -234,7 +246,30 @@
             const urlRegex = /(https?:\/\/[^\s<>"']+)/gi;
             
             // Replace URLs with HTML links
-            return text.replace(urlRegex, '<a href="$1" target="_blank">$1</a>');
+            let result = text.replace(urlRegex, '<a href="$1" target="_blank">$1</a>');
+            
+            // Convert **text** to bold formatting
+            result = result.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            
+            return result;
+        }
+        
+        // Enhanced text processing for better paragraph detection
+        function processTextToParagraphs(text) {
+            const processedText = convertUrlsToLinks(text);
+            
+            // Split on multiple line breaks (2 or more) OR single line breaks followed by capitals/quotes
+            let paragraphs = processedText
+                .split(/\n\s*\n/)  // Split on double newlines (with optional whitespace)
+                .map(section => {
+                    // Further split single newlines that appear before capitals, quotes, or common press release patterns
+                    return section.split(/\n(?=[A-Z«"–]|\d+\.|•|-)/)
+                })
+                .flat()
+                .filter(para => para.trim().length > 0)
+                .map(para => para.trim().replace(/\n/g, ' ')); // Replace remaining single newlines with spaces
+            
+            return paragraphs.map(para => `<p>${para}</p>`).join('\n');
         }
 
         // Sync mobile and desktop dropdowns
@@ -471,12 +506,9 @@
                 let data = { lang: currentLang };
                 
                 if (currentType === 'jobs') {
-                    // Convert plain text back to HTML with paragraphs and convert URLs to links
+                    // Use enhanced text processing for job descriptions
                     const descText = document.getElementById('description').value;
-                    const descWithLinks = convertUrlsToLinks(descText);
-                    const descHtml = descWithLinks.split('\n\n').map(para => 
-                        para.trim() ? `<p>${para.trim()}</p>` : ''
-                    ).join('\n');
+                    const descHtml = processTextToParagraphs(descText);
                     
                     data = {
                         ...data,
@@ -491,12 +523,9 @@
                         description: descHtml
                     };
                 } else {
-                    // Convert plain text back to HTML with paragraphs and convert URLs to links
+                    // Use enhanced text processing for news content
                     const contentText = document.getElementById('content').value;
-                    const contentWithLinks = convertUrlsToLinks(contentText);
-                    const contentHtml = contentWithLinks.split('\n\n').map(para => 
-                        para.trim() ? `<p>${para.trim()}</p>` : ''
-                    ).join('\n');
+                    const contentHtml = processTextToParagraphs(contentText);
                     
                     data = {
                         ...data,
