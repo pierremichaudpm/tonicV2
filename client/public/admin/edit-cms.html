@@ -140,7 +140,8 @@
                             <div class="bg-blue-50 p-4 rounded-lg">
                                 <h3 class="font-semibold text-lg mb-2">Description complète</h3>
                                 <p class="text-sm text-gray-600 mb-3">
-                                    Copiez-collez directement depuis Word. Ajoutez une ligne vide entre chaque paragraphe.
+                                    Copiez-collez directement depuis Word. Ajoutez une ligne vide entre chaque paragraphe.<br>
+                                    <strong>Pour les liens cachés:</strong> Remplacez "DOSSIER DE PRESSE >>>" par l'URL complète.
                                 </p>
                                 <textarea id="description" placeholder="Copiez-collez la description ici..." rows="15" class="w-full p-3 border rounded bg-white"></textarea>
                             </div>
@@ -171,7 +172,8 @@
                             <div class="bg-purple-50 p-4 rounded-lg">
                                 <h3 class="font-semibold text-lg mb-2">Contenu complet</h3>
                                 <p class="text-sm text-gray-600 mb-3">
-                                    Copiez-collez directement depuis Word. Ajoutez une ligne vide entre chaque paragraphe.
+                                    Copiez-collez directement depuis Word. Ajoutez une ligne vide entre chaque paragraphe.<br>
+                                    <strong>Pour les liens cachés:</strong> Remplacez "DOSSIER DE PRESSE >>>" par l'URL complète.
                                 </p>
                                 <textarea id="content" placeholder="Copiez-collez le contenu ici..." rows="15" class="w-full p-3 border rounded bg-white"></textarea>
                             </div>
@@ -253,6 +255,10 @@
                 }
                 return `<a href="https://${match}" target="_blank" style="text-decoration: underline; color: #1d4ed8;">${match}</a>`;
             });
+            
+            // Handle common hidden link patterns from Word documents
+            result = result.replace(/DOSSIER DE PRESSE\s*>>>/gi, '<a href="#" target="_blank" style="text-decoration: underline; color: #1d4ed8;">DOSSIER DE PRESSE >>></a> <em style="color: #666; font-size: 0.9em;">(Remplacez # par l\'URL du dossier)</em>');
+            result = result.replace(/FORMULAIRE D['''´]ACCRÉDITATION\s*>>>/gi, '<a href="#" target="_blank" style="text-decoration: underline; color: #1d4ed8;">FORMULAIRE D\'ACCRÉDITATION >>></a> <em style="color: #666; font-size: 0.9em;">(Remplacez # par l\'URL du formulaire)</em>');
             
             // Convert **text** to bold formatting
             result = result.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
