@@ -274,9 +274,9 @@
             background: rgba(255, 255, 255, 0.3);
         }
         
-        /* UNIVERSAL Word formatting support - ALL elements */
-        #modalContent * {
-            color: inherit !important;
+        /* UNIVERSAL Word formatting support - preserve HTML structure */
+        #modalContent {
+            color: rgba(255, 255, 255, 0.9);
         }
         
         /* Links - FORCE OVERRIDE all Word styles */
@@ -579,9 +579,39 @@
             if (!release.content || release.content.trim() === '') {
                 modalContent.innerHTML = '<p class="text-white/70 italic">Contenu non disponible.</p>';
             } else {
-                // DIRECT HTML injection with link fixing
-                console.log('🎯 Injecting Word HTML');
-                modalContent.innerHTML = release.content;
+                // Split mega-paragraphs and inject with proper formatting
+                console.log('🎯 Processing and injecting Word HTML');
+                let processedContent = release.content;
+                
+                // If content is one massive <p> tag, split it intelligently
+                if (processedContent.startsWith('<p>') && processedContent.endsWith('</p>') && !processedContent.includes('</p><p>')) {
+                    console.log('📝 Splitting mega-paragraph');
+                    
+                    // Remove outer <p> tags
+                    let innerContent = processedContent.slice(3, -4);
+                    
+                    // Split on strong semantic breaks
+                    const breakPatterns = [
+                        /(<\/strong><strong>)/g,  // Between bold sections
+                        /(\. <strong>)/g,         // Sentence end followed by bold
+                        /(<\/a><strong>)/g,       // Link end followed by bold
+                        /(« <strong>)/g,          // Quote start with bold
+                        /(» <strong>)/g           // Quote end with bold
+                    ];
+                    
+                    // Apply breaks
+                    breakPatterns.forEach(pattern => {
+                        innerContent = innerContent.replace(pattern, '$1</p><p>');
+                    });
+                    
+                    // Wrap back in paragraph tags
+                    processedContent = '<p>' + innerContent + '</p>';
+                    
+                    // Clean up empty paragraphs
+                    processedContent = processedContent.replace(/<p>\s*<\/p>/g, '');
+                }
+                
+                modalContent.innerHTML = processedContent;
                 
                 // Fix links immediately after injection
                 const links = modalContent.querySelectorAll('a');

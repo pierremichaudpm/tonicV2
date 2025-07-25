@@ -334,6 +334,33 @@
                     
                     if (!content) return '';
                     
+                    // Split long content into paragraphs based on sentence breaks
+                    const sentences = content.split(/(?<=[.!?])\s+(?=[A-Z])/);
+                    if (sentences.length > 3) {
+                        // Create multiple paragraphs for better readability
+                        const paragraphs = [];
+                        let currentParagraph = '';
+                        
+                        sentences.forEach((sentence, index) => {
+                            currentParagraph += sentence;
+                            
+                            // Create new paragraph every 2-3 sentences or at natural breaks
+                            if ((index + 1) % 2 === 0 || sentence.includes('–') || sentence.includes('»')) {
+                                paragraphs.push(`<p>${currentParagraph.trim()}</p>`);
+                                currentParagraph = '';
+                            } else {
+                                currentParagraph += ' ';
+                            }
+                        });
+                        
+                        // Add any remaining content
+                        if (currentParagraph.trim()) {
+                            paragraphs.push(`<p>${currentParagraph.trim()}</p>`);
+                        }
+                        
+                        return paragraphs.join('\n');
+                    }
+                    
                     const fontSize = parseFloat(style.fontSize);
                     const isBold = style.fontWeight === 'bold' || parseInt(style.fontWeight) >= 700;
                     
