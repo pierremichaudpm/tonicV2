@@ -543,36 +543,141 @@
             return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         }
 
-        // Simple Word HTML processing from your solution
+        // Advanced Word HTML processing - PRESERVES ALL FORMATTING
         function processWordHTMLSimple(html) {
             if (!html || html.trim().length === 0) return '';
             
-            debugLog('🔍 Processing Word HTML');
+            debugLog('🎨 Processing Word HTML with FULL formatting preservation');
             
             try {
                 const tempDiv = document.createElement('div');
                 tempDiv.innerHTML = html;
                 
-                // Remove unwanted elements
-                const unwanted = tempDiv.querySelectorAll('meta, style, script, xml');
+                // Remove only truly unwanted elements but keep formatting
+                const unwanted = tempDiv.querySelectorAll('meta, script, xml, o\\:p');
                 unwanted.forEach(el => el.remove());
                 
-                // Get all text content
-                let allText = tempDiv.textContent || tempDiv.innerText || '';
-                debugLog('📝 Extracted text:', allText.substring(0, 100) + '...');
+                // Clean up Word-specific CSS but preserve visual formatting
+                cleanWordFormatting(tempDiv);
                 
-                if (!allText || allText.trim().length === 0) {
-                    return '';
-                }
+                // Convert Word elements to proper HTML
+                convertWordElements(tempDiv);
                 
-                // Convert to paragraphs and add links
-                const result = convertTextToParagraphs(allText);
-                return result;
+                // Get formatted HTML content
+                let processedHTML = tempDiv.innerHTML;
+                
+                // Clean up extra whitespace but preserve intentional formatting
+                processedHTML = processedHTML
+                    .replace(/\s*<\/p>\s*<p[^>]*>\s*/g, '</p><p>')  // Clean paragraph spacing
+                    .replace(/(<p[^>]*>)\s+/g, '$1')                // Remove leading spaces in paragraphs
+                    .replace(/\s+(<\/p>)/g, '$1')                  // Remove trailing spaces in paragraphs
+                    .replace(/\n\s*\n/g, '\n')                     // Remove excessive line breaks
+                    .trim();
+                
+                debugLog('✨ Preserved formatted HTML length:', processedHTML.length);
+                debugLog('🔗 Links preserved:', (processedHTML.match(/<a /g) || []).length);
+                debugLog('💪 Bold text preserved:', (processedHTML.match(/<(strong|b)\b/g) || []).length);
+                
+                return processedHTML;
                 
             } catch (error) {
                 debugLog('❌ Error processing HTML:', error.message);
                 return '';
             }
+        }
+        
+        // Clean Word-specific formatting but preserve visual appearance
+        function cleanWordFormatting(element) {
+            // Remove Word-specific namespaces and attributes but keep visual styling
+            const elementsToClean = element.querySelectorAll('*');
+            elementsToClean.forEach(el => {
+                // Remove Word-specific attributes
+                el.removeAttribute('class');
+                el.removeAttribute('lang');
+                
+                // Convert Word styling to standard CSS
+                if (el.style) {
+                    const style = el.style;
+                    let newStyle = '';
+                    
+                    // Preserve important visual styles
+                    if (style.fontWeight === 'bold' || style.fontWeight >= 700) {
+                        if (el.tagName.toLowerCase() !== 'strong' && el.tagName.toLowerCase() !== 'b') {
+                            const strong = document.createElement('strong');
+                            strong.innerHTML = el.innerHTML;
+                            el.parentNode.replaceChild(strong, el);
+                            return;
+                        }
+                    }
+                    
+                    if (style.fontStyle === 'italic') {
+                        if (el.tagName.toLowerCase() !== 'em' && el.tagName.toLowerCase() !== 'i') {
+                            const em = document.createElement('em');
+                            em.innerHTML = el.innerHTML;
+                            el.parentNode.replaceChild(em, el);
+                            return;
+                        }
+                    }
+                    
+                    // Preserve font size
+                    if (style.fontSize) {
+                        newStyle += `font-size: ${style.fontSize}; `;
+                    }
+                    
+                    // Preserve color
+                    if (style.color) {
+                        newStyle += `color: ${style.color}; `;
+                    }
+                    
+                    // Preserve text decoration
+                    if (style.textDecoration) {
+                        newStyle += `text-decoration: ${style.textDecoration}; `;
+                    }
+                    
+                    if (newStyle) {
+                        el.setAttribute('style', newStyle.trim());
+                    } else {
+                        el.removeAttribute('style');
+                    }
+                }
+            });
+        }
+        
+        // Convert Word-specific elements to standard HTML
+        function convertWordElements(element) {
+            // Convert <span> with bold styling to <strong>
+            const boldSpans = element.querySelectorAll('span[style*="font-weight"]');
+            boldSpans.forEach(span => {
+                if (span.style.fontWeight === 'bold' || span.style.fontWeight >= 700) {
+                    const strong = document.createElement('strong');
+                    strong.innerHTML = span.innerHTML;
+                    if (span.style.fontSize || span.style.color) {
+                        let keepStyle = '';
+                        if (span.style.fontSize) keepStyle += `font-size: ${span.style.fontSize}; `;
+                        if (span.style.color) keepStyle += `color: ${span.style.color}; `;
+                        if (keepStyle) strong.setAttribute('style', keepStyle.trim());
+                    }
+                    span.parentNode.replaceChild(strong, span);
+                }
+            });
+            
+            // Convert <span> with italic styling to <em>
+            const italicSpans = element.querySelectorAll('span[style*="font-style: italic"]');
+            italicSpans.forEach(span => {
+                const em = document.createElement('em');
+                em.innerHTML = span.innerHTML;
+                span.parentNode.replaceChild(em, span);
+            });
+            
+            // Ensure hyperlinks are preserved
+            const links = element.querySelectorAll('a');
+            links.forEach(link => {
+                if (link.href) {
+                    link.setAttribute('target', '_blank');
+                    link.setAttribute('style', 'text-decoration: underline; color: #1d4ed8;');
+                }
+            });
+        }
         }
 
         // Helper function to convert text to paragraphs
