@@ -145,6 +145,19 @@
                                     </select>
                                 </div>
 
+                                <!-- PDF Upload Section -->
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Document PDF (optionnel)</label>
+                                    <input type="file" id="pdfFile" accept=".pdf" class="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:bg-blue-600 file:text-white hover:file:bg-blue-700">
+                                    <p class="text-xs text-gray-400 mt-1">Ajoutez un PDF qui sera affiché dans un lecteur intégré</p>
+                                    <div id="pdfPreview" class="hidden mt-2">
+                                        <div class="bg-green-900/30 border border-green-700/50 rounded-lg p-3">
+                                            <p class="text-green-200 text-sm">✓ PDF chargé: <span id="pdfFileName"></span></p>
+                                            <button type="button" onclick="previewPDF()" class="mt-2 px-3 py-1 bg-blue-600 hover:bg-blue-700 rounded text-sm">Prévisualiser</button>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div>
                                     <label class="block text-sm font-medium mb-2">Résumé</label>
                                     <textarea id="summary" rows="3" class="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400" required></textarea>
@@ -821,6 +834,155 @@
                 document.getElementById('loginModal').classList.remove('hidden');
             }
         });
+        // PDF handling variables
+        let currentPDFFile = null;
+        let currentPDFUrl = null;
+
+        // PDF file upload handler
+        document.getElementById('pdfFile').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file && file.type === 'application/pdf') {
+                currentPDFFile = file;
+                currentPDFUrl = URL.createObjectURL(file);
+                
+                // Show preview
+                document.getElementById('pdfFileName').textContent = file.name;
+                document.getElementById('pdfPreview').classList.remove('hidden');
+                
+                console.log('PDF uploaded:', file.name, file.size + ' bytes');
+            } else {
+                currentPDFFile = null;
+                currentPDFUrl = null;
+                document.getElementById('pdfPreview').classList.add('hidden');
+                
+                if (file) {
+                    alert('Veuillez sélectionner un fichier PDF valide.');
+                }
+            }
+        });
+
+        // Preview PDF in modal
+        function previewPDF() {
+            if (!currentPDFUrl) {
+                alert('Aucun PDF sélectionné');
+                return;
+            }
+            
+            const modal = document.getElementById('pdfModal');
+            const iframe = document.getElementById('pdfViewer');
+            const fallback = document.getElementById('pdfFallback');
+            
+            // Try to load PDF in iframe
+            iframe.src = currentPDFUrl;
+            iframe.classList.remove('hidden');
+            fallback.classList.add('hidden');
+            
+            // Show modal
+            modal.classList.remove('hidden');
+            
+            // Handle iframe load errors (mobile browsers)
+            iframe.onerror = function() {
+                iframe.classList.add('hidden');
+                fallback.classList.remove('hidden');
+            };
+        }
+
+        // Close PDF modal
+        function closePDFModal() {
+            document.getElementById('pdfModal').classList.add('hidden');
+        }
+
+        // Download PDF
+        function downloadPDF() {
+            if (!currentPDFFile) {
+                alert('Aucun PDF disponible');
+                return;
+            }
+            
+            const a = document.createElement('a');
+            a.href = currentPDFUrl;
+            a.download = currentPDFFile.name;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        // View PDF from existing content (for edit mode)
+        function viewPDF(pdfData, filename) {
+            const modal = document.getElementById('pdfModal');
+            const iframe = document.getElementById('pdfViewer');
+            const fallback = document.getElementById('pdfFallback');
+            
+            // Convert base64 to blob URL if needed
+            let pdfUrl = pdfData.startsWith('data:') ? pdfData : `data:application/pdf;base64,${pdfData}`;
+            
+            iframe.src = pdfUrl;
+            iframe.classList.remove('hidden');
+            fallback.classList.add('hidden');
+            
+            modal.classList.remove('hidden');
+            
+            // Set filename for download
+            document.getElementById('downloadPDF').setAttribute('data-filename', filename || 'document.pdf');
+            
+            iframe.onerror = function() {
+                iframe.classList.add('hidden');
+                fallback.classList.remove('hidden');
+            };
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('pdfModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closePDFModal();
+            }
+        });
+
     </script>
+
+    <!-- PDF Viewer Modal -->
+    <div id="pdfModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-gray-900 rounded-xl w-full max-w-6xl max-h-[95vh] flex flex-col">
+                <!-- PDF Modal Header -->
+                <div class="flex justify-between items-center p-4 border-b border-gray-700">
+                    <h3 class="text-lg font-semibold text-white">Visualiseur PDF</h3>
+                    <div class="flex gap-2">
+                        <button onclick="downloadPDF()" class="px-3 py-1 bg-blue-600 hover:bg-blue-700 rounded text-sm text-white">
+                            Télécharger
+                        </button>
+                        <button onclick="closePDFModal()" class="text-gray-400 hover:text-white">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- PDF Content -->
+                <div class="flex-1 overflow-hidden">
+                    <iframe id="pdfViewer" 
+                            class="w-full h-full border-0" 
+                            style="min-height: 70vh;">
+                    </iframe>
+                    
+                    <!-- Fallback for mobile/incompatible browsers -->
+                    <div id="pdfFallback" class="hidden p-6 text-center">
+                        <div class="text-gray-400 mb-4">
+                            <svg class="w-16 h-16 mx-auto mb-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"></path>
+                            </svg>
+                            <p class="text-lg">PDF non pris en charge</p>
+                            <p class="text-sm">Votre navigateur ne peut pas afficher ce PDF</p>
+                        </div>
+                        <button onclick="downloadPDF()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded text-white">
+                            Télécharger le PDF
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>
