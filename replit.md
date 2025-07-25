@@ -305,6 +305,7 @@ The website is now fully operational and matches the original local/Netlify func
 - **Database dependencies removed**: Eliminated unused server/db.ts, server/storage.ts, shared/schema.ts, drizzle.config.ts
 - **Legacy route cleanup**: Removed unused test routes, CMS access pages, and duplicate admin interfaces
 - **File structure consolidation**: Unified all assets under client/public/, removed redundant public/ directory files
+- **Duplicate folder elimination**: Removed confusing duplicate public/ folder - app now runs from client/public/ only
 - **Backup file cleanup**: Removed all .backup files and temporary test files throughout codebase
 - **Import optimization**: Fixed all broken imports and removed unused dependencies
 - **Production readiness**: Cleaned architecture with only essential, working components
