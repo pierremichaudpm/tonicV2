@@ -600,8 +600,7 @@
         </div>
     </footer>
     
-    <!-- Press Releases Data -->
-    <script src="js/communiques-data.js"></script>
+
     
     <!-- PDF Data -->
     <script src="js/pdf-data.js"></script>
@@ -633,9 +632,10 @@
             return categoryMap[category] || 'category-beach';
         }
         
-        // Get press release by ID
-        function getPressReleaseById(id) {
-            return pressReleases.find(pr => pr.id === parseInt(id));
+        // Get PDF by ID  
+        function getPDFById(id) {
+            const pdfs = getPDFData();
+            return pdfs.find(pdf => pdf.id === id && pdf.type === 'news');
         }
         
         // Format date to French format
@@ -644,29 +644,11 @@
             return new Date(dateString).toLocaleDateString('fr-FR', options);
         }
         
-        // Open press release modal
+        // Open press release modal - NOW REDIRECTS TO PDF
         function openPressModal(releaseId) {
-            const release = getPressReleaseById(releaseId);
-            if (!release) return;
-            
-            const modal = document.getElementById('pressModal');
-            const modalTitle = document.getElementById('modalTitle');
-            const modalDate = document.getElementById('modalDate');
-            const modalContent = document.getElementById('modalContent');
-            
-            modalTitle.textContent = release.title;
-            modalDate.textContent = formatDate(release.date);
-            
-            // Handle empty content
-            if (!release.content || release.content.trim() === '') {
-                modalContent.innerHTML = '<p class="text-white/70 italic">Contenu non disponible.</p>';
-            } else {
-                // Split mega-paragraphs and inject with proper formatting
-                console.log('🎯 Processing and injecting Word HTML');
-                let processedContent = release.content;
-                
-                // If content is one massive <p> tag, split it intelligently
-                if (processedContent.startsWith('<p>') && processedContent.endsWith('</p>') && !processedContent.includes('</p><p>')) {
+            // For PDF-only system, this should redirect to PDF viewer
+            viewPDF(releaseId);
+        }
                     console.log('📝 Splitting mega-paragraph');
                     
                     // Remove outer <p> tags
@@ -890,9 +872,10 @@
             // Cache DOM elements
             DOM.prList = document.getElementById('prList');
             
-            // Check if data is loaded
-            if (typeof pressReleases === 'undefined' || !Array.isArray(pressReleases)) {
-                DOM.prList.innerHTML = '<p class="text-white text-center py-8">Erreur de chargement. Veuillez rafraîchir la page.</p>';
+            // Check if PDF data is available
+            const pdfData = getPDFData();
+            if (!pdfData || pdfData.length === 0) {
+                DOM.prList.innerHTML = '<p class="text-white text-center py-8">Aucun communiqué PDF disponible.</p>';
                 return;
             }
             
