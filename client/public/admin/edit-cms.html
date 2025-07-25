@@ -351,17 +351,26 @@
             // Store processed HTML and show readable text for editing
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = processedContent;
-            const plainTextForEditing = tempDiv.textContent || tempDiv.innerText || processedContent;
+            let plainTextForEditing = tempDiv.textContent || tempDiv.innerText || '';
             
-            // Show the text in the textarea
-            textarea.value = plainTextForEditing;
-            console.log('📝 Setting textarea value length:', plainTextForEditing.length);
-            console.log('📝 Textarea value after setting:', textarea.value.length);
-            console.log('📝 First 100 chars:', plainTextForEditing.substring(0, 100));
-            console.log('📝 Textarea display style:', getComputedStyle(textarea).display);
-            console.log('📝 Textarea visibility:', getComputedStyle(textarea).visibility);
-            console.log('📝 Textarea color:', getComputedStyle(textarea).color);
-            console.log('📝 Textarea background:', getComputedStyle(textarea).backgroundColor);
+            // If no text extracted, use the raw processed content
+            if (!plainTextForEditing || plainTextForEditing.trim().length === 0) {
+                plainTextForEditing = processedContent;
+            }
+            
+            // Clear and set the textarea value
+            textarea.value = '';
+            setTimeout(() => {
+                textarea.value = plainTextForEditing;
+                console.log('📝 Setting textarea value length:', plainTextForEditing.length);
+                console.log('📝 Textarea value after setting:', textarea.value.length);
+                console.log('📝 First 100 chars of plain text:', plainTextForEditing.substring(0, 100));
+                
+                // Force the browser to update the display
+                textarea.style.display = 'none';
+                textarea.offsetHeight; // Force reflow
+                textarea.style.display = 'block';
+            }, 10);
             
             // Store the formatted HTML version for saving
             textarea.setAttribute('data-processed-content', processedContent);
