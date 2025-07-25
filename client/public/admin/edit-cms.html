@@ -306,90 +306,42 @@
         function handlePaste(event, fieldId) {
             console.log('🔥 PASTE EVENT TRIGGERED for field:', fieldId);
             
-            // Prevent default paste behavior
-            event.preventDefault();
+            // Don't prevent default - let the normal paste happen first
+            // This ensures content appears in the textarea
             
-            try {
-                // Get clipboard data
-                const clipboardData = event.clipboardData || window.clipboardData;
-                
-                if (!clipboardData) {
-                    console.error('❌ No clipboard data available');
-                    return;
-                }
-                
-                console.log('📋 Available clipboard types:', Array.from(clipboardData.types));
-                
-                let pastedData = '';
-                let isHTML = false;
-                
-                // Try to get HTML first (preserves Word links), then fall back to plain text
-                if (clipboardData.types && clipboardData.types.includes('text/html')) {
-                    pastedData = clipboardData.getData('text/html');
-                    isHTML = true;
-                    console.log('📄 Got HTML data, length:', pastedData.length);
-                } else {
-                    pastedData = clipboardData.getData('text/plain') || clipboardData.getData('text');
-                    console.log('📝 Got plain text data, length:', pastedData.length);
-                }
-                
-                if (!pastedData) {
-                    console.error('❌ No paste data found');
-                    return;
-                }
-                
-                // Process the content
-                let processedContent = '';
-                
-                if (isHTML) {
-                    // Clean Word HTML and extract content
-                    const cleanedText = cleanWordHTML(pastedData);
-                    processedContent = processWordContent(cleanedText);
-                } else {
-                    // Process plain text
-                    processedContent = processWordContent(pastedData);
-                }
-                
-                console.log('🔧 Processed content length:', processedContent.length);
-                
-                // Insert into textarea
-                const textarea = document.getElementById(fieldId);
-                if (textarea) {
-                    // For HTML content, we need to convert back to plain text for editing
-                    const tempDiv = document.createElement('div');
-                    tempDiv.innerHTML = processedContent;
-                    const plainText = tempDiv.textContent || tempDiv.innerText || processedContent;
+            // Use setTimeout to process after the paste completes
+            setTimeout(() => {
+                try {
+                    const textarea = document.getElementById(fieldId);
+                    if (!textarea) {
+                        console.error('❌ Textarea not found:', fieldId);
+                        return;
+                    }
                     
-                    textarea.value = plainText;
-                    textarea.focus();
+                    const rawContent = textarea.value;
+                    console.log('📝 Raw pasted content length:', rawContent.length);
                     
-                    console.log('✅ Content inserted successfully');
+                    if (!rawContent || rawContent.trim().length === 0) {
+                        console.log('⚠️ No content detected after paste');
+                        return;
+                    }
+                    
+                    // Show a preview of what will be saved (processed version)
+                    const processedContent = processWordContent(rawContent);
+                    console.log('🔧 Processed content length:', processedContent.length);
                     
                     // Show preview
                     showContentPreview(fieldId, processedContent);
                     
-                    // Trigger input event to update any other handlers
-                    textarea.dispatchEvent(new Event('input', { bubbles: true }));
+                    // Store the processed version in a data attribute for saving later
+                    textarea.setAttribute('data-processed-content', processedContent);
                     
-                } else {
-                    console.error('❌ Textarea not found:', fieldId);
+                    console.log('✅ Paste processing completed successfully');
+                    
+                } catch (error) {
+                    console.error('❌ Error processing paste:', error);
                 }
-                
-            } catch (error) {
-                console.error('❌ Error in handlePaste:', error);
-                
-                // Simple fallback: just get plain text and insert it
-                try {
-                    const plainText = (event.clipboardData || window.clipboardData).getData('text/plain');
-                    const textarea = document.getElementById(fieldId);
-                    if (textarea && plainText) {
-                        textarea.value = plainText;
-                        console.log('✅ Fallback: inserted plain text');
-                    }
-                } catch (fallbackError) {
-                    console.error('❌ Fallback also failed:', fallbackError);
-                }
-            }
+            }, 100); // Small delay to let paste complete
         }
         
         // Clean Word's messy HTML and extract links
@@ -477,18 +429,20 @@
         
         // Show content preview
         function showContentPreview(fieldId, content) {
-            console.log('Showing preview for field:', fieldId, 'Content length:', content.length);
+            console.log('👁️ Showing preview for field:', fieldId, 'Content length:', content.length);
             
             const previewDiv = document.getElementById(fieldId + 'Preview');
             const previewText = document.getElementById(fieldId + 'PreviewText');
             
             if (previewDiv && previewText && content) {
-                const shortPreview = content.substring(0, 400) + (content.length > 400 ? '...' : '');
-                previewText.innerHTML = shortPreview; // Use innerHTML to show formatted content
+                // Show HTML preview (preserves links and formatting)
+                const shortPreview = content.length > 300 ? content.substring(0, 300) + '...' : content;
+                previewText.innerHTML = shortPreview; // Use innerHTML to show links and formatting
                 previewDiv.style.display = 'block';
-                console.log('Preview shown successfully');
+                
+                console.log('✅ Preview updated successfully');
             } else {
-                console.log('Preview elements not found:', fieldId + 'Preview', fieldId + 'PreviewText');
+                console.log('⚠️ Preview elements not found or no content');
             }
         }
         
@@ -690,6 +644,13 @@
             document.getElementById('modalTitle').textContent = 'Ajouter';
             document.getElementById('editForm').reset();
             document.getElementById('itemId').value = '';
+            
+            // Clear any stored processed content
+            const descField = document.getElementById('description');
+            const contentField = document.getElementById('content');
+            if (descField) descField.removeAttribute('data-processed-content');
+            if (contentField) contentField.removeAttribute('data-processed-content');
+            
             toggleFieldVisibility();
             document.getElementById('editModal').classList.remove('hidden');
         }
@@ -710,19 +671,37 @@
                 document.getElementById('datePosted').value = item.datePosted || '';
                 document.getElementById('deadline').value = item.deadline || '';
                 document.getElementById('summary').value = item.summary || '';
+                
                 // Convert HTML to plain text for editing
                 const tempDiv = document.createElement('div');
                 tempDiv.innerHTML = item.description || '';
-                document.getElementById('description').value = tempDiv.textContent || tempDiv.innerText || '';
+                const plainText = tempDiv.textContent || tempDiv.innerText || '';
+                const descField = document.getElementById('description');
+                descField.value = plainText;
+                
+                // Clear any stored processed content and store the original HTML
+                descField.removeAttribute('data-processed-content');
+                if (item.description) {
+                    descField.setAttribute('data-processed-content', item.description);
+                }
             } else {
                 document.getElementById('newsTitle').value = item.title || '';
                 document.getElementById('date').value = item.date || '';
                 document.getElementById('category').value = item.category || '';
                 document.getElementById('newsSummary').value = item.summary || '';
+                
                 // Convert HTML to plain text for editing
                 const tempDiv2 = document.createElement('div');
                 tempDiv2.innerHTML = item.content || '';
-                document.getElementById('content').value = tempDiv2.textContent || tempDiv2.innerText || '';
+                const plainText = tempDiv2.textContent || tempDiv2.innerText || '';
+                const contentField = document.getElementById('content');
+                contentField.value = plainText;
+                
+                // Clear any stored processed content and store the original HTML
+                contentField.removeAttribute('data-processed-content');
+                if (item.content) {
+                    contentField.setAttribute('data-processed-content', item.content);
+                }
             }
 
             toggleFieldVisibility();
@@ -739,9 +718,16 @@
                 let data = { lang: currentLang };
                 
                 if (currentType === 'jobs') {
-                    // Use enhanced text processing for job descriptions
-                    const descText = document.getElementById('description').value;
-                    const descHtml = processWordContent(descText);
+                    const descTextarea = document.getElementById('description');
+                    const descText = descTextarea.value;
+                    
+                    // Use processed content if available, otherwise process the raw text
+                    let descHtml = descTextarea.getAttribute('data-processed-content');
+                    if (!descHtml || descHtml.trim() === '') {
+                        descHtml = processWordContent(descText);
+                    }
+                    
+                    console.log('💼 Job description - Raw length:', descText.length, 'Processed length:', descHtml.length);
                     
                     data = {
                         ...data,
@@ -756,16 +742,21 @@
                         description: descHtml
                     };
                 } else {
-                    // Use enhanced text processing for news content
-                    const contentText = document.getElementById('content').value;
-                    console.log('Raw content text:', contentText); // Debug log
+                    const contentTextarea = document.getElementById('content');
+                    const contentText = contentTextarea.value;
                     
-                    // Fallback: if processing returns empty, use original text with basic formatting
-                    let contentHtml = processWordContent(contentText);
+                    // Use processed content if available, otherwise process the raw text
+                    let contentHtml = contentTextarea.getAttribute('data-processed-content');
+                    if (!contentHtml || contentHtml.trim() === '') {
+                        contentHtml = processWordContent(contentText);
+                    }
+                    
+                    // Fallback if still empty
                     if (!contentHtml || contentHtml.trim().length === 0) {
                         contentHtml = contentText ? `<p>${convertUrlsToLinks(contentText.replace(/\n+/g, '</p><p>'))}</p>` : '';
                     }
-                    console.log('Processed content:', contentHtml); // Debug log
+                    
+                    console.log('📰 News content - Raw length:', contentText.length, 'Processed length:', contentHtml.length);
                     
                     data = {
                         ...data,
@@ -790,21 +781,48 @@
 
                 if (!response) return; // Already handled redirect
 
-                console.log('Response status:', response.status);
+                console.log('📡 Response status:', response.status);
                 
                 if (!response.ok) {
                     const errorText = await response.text();
-                    console.error('Response error:', errorText);
+                    console.error('❌ Response error:', errorText);
                     throw new Error(`Save failed: ${response.status} ${errorText}`);
                 }
                 
+                // Clear processed content attributes after successful save
+                const descField = document.getElementById('description');
+                const contentField = document.getElementById('content');
+                if (descField) descField.removeAttribute('data-processed-content');
+                if (contentField) contentField.removeAttribute('data-processed-content');
+                
                 closeModal();
                 await loadContent();
-                alert(isNew ? 'Créé avec succès' : 'Modifié avec succès');
+                alert(isNew ? '✅ Créé avec succès' : '✅ Modifié avec succès');
             } catch (error) {
-                console.error('Save error:', error);
-                alert(`Erreur de sauvegarde: ${error.message}`);
+                console.error('❌ Save error:', error);
+                alert(`❌ Erreur de sauvegarde: ${error.message}`);
             }
+        }
+
+        // Test function to verify paste handling works
+        function testPasteHandling() {
+            console.log('🧪 Testing paste handling...');
+            
+            // Test text with links and paragraphs
+            const testText = `Voici un test avec un lien vers https://example.com et un email test@example.com.
+
+Ceci est un deuxième paragraphe avec du texte en **gras**.
+
+Pour plus d'informations, visitez www.groupetonic.com.`;
+            
+            // Simulate processing
+            const processed = processWordContent(testText);
+            console.log('📝 Original text:', testText);
+            console.log('🔧 Processed HTML:', processed);
+            
+            // Test link conversion
+            const withLinks = convertUrlsToLinks(testText);
+            console.log('🔗 With links:', withLinks);
         }
 
         async function deleteItem(id) {
