@@ -468,12 +468,10 @@
             if (!release.content || release.content.trim() === '') {
                 modalContent.innerHTML = '<p class="text-white/70 italic">Content not available.</p>';
             } else {
-                console.log('🔍 DEBUG: Raw content:', release.content);
-                console.log('🔍 DEBUG: Content length:', release.content.length);
-                console.log('🔍 DEBUG: Has HTML tags:', release.content.includes('<'));
+                // CRITICAL FIX: Ensure HTML is rendered, not displayed as text
+                console.log('🔥 SETTING MODAL HTML CONTENT');
                 modalContent.innerHTML = release.content;
-                console.log('🔍 DEBUG: Modal content after setting:', modalContent.innerHTML);
-                console.log('🔍 DEBUG: Links found:', modalContent.querySelectorAll('a').length);
+                console.log('✅ HTML content set, links found:', modalContent.querySelectorAll('a').length);
             }
             
             modal.classList.add('active');

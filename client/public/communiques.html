@@ -575,12 +575,18 @@
             if (!release.content || release.content.trim() === '') {
                 modalContent.innerHTML = '<p class="text-white/70 italic">Contenu non disponible.</p>';
             } else {
-                console.log('🔍 DEBUG: Raw content:', release.content);
-                console.log('🔍 DEBUG: Content length:', release.content.length);
-                console.log('🔍 DEBUG: Has HTML tags:', release.content.includes('<'));
-                modalContent.innerHTML = release.content;
-                console.log('🔍 DEBUG: Modal content after setting:', modalContent.innerHTML);
-                console.log('🔍 DEBUG: Links found:', modalContent.querySelectorAll('a').length);
+                // DIRECT HTML INJECTION - NO PROCESSING
+                console.log('🎯 Direct HTML injection');
+                
+                // First test with simple HTML to verify rendering works
+                modalContent.innerHTML = '<p>Test: <strong>Bold text</strong> and <a href="#" style="color: blue; text-decoration: underline;">Link test</a></p>';
+                
+                // After 1 second, inject the actual content
+                setTimeout(() => {
+                    console.log('💥 Injecting Word content of length:', release.content.length);
+                    modalContent.innerHTML = release.content;
+                    console.log('🔗 Links after injection:', modalContent.querySelectorAll('a').length);
+                }, 1000);
             }
             
             modal.classList.add('active');
