@@ -377,7 +377,8 @@ The website is now fully operational and matches the original local/Netlify func
 - **Desktop preservation**: Maintained full desktop functionality while optimizing mobile experience
 - **Form field responsiveness**: Grid layouts now stack vertically on mobile, side-by-side on desktop
 - **Button layout optimization**: Save/Cancel and Edit/Delete buttons adapt to screen size
-- **Status**: ✅ MOBILE-OPTIMIZED - CMS now provides excellent mobile experience while preserving desktop functionality
+- **Description length optimization**: Increased description preview from 200 to 400 characters for better mobile readability with available vertical space
+- **Status**: ✅ MOBILE-OPTIMIZED - CMS now provides excellent mobile experience with expanded content preview while preserving desktop functionality
 
 ### Codebase Cleanup - July 24, 2025 ✅ COMPLETED
 - **Removed entire Strapi CMS system**: Deleted cms/ directory, strapi-config/, and all Strapi-related files

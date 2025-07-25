@@ -345,7 +345,7 @@
                         const temp = document.createElement('div');
                         temp.innerHTML = item.description;
                         descText = temp.textContent || temp.innerText || '';
-                        descText = descText.substring(0, 200) + (descText.length > 200 ? '...' : '');
+                        descText = descText.substring(0, 400) + (descText.length > 400 ? '...' : '');
                     }
                     
                     return `
@@ -380,7 +380,7 @@
                         const temp = document.createElement('div');
                         temp.innerHTML = item.content;
                         contentText = temp.textContent || temp.innerText || '';
-                        contentText = contentText.substring(0, 200) + (contentText.length > 200 ? '...' : '');
+                        contentText = contentText.substring(0, 400) + (contentText.length > 400 ? '...' : '');
                     }
                     
                     return `
