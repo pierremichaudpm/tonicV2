@@ -58,10 +58,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.sendFile(path.join(publicPath, "nous-joindre-en.html"));
   });
 
-  // CMS Admin Interface  
-  app.get("/admin", (req, res) => {
-    res.sendFile(path.join(process.cwd(), "public", "simple-cms.html"));
-  });
+  // CMS Admin Interface (removed duplicate - using proper admin route below)
   
   app.get("/ai-helper", (req, res) => {
     res.sendFile(path.join(publicPath, "ai-helper.html"));
