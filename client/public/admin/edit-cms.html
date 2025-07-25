@@ -28,9 +28,49 @@
         #editModal {
             z-index: 999999 !important;
         }
+        
+        /* Debug console styles */
+        #debugConsole {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            width: 400px;
+            max-height: 300px;
+            background: #000;
+            color: #0f0;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+            z-index: 9999;
+            display: none;
+        }
+        
+        #debugToggle {
+            position: fixed;
+            bottom: 10px;
+            right: 420px;
+            background: #333;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 9999;
+        }
     </style>
 </head>
 <body class="tonic-bg">
+    <!-- Debug Console -->
+    <div id="debugToggle" onclick="toggleDebugConsole()">Debug 🐛</div>
+    <div id="debugConsole">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+            <strong>Debug Console</strong>
+            <button onclick="clearDebugConsole()" style="background: #444; padding: 2px 8px; border-radius: 3px;">Clear</button>
+        </div>
+        <div id="debugLog"></div>
+    </div>
+
     <div class="min-h-screen">
         <!-- Header -->
         <header class="bg-white shadow-sm border-b">
@@ -225,38 +265,54 @@
         // Simple password check
         const PASSWORD = 'admin123';
         
-        // Initialize when page loads
-        // TEST FUNCTION - call this from browser console
-        function testPasteProcessing() {
-            console.log('🧪 TESTING PASTE PROCESSING');
-            
-            const testText = `TITRE IMPORTANT
-
-Ceci est un test avec un email test@groupetonic.com et un site web https://www.groupetonic.com.
-
-Deuxième paragraphe avec www.example.com.
-
-Troisième paragraphe normal.`;
-            
-            console.log('📝 Testing with text:', testText);
-            
-            const result = processPlainTextSimple(testText);
-            console.log('✅ Result:', result);
-            
-            // Test the preview
-            const previewDiv = document.getElementById('contentPreview');
-            const previewText = document.getElementById('contentPreviewText');
-            
-            if (previewDiv && previewText) {
-                previewText.innerHTML = result;
-                previewDiv.style.display = 'block';
-                console.log('✅ Preview updated');
-            } else {
-                console.log('⚠️ Preview elements not found');
+        // Debug logging system
+        let debugMode = localStorage.getItem('debugMode') === 'true';
+        
+        function debugLog(message, data) {
+            console.log(message, data);
+            if (debugMode) {
+                const debugLogEl = document.getElementById('debugLog');
+                if (debugLogEl) {
+                    const timestamp = new Date().toLocaleTimeString();
+                    const entry = document.createElement('div');
+                    entry.style.marginBottom = '5px';
+                    entry.innerHTML = `<span style="color: #888;">[${timestamp}]</span> ${message}`;
+                    if (data !== undefined) {
+                        entry.innerHTML += ` <span style="color: #ff0;">${JSON.stringify(data, null, 2)}</span>`;
+                    }
+                    debugLogEl.appendChild(entry);
+                    debugLogEl.scrollTop = debugLogEl.scrollHeight;
+                }
+            }
+        }
+        
+        function toggleDebugConsole() {
+            const consoleEl = document.getElementById('debugConsole');
+            debugMode = !debugMode;
+            localStorage.setItem('debugMode', debugMode);
+            if (consoleEl) {
+                consoleEl.style.display = debugMode ? 'block' : 'none';
+            }
+            debugLog('Debug mode ' + (debugMode ? 'enabled' : 'disabled'));
+        }
+        
+        function clearDebugConsole() {
+            const debugLogEl = document.getElementById('debugLog');
+            if (debugLogEl) {
+                debugLogEl.innerHTML = '';
+            }
+        }
+        
+        // Initialize debug console state
+        if (debugMode) {
+            const consoleEl = document.getElementById('debugConsole');
+            if (consoleEl) {
+                consoleEl.style.display = 'block';
             }
         }
 
         document.addEventListener('DOMContentLoaded', function() {
+            debugLog('🚀 CMS Initialized');
             // Attach paste handlers properly
             attachPasteHandlers();
             loadContent();
@@ -325,80 +381,65 @@ Troisième paragraphe normal.`;
             }
         }
 
-        // Enhanced paste handling with extensive debugging
+        // Robust paste handler from your solution
         function handlePaste(event, fieldId) {
-            console.log('🔥🔥🔥 PASTE EVENT TRIGGERED for field:', fieldId);
+            debugLog('🔥 PASTE EVENT TRIGGERED for field:', fieldId);
             
             const clipboardData = event.clipboardData || window.clipboardData;
             if (!clipboardData) {
-                console.log('⚠️ No clipboard data available');
+                debugLog('⚠️ No clipboard data available');
                 return;
             }
             
-            console.log('📋 Available clipboard types:', Array.from(clipboardData.types));
+            const types = Array.from(clipboardData.types);
+            debugLog('📋 Clipboard types:', types);
             
             let processedHTML = '';
             
             // Try HTML first
             if (clipboardData.types.includes('text/html')) {
                 const htmlData = clipboardData.getData('text/html');
-                console.log('📄 HTML data length:', htmlData.length);
+                debugLog('📄 HTML data length:', htmlData.length);
                 if (htmlData && htmlData.trim().length > 0) {
                     processedHTML = processWordHTMLSimple(htmlData);
-                    console.log('📄 Processed HTML length:', processedHTML.length);
+                    debugLog('✅ Processed HTML length:', processedHTML.length);
                 }
             }
             
             // Try plain text as fallback
             if (!processedHTML || processedHTML.trim().length === 0) {
                 const rawText = clipboardData.getData('text/plain') || clipboardData.getData('text') || '';
-                console.log('📝 Plain text length:', rawText.length);
+                debugLog('📝 Plain text length:', rawText.length);
                 if (rawText && rawText.trim().length > 0) {
                     processedHTML = processPlainTextSimple(rawText);
-                    console.log('📝 Processed plain text length:', processedHTML.length);
+                    debugLog('✅ Processed plain text length:', processedHTML.length);
                 }
             }
             
             const textarea = document.getElementById(fieldId);
             if (!textarea) {
-                console.error('❌ Textarea not found:', fieldId);
+                debugLog('❌ Textarea not found:', fieldId);
                 return;
             }
             
             // Process after browser paste
             setTimeout(() => {
-                console.log('⏰ Post-paste processing');
+                debugLog('⏰ Post-paste processing');
                 
-                // Check if textarea exists and has value property
-                if (textarea && typeof textarea.value !== 'undefined') {
-                    console.log('📝 Textarea value length:', textarea.value.length);
-                } else {
-                    console.log('⚠️ Textarea value is undefined, using processed HTML directly');
-                }
-                
-                // FORCE show something in preview even if processing failed
                 let finalHTML = processedHTML;
                 if (!finalHTML || finalHTML.trim().length === 0) {
-                    console.log('⚠️ No processed HTML, trying textarea content as fallback');
-                    const textareaContent = textarea && textarea.value ? textarea.value : '';
+                    const textareaContent = textarea.value;
                     if (textareaContent && textareaContent.trim().length > 0) {
                         finalHTML = convertTextToParagraphs(textareaContent);
-                    } else {
-                        finalHTML = '<p>Contenu collé détecté mais pas de traitement possible</p>';
+                        debugLog('📝 Used textarea fallback');
                     }
                 }
                 
-                // Store and show - ensure we have content
-                if (finalHTML && finalHTML.trim().length > 0) {
-                    textarea.setAttribute('data-processed-content', finalHTML);
-                    showContentPreview(fieldId, finalHTML);
-                    console.log('✅✅✅ Paste processing COMPLETE');
-                    console.log('📄 Final HTML length:', finalHTML.length);
-                    console.log('📄 Final HTML preview:', finalHTML.substring(0, 200));
-                } else {
-                    console.error('❌ No content could be processed');
-                }
+                // Store and show
+                textarea.setAttribute('data-processed-content', finalHTML);
+                showContentPreview(fieldId, finalHTML);
                 
+                debugLog('✅ Paste complete, HTML stored:', finalHTML.substring(0, 100) + '...');
             }, 150);
         }
 
@@ -407,92 +448,35 @@ Troisième paragraphe normal.`;
             return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         }
 
-        // Simple and robust Word HTML processing
+        // Simple Word HTML processing from your solution
         function processWordHTMLSimple(html) {
             if (!html || html.trim().length === 0) return '';
             
-            console.log('🔍 Processing Word HTML (simple and robust)');
-            console.log('📄 Input HTML length:', html.length);
+            debugLog('🔍 Processing Word HTML');
             
             try {
-                // Create temporary container
                 const tempDiv = document.createElement('div');
                 tempDiv.innerHTML = html;
                 
-                // Remove unwanted elements (simple selector)
+                // Remove unwanted elements
                 const unwanted = tempDiv.querySelectorAll('meta, style, script, xml');
                 unwanted.forEach(el => el.remove());
                 
-                // Get all text content first
+                // Get all text content
                 let allText = tempDiv.textContent || tempDiv.innerText || '';
-                console.log('📝 Extracted text length:', allText.length);
-                console.log('📝 First 100 chars:', allText.substring(0, 100));
+                debugLog('📝 Extracted text:', allText.substring(0, 100) + '...');
                 
                 if (!allText || allText.trim().length === 0) {
-                    console.log('⚠️ No text content found in HTML');
                     return '';
                 }
                 
-                // Simple processing: look for bold tags and links
-                let result = '';
-                
-                // Find bold text
-                const boldElements = tempDiv.querySelectorAll('strong, b, [style*="font-weight"]');
-                const boldTexts = [];
-                boldElements.forEach(el => {
-                    const text = el.textContent?.trim();
-                    if (text && text.length > 2) {
-                        boldTexts.push(text);
-                    }
-                });
-                
-                // Find links
-                const linkElements = tempDiv.querySelectorAll('a[href]');
-                const links = [];
-                linkElements.forEach(el => {
-                    const text = el.textContent?.trim();
-                    const href = el.href;
-                    if (text && href) {
-                        links.push({ text, href });
-                    }
-                });
-                
-                console.log('🔍 Found bold texts:', boldTexts.length);
-                console.log('🔍 Found links:', links.length);
-                
-                // Process the text
-                result = allText;
-                
-                // Apply bold formatting
-                boldTexts.forEach(boldText => {
-                    if (boldText.length > 50) return; // Skip very long text to avoid false matches
-                    const regex = new RegExp(escapeRegex(boldText), 'g');
-                    result = result.replace(regex, `<strong>${boldText}</strong>`);
-                });
-                
-                // Apply links
-                links.forEach(link => {
-                    if (link.text.length > 50) return; // Skip very long text
-                    const regex = new RegExp(escapeRegex(link.text), 'g');
-                    result = result.replace(regex, `<a href="${link.href}" style="text-decoration: underline; color: #1d4ed8;" target="_blank">${link.text}</a>`);
-                });
-                
-                // Convert to paragraphs
-                result = convertTextToParagraphs(result);
-                
-                // Convert remaining URLs
-                result = convertUrlsToLinks(result);
-                
-                console.log('✅ HTML processing complete. Result length:', result.length);
+                // Convert to paragraphs and add links
+                const result = convertTextToParagraphs(allText);
                 return result;
                 
             } catch (error) {
-                console.error('❌ Error processing HTML:', error);
-                // Fallback: just get the text content
-                const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = html;
-                const fallbackText = tempDiv.textContent || tempDiv.innerText || '';
-                return fallbackText ? convertTextToParagraphs(fallbackText) : '';
+                debugLog('❌ Error processing HTML:', error.message);
+                return '';
             }
         }
 
@@ -728,39 +712,35 @@ Troisième paragraphe normal.`;
             return paragraphs.map(para => `<p>${para}</p>`).join('\n');
         }
         
-        // Show content preview
+        // Show content preview from your solution
         function showContentPreview(fieldId, content) {
-            console.log('👁️ Showing preview for field:', fieldId, 'Content length:', content.length);
+            debugLog('👁️ Showing preview for:', fieldId);
             
             const previewDiv = document.getElementById(fieldId + 'Preview');
             const previewText = document.getElementById(fieldId + 'PreviewText');
             
             if (previewDiv && previewText && content) {
-                // Show HTML preview (preserves links and formatting)
                 const shortPreview = content.length > 300 ? content.substring(0, 300) + '...' : content;
-                previewText.innerHTML = shortPreview; // Use innerHTML to show links and formatting
+                previewText.innerHTML = shortPreview;
                 previewDiv.style.display = 'block';
-                
-                console.log('✅ Preview updated successfully');
-            } else {
-                console.log('⚠️ Preview elements not found or no content');
+                debugLog('✅ Preview shown');
             }
         }
         
-        // Validate content exists
+        // Validate content from your solution
         function validateContent() {
             try {
                 const contentField = document.getElementById('content');
                 const descriptionField = document.getElementById('description');
                 
-                if (contentField && contentField.value && contentField.value.trim().length > 0) {
-                    console.log('✅ Content field has text:', contentField.value.length, 'characters');
+                if (contentField && contentField.value) {
+                    debugLog('📝 Content field:', contentField.value.length + ' chars');
                 }
-                if (descriptionField && descriptionField.value && descriptionField.value.trim().length > 0) {
-                    console.log('✅ Description field has text:', descriptionField.value.length, 'characters');
+                if (descriptionField && descriptionField.value) {
+                    debugLog('📝 Description field:', descriptionField.value.length + ' chars');
                 }
             } catch (error) {
-                console.error('❌ Error in validateContent:', error);
+                debugLog('❌ Validate error:', error.message);
             }
         }
 
@@ -847,6 +827,8 @@ Troisième paragraphe normal.`;
 
         async function loadContent() {
             try {
+                debugLog('📡 Loading content:', { type: currentType, lang: currentLang });
+                
                 const response = await fetchWithAuth(`/api/cms/${currentType}?lang=${currentLang}`);
                 
                 if (!response) return;
@@ -856,10 +838,12 @@ Troisième paragraphe normal.`;
                 }
 
                 const data = await response.json();
+                debugLog('📦 Received data:', data);
+                
                 currentData = currentType === 'jobs' ? data.jobs : data.news;
                 displayContent(currentData);
             } catch (error) {
-                console.error('Error loading content:', error);
+                debugLog('❌ Load error:', error.message);
             }
         }
 
@@ -1034,17 +1018,17 @@ Troisième paragraphe normal.`;
                     // Use processed content if available, otherwise process the raw text
                     let descHtml = descTextarea.getAttribute('data-processed-content');
                     if (!descHtml || descHtml.trim() === '') {
-                        console.log('🔧 Processing raw description text:', descText.length, 'chars');
+                        debugLog('🔧 Processing raw description text:', descText.length + ' chars');
                         descHtml = processPlainTextSimple(descText);
                     }
                     
                     // Final fallback if still empty
                     if (!descHtml || descHtml.trim().length === 0) {
                         descHtml = descText ? convertTextToParagraphs(descText) : '';
-                        console.log('⚠️ Used fallback processing for description');
+                        debugLog('⚠️ Used fallback processing for description');
                     }
                     
-                    console.log('💼 Job description - Raw length:', descText.length, 'Processed length:', descHtml.length);
+                    debugLog('💼 Job description - Raw length:', descText.length + ', Processed length: ' + descHtml.length);
                     
                     data = {
                         ...data,
@@ -1070,17 +1054,17 @@ Troisième paragraphe normal.`;
                     // Use processed content if available, otherwise process the raw text
                     let contentHtml = contentTextarea.getAttribute('data-processed-content');
                     if (!contentHtml || contentHtml.trim() === '') {
-                        console.log('🔧 Processing raw content text:', contentText.length, 'chars');
+                        debugLog('🔧 Processing raw content text:', contentText.length + ' chars');
                         contentHtml = processPlainTextSimple(contentText);
                     }
                     
                     // Final fallback if still empty
                     if (!contentHtml || contentHtml.trim().length === 0) {
                         contentHtml = contentText ? convertTextToParagraphs(contentText) : '';
-                        console.log('⚠️ Used fallback processing for content');
+                        debugLog('⚠️ Used fallback processing for content');
                     }
                     
-                    console.log('📰 News content - Raw length:', contentText.length, 'Processed length:', contentHtml.length);
+                    debugLog('📰 News content - Raw length:', contentText.length + ', Processed length: ' + contentHtml.length);
                     
                     data = {
                         ...data,
@@ -1092,7 +1076,7 @@ Troisième paragraphe normal.`;
                     };
                 }
 
-                console.log('💾 Saving data:', data);
+                debugLog('💾 Saving data:', data);
                 
                 const url = isNew 
                     ? `/api/cms/${currentType}` 
