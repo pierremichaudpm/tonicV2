@@ -34,5 +34,14 @@ const pressReleases = [
     "summary": "Le Volleyball World Beach Pro Tour – Elite revient à Montréal!\n",
     "content": "dd",
     "image": "images/beach-pro-tour-hero.webp"
+  },
+  {
+    "id": 1753475132586,
+    "title": "3yn35y3hh5yjh3jh",
+    "date": "2025-07-25",
+    "category": "Beach Pro Tour",
+    "summary": "etyhenhe3hy",
+    "content": "etnh",
+    "image": "images/beach-pro-tour-hero.webp"
   }
 ];

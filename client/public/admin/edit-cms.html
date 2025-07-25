@@ -153,7 +153,10 @@
                                     <div id="pdfPreview" class="hidden mt-2">
                                         <div class="bg-green-900/30 border border-green-700/50 rounded-lg p-3">
                                             <p class="text-green-200 text-sm">✓ PDF chargé: <span id="pdfFileName"></span></p>
-                                            <button type="button" onclick="previewPDF()" class="mt-2 px-3 py-1 bg-blue-600 hover:bg-blue-700 rounded text-sm">Prévisualiser</button>
+                                            <div class="mt-2 flex gap-2">
+                                                <button type="button" onclick="previewPDF()" class="px-3 py-1 bg-blue-600 hover:bg-blue-700 rounded text-sm">Prévisualiser</button>
+                                                <button type="button" onclick="openPDFInNewTab()" class="px-3 py-1 bg-green-600 hover:bg-green-700 rounded text-sm">Nouvel onglet</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -885,24 +888,44 @@
                 
                 // Try multiple methods to display PDF
                 const embed = document.getElementById('pdfEmbed');
-                let pdfLoadAttempted = false;
                 
-                function tryIframe() {
-                    console.log('Trying iframe method');
-                    iframe.src = currentPDFUrl + '#toolbar=1&navpanes=1&scrollbar=1&view=FitH';
-                    iframe.classList.remove('hidden');
+                function showFallback() {
+                    console.log('Showing fallback download option');
+                    iframe.classList.add('hidden');
                     embed.classList.add('hidden');
-                    fallback.classList.add('hidden');
-                    pdfLoadAttempted = true;
+                    fallback.classList.remove('hidden');
+                }
+                
+                function tryDirectView() {
+                    console.log('Trying direct PDF view method');
                     
-                    iframe.onload = function() {
-                        console.log('PDF loaded successfully in iframe');
-                    };
-                    
-                    iframe.onerror = function() {
-                        console.log('Iframe failed, trying embed method');
-                        tryEmbed();
-                    };
+                    // Create a new window/tab to display PDF
+                    const newWindow = window.open('', '_blank');
+                    if (newWindow) {
+                        newWindow.document.write(`
+                            <!DOCTYPE html>
+                            <html>
+                            <head>
+                                <title>PDF Viewer</title>
+                                <style>
+                                    body, html { margin: 0; padding: 0; height: 100%; }
+                                    iframe, embed, object { width: 100%; height: 100vh; border: none; }
+                                </style>
+                            </head>
+                            <body>
+                                <iframe src="${currentPDFUrl}#toolbar=1&navpanes=1&scrollbar=1&view=FitH" 
+                                        onload="console.log('PDF loaded in new window')" 
+                                        onerror="document.body.innerHTML='<h2>PDF could not be displayed. <a href=\\'${currentPDFUrl}\\' download>Download instead</a></h2>'">
+                                </iframe>
+                            </body>
+                            </html>
+                        `);
+                        newWindow.document.close();
+                        
+                        // Close the modal since we opened in new window
+                        modal.classList.add('hidden');
+                        return;
+                    }
                 }
                 
                 function tryEmbed() {
@@ -912,33 +935,44 @@
                     iframe.classList.add('hidden');
                     fallback.classList.add('hidden');
                     
-                    // Check if embed loaded after delay
+                    // Check if embed works after delay
                     setTimeout(() => {
-                        if (!embed.contentDocument && !embed.getSVGDocument) {
-                            console.log('Embed failed, showing fallback');
-                            showFallback();
-                        } else {
-                            console.log('PDF loaded successfully in embed');
+                        // If embed didn't work, try direct view
+                        console.log('Embed may not be working, trying direct view');
+                        tryDirectView();
+                    }, 2000);
+                }
+                
+                function tryIframe() {
+                    console.log('Trying iframe method with enhanced parameters');
+                    
+                    // Enhanced iframe with better PDF display
+                    iframe.src = currentPDFUrl + '#toolbar=1&navpanes=1&scrollbar=1&view=FitH&zoom=page-fit';
+                    iframe.classList.remove('hidden');
+                    embed.classList.add('hidden');
+                    fallback.classList.add('hidden');
+                    
+                    // Check if iframe actually displays content
+                    setTimeout(() => {
+                        try {
+                            // Try to access iframe content to verify it loaded
+                            const iframeWindow = iframe.contentWindow;
+                            if (!iframeWindow || iframeWindow.location.href === 'about:blank') {
+                                console.log('Iframe not displaying content, trying embed');
+                                tryEmbed();
+                            } else {
+                                console.log('Iframe appears to be working');
+                            }
+                        } catch (e) {
+                            console.log('Cannot access iframe content (normal for PDFs), assuming it works');
+                            // This is actually normal for PDF iframes due to cross-origin restrictions
+                            // The PDF should still display even if we can't access the content
                         }
                     }, 2000);
                 }
                 
-                function showFallback() {
-                    console.log('Showing fallback download option');
-                    iframe.classList.add('hidden');
-                    embed.classList.add('hidden');
-                    fallback.classList.remove('hidden');
-                }
-                
                 // Start with iframe method
                 tryIframe();
-                
-                // Ultimate fallback timeout
-                setTimeout(() => {
-                    if (!pdfLoadAttempted) {
-                        showFallback();
-                    }
-                }, 5000);
                 
             }, 1000);
         }
@@ -985,6 +1019,16 @@
                 iframe.classList.add('hidden');
                 fallback.classList.remove('hidden');
             };
+        }
+
+        // Open PDF in new tab - more reliable method
+        function openPDFInNewTab() {
+            if (currentPDFUrl) {
+                window.open(currentPDFUrl, '_blank');
+                closePDFModal();
+            } else {
+                alert('Aucun PDF disponible');
+            }
         }
 
         // Close modal when clicking outside
@@ -1047,9 +1091,14 @@
                             <p class="text-lg">PDF non pris en charge</p>
                             <p class="text-sm">Votre navigateur ne peut pas afficher ce PDF</p>
                         </div>
-                        <button onclick="downloadPDF()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded text-white">
-                            Télécharger le PDF
-                        </button>
+                        <div class="flex gap-3 justify-center">
+                            <button onclick="openPDFInNewTab()" class="px-4 py-2 bg-green-600 hover:bg-green-700 rounded text-white">
+                                Ouvrir dans un nouvel onglet
+                            </button>
+                            <button onclick="downloadPDF()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded text-white">
+                                Télécharger le PDF
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
