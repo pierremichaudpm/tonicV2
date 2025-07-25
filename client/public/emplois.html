@@ -492,7 +492,7 @@
                             <img src="${getCategoryImage(job.department)}" 
                                  alt="${job.department}" 
                                  class="w-full h-full object-cover rounded-lg" loading="lazy">
-                            <div class="absolute inset-0 rounded-lg ${getDepartmentClass(job.department)} opacity-20"></div>
+                            ${job.department !== 'Groupe Tonic' ? `<div class="absolute inset-0 rounded-lg ${getDepartmentClass(job.department)} opacity-20"></div>` : ''}
                         </div>
                         <div class="flex-1">
                             <div class="flex items-start justify-between gap-4 mb-2">
