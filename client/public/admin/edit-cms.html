@@ -227,18 +227,32 @@
             return tmp.textContent || tmp.innerText || '';
         }
 
-        // Convert URLs in text to clickable links and process bold formatting
+        // Convert URLs and emails to clickable links and process bold formatting
         function convertUrlsToLinks(text) {
             // If text already contains HTML tags, don't process it
             if (text.includes('<') && text.includes('>')) {
                 return text;
             }
             
-            // URL regex pattern to match http/https URLs
-            const urlRegex = /(https?:\/\/[^\s<>"']+)/gi;
+            let result = text;
             
-            // Replace URLs with HTML links
-            let result = text.replace(urlRegex, '<a href="$1" target="_blank">$1</a>');
+            // First, handle email addresses
+            const emailRegex = /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/gi;
+            result = result.replace(emailRegex, '<a href="mailto:$1" style="text-decoration: underline; color: #1d4ed8;">$1</a>');
+            
+            // Then handle URLs (http/https)
+            const urlRegex = /(https?:\/\/[^\s<>"']+)/gi;
+            result = result.replace(urlRegex, '<a href="$1" target="_blank" style="text-decoration: underline; color: #1d4ed8;">$1</a>');
+            
+            // Handle plain domain names (like mtlbeachprotour.com)
+            const domainRegex = /(?<![@\/])\b([a-zA-Z0-9-]+\.[a-zA-Z]{2,}(?:\.[a-zA-Z]{2,})?)\b(?![\/])/gi;
+            result = result.replace(domainRegex, (match) => {
+                // Don't convert if it's already part of an email or URL
+                if (result.includes(`@${match}`) || result.includes(`//${match}`)) {
+                    return match;
+                }
+                return `<a href="https://${match}" target="_blank" style="text-decoration: underline; color: #1d4ed8;">${match}</a>`;
+            });
             
             // Convert **text** to bold formatting
             result = result.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
