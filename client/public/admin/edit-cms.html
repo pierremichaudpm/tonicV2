@@ -357,6 +357,11 @@
             textarea.value = plainTextForEditing;
             console.log('📝 Setting textarea value length:', plainTextForEditing.length);
             console.log('📝 Textarea value after setting:', textarea.value.length);
+            console.log('📝 First 100 chars:', plainTextForEditing.substring(0, 100));
+            console.log('📝 Textarea display style:', getComputedStyle(textarea).display);
+            console.log('📝 Textarea visibility:', getComputedStyle(textarea).visibility);
+            console.log('📝 Textarea color:', getComputedStyle(textarea).color);
+            console.log('📝 Textarea background:', getComputedStyle(textarea).backgroundColor);
             
             // Store the formatted HTML version for saving
             textarea.setAttribute('data-processed-content', processedContent);
@@ -364,8 +369,15 @@
             // Trigger input event to ensure the interface updates
             textarea.dispatchEvent(new Event('input', { bubbles: true }));
             
-            // Focus the textarea to ensure it's active
+            // Force visual refresh and ensure visibility
+            textarea.style.height = 'auto';
+            textarea.style.height = textarea.scrollHeight + 'px';
             textarea.focus();
+            textarea.blur();
+            textarea.focus();
+            
+            // Scroll to show content
+            textarea.scrollTop = 0;
             
             // Show preview
             showContentPreview(fieldId, processedContent);
