@@ -10,6 +10,16 @@
         .tonic-gradient {
             background: linear-gradient(135deg, #fe4445 0%, #ff6667 100%);
         }
+        .tonic-bg {
+            background: linear-gradient(135deg, #fe4445 0%, #ff6667 50%, #fe4445 100%);
+            background-size: 300% 300%;
+            animation: gradientShift 8s ease-in-out infinite;
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
         
         /* Hide browser notification popups */
         .notification-overlay,
@@ -19,7 +29,7 @@
         }
     </style>
 </head>
-<body class="bg-gray-100">
+<body class="tonic-bg">
     <div class="min-h-screen flex items-center justify-center">
         <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
             <div class="text-center mb-8">
