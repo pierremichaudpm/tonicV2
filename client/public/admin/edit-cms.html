@@ -154,9 +154,15 @@
 
         <!-- Main Content -->
         <main class="max-w-7xl mx-auto px-4 py-8">
-            <!-- Success Alert for Formatting -->
-            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
-                <strong>✨ Formatage activé!</strong> Le système préserve maintenant le texte en <strong>gras</strong>, <em>italique</em> et les <a href="#" style="color: #1d4ed8; text-decoration: underline;">liens</a> depuis Word.
+            <!-- Diagnostic Alert for Formatting -->
+            <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mb-4">
+                <strong>📋 Diagnostic du formatage</strong>
+                <ul class="text-sm mt-2 space-y-1">
+                    <li>1. Ouvrez la console (F12) et utilisez <code class="bg-yellow-200 px-1">checkContent()</code> pour voir le contenu brut</li>
+                    <li>2. Si le contenu n'a pas de HTML, utilisez <code class="bg-yellow-200 px-1">needsFormatting()</code> pour identifier les items</li>
+                    <li>3. Pour rafraîchir l'affichage: <code class="bg-yellow-200 px-1">reprocessAllContent()</code></li>
+                    <li>4. <strong>Solution:</strong> Éditez et recollez le contenu depuis Word pour récupérer le formatage</li>
+                </ul>
             </div>
             
             <div id="content" class="space-y-4">
@@ -947,13 +953,11 @@
 
             container.innerHTML = items.map(item => {
                 if (currentType === 'jobs') {
-                    // Extract plain text from description
+                    // Show formatted HTML description (preserving bold, italic, links)
                     let descText = '';
                     if (item.description) {
-                        const temp = document.createElement('div');
-                        temp.innerHTML = item.description;
-                        descText = temp.textContent || temp.innerText || '';
-                        descText = descText.substring(0, 200) + (descText.length > 200 ? '...' : '');
+                        // Use truncateHTML to preserve formatting while limiting length
+                        descText = truncateHTML(item.description, 400);
                     }
                     
                     return `
@@ -967,7 +971,7 @@
                                         <strong>Type:</strong> ${item.type || 'N/A'}
                                     </div>
                                     ${descText ? `<div class="mt-3 text-gray-700 border-l-4 border-blue-200 pl-4 text-sm leading-relaxed w-full">
-                                        <strong>Description:</strong><br><span class="block mt-1">${descText}</span>
+                                        <strong>Description:</strong><br><div class="block mt-1 cms-content-preview">${descText}</div>
                                     </div>` : '<div class="mt-3 text-gray-500 italic">No description available</div>'}
                                 </div>
                                 <div class="flex gap-2 mt-4 md:mt-0 md:flex-col md:gap-2">
@@ -982,13 +986,11 @@
                         </div>
                     `;
                 } else {
-                    // Extract plain text from content
+                    // Show formatted HTML content (preserving bold, italic, links)
                     let contentText = '';
                     if (item.content) {
-                        const temp = document.createElement('div');
-                        temp.innerHTML = item.content;
-                        contentText = temp.textContent || temp.innerText || '';
-                        contentText = contentText.substring(0, 200) + (contentText.length > 200 ? '...' : '');
+                        // Use truncateHTML to preserve formatting while limiting length
+                        contentText = truncateHTML(item.content, 400);
                     }
                     
                     return `
@@ -1001,7 +1003,7 @@
                                         <strong>Category:</strong> ${item.category || 'N/A'}
                                     </div>
                                     ${contentText ? `<div class="mt-3 text-gray-700 border-l-4 border-purple-200 pl-4 pr-2 text-sm leading-relaxed">
-                                        <strong>Content:</strong><br><span class="block mt-1">${contentText}</span>
+                                        <strong>Content:</strong><br><div class="block mt-1 cms-content-preview">${contentText}</div>
                                     </div>` : '<div class="mt-3 text-gray-500 italic">No content available</div>'}
                                 </div>
                                 <div class="flex gap-2 mt-4 md:mt-0 md:flex-col md:gap-2">
@@ -1300,6 +1302,57 @@ Pour plus d'informations, visitez www.groupetonic.com.`;
         // Check initial content type and show department filter if needed
         if (document.getElementById('contentType').value === 'news') {
             document.getElementById('departmentFilter').style.display = 'block';
+        }
+        
+        function logout() {
+            localStorage.removeItem('cmsAuth');
+            location.reload();
+        }
+        
+        // Diagnostic functions for checking content formatting
+        function checkContent() {
+            console.log('🔍 DIAGNOSTIC: Checking all content formatting...');
+            if (!currentData || currentData.length === 0) {
+                console.log('❌ No data loaded');
+                return;
+            }
+            
+            currentData.forEach((item, index) => {
+                const content = currentType === 'jobs' ? item.description : item.content;
+                const isHTML = content && (content.includes('<p>') || content.includes('<strong>') || content.includes('<a'));
+                console.log(`Item ${index + 1}: "${item.title}" - ${isHTML ? '✅ Has HTML' : '❌ Plain text'}`);
+                if (!isHTML && content) {
+                    console.log(`  Raw content: "${content.substring(0, 100)}..."`);
+                }
+            });
+        }
+        
+        function showRawContent(index) {
+            if (!currentData || !currentData[index]) {
+                console.log('❌ Item not found');
+                return;
+            }
+            const item = currentData[index];
+            const content = currentType === 'jobs' ? item.description : item.content;
+            console.log(`Raw content for "${item.title}":`, content);
+        }
+        
+        function needsFormatting() {
+            console.log('🔍 Items that need formatting:');
+            if (!currentData) return;
+            
+            currentData.forEach((item, index) => {
+                const content = currentType === 'jobs' ? item.description : item.content;
+                const isHTML = content && (content.includes('<p>') || content.includes('<strong>') || content.includes('<a'));
+                if (!isHTML && content) {
+                    console.log(`${index + 1}. "${item.title}" - needs formatting`);
+                }
+            });
+        }
+        
+        function reprocessAllContent() {
+            console.log('🔄 Refreshing display...');
+            displayContent(currentData);
         }
     </script>
 </body>
