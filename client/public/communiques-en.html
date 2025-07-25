@@ -339,6 +339,9 @@
             initializeSampleContent(); // Initialize sample content if none exist
             renderNews();
             
+            // Refresh content every 2 seconds to show new entries
+            setInterval(renderNews, 2000);
+            
             // Close PDF modal when clicking outside
             document.getElementById('pdfViewerModal').addEventListener('click', (e) => {
                 if (e.target === document.getElementById('pdfViewerModal')) {

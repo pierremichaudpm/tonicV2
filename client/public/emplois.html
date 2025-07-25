@@ -813,6 +813,10 @@
             // Initialize sample data
             initializeSampleContent();
             
+            // Render jobs initially and refresh every 2 seconds
+            renderJobs();
+            setInterval(renderJobs, 2000);
+            
             // Event delegation for job cards (PDF and regular)
             DOM.jobsList.addEventListener('click', function(e) {
                 const jobCard = e.target.closest('.job-card');

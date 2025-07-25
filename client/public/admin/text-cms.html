@@ -311,10 +311,18 @@
             
             if (id) {
                 // Update existing content
-                updateContent(parseInt(id), contentData);
+                const existingData = getContentData();
+                const index = existingData.findIndex(item => item.id == id);
+                if (index !== -1) {
+                    existingData[index] = { ...existingData[index], ...contentData };
+                    saveContentData(existingData);
+                }
             } else {
                 // Add new content
-                addContent(contentData);
+                const existingData = getContentData();
+                contentData.id = Date.now(); // Generate unique ID
+                existingData.unshift(contentData);
+                saveContentData(existingData);
             }
             
             closeContentModal();
@@ -324,7 +332,9 @@
         // Delete function
         window.deleteContent = function(id) {
             if (confirm('Êtes-vous sûr de vouloir supprimer ce contenu ?')) {
-                deleteContent(id);
+                const contentData = getContentData();
+                const filtered = contentData.filter(item => item.id !== id);
+                saveContentData(filtered);
                 loadContent();
             }
         };
