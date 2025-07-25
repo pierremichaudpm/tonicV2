@@ -279,17 +279,21 @@
             color: inherit !important;
         }
         
-        /* Links - all types */
+        /* Links - FORCE OVERRIDE all Word styles */
         #modalContent a,
-        .modal-content a {
+        .modal-content a,
+        #modalContent span[style*="color:#1155cc"],
+        #modalContent span[style*="text-decoration:underline"] {
             text-decoration: underline !important;
             color: #3b82f6 !important;
             cursor: pointer !important;
+            background-color: transparent !important;
         }
         
         #modalContent a:hover,
         .modal-content a:hover {
             color: #1d4ed8 !important;
+            background-color: transparent !important;
         }
         
         /* Bold text - all variations */
@@ -575,18 +579,28 @@
             if (!release.content || release.content.trim() === '') {
                 modalContent.innerHTML = '<p class="text-white/70 italic">Contenu non disponible.</p>';
             } else {
-                // DIRECT HTML INJECTION - NO PROCESSING
-                console.log('🎯 Direct HTML injection');
+                // DIRECT HTML injection with link fixing
+                console.log('🎯 Injecting Word HTML');
+                modalContent.innerHTML = release.content;
                 
-                // First test with simple HTML to verify rendering works
-                modalContent.innerHTML = '<p>Test: <strong>Bold text</strong> and <a href="#" style="color: blue; text-decoration: underline;">Link test</a></p>';
+                // Fix links immediately after injection
+                const links = modalContent.querySelectorAll('a');
+                console.log('🔗 Found links:', links.length);
+                links.forEach(link => {
+                    link.style.color = '#3b82f6';
+                    link.style.textDecoration = 'underline';
+                    link.style.backgroundColor = 'transparent';
+                });
                 
-                // After 1 second, inject the actual content
-                setTimeout(() => {
-                    console.log('💥 Injecting Word content of length:', release.content.length);
-                    modalContent.innerHTML = release.content;
-                    console.log('🔗 Links after injection:', modalContent.querySelectorAll('a').length);
-                }, 1000);
+                // Also fix any spans that look like links
+                const linkSpans = modalContent.querySelectorAll('span[style*="color:#1155cc"], span[style*="text-decoration:underline"]');
+                console.log('🔗 Found link-style spans:', linkSpans.length);
+                linkSpans.forEach(span => {
+                    span.style.color = '#3b82f6';
+                    span.style.textDecoration = 'underline';
+                    span.style.backgroundColor = 'transparent';
+                    span.style.cursor = 'pointer';
+                });
             }
             
             modal.classList.add('active');
