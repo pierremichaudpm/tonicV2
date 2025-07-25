@@ -458,8 +458,8 @@
     <!-- Load job data -->
     <script src="js/emplois-data.js"></script>
     
-    <!-- PDF Data -->
-    <script src="js/pdf-data.js"></script>
+    <!-- Content Data -->
+    <script src="js/content-data.js"></script>
     
     <!-- Shared JavaScript -->
     <script src="js/shared.js"></script>
@@ -526,25 +526,24 @@
             return classMap[department] || 'category-tonic';
         };
 
-        // Get all jobs - PDF content only
+        // Get all jobs - mobile-friendly content
         async function getAllJobs() {
-            // Get PDF job content only
-            const pdfJobs = getPDFsByType('job');
+            const jobContent = getContentByType('job');
             
-            // Convert PDF jobs to the expected format
-            return pdfJobs.map(pdf => ({
-                id: `pdf-${pdf.id}`,
-                title: pdf.title,
-                department: pdf.category,
-                location: 'Montréal, QC', // Default location
-                type: 'Temps plein', // Default type
-                datePosted: pdf.date,
-                startDate: 'À déterminer', // Default start date
-                description: pdf.subtitle || 'Voir le document PDF pour plus de détails',
-                emailSubject: `Candidature - ${pdf.title}`,
-                salary: 'À discuter', // Default salary
-                isPDF: true,
-                pdfData: pdf
+            // Convert content to expected format
+            return jobContent.map(job => ({
+                id: job.id,
+                title: job.title,
+                department: job.category,
+                location: job.location || 'Montréal, QC',
+                type: job.jobType || 'Temps plein',
+                datePosted: job.date,
+                startDate: 'À déterminer',
+                description: job.subtitle,
+                content: job.content,
+                emailSubject: `Candidature - ${job.title}`,
+                salary: job.salary || 'À discuter',
+                isPDF: false
             }));
         }
 
@@ -812,7 +811,7 @@
             DOM.modalContent = document.getElementById('modalContent');
             
             // Initialize sample data
-            initializeSampleData();
+            initializeSampleContent();
             
             // Event delegation for job cards (PDF and regular)
             DOM.jobsList.addEventListener('click', function(e) {
