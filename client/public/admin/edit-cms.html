@@ -345,7 +345,7 @@
                         const temp = document.createElement('div');
                         temp.innerHTML = item.description;
                         descText = temp.textContent || temp.innerText || '';
-                        descText = descText.substring(0, 400) + (descText.length > 400 ? '...' : '');
+                        descText = descText.substring(0, 200) + (descText.length > 200 ? '...' : '');
                     }
                     
                     return `
@@ -358,7 +358,7 @@
                                         <strong>Location:</strong> ${item.location || item.lieu || 'N/A'} | 
                                         <strong>Type:</strong> ${item.type || 'N/A'}
                                     </div>
-                                    ${descText ? `<div class="mt-3 text-gray-700 border-l-4 border-blue-200 pl-4">
+                                    ${descText ? `<div class="mt-3 text-gray-700 border-l-4 border-blue-200 pl-4 text-sm leading-relaxed">
                                         <strong>Description:</strong><br>${descText}
                                     </div>` : '<div class="mt-3 text-gray-500 italic">No description available</div>'}
                                 </div>
@@ -380,7 +380,7 @@
                         const temp = document.createElement('div');
                         temp.innerHTML = item.content;
                         contentText = temp.textContent || temp.innerText || '';
-                        contentText = contentText.substring(0, 400) + (contentText.length > 400 ? '...' : '');
+                        contentText = contentText.substring(0, 200) + (contentText.length > 200 ? '...' : '');
                     }
                     
                     return `
@@ -393,7 +393,7 @@
                                         <strong>Category:</strong> ${item.category || 'N/A'} | 
                                         <strong>Department:</strong> ${item.department || 'N/A'}
                                     </div>
-                                    ${contentText ? `<div class="mt-3 text-gray-700 border-l-4 border-purple-200 pl-4">
+                                    ${contentText ? `<div class="mt-3 text-gray-700 border-l-4 border-purple-200 pl-4 text-sm leading-relaxed">
                                         <strong>Content:</strong><br>${contentText}
                                     </div>` : '<div class="mt-3 text-gray-500 italic">No content available</div>'}
                                 </div>
