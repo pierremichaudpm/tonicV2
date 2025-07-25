@@ -163,17 +163,6 @@
                                         <option value="Groupe Tonic">Groupe Tonic</option>
                                     </select>
                                 </div>
-                                <select id="newsDepartment" class="w-full p-3 border rounded">
-                                    <option value="">Sélectionner une catégorie</option>
-                                    <option value="Beach Pro Tour">Beach Pro Tour</option>
-                                    <option value="Grands Prix Cyclistes">Grands Prix Cyclistes</option>
-                                    <option value="Marathon Beneva 21K">Marathon Beneva 21K</option>
-                                    <option value="UCI 2026">UCI 2026</option>
-                                    <option value="Studio 76">Studio 76</option>
-                                    <option value="Dock 619">Dock 619</option>
-                                    <option value="21K de Montréal">21K de Montréal</option>
-                                    <option value="Groupe Tonic">Groupe Tonic</option>
-                                </select>
                                 <textarea id="newsSummary" placeholder="Résumé court" rows="2" class="w-full p-3 border rounded"></textarea>
                             </div>
                             
@@ -462,7 +451,6 @@
                 document.getElementById('newsTitle').value = item.title || '';
                 document.getElementById('date').value = item.date || '';
                 document.getElementById('category').value = item.category || '';
-                document.getElementById('newsDepartment').value = item.department || '';
                 document.getElementById('newsSummary').value = item.summary || '';
                 // Convert HTML to plain text for editing
                 const tempDiv2 = document.createElement('div');
@@ -516,7 +504,6 @@
                         title: document.getElementById('newsTitle').value,
                         date: document.getElementById('date').value,
                         category: document.getElementById('category').value,
-                        department: document.getElementById('newsDepartment').value,
                         summary: convertUrlsToLinks(document.getElementById('newsSummary').value),
                         content: contentHtml
                     };
