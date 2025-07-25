@@ -138,7 +138,8 @@ router.post('/jobs', authenticateToken, async (req, res) => {
     const newJob = {
       id: Date.now(),
       ...req.body,
-      datePosted: new Date().toISOString().split('T')[0]
+      datePosted: new Date().toISOString().split('T')[0],
+      image: getCategoryImage(req.body.department) // Automatically assign image based on department
     };
     delete newJob.lang; // Remove lang from job data
     jobs.push(newJob);
@@ -157,7 +158,11 @@ router.put('/jobs/:id', authenticateToken, async (req, res) => {
     if (index === -1) {
       return res.status(404).json({ message: 'Job not found' });
     }
-    const updatedJob = { ...jobs[index], ...req.body };
+    const updatedJob = { 
+      ...jobs[index], 
+      ...req.body,
+      image: getCategoryImage(req.body.department) // Automatically assign image based on department
+    };
     delete updatedJob.lang;
     jobs[index] = updatedJob;
     await writeJobsData(jobs, lang);
@@ -190,13 +195,29 @@ router.get('/news', authenticateToken, async (req, res) => {
   }
 });
 
+// Helper function to automatically assign image based on category
+function getCategoryImage(category: string): string {
+  const imageMap: { [key: string]: string } = {
+    'Beach Pro Tour': 'images/beach-pro-tour-hero.webp',
+    'Grands Prix Cyclistes': 'images/grands-prix-cyclistes-hero.jpg',
+    'Marathon Beneva 21K': 'images/marathon-beneva-hero.jpg',
+    'UCI 2026': 'images/montreal-2026-uci-hero.jpg',
+    'Studio 76': 'images/studio-76-hero.jpg',
+    'Dock 619': 'images/dock619-hero-new.jpg',
+    '21K de Montréal': 'images/21k-hero.jpg',
+    'Groupe Tonic': 'images/tonic-logo.png'
+  };
+  return imageMap[category] || 'images/tonic-logo.png';
+}
+
 router.post('/news', authenticateToken, async (req, res) => {
   try {
     const lang = req.body.lang || 'fr';
     const news = await readNewsData(lang);
     const newArticle = {
       id: Date.now(),
-      ...req.body
+      ...req.body,
+      image: getCategoryImage(req.body.category) // Automatically assign image based on category
     };
     delete newArticle.lang;
     news.push(newArticle);
@@ -215,7 +236,11 @@ router.put('/news/:id', authenticateToken, async (req, res) => {
     if (index === -1) {
       return res.status(404).json({ message: 'Article not found' });
     }
-    const updatedArticle = { ...news[index], ...req.body };
+    const updatedArticle = { 
+      ...news[index], 
+      ...req.body,
+      image: getCategoryImage(req.body.category) // Automatically assign image based on category
+    };
     delete updatedArticle.lang;
     news[index] = updatedArticle;
     await writeNewsData(news, lang);
