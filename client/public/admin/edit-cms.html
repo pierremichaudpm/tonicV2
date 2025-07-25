@@ -248,18 +248,31 @@
         
         // Enhanced text processing for better paragraph detection
         function processTextToParagraphs(text) {
-            const processedText = convertUrlsToLinks(text);
+            // First handle URLs and bold formatting
+            let processedText = convertUrlsToLinks(text);
             
-            // Split on multiple line breaks (2 or more) OR single line breaks followed by capitals/quotes
+            // More aggressive paragraph splitting to handle Word document formatting
             let paragraphs = processedText
-                .split(/\n\s*\n/)  // Split on double newlines (with optional whitespace)
+                // First split on double newlines
+                .split(/\n\s*\n/)
+                // Then split on single newlines before common paragraph starters
                 .map(section => {
-                    // Further split single newlines that appear before capitals, quotes, or common press release patterns
-                    return section.split(/\n(?=[A-Z«"–]|\d+\.|•|-)/)
+                    return section.split(/\n(?=[A-ZÀÉÈÊËÏÎÔÖÙÚÛÜŸÇ«"–•]|Montréal|Les |Pour |Après |Suite |Plus |« |L'|D'|\d+\.|-)/)
                 })
                 .flat()
-                .filter(para => para.trim().length > 0)
-                .map(para => para.trim().replace(/\n/g, ' ')); // Replace remaining single newlines with spaces
+                // Additional split for specific patterns in press releases
+                .map(section => {
+                    return section.split(/(?<=\.)\s*(?=[A-ZÀÉÈÊËÏÎÔÖÙÚÛÜŸÇ«]|Montréal|Les |Pour |Après |Suite |Plus |« |L'|D')/)
+                })
+                .flat()
+                .filter(para => para.trim().length > 10) // Filter out very short fragments
+                .map(para => {
+                    // Clean up each paragraph
+                    return para.trim()
+                        .replace(/\n+/g, ' ') // Replace internal newlines with spaces
+                        .replace(/\s+/g, ' ') // Normalize multiple spaces
+                        .trim();
+                });
             
             return paragraphs.map(para => `<p>${para}</p>`).join('\n');
         }
