@@ -348,13 +348,24 @@
                 return;
             }
             
-            // Store processed HTML and show plain text for editing
+            // Store processed HTML and show readable text for editing
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = processedContent;
-            const plainTextForEditing = tempDiv.textContent || tempDiv.innerText || '';
+            const plainTextForEditing = tempDiv.textContent || tempDiv.innerText || processedContent;
             
+            // Show the text in the textarea
             textarea.value = plainTextForEditing;
+            console.log('📝 Setting textarea value length:', plainTextForEditing.length);
+            console.log('📝 Textarea value after setting:', textarea.value.length);
+            
+            // Store the formatted HTML version for saving
             textarea.setAttribute('data-processed-content', processedContent);
+            
+            // Trigger input event to ensure the interface updates
+            textarea.dispatchEvent(new Event('input', { bubbles: true }));
+            
+            // Focus the textarea to ensure it's active
+            textarea.focus();
             
             // Show preview
             showContentPreview(fieldId, processedContent);
