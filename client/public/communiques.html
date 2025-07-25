@@ -211,12 +211,21 @@
             backdrop-filter: blur(12px);
             z-index: 50;
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: center;
             padding: 1rem;
+            padding-top: 2rem;
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.3s ease;
+        }
+        
+        /* Center on larger screens */
+        @media (min-height: 600px) {
+            .modal-backdrop {
+                align-items: center;
+                padding-top: 1rem;
+            }
         }
         
         .modal-backdrop.active {
