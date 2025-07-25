@@ -9,7 +9,7 @@ const pressReleases = [
     "image": "images/montreal-2026-uci-hero.jpg"
   },
   {
-    "id": 1753467775409,
+    "id": 1753468752751,
     "title": "Le Volleyball World Beach Pro Tour – Elite revient à Montréal!",
     "date": "2025-06-17",
     "category": "Beach Pro Tour",

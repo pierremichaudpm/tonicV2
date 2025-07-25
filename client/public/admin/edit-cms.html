@@ -154,14 +154,14 @@
 
         <!-- Main Content -->
         <main class="max-w-7xl mx-auto px-4 py-8">
-            <!-- Diagnostic Alert for Formatting -->
-            <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mb-4">
-                <strong>📋 Diagnostic du formatage</strong>
+            <!-- Auto-Fix Alert for Plain Text Content -->
+            <div class="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded mb-4">
+                <strong>🔧 Correction automatique du formatage</strong>
                 <ul class="text-sm mt-2 space-y-1">
-                    <li>1. Ouvrez la console (F12) et utilisez <code class="bg-yellow-200 px-1">checkContent()</code> pour voir le contenu brut</li>
-                    <li>2. Si le contenu n'a pas de HTML, utilisez <code class="bg-yellow-200 px-1">needsFormatting()</code> pour identifier les items</li>
-                    <li>3. Pour rafraîchir l'affichage: <code class="bg-yellow-200 px-1">reprocessAllContent()</code></li>
-                    <li>4. <strong>Solution:</strong> Éditez et recollez le contenu depuis Word pour récupérer le formatage</li>
+                    <li><strong>Problème:</strong> Le contenu existant est en texte brut (pas de gras, pas de liens)</li>
+                    <li><strong>Solution rapide:</strong> Ouvrez la console (F12) et tapez <code class="bg-blue-200 px-1">autoFixPlainTextContent()</code></li>
+                    <li><strong>Diagnostic:</strong> Utilisez <code class="bg-blue-200 px-1">checkContent()</code> pour voir l'état du formatage</li>
+                    <li><strong>Manuel:</strong> Éditez chaque item et recollez depuis Word pour ajouter du formatage avancé</li>
                 </ul>
             </div>
             
@@ -1353,6 +1353,87 @@ Pour plus d'informations, visitez www.groupetonic.com.`;
         function reprocessAllContent() {
             console.log('🔄 Refreshing display...');
             displayContent(currentData);
+        }
+        
+        // Auto-fix plain text content by adding basic HTML paragraph tags
+        async function autoFixPlainTextContent() {
+            console.log('🔄 STARTING AUTO-FIX: Converting plain text to HTML...');
+            
+            if (!currentData || currentData.length === 0) {
+                console.log('❌ No data to fix');
+                return;
+            }
+            
+            let fixedCount = 0;
+            
+            for (let i = 0; i < currentData.length; i++) {
+                const item = currentData[i];
+                const contentField = currentType === 'jobs' ? 'description' : 'content';
+                const content = item[contentField];
+                
+                // Check if content needs fixing (is plain text)
+                const isHTML = content && (content.includes('<p>') || content.includes('<strong>') || content.includes('<a'));
+                
+                if (content && !isHTML) {
+                    console.log(`🔧 Fixing item ${i + 1}: "${item.title}"`);
+                    
+                    // Convert plain text to HTML paragraphs
+                    const htmlContent = processTextToParagraphs(content);
+                    
+                    // Prepare the update data
+                    const updateData = {
+                        ...item,
+                        [contentField]: htmlContent
+                    };
+                    
+                    try {
+                        // Save the updated item
+                        const response = await fetchWithAuth(`/api/cms/${currentType}/${item.id}?lang=${currentLang}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(updateData)
+                        });
+                        
+                        if (response && response.ok) {
+                            fixedCount++;
+                            console.log(`✅ Fixed "${item.title}"`);
+                        } else {
+                            console.error(`❌ Failed to fix "${item.title}"`);
+                        }
+                    } catch (error) {
+                        console.error(`❌ Error fixing "${item.title}":`, error);
+                    }
+                }
+            }
+            
+            console.log(`🎉 AUTO-FIX COMPLETE: Fixed ${fixedCount} items`);
+            
+            // Reload content to show the changes
+            await loadContent();
+            alert(`✅ Auto-fix terminé! ${fixedCount} éléments convertis en HTML.`);
+        }
+        
+        // Helper function to convert plain text to HTML paragraphs
+        function processTextToParagraphs(text) {
+            if (!text) return '';
+            
+            // Split by double line breaks (paragraph breaks)
+            const paragraphs = text.split(/\n\s*\n/).filter(p => p.trim());
+            
+            // Convert each paragraph to HTML
+            const htmlParagraphs = paragraphs.map(paragraph => {
+                // Clean up the paragraph
+                const cleaned = paragraph.trim().replace(/\n/g, ' ');
+                
+                // Convert URLs to links
+                const withLinks = convertUrlsToLinks(cleaned);
+                
+                return `<p>${withLinks}</p>`;
+            });
+            
+            return htmlParagraphs.join('\n\n');
         }
     </script>
 </body>
