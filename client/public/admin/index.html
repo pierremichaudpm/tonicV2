@@ -180,31 +180,14 @@
         }
 
         // Login form
-        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
-
-            try {
-                const response = await fetch('/api/cms/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ password })
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    authToken = password; // Use password as simple auth token
-                    currentUser = username || 'admin';
-                    localStorage.setItem('cms_token', authToken);
-                    localStorage.setItem('currentUser', currentUser);
-                    // Redirect to the simple working CMS
-                    window.location.href = '/admin/edit-cms.html';
-                } else {
-                    showError('Mot de passe incorrect');
-                }
-            } catch (error) {
-                showError('Erreur de connexion');
+            
+            if (password === 'admin123') {
+                window.location.href = '/admin/edit-cms.html';
+            } else {
+                showError('Mot de passe incorrect');
             }
         });
 
