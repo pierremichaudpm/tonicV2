@@ -34,28 +34,59 @@
     <div class="min-h-screen">
         <!-- Header -->
         <header class="bg-white shadow-sm border-b">
-            <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-                <div class="flex items-center gap-3">
-                    <img src="/images/tonic-logo.png" alt="Groupe Tonic" class="h-10">
-                    <div>
-                        <p class="text-sm text-gray-600">Système de Gestion de Contenu</p>
+            <div class="max-w-7xl mx-auto px-4 py-4">
+                <!-- Mobile Layout: Stack everything -->
+                <div class="flex flex-col gap-4 md:hidden">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <img src="/images/tonic-logo.png" alt="Groupe Tonic" class="h-8">
+                            <div>
+                                <p class="text-xs text-gray-600">CMS</p>
+                            </div>
+                        </div>
+                        <button onclick="logout()" class="bg-red-500 text-white px-3 py-1.5 text-sm rounded hover:bg-red-600">
+                            Déconnexion
+                        </button>
+                    </div>
+                    <div class="flex gap-2">
+                        <select id="contentType" class="flex-1 border rounded px-2 py-1.5 text-sm">
+                            <option value="jobs">Emplois / Jobs</option>
+                            <option value="news">Communiqués / News</option>
+                        </select>
+                        <select id="language" class="border rounded px-2 py-1.5 text-sm">
+                            <option value="fr">FR</option>
+                            <option value="en">EN</option>
+                        </select>
+                        <button onclick="showAddForm()" class="bg-green-500 text-white px-3 py-1.5 text-sm rounded hover:bg-green-600">
+                            + Add
+                        </button>
                     </div>
                 </div>
-                <div class="flex items-center gap-4">
-                    <select id="contentType" class="border rounded px-3 py-2">
-                        <option value="jobs">Emplois / Jobs</option>
-                        <option value="news">Communiqués / News</option>
-                    </select>
-                    <select id="language" class="border rounded px-3 py-2">
-                        <option value="fr">Français</option>
-                        <option value="en">English</option>
-                    </select>
-                    <button onclick="showAddForm()" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
-                        + Ajouter
-                    </button>
-                    <button onclick="logout()" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
-                        Déconnexion
-                    </button>
+                
+                <!-- Desktop Layout: Original horizontal layout -->
+                <div class="hidden md:flex justify-between items-center">
+                    <div class="flex items-center gap-3">
+                        <img src="/images/tonic-logo.png" alt="Groupe Tonic" class="h-10">
+                        <div>
+                            <p class="text-sm text-gray-600">Système de Gestion de Contenu</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <select id="contentTypeDesktop" class="border rounded px-3 py-2">
+                            <option value="jobs">Emplois / Jobs</option>
+                            <option value="news">Communiqués / News</option>
+                        </select>
+                        <select id="languageDesktop" class="border rounded px-3 py-2">
+                            <option value="fr">Français</option>
+                            <option value="en">English</option>
+                        </select>
+                        <button onclick="showAddForm()" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                            + Ajouter
+                        </button>
+                        <button onclick="logout()" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                            Déconnexion
+                        </button>
+                    </div>
                 </div>
             </div>
         </header>
@@ -70,8 +101,8 @@
 
         <!-- Edit Modal -->
         <div id="editModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 overflow-y-auto" onclick="closeModalOnBackdrop(event)">
-            <div class="min-h-screen flex items-start justify-center p-2 pt-4">
-                <div class="bg-white rounded-lg w-full max-w-5xl min-h-[80vh] max-h-[95vh] overflow-hidden flex flex-col mt-4 mb-4" onclick="event.stopPropagation()">
+            <div class="min-h-screen flex items-start justify-center p-2 pt-2 md:pt-4">
+                <div class="bg-white rounded-lg w-full max-w-5xl min-h-[85vh] md:min-h-[80vh] max-h-[98vh] md:max-h-[95vh] overflow-hidden flex flex-col mt-2 md:mt-4 mb-2 md:mb-4" onclick="event.stopPropagation()">
                     <!-- Fixed Header -->
                     <div class="flex justify-between items-center p-4 bg-white border-b flex-shrink-0">
                         <h2 id="modalTitle" class="text-lg sm:text-xl font-bold">Éditer</h2>
@@ -88,7 +119,7 @@
                             <div class="bg-gray-50 p-4 rounded-lg space-y-4">
                                 <h3 class="font-semibold text-lg">Informations principales</h3>
                                 <input type="text" id="title" placeholder="Titre du poste" class="w-full p-3 border rounded">
-                                <div class="grid grid-cols-2 gap-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <select id="department" class="p-3 border rounded">
                                         <option value="">Sélectionner un département</option>
                                         <option value="Administration">Administration</option>
@@ -121,7 +152,7 @@
                             <div class="bg-gray-50 p-4 rounded-lg space-y-4">
                                 <h3 class="font-semibold text-lg">Informations principales</h3>
                                 <input type="text" id="newsTitle" placeholder="Titre du communiqué" class="w-full p-3 border rounded">
-                                <div class="grid grid-cols-2 gap-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <input type="date" id="date" placeholder="Date" class="p-3 border rounded">
                                     <select id="category" class="p-3 border rounded">
                                         <option value="">Sélectionner une catégorie</option>
@@ -152,7 +183,7 @@
                             </div>
                         </div>
 
-                        <div class="flex gap-2 justify-end">
+                        <div class="flex flex-col sm:flex-row gap-2 justify-end">
                             <button type="button" onclick="closeModal()" class="px-4 py-2 border rounded hover:bg-gray-100">
                                 Annuler
                             </button>
@@ -202,16 +233,46 @@
             return tmp.textContent || tmp.innerText || '';
         }
 
-        document.getElementById('contentType').addEventListener('change', (e) => {
-            currentType = e.target.value;
-            toggleFieldVisibility();
-            loadContent();
-        });
-
-        document.getElementById('language').addEventListener('change', (e) => {
-            currentLang = e.target.value;
-            loadContent();
-        });
+        // Sync mobile and desktop dropdowns
+        function syncDropdowns() {
+            const mobileContentType = document.getElementById('contentType');
+            const desktopContentType = document.getElementById('contentTypeDesktop');
+            const mobileLanguage = document.getElementById('language');
+            const desktopLanguage = document.getElementById('languageDesktop');
+            
+            // Mobile content type change
+            mobileContentType.addEventListener('change', (e) => {
+                currentType = e.target.value;
+                desktopContentType.value = e.target.value;
+                toggleFieldVisibility();
+                loadContent();
+            });
+            
+            // Desktop content type change
+            desktopContentType.addEventListener('change', (e) => {
+                currentType = e.target.value;
+                mobileContentType.value = e.target.value;
+                toggleFieldVisibility();
+                loadContent();
+            });
+            
+            // Mobile language change
+            mobileLanguage.addEventListener('change', (e) => {
+                currentLang = e.target.value;
+                desktopLanguage.value = e.target.value;
+                loadContent();
+            });
+            
+            // Desktop language change
+            desktopLanguage.addEventListener('change', (e) => {
+                currentLang = e.target.value;
+                mobileLanguage.value = e.target.value;
+                loadContent();
+            });
+        }
+        
+        // Initialize dropdown sync
+        syncDropdowns();
 
         document.getElementById('editForm').addEventListener('submit', saveItem);
 
