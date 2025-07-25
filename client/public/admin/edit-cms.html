@@ -332,6 +332,12 @@
             
             // SIMPLE: Just put the raw text in the textarea (this always works)
             textarea.value = rawText;
+            console.log('📝 Textarea value set to length:', textarea.value.length);
+            console.log('📝 First 50 chars in textarea:', textarea.value.substring(0, 50));
+            
+            // Force the change event to fire
+            textarea.dispatchEvent(new Event('input', { bubbles: true }));
+            textarea.dispatchEvent(new Event('change', { bubbles: true }));
             
             // Store the processed HTML for when we save
             textarea.setAttribute('data-processed-content', processedHTML);
@@ -341,6 +347,11 @@
             
             // Focus the textarea so user sees the content
             textarea.focus();
+            
+            // Additional debugging - check if textarea is visible
+            console.log('📝 Textarea computed style display:', getComputedStyle(textarea).display);
+            console.log('📝 Textarea computed style visibility:', getComputedStyle(textarea).visibility);
+            console.log('📝 Textarea computed style opacity:', getComputedStyle(textarea).opacity);
             
             console.log('✅ Paste completed - Raw text length:', rawText.length, 'Processed HTML length:', processedHTML.length);
         }
