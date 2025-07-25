@@ -872,19 +872,75 @@
             const iframe = document.getElementById('pdfViewer');
             const fallback = document.getElementById('pdfFallback');
             
-            // Try to load PDF in iframe
-            iframe.src = currentPDFUrl;
-            iframe.classList.remove('hidden');
-            fallback.classList.add('hidden');
+            console.log('Opening PDF modal with URL:', currentPDFUrl);
             
-            // Show modal
+            // Show modal and loading indicator
             modal.classList.remove('hidden');
+            const loadingDiv = document.getElementById('pdfLoading');
+            loadingDiv.classList.remove('hidden');
             
-            // Handle iframe load errors (mobile browsers)
-            iframe.onerror = function() {
-                iframe.classList.add('hidden');
-                fallback.classList.remove('hidden');
-            };
+            // Hide loading after a delay and show content
+            setTimeout(() => {
+                loadingDiv.classList.add('hidden');
+                
+                // Try multiple methods to display PDF
+                const embed = document.getElementById('pdfEmbed');
+                let pdfLoadAttempted = false;
+                
+                function tryIframe() {
+                    console.log('Trying iframe method');
+                    iframe.src = currentPDFUrl + '#toolbar=1&navpanes=1&scrollbar=1&view=FitH';
+                    iframe.classList.remove('hidden');
+                    embed.classList.add('hidden');
+                    fallback.classList.add('hidden');
+                    pdfLoadAttempted = true;
+                    
+                    iframe.onload = function() {
+                        console.log('PDF loaded successfully in iframe');
+                    };
+                    
+                    iframe.onerror = function() {
+                        console.log('Iframe failed, trying embed method');
+                        tryEmbed();
+                    };
+                }
+                
+                function tryEmbed() {
+                    console.log('Trying embed method');
+                    embed.src = currentPDFUrl;
+                    embed.classList.remove('hidden');
+                    iframe.classList.add('hidden');
+                    fallback.classList.add('hidden');
+                    
+                    // Check if embed loaded after delay
+                    setTimeout(() => {
+                        if (!embed.contentDocument && !embed.getSVGDocument) {
+                            console.log('Embed failed, showing fallback');
+                            showFallback();
+                        } else {
+                            console.log('PDF loaded successfully in embed');
+                        }
+                    }, 2000);
+                }
+                
+                function showFallback() {
+                    console.log('Showing fallback download option');
+                    iframe.classList.add('hidden');
+                    embed.classList.add('hidden');
+                    fallback.classList.remove('hidden');
+                }
+                
+                // Start with iframe method
+                tryIframe();
+                
+                // Ultimate fallback timeout
+                setTimeout(() => {
+                    if (!pdfLoadAttempted) {
+                        showFallback();
+                    }
+                }, 5000);
+                
+            }, 1000);
         }
 
         // Close PDF modal
@@ -960,11 +1016,27 @@
                 </div>
                 
                 <!-- PDF Content -->
-                <div class="flex-1 overflow-hidden">
+                <div class="flex-1 overflow-hidden relative">
                     <iframe id="pdfViewer" 
                             class="w-full h-full border-0" 
-                            style="min-height: 70vh;">
+                            style="min-height: 70vh;"
+                            title="PDF Viewer">
                     </iframe>
+                    
+                    <!-- Alternative embed viewer -->
+                    <embed id="pdfEmbed" 
+                           class="w-full h-full border-0 hidden" 
+                           style="min-height: 70vh;"
+                           type="application/pdf">
+                    </embed>
+                    
+                    <!-- Loading indicator -->
+                    <div id="pdfLoading" class="absolute inset-0 flex items-center justify-center bg-gray-800">
+                        <div class="text-center">
+                            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+                            <p class="text-gray-300">Chargement du PDF...</p>
+                        </div>
+                    </div>
                     
                     <!-- Fallback for mobile/incompatible browsers -->
                     <div id="pdfFallback" class="hidden p-6 text-center">
