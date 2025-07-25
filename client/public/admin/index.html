@@ -3,32 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CMS Admin - Tonic Productions</title>
+    <title>CMS Admin - Groupe Tonic</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .hidden { display: none !important; }
+        .tonic-gradient {
+            background: linear-gradient(135deg, #fe4445 0%, #ff6667 100%);
+        }
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen">
     <!-- Login Screen -->
-    <div id="loginScreen" class="min-h-screen flex items-center justify-center">
-        <div class="bg-white rounded-lg shadow-lg p-8 max-w-md w-full">
+    <div id="loginScreen" class="min-h-screen flex items-center justify-center tonic-gradient">
+        <div class="bg-white rounded-lg shadow-xl p-8 max-w-md w-full mx-4">
             <div class="text-center mb-6">
-                <img src="../images/tonic-logo.png" alt="Tonic Logo" class="mx-auto h-16 mb-4">
-                <h1 class="text-2xl font-bold text-gray-900">CMS Admin</h1>
-                <p class="text-gray-600">Connexion Sécurisée</p>
+                <img src="../images/tonic-logo.png" alt="Groupe Tonic" class="mx-auto h-20 mb-4">
+                <h1 class="text-2xl font-bold text-gray-900">Groupe Tonic</h1>
+                <p class="text-gray-600 mb-2">Système de Gestion de Contenu</p>
+                <p class="text-sm text-gray-500">Créateur d'expériences mémorables</p>
             </div>
             
             <form id="loginForm" class="space-y-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Nom d'utilisateur</label>
-                    <input type="text" id="username" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    <input type="text" id="username" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Mot de passe</label>
-                    <input type="password" id="password" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    <input type="password" id="password" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500">
                 </div>
-                <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                <button type="submit" class="w-full bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors">
                     Se connecter
                 </button>
                 <div id="loginError" class="hidden text-red-600 text-sm text-center"></div>
