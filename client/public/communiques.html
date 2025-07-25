@@ -530,7 +530,9 @@
     
     <!-- Press Releases Data -->
     <script src="js/communiques-data.js"></script>
-
+    
+    <!-- PDF Data -->
+    <script src="js/pdf-data.js"></script>
     
     <!-- Shared JavaScript -->
     <script src="js/shared.js"></script>
@@ -664,10 +666,29 @@
             document.body.style.overflow = '';
         }
         
-        // Render press releases list - Optimized with document fragment
+        // Render press releases list - Optimized with document fragment including PDFs
         function renderPressReleases() {
             const fragment = document.createDocumentFragment();
             const tempDiv = document.createElement('div');
+            
+            // Get PDF news content
+            const pdfNews = getPDFsByType('news');
+            
+            // Combine regular press releases with PDF news
+            const allContent = [...pressReleases, ...pdfNews.map(pdf => ({
+                id: `pdf-${pdf.id}`,
+                date: pdf.date,
+                title: pdf.title,
+                category: pdf.category,
+                summary: pdf.subtitle || 'Document PDF disponible',
+                content: null, // Will trigger PDF viewer
+                image: pdf.image,
+                isPDF: true,
+                pdfData: pdf
+            }))];
+            
+            // Sort by date (newest first)
+            allContent.sort((a, b) => new Date(b.date) - new Date(a.date));
             
             // Cache color variables
             const colorVars = new Map();
@@ -676,34 +697,42 @@
                 colorVars.set(cat, `--${className}-color`);
             });
             
-            tempDiv.innerHTML = pressReleases.map((pr, index) => {
-                const categoryClass = getCategoryClass(pr.category);
-                const colorVar = colorVars.get(pr.category) || '--accent-primary';
+            tempDiv.innerHTML = allContent.map((content, index) => {
+                const categoryClass = getCategoryClass(content.category);
+                const colorVar = colorVars.get(content.category) || '--accent-primary';
                 
                 return `
                     <div class="pr-card relative rounded-xl p-6 sm:p-8 fade-in delay-${Math.min(index * 100, 500)}" 
                          style="--accent-color: var(${colorVar}, var(--accent-primary))"
-                         data-pr-id="${pr.id}">
+                         data-pr-id="${content.id}"
+                         ${content.isPDF ? 'data-is-pdf="true"' : ''}>
                         <div class="flex flex-col sm:flex-row gap-4">
-                            ${pr.image ? `
+                            ${content.image ? `
                                 <div class="sm:w-48 h-32 sm:h-32 flex-shrink-0 relative">
-                                    <img src="${pr.image}" alt="${pr.title}" class="w-full h-full object-cover rounded-lg" loading="lazy">
-                                    ${pr.category !== 'Groupe Tonic' ? `<div class="absolute inset-0 rounded-lg ${categoryClass} opacity-40"></div>` : ''}
+                                    <img src="${content.image}" alt="${content.title}" class="w-full h-full object-cover rounded-lg" loading="lazy">
+                                    ${content.category !== 'Groupe Tonic' ? `<div class="absolute inset-0 rounded-lg ${categoryClass} opacity-40"></div>` : ''}
+                                    ${content.isPDF ? `
+                                        <div class="absolute top-2 left-2 bg-red-600 rounded-lg p-1.5">
+                                            <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                                <path d="M4 18h12a2 2 0 002-2V6.414A2 2 0 0017.414 5L14 1.586A2 2 0 0012.586 1H4a2 2 0 00-2 2v13a2 2 0 002 2z"/>
+                                            </svg>
+                                        </div>
+                                    ` : ''}
                                 </div>
                             ` : ''}
                             <div class="flex-1">
                                 <div class="flex items-start justify-between gap-4 mb-2">
                                     <span class="inline-block px-3 py-1 rounded-full text-xs font-medium text-white ${categoryClass}">
-                                        ${pr.category}
+                                        ${content.category}
                                     </span>
-                                    <span class="text-sm text-white whitespace-nowrap">${formatDate(pr.date)}</span>
+                                    <span class="text-sm text-white whitespace-nowrap">${formatDate(content.date)}</span>
                                 </div>
                                 <h2 class="text-xl sm:text-2xl font-bold mb-2 text-white hover:text-white transition-colors">
-                                    ${pr.title}
+                                    ${content.title}
                                 </h2>
-                                <p class="text-white line-clamp-2">${pr.summary}</p>
+                                <p class="text-white line-clamp-2">${content.summary}</p>
                                 <div class="mt-4 text-accent font-medium text-sm flex items-center gap-1">
-                                    <span>Lire la suite</span>
+                                    <span>${content.isPDF ? 'Voir le PDF' : 'Lire la suite'}</span>
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                                     </svg>
