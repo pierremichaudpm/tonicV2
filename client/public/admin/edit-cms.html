@@ -427,7 +427,7 @@
             if (!html) return '';
             
             // Convert URLs and emails to links first
-            html = convertUrlsAndEmailsToLinks(html);
+            html = convertUrlsToLinks(html);
             
             // Split into paragraphs based on line breaks
             const paragraphs = html.split(/\n\s*\n+/)
@@ -458,7 +458,7 @@
                         .replace(/\u00A0/g, ' '); // Non-breaking space
             
             // Convert URLs and emails to links
-            text = convertUrlsAndEmailsToLinks(text);
+            text = convertUrlsToLinks(text);
             
             // Split into paragraphs
             const paragraphs = text.split(/\n\s*\n+/)
