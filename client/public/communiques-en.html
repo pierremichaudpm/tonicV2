@@ -309,13 +309,24 @@
     <!-- Additional styles for link visibility -->
     <style>
         /* Modal Link Styles - Ensure all links are underlined and visible */
-        .modal-content a {
+        .modal-content a,
+        #modalContent a {
             text-decoration: underline !important;
             color: #3b82f6 !important;
+            cursor: pointer !important;
         }
         
-        .modal-content a:hover {
+        .modal-content a:hover,
+        #modalContent a:hover {
             color: #1d4ed8 !important;
+        }
+        
+        /* Ensure paragraphs display properly */
+        #modalContent p {
+            display: block !important;
+            margin-bottom: 1rem !important;
+            line-height: 1.7 !important;
+            color: rgba(255, 255, 255, 0.9) !important;
         }
     </style>
 
@@ -419,7 +430,12 @@
             if (!release.content || release.content.trim() === '') {
                 modalContent.innerHTML = '<p class="text-white/70 italic">Content not available.</p>';
             } else {
+                console.log('🔍 DEBUG: Raw content:', release.content);
+                console.log('🔍 DEBUG: Content length:', release.content.length);
+                console.log('🔍 DEBUG: Has HTML tags:', release.content.includes('<'));
                 modalContent.innerHTML = release.content;
+                console.log('🔍 DEBUG: Modal content after setting:', modalContent.innerHTML);
+                console.log('🔍 DEBUG: Links found:', modalContent.querySelectorAll('a').length);
             }
             
             modal.classList.add('active');
