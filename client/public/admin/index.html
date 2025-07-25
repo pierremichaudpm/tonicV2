@@ -184,18 +184,18 @@
                 const response = await fetch('/api/cms/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username, password })
+                    body: JSON.stringify({ password })
                 });
 
                 if (response.ok) {
                     const data = await response.json();
-                    authToken = data.token;
-                    currentUser = data.username;
+                    authToken = password; // Use password as simple auth token
+                    currentUser = username || 'admin';
                     localStorage.setItem('cms_token', authToken);
                     localStorage.setItem('currentUser', currentUser);
                     showDashboard();
                 } else {
-                    showError('Nom d\'utilisateur ou mot de passe incorrect');
+                    showError('Mot de passe incorrect');
                 }
             } catch (error) {
                 showError('Erreur de connexion');
@@ -252,10 +252,11 @@
 
         // API helper
         async function apiRequest(url, options = {}) {
+            const password = localStorage.getItem('cms_token');
             const response = await fetch(url, {
                 ...options,
                 headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('cms_token')}`,
+                    'X-Admin-Password': password,
                     'Content-Type': 'application/json',
                     ...options.headers
                 }
@@ -263,6 +264,7 @@
 
             if (response.status === 401) {
                 localStorage.removeItem('cms_token');
+                localStorage.removeItem('currentUser');
                 showLogin();
                 throw new Error('Session expirée');
             }
