@@ -287,12 +287,12 @@
             }
         }
 
-        // Simple and reliable paste handling
+        // Let browser paste normally, then process content
         function handlePaste(event, fieldId) {
             console.log('🔥 PASTE EVENT TRIGGERED for field:', fieldId);
             
-            // Prevent default paste behavior
-            event.preventDefault();
+            // DON'T prevent default - let the browser paste normally first
+            // event.preventDefault(); // ← REMOVED THIS LINE
             
             const clipboardData = event.clipboardData || window.clipboardData;
             if (!clipboardData) {
@@ -302,11 +302,7 @@
             
             console.log('📋 Available clipboard types:', Array.from(clipboardData.types));
             
-            let rawText = '';
             let processedHTML = '';
-            
-            // Get the raw text first (this always works)
-            rawText = clipboardData.getData('text/plain') || clipboardData.getData('text') || '';
             
             // Try to get HTML if available (for Word documents)
             if (clipboardData.types.includes('text/html')) {
@@ -319,7 +315,8 @@
             
             // Fallback to processing plain text
             if (!processedHTML || processedHTML.trim().length === 0) {
-                console.log('📝 Processing plain text');
+                const rawText = clipboardData.getData('text/plain') || clipboardData.getData('text') || '';
+                console.log('📝 Processing plain text fallback');
                 processedHTML = processPlainTextSimple(rawText);
             }
             
@@ -330,30 +327,33 @@
                 return;
             }
             
-            // SIMPLE: Just put the raw text in the textarea (this always works)
-            textarea.value = rawText;
-            console.log('📝 Textarea value set to length:', textarea.value.length);
-            console.log('📝 First 50 chars in textarea:', textarea.value.substring(0, 50));
+            // Use setTimeout to process AFTER the browser has done the normal paste
+            setTimeout(() => {
+                console.log('⏰ Processing content after paste');
+                console.log('📝 Textarea now contains:', textarea.value.length, 'characters');
+                console.log('📝 First 50 chars:', textarea.value.substring(0, 50));
+                
+                // Store the processed HTML for when we save (keep the raw text in the textarea)
+                if (processedHTML && processedHTML.trim().length > 0) {
+                    textarea.setAttribute('data-processed-content', processedHTML);
+                    
+                    // Show preview of the formatted version
+                    showContentPreview(fieldId, processedHTML);
+                    
+                    console.log('✅ Processed content stored and preview shown');
+                } else {
+                    console.log('⚠️ No processed HTML available, using current textarea content');
+                    // Fallback: process whatever is in the textarea
+                    const currentText = textarea.value;
+                    if (currentText && currentText.trim().length > 0) {
+                        const fallbackHTML = processPlainTextSimple(currentText);
+                        textarea.setAttribute('data-processed-content', fallbackHTML);
+                        showContentPreview(fieldId, fallbackHTML);
+                    }
+                }
+            }, 100); // Small delay to let browser complete the paste
             
-            // Force the change event to fire
-            textarea.dispatchEvent(new Event('input', { bubbles: true }));
-            textarea.dispatchEvent(new Event('change', { bubbles: true }));
-            
-            // Store the processed HTML for when we save
-            textarea.setAttribute('data-processed-content', processedHTML);
-            
-            // Show preview of the formatted version
-            showContentPreview(fieldId, processedHTML);
-            
-            // Focus the textarea so user sees the content
-            textarea.focus();
-            
-            // Additional debugging - check if textarea is visible
-            console.log('📝 Textarea computed style display:', getComputedStyle(textarea).display);
-            console.log('📝 Textarea computed style visibility:', getComputedStyle(textarea).visibility);
-            console.log('📝 Textarea computed style opacity:', getComputedStyle(textarea).opacity);
-            
-            console.log('✅ Paste completed - Raw text length:', rawText.length, 'Processed HTML length:', processedHTML.length);
+            console.log('✅ Paste handler completed');
         }
 
         // Simple Word HTML processing

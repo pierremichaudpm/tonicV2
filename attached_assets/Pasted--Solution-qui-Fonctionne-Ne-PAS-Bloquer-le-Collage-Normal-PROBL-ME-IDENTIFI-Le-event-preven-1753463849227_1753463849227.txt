@@ -1,0 +1,172 @@
+# Solution qui Fonctionne - Ne PAS Bloquer le Collage Normal
+
+## PROBLÈME IDENTIFIÉ
+Le `event.preventDefault()` bloque le collage normal du navigateur, mais le remplacement manuel ne fonctionne pas de façon fiable.
+
+## SOLUTION QUI FONCTIONNE
+
+### REMPLACER COMPLÈTEMENT la fonction `handlePaste()` par cette version:
+
+```javascript
+function handlePaste(event, fieldId) {
+    console.log('🔥 PASTE EVENT TRIGGERED for field:', fieldId);
+    
+    // DON'T prevent default - let the browser paste normally first
+    // event.preventDefault(); // ← REMOVE THIS LINE
+    
+    const clipboardData = event.clipboardData || window.clipboardData;
+    if (!clipboardData) {
+        console.log('⚠️ No clipboard data available');
+        return;
+    }
+    
+    console.log('📋 Available clipboard types:', Array.from(clipboardData.types));
+    
+    let processedHTML = '';
+    
+    // Try to get HTML if available (for Word documents)
+    if (clipboardData.types.includes('text/html')) {
+        const htmlData = clipboardData.getData('text/html');
+        if (htmlData && htmlData.trim().length > 0) {
+            console.log('📄 Processing HTML data');
+            processedHTML = processWordHTMLSimple(htmlData);
+        }
+    }
+    
+    // Fallback to processing plain text
+    if (!processedHTML || processedHTML.trim().length === 0) {
+        const rawText = clipboardData.getData('text/plain') || clipboardData.getData('text') || '';
+        console.log('📝 Processing plain text fallback');
+        processedHTML = processPlainTextSimple(rawText);
+    }
+    
+    // Get the textarea
+    const textarea = document.getElementById(fieldId);
+    if (!textarea) {
+        console.error('❌ Textarea not found:', fieldId);
+        return;
+    }
+    
+    // Use setTimeout to process AFTER the browser has done the normal paste
+    setTimeout(() => {
+        console.log('⏰ Processing content after paste');
+        console.log('📝 Textarea now contains:', textarea.value.length, 'characters');
+        console.log('📝 First 50 chars:', textarea.value.substring(0, 50));
+        
+        // Store the processed HTML for when we save (keep the raw text in the textarea)
+        if (processedHTML && processedHTML.trim().length > 0) {
+            textarea.setAttribute('data-processed-content', processedHTML);
+            
+            // Show preview of the formatted version
+            showContentPreview(fieldId, processedHTML);
+            
+            console.log('✅ Processed content stored and preview shown');
+        } else {
+            console.log('⚠️ No processed HTML available, using current textarea content');
+            // Fallback: process whatever is in the textarea
+            const currentText = textarea.value;
+            if (currentText && currentText.trim().length > 0) {
+                const fallbackHTML = processPlainTextSimple(currentText);
+                textarea.setAttribute('data-processed-content', fallbackHTML);
+                showContentPreview(fieldId, fallbackHTML);
+            }
+        }
+    }, 100); // Small delay to let browser complete the paste
+    
+    console.log('✅ Paste handler completed');
+}
+```
+
+### ALTERNATIVE ENCORE PLUS SIMPLE (si la première ne marche pas):
+
+Si la solution ci-dessus ne fonctionne pas, utilisez cette version ultra-simple:
+
+```javascript
+function handlePaste(event, fieldId) {
+    console.log('🔥 PASTE EVENT TRIGGERED for field:', fieldId);
+    
+    // Let the browser handle the paste normally, then process after
+    setTimeout(() => {
+        const textarea = document.getElementById(fieldId);
+        if (!textarea) {
+            console.error('❌ Textarea not found:', fieldId);
+            return;
+        }
+        
+        const pastedText = textarea.value;
+        console.log('📝 Text in textarea after paste:', pastedText.length, 'characters');
+        
+        if (pastedText && pastedText.trim().length > 0) {
+            // Process the text that was pasted
+            const processedHTML = processPlainTextSimple(pastedText);
+            
+            // Store for saving
+            textarea.setAttribute('data-processed-content', processedHTML);
+            
+            // Show preview
+            showContentPreview(fieldId, processedHTML);
+            
+            console.log('✅ Content processed and preview shown');
+        }
+    }, 50);
+}
+```
+
+### POUR TESTER SI LE PROBLÈME VIENT DU PASTE HANDLER
+
+Ajoutez cette fonction de test temporaire:
+
+```javascript
+// FONCTION DE TEST - à ajouter temporairement
+function testTextareaInput() {
+    const textarea = document.getElementById('content');
+    if (textarea) {
+        textarea.value = 'TEST - Ce texte devrait apparaître';
+        console.log('Test: textarea value set to:', textarea.value);
+        textarea.focus();
+    } else {
+        console.error('Textarea not found for test');
+    }
+}
+
+// Appeler cette fonction depuis la console du navigateur pour tester
+```
+
+### SI LE PROBLÈME PERSISTE
+
+Il pourrait y avoir un problème CSS qui cache le contenu. Ajoutez cette vérification dans votre fonction:
+
+```javascript
+function debugTextarea(fieldId) {
+    const textarea = document.getElementById(fieldId);
+    if (textarea) {
+        console.log('🔍 TEXTAREA DEBUG:');
+        console.log('- Value length:', textarea.value.length);
+        console.log('- Display:', getComputedStyle(textarea).display);
+        console.log('- Visibility:', getComputedStyle(textarea).visibility);
+        console.log('- Opacity:', getComputedStyle(textarea).opacity);
+        console.log('- Height:', getComputedStyle(textarea).height);
+        console.log('- Color:', getComputedStyle(textarea).color);
+        console.log('- Background:', getComputedStyle(textarea).backgroundColor);
+        console.log('- Z-index:', getComputedStyle(textarea).zIndex);
+        console.log('- Position:', getComputedStyle(textarea).position);
+    }
+}
+```
+
+## POURQUOI CETTE APPROCHE FONCTIONNE MIEUX
+
+✅ **Laisse le navigateur faire son travail**: Pas de conflit avec le comportement natif  
+✅ **Plus fiable**: Le contenu apparaît toujours dans le textarea  
+✅ **Simple**: Moins de code compliqué qui peut échouer  
+✅ **Compatible**: Fonctionne sur tous les navigateurs  
+
+## INSTRUCTIONS POUR TESTER
+
+1. **Remplacez** la fonction `handlePaste()` par la première version ci-dessus
+2. **Testez** en copiant du texte depuis Word et en collant
+3. **Vérifiez** la console pour voir les messages de debug
+4. **Si ça ne marche pas**, essayez la version "ALTERNATIVE ENCORE PLUS SIMPLE"
+5. **Si ça ne marche toujours pas**, utilisez la fonction `testTextareaInput()` pour voir si le problème vient du textarea lui-même
+
+La clé est de **ne pas bloquer** le comportement normal du navigateur avec `preventDefault()`, mais plutôt de laisser le collage se faire normalement et traiter le contenu après.
