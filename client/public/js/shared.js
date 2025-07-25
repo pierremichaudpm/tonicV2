@@ -11,6 +11,39 @@ const Icons = {
     mail: () => '<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>'
 };
 
+// Category utilities
+const CategoryUtils = {
+    // Get category image path
+    getImage(category) {
+        const imageMap = {
+            'Beach Pro Tour': '/images/beach-pro-tour-hero.webp',
+            'Grands Prix Cyclistes': '/images/grands-prix-cyclistes-hero.jpg',
+            'Marathon Beneva 21K': '/images/marathon-beneva-hero.jpg',
+            'UCI 2026': '/images/montreal-2026-uci-hero.jpg',
+            'Studio 76': '/images/tonic-productions-hero.jpg',
+            'Dock 619': '/images/dock619-hero-new.jpg',
+            '21K de Montréal': '/images/21k-hero.jpg',
+            'Groupe Tonic': '/images/groupe-tonic-logo.svg'
+        };
+        return imageMap[category] || '/images/tonic-productions-hero.jpg';
+    },
+    
+    // Get category CSS class
+    getClass(category) {
+        const classMap = {
+            'Beach Pro Tour': 'category-beach',
+            'Grands Prix Cyclistes': 'category-cycling',
+            'Marathon Beneva 21K': 'category-marathon',
+            'UCI 2026': 'category-uci',
+            'Studio 76': 'category-studio',
+            'Dock 619': 'category-dock',
+            '21K de Montréal': 'category-21k',
+            'Groupe Tonic': 'category-tonic'
+        };
+        return classMap[category] || 'category-tonic';
+    }
+};
+
 // Toggle Mobile Menu
 function toggleMobileMenu() {
     const mobileMenu = document.getElementById('mobileMenu');
@@ -48,10 +81,52 @@ ${data.message}
     alert('Votre message a été préparé. Veuillez l\'envoyer via votre client de messagerie.');
 }
 
-// Format date in French
+// Date formatting utilities
+const DateUtils = {
+    // Format date in French
+    formatFrench(dateString) {
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString('fr-CA', options);
+    },
+    
+    // Format date in English
+    formatEnglish(dateString) {
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString('en-US', options);
+    },
+    
+    // Get days since posting in French
+    getDaysSinceFrench(dateString) {
+        const posted = new Date(dateString);
+        const today = new Date();
+        const diffTime = Math.abs(today - posted);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        
+        if (diffDays === 0) return "Aujourd'hui";
+        if (diffDays === 1) return "Hier";
+        if (diffDays < 7) return `Il y a ${diffDays} jours`;
+        if (diffDays < 30) return `Il y a ${Math.floor(diffDays / 7)} semaine${Math.floor(diffDays / 7) > 1 ? 's' : ''}`;
+        return `Il y a ${Math.floor(diffDays / 30)} mois`;
+    },
+    
+    // Get days since posting in English
+    getDaysSinceEnglish(dateString) {
+        const posted = new Date(dateString);
+        const today = new Date();
+        const diffTime = Math.abs(today - posted);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        
+        if (diffDays === 0) return "Today";
+        if (diffDays === 1) return "Yesterday";
+        if (diffDays < 7) return `${diffDays} days ago`;
+        if (diffDays < 30) return `${Math.floor(diffDays / 7)} week${Math.floor(diffDays / 7) > 1 ? 's' : ''} ago`;
+        return `${Math.floor(diffDays / 30)} month${Math.floor(diffDays / 30) > 1 ? 's' : ''} ago`;
+    }
+};
+
+// Backwards compatibility
 function formatDate(dateString) {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString('fr-CA', options);
+    return DateUtils.formatFrench(dateString);
 }
 
 // Initialize shared components
