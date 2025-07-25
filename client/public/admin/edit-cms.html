@@ -140,8 +140,7 @@
                             <div class="bg-blue-50 p-4 rounded-lg">
                                 <h3 class="font-semibold text-lg mb-2">Description complète</h3>
                                 <p class="text-sm text-gray-600 mb-3">
-                                    Copiez-collez directement depuis Word. Ajoutez une ligne vide entre chaque paragraphe.<br>
-                                    <strong>Pour les liens cachés:</strong> Remplacez "DOSSIER DE PRESSE >>>" par l'URL complète.
+                                    Copiez-collez directement depuis Word. Le système créera automatiquement les paragraphes et liens.
                                 </p>
                                 <textarea id="description" placeholder="Copiez-collez la description ici..." rows="15" class="w-full p-3 border rounded bg-white"></textarea>
                             </div>
@@ -172,8 +171,7 @@
                             <div class="bg-purple-50 p-4 rounded-lg">
                                 <h3 class="font-semibold text-lg mb-2">Contenu complet</h3>
                                 <p class="text-sm text-gray-600 mb-3">
-                                    Copiez-collez directement depuis Word. Ajoutez une ligne vide entre chaque paragraphe.<br>
-                                    <strong>Pour les liens cachés:</strong> Remplacez "DOSSIER DE PRESSE >>>" par l'URL complète.
+                                    Copiez-collez directement depuis Word. Le système créera automatiquement les paragraphes et liens.
                                 </p>
                                 <textarea id="content" placeholder="Copiez-collez le contenu ici..." rows="15" class="w-full p-3 border rounded bg-white"></textarea>
                             </div>
@@ -266,34 +264,44 @@
             return result;
         }
         
-        // Enhanced text processing for better paragraph detection
+        // Smart text processing that handles Word document formatting automatically
         function processTextToParagraphs(text) {
+            if (!text || text.trim().length === 0) return '';
+            
             // First handle URLs and bold formatting
             let processedText = convertUrlsToLinks(text);
             
-            // More aggressive paragraph splitting to handle Word document formatting
+            // Smart paragraph detection for Word document copy-paste
             let paragraphs = processedText
-                // First split on double newlines
-                .split(/\n\s*\n/)
-                // Then split on single newlines before common paragraph starters
+                // Split on multiple consecutive newlines (clear paragraph breaks)
+                .split(/\n\s*\n\s*\n*/)
                 .map(section => {
-                    return section.split(/\n(?=[A-ZÀÉÈÊËÏÎÔÖÙÚÛÜŸÇ«"–•]|Montréal|Les |Pour |Après |Suite |Plus |« |L'|D'|\d+\.|-)/)
+                    // Further split on single newlines before clear new sentence/paragraph patterns
+                    return section.split(/\n(?=(?:[A-ZÀÉÈÊËÏÎÔÖÙÚÛÜŸÇ]|Montréal|Les |Pour |Après |Suite |Plus |« |L'|D'|–|\d+\.|COMMUNIQUÉ|CONTACT|Déclarations|À propos))/);
                 })
                 .flat()
-                // Additional split for specific patterns in press releases
                 .map(section => {
-                    return section.split(/(?<=\.)\s*(?=[A-ZÀÉÈÊËÏÎÔÖÙÚÛÜŸÇ«]|Montréal|Les |Pour |Après |Suite |Plus |« |L'|D')/)
+                    // Split sentences that end with periods and are followed by capitals
+                    return section.split(/(?<=\. )(?=[A-ZÀÉÈÊËÏÎÔÖÙÚÛÜŸÇ](?![A-Z])|Montréal|Les |Pour |Après |Suite |Plus |« |L'|D'|COMMUNIQUÉ|CONTACT)/);
                 })
                 .flat()
-                .filter(para => para.trim().length > 10) // Filter out very short fragments
+                .filter(para => {
+                    const cleaned = para.trim();
+                    return cleaned.length > 5 && 
+                           !cleaned.match(/^\s*[\n\r\t]*$/) && // Not just whitespace
+                           cleaned.length < 2000; // Not unreasonably long
+                })
                 .map(para => {
                     // Clean up each paragraph
                     return para.trim()
-                        .replace(/\n+/g, ' ') // Replace internal newlines with spaces
-                        .replace(/\s+/g, ' ') // Normalize multiple spaces
+                        .replace(/[\n\r]+/g, ' ') // Replace all line breaks with spaces
+                        .replace(/\s{2,}/g, ' ') // Replace multiple spaces with single space
+                        .replace(/^\s*[-–—]\s*/, '') // Remove leading dashes
                         .trim();
-                });
+                })
+                .filter(para => para.length > 0);
             
+            // Convert to HTML paragraphs
             return paragraphs.map(para => `<p>${para}</p>`).join('\n');
         }
 
