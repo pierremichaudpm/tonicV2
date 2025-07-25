@@ -371,6 +371,78 @@
         </div>
     </div>
     
+    <!-- PDF Viewer Modal -->
+    <div id="pdfViewerModal" class="fixed inset-0 bg-black/95 backdrop-blur-sm hidden z-50">
+        <div class="h-full flex flex-col">
+            <!-- Modal Header -->
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-3 sm:p-4 bg-black border-b border-white/10">
+                <div class="mb-2 sm:mb-0 flex-1 min-w-0">
+                    <h3 id="pdfModalTitle" class="text-lg sm:text-xl font-semibold truncate text-white"></h3>
+                    <p id="pdfModalSubtitle" class="text-gray-400 text-xs sm:text-sm truncate"></p>
+                </div>
+                <div class="flex gap-1 sm:gap-2 flex-shrink-0">
+                    <button onclick="downloadCurrentPDF()" class="px-2 py-1 sm:px-3 sm:py-1 bg-blue-600 hover:bg-blue-700 rounded text-xs sm:text-sm transition-colors text-white">
+                        <span class="hidden sm:inline">Download</span>
+                        <svg class="w-4 h-4 sm:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                    </button>
+                    <button onclick="openCurrentPDFInTab()" class="px-2 py-1 sm:px-3 sm:py-1 bg-green-600 hover:bg-green-700 rounded text-xs sm:text-sm transition-colors text-white">
+                        <span class="hidden sm:inline">New tab</span>
+                        <svg class="w-4 h-4 sm:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                        </svg>
+                    </button>
+                    <button onclick="closePDFViewer()" class="p-1 sm:p-2 hover:bg-white/10 rounded-lg transition-colors text-white">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- PDF Container -->
+            <div class="flex-1 overflow-hidden relative">
+                <!-- Loading Indicator -->
+                <div id="pdfLoading" class="absolute inset-0 flex items-center justify-center bg-gray-900 z-10">
+                    <div class="text-center">
+                        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+                        <p class="text-gray-300 text-sm">Loading PDF...</p>
+                    </div>
+                </div>
+                
+                <!-- PDF Viewer -->
+                <div class="pdf-viewer h-full">
+                    <iframe id="pdfViewerFrame" 
+                            class="w-full h-full border-0" 
+                            style="min-height: 100%;"
+                            onload="hidePDFLoading()"
+                            onerror="showPDFFallback()">
+                    </iframe>
+                </div>
+                
+                <!-- Mobile Fallback -->
+                <div id="pdfFallback" class="hidden absolute inset-0 flex items-center justify-center bg-gray-900 p-4">
+                    <div class="text-center max-w-sm">
+                        <svg class="w-16 h-16 mx-auto mb-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"></path>
+                        </svg>
+                        <p class="text-lg font-semibold mb-2 text-white">PDF not supported</p>
+                        <p class="text-sm text-gray-400 mb-6">Your browser cannot display this PDF</p>
+                        <div class="space-y-3">
+                            <button onclick="openCurrentPDFInTab()" class="w-full px-4 py-2 bg-green-600 hover:bg-green-700 rounded-lg text-white font-medium transition-colors">
+                                Open in new tab
+                            </button>
+                            <button onclick="downloadCurrentPDF()" class="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-medium transition-colors">
+                                Download PDF
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <!-- Footer -->
     <footer class="border-t border-white/10 py-12">
         <div class="container mx-auto px-4">
@@ -525,6 +597,13 @@
                                  alt="${job.department}" 
                                  class="w-full h-full object-cover rounded-lg" loading="lazy">
                             ${job.department !== 'Groupe Tonic' ? `<div class="absolute inset-0 rounded-lg ${getDepartmentClass(job.department)} opacity-40"></div>` : ''}
+                            ${job.isPDF ? `
+                                <div class="absolute top-2 left-2 bg-red-600 rounded-lg p-1.5">
+                                    <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M4 18h12a2 2 0 002-2V6.414A2 2 0 0017.414 5L14 1.586A2 2 0 0012.586 1H4a2 2 0 00-2 2v13a2 2 0 002 2z"/>
+                                    </svg>
+                                </div>
+                            ` : ''}
                         </div>
                         <div class="flex-1">
                             <div class="flex items-start justify-between gap-4 mb-2">
@@ -649,6 +728,68 @@
             window.location.href = `mailto:emplois@groupetonic.ca?subject=${encodeURIComponent(emailSubject)}`;
         }
         
+        // PDF viewer functions
+        let currentPDFData = null;
+        
+        function viewPDF(id) {
+            const saved = getPDFData();
+            const pdf = saved.find(p => p.id === id);
+            
+            if (!pdf) return;
+            
+            currentPDFData = pdf;
+            document.getElementById('pdfModalTitle').textContent = pdf.title;
+            document.getElementById('pdfModalSubtitle').textContent = pdf.subtitle || '';
+            
+            // Show modal and loading
+            document.getElementById('pdfViewerModal').classList.remove('hidden');
+            document.getElementById('pdfLoading').classList.remove('hidden');
+            document.getElementById('pdfFallback').classList.add('hidden');
+            
+            // Load PDF
+            const pdfUrl = pdf.data + '#toolbar=1&navpanes=1&scrollbar=1&view=FitH&zoom=page-fit';
+            document.getElementById('pdfViewerFrame').src = pdfUrl;
+            
+            // Fallback timeout
+            setTimeout(() => {
+                if (!document.getElementById('pdfLoading').classList.contains('hidden')) {
+                    showPDFFallback();
+                }
+            }, 5000);
+        }
+
+        function closePDFViewer() {
+            document.getElementById('pdfViewerModal').classList.add('hidden');
+            document.getElementById('pdfViewerFrame').src = '';
+            currentPDFData = null;
+        }
+
+        function downloadCurrentPDF() {
+            if (!currentPDFData) return;
+            
+            const link = document.createElement('a');
+            link.href = currentPDFData.data;
+            link.download = currentPDFData.filename;
+            link.click();
+        }
+
+        function openCurrentPDFInTab() {
+            if (!currentPDFData) return;
+            
+            window.open(currentPDFData.data, '_blank');
+        }
+
+        function hidePDFLoading() {
+            setTimeout(() => {
+                document.getElementById('pdfLoading').classList.add('hidden');
+            }, 500);
+        }
+        
+        function showPDFFallback() {
+            document.getElementById('pdfLoading').classList.add('hidden');
+            document.getElementById('pdfFallback').classList.remove('hidden');
+        }
+        
         // English date functions
         function formatJobDateEn(dateString) {
             const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -687,12 +828,33 @@
                 const jobCard = e.target.closest('.job-card');
                 if (jobCard) {
                     const jobId = jobCard.dataset.jobId;
-                    openJobModal(jobId);
+                    // Check if this is a PDF job
+                    const job = state.jobs.find(j => j.id === jobId);
+                    if (job && job.isPDF) {
+                        const pdfId = parseInt(jobId.replace('pdf-', ''));
+                        viewPDF(pdfId);
+                    } else {
+                        openJobModal(jobId);
+                    }
                 }
             });
             
             // Modal backdrop click
             DOM.modal.addEventListener('click', closeModal);
+            
+            // Close PDF modal when clicking outside and add keyboard support
+            document.getElementById('pdfViewerModal').addEventListener('click', (e) => {
+                if (e.target === document.getElementById('pdfViewerModal')) {
+                    closePDFViewer();
+                }
+            });
+            
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeModal();
+                    closePDFViewer();
+                }
+            });
             
             // Keyboard events
             document.addEventListener('keydown', function(e) {
