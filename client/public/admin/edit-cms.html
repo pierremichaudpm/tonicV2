@@ -264,42 +264,36 @@
             return result;
         }
         
-        // Smart text processing that handles Word document formatting automatically
+        // Simple and reliable text processing for Word documents
         function processTextToParagraphs(text) {
             if (!text || text.trim().length === 0) return '';
             
             // First handle URLs and bold formatting
             let processedText = convertUrlsToLinks(text);
             
-            // Smart paragraph detection for Word document copy-paste
+            // Simple but effective paragraph splitting
             let paragraphs = processedText
-                // Split on multiple consecutive newlines (clear paragraph breaks)
-                .split(/\n\s*\n\s*\n*/)
+                // Split on double newlines first (clear paragraph breaks)
+                .split(/\n\s*\n/)
                 .map(section => {
-                    // Further split on single newlines before clear new sentence/paragraph patterns
-                    return section.split(/\n(?=(?:[A-ZÀÉÈÊËÏÎÔÖÙÚÛÜŸÇ]|Montréal|Les |Pour |Après |Suite |Plus |« |L'|D'|–|\d+\.|COMMUNIQUÉ|CONTACT|Déclarations|À propos))/);
+                    // Split on single newlines followed by capitals or specific patterns
+                    return section.split(/\n(?=[A-ZÀÉÈÊËÏÎÔÖÙÚÛÜŸÇ]|Montréal|Les |Pour |Après |COMMUNIQUÉ|CONTACT|Déclarations)/);
                 })
                 .flat()
-                .map(section => {
-                    // Split sentences that end with periods and are followed by capitals
-                    return section.split(/(?<=\. )(?=[A-ZÀÉÈÊËÏÎÔÖÙÚÛÜŸÇ](?![A-Z])|Montréal|Les |Pour |Après |Suite |Plus |« |L'|D'|COMMUNIQUÉ|CONTACT)/);
-                })
-                .flat()
-                .filter(para => {
-                    const cleaned = para.trim();
-                    return cleaned.length > 5 && 
-                           !cleaned.match(/^\s*[\n\r\t]*$/) && // Not just whitespace
-                           cleaned.length < 2000; // Not unreasonably long
-                })
+                .filter(para => para.trim().length > 3) // Keep anything with content
                 .map(para => {
                     // Clean up each paragraph
                     return para.trim()
-                        .replace(/[\n\r]+/g, ' ') // Replace all line breaks with spaces
-                        .replace(/\s{2,}/g, ' ') // Replace multiple spaces with single space
-                        .replace(/^\s*[-–—]\s*/, '') // Remove leading dashes
+                        .replace(/\n+/g, ' ') // Replace newlines with spaces
+                        .replace(/\s+/g, ' ') // Normalize spaces
                         .trim();
                 })
                 .filter(para => para.length > 0);
+            
+            // If no paragraphs were created, treat the whole text as one paragraph
+            if (paragraphs.length === 0 && processedText.trim().length > 0) {
+                paragraphs = [processedText.trim().replace(/\n+/g, ' ').replace(/\s+/g, ' ')];
+            }
             
             // Convert to HTML paragraphs
             return paragraphs.map(para => `<p>${para}</p>`).join('\n');
@@ -558,7 +552,14 @@
                 } else {
                     // Use enhanced text processing for news content
                     const contentText = document.getElementById('content').value;
-                    const contentHtml = processTextToParagraphs(contentText);
+                    console.log('Raw content text:', contentText); // Debug log
+                    
+                    // Fallback: if processing returns empty, use original text with basic formatting
+                    let contentHtml = processTextToParagraphs(contentText);
+                    if (!contentHtml || contentHtml.trim().length === 0) {
+                        contentHtml = contentText ? `<p>${convertUrlsToLinks(contentText.replace(/\n+/g, '</p><p>'))}</p>` : '';
+                    }
+                    console.log('Processed content:', contentHtml); // Debug log
                     
                     data = {
                         ...data,
