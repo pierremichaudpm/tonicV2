@@ -66,3 +66,43 @@ function formatDate(dateString) {
 function getCategoryImage(category) {
     return categoryImages[category] || 'images/tonic-logo.png';
 }
+
+// Initialize with sample data if empty (for demonstration)
+function initializeSampleData() {
+    const existing = getPDFData();
+    if (existing.length === 0) {
+        const sampleData = [
+            {
+                id: 1,
+                title: "Beach Pro Tour Montréal 2025",
+                subtitle: "Découvrez tous les détails du tournoi de volleyball de plage",
+                category: "Beach Pro Tour",
+                date: "2025-01-15",
+                type: "news",
+                filename: "beach-pro-tour-2025.pdf",
+                data: "data:application/pdf;base64,JVBERi0xLjQKJeLjz9MKMSAwIG9iago8PAovVHlwZSAvQ2F0YWxvZwovUGFnZXMgMiAwIFIKPj4KZW5kb2JqCjIgMCBvYmoKPDwKL1R5cGUgL1BhZ2VzIC9LaWRzIFszIDAgUl0gL0NvdW50IDEKPD4KZW5kb2JqCjMgMCBvYmoKPDwKL1R5cGUgL1BhZ2UgL1BhcmVudCAyIDAgUiAvTWVkaWFCb3ggWzAgMCA2MTIgNzkyXQovUmVzb3VyY2VzIDw8IC9Gb250IDw8IC9GNTEgNCAwIFIgPj4gPj4KL0NvbnRlbnRzIDUgMCBSCj4+CmVuZG9iago0IDAgb2JqCjw8Ci9UeXBlIC9Gb250IC9TdWJ0eXBlIC9UeXBlMSAvQmFzZUZvbnQgL0hlbHZldGljYQo+PgplbmRvYmoKNSAwIG9iago8PCAvcmEgWzMyIDEyIDAuMjUgMC4yNV0gL1RIIC9UaAo+PgpzdHJlYW0KQlQKL0Y1MSAxMiBUZgoyMCA3MjAgVGQKKEJlYWNoIFBybyBUb3VyIE1vbnRy6WFsIDIwMjUpIFRqCkVUCmVuZHN0cmVhbQplbmRvYmoKeHJlZgowIDYKMDAwMDAwMDAwMCA2NTUzNSBmCjAwMDAwMDAwMTUgMDAwMDAgbgowMDAwMDAwMDY5IDAwMDAwIG4KMDAwMDAwMDEyNCAwMDAwMCBuCjAwMDAwMDAyNTUgMDAwMDAgbgowMDAwMDAwMzEzIDAwMDAwIG4KdHJhaWxlcgo8PAovU2l6ZSA2IC9Sb290IDEgMCBSCj4+CnN0YXJ0eHJlZgo0MTIKJSVFT0Y="
+            },
+            {
+                id: 2,
+                title: "Marathon Beneva 21K News",
+                subtitle: "Latest updates from the marathon organization",
+                category: "Marathon Beneva 21K",
+                date: "2025-01-10",
+                type: "news",
+                filename: "marathon-news-2025.pdf",
+                data: "data:application/pdf;base64,JVBERi0xLjQKJeLjz9MKMSAwIG9iago8PAovVHlwZSAvQ2F0YWxvZwovUGFnZXMgMiAwIFIKPj4KZW5kb2JqCjIgMCBvYmoKPDwKL1R5cGUgL1BhZ2VzIC9LaWRzIFszIDAgUl0gL0NvdW50IDEKPD4KZW5kb2JqCjMgMCBvYmoKPDwKL1R5cGUgL1BhZ2UgL1BhcmVudCAyIDAgUiAvTWVkaWFCb3ggWzAgMCA2MTIgNzkyXQovUmVzb3VyY2VzIDw8IC9Gb250IDw8IC9GNTEgNCAwIFIgPj4gPj4KL0NvbnRlbnRzIDUgMCBSCj4+CmVuZG9iago0IDAgb2JqCjw8Ci9UeXBlIC9Gb250IC9TdWJ0eXBlIC9UeXBlMSAvQmFzZUZvbnQgL0hlbHZldGljYQo+PgplbmRvYmoKNSAwIG9iago8PCA+PgpzdHJlYW0KQlQKL0Y1MSAxMiBUZgoyMCA3MjAgVGQKKE1hcmF0aG9uIEJlbmV2YSAyMUsgTmV3cykgVGoKRVQKZW5kc3RyZWFtCmVuZG9iago="
+            },
+            {
+                id: 3,
+                title: "Software Developer Position",
+                subtitle: "Join our development team",
+                category: "Groupe Tonic",
+                date: "2025-01-12",
+                type: "job",
+                filename: "developer-job.pdf",
+                data: "data:application/pdf;base64,JVBERi0xLjQKJeLjz9MKMSAwIG9iago8PAovVHlwZSAvQ2F0YWxvZwovUGFnZXMgMiAwIFIKPj4KZW5kb2JqCjIgMCBvYmoKPDwKL1R5cGUgL1BhZ2VzIC9LaWRzIFszIDAgUl0gL0NvdW50IDEKPD4KZW5kb2JqCjMgMCBvYmoKPDwKL1R5cGUgL1BhZ2UgL1BhcmVudCAyIDAgUiAvTWVkaWFCb3ggWzAgMCA2MTIgNzkyXQovUmVzb3VyY2VzIDw8IC9Gb250IDw8IC9GNTEgNCAwIFIgPj4gPj4KL0NvbnRlbnRzIDUgMCBSCj4+CmVuZG9iago0IDAgb2JqCjw8Ci9UeXBlIC9Font IC9TdWJ0eXBlIC9UeXBlMSAvQmFzZUZvbnQgL0hlbHZldGljYQo+PgplbmRvYmoKNSAwIG9iago8PCA+PgpzdVJlYW0KQlQKL0Y1MSAxMiBUZgo0MCA3MjAgVGQKKFNvZnR3YXJlIERldmVsb3BlciBQb3NpdGlvbikgVGoKRVQKZW5kc3RyZWFtCmVuZG9iag=="
+            }
+        ];
+        savePDFData(sampleData);
+    }
+}

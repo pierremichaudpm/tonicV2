@@ -811,11 +811,8 @@
             DOM.modalTitle = document.getElementById('modalTitle');
             DOM.modalContent = document.getElementById('modalContent');
             
-            // Check if job data is available
-            if (typeof jobListings === 'undefined' || !Array.isArray(jobListings)) {
-                DOM.jobsList.innerHTML = '<p class="text-white text-center py-8">Erreur de chargement. Veuillez rafraîchir la page.</p>';
-                return;
-            }
+            // Initialize sample data
+            initializeSampleData();
             
             // Event delegation for job cards (PDF and regular)
             DOM.jobsList.addEventListener('click', function(e) {

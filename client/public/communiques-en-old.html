@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News | Groupe Tonic</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Latest news and press releases from Groupe Tonic about our events and activities.">
+    
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.cbc.ca">
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    
+    <!-- Shared Styles -->
+    <link rel="stylesheet" href="css/shared.css">
+    
+    <!-- Page Specific Styles -->
+    <style>
+        /* Language Switcher */
+        .lang-switcher {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            transition: all 0.2s ease;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        .lang-switcher:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        .lang-divider {
+            width: 1px;
+            height: 16px;
+            background: rgba(255, 255, 255, 0.2);
+            margin: 0 0.5rem;
+            align-self: center;
+        }
+        
+        /* Press Release Cards */
+        .press-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .press-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Category colors for 8 standardized categories */
+        .cat-beach { background: linear-gradient(135deg, #ff0e9b, #ff0e9b33); }
+        .cat-cycling { background: linear-gradient(135deg, #b7d233, #b7d23333); }
+        .cat-marathon { background: linear-gradient(135deg, #463092, #46309233); }
+        .cat-uci { background: linear-gradient(135deg, #da273b, #da273b33); }
+        .cat-studio { background: linear-gradient(135deg, #06b6d4, #06b6d433); }
+        .cat-dock { background: linear-gradient(135deg, #6b7280, #6b728033); }
+        .cat-21k { background: linear-gradient(135deg, #f59e0b, #f59e0b33); }
+        .cat-tonic { background: linear-gradient(135deg, #f97316, #f9731633); }
+        
+        /* Special styling for Tonic logo images */
+        .news-card img[src*="tonic-logo.png"], .pr-card img[src*="tonic-logo.png"] {
+            width: 180px !important;
+            height: 120px !important;
+            object-fit: contain !important;
+            background: #000 !important;
+            padding: 15px !important;
+            border-radius: 8px !important;
+        }
+        
+        /* Modal styles */
+        .modal-backdrop {
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(12px);
+            position: fixed;
+            inset: 0;
+            z-index: 50;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 1rem;
+            padding-top: 10rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        /* Center on larger screens */
+        @media (min-height: 600px) {
+            .modal-backdrop {
+                align-items: center;
+                padding-top: 10rem;
+            }
+        }
+        
+        .modal-backdrop.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-content {
+            background: linear-gradient(135deg, rgba(20, 20, 20, 0.98) 0%, rgba(30, 30, 30, 0.98) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1.5rem;
+            max-width: 56rem;
+            width: 100%;
+            max-height: 90vh;
+            overflow: hidden;
+            transform: scale(0.9) translateY(20px);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+        }
+        
+        .modal-backdrop.active .modal-content {
+            transform: scale(1) translateY(0);
+        }
+        
+        /* Article content styles */
+        .article-content h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            margin-top: 2rem;
+            color: white;
+        }
+        
+        .article-content p {
+            margin-bottom: 1rem;
+            line-height: 1.75;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .article-content ul {
+            list-style: disc;
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .article-content ul li {
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+        
+        .article-content blockquote {
+            border-left: 4px solid #ff0e9b;
+            padding-left: 1.5rem;
+            margin: 2rem 0;
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .article-content blockquote cite {
+            display: block;
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.6);
+            font-style: normal;
+        }
+    </style>
+</head>
+<body class="bg-black text-white min-h-screen">
+    <!-- Header -->
+    <header class="header-main fixed top-0 left-0 right-0 z-40">
+        <div class="container mx-auto px-4 py-6 sm:py-8">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <a href="index-en.html" class="flex flex-col sm:flex-row items-start sm:items-center gap-0.5 sm:gap-4">
+                    <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-white" 
+                        style="text-shadow: 0 4px 20px rgba(0,0,0,0.9)">
+                        <img src="images/tonic-logo.png" alt="Groupe Tonic" style="height: clamp(1.875rem, 3.75vw, 2.625rem); width: auto;" />
+                    </h1>
+                    <span class="text-white text-xs sm:text-sm font-medium"
+                        style="text-shadow: 0 2px 10px rgba(0,0,0,0.9)">
+                        <span class="hidden sm:inline">| </span>Créateur d'expériences mémorables
+                    </span>
+                </a>
+                
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex nav-container">
+                    <a href="index-en.html" class="nav-item" data-tooltip="Home">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                        <span>Home</span>
+                    </a>
+                    <a href="about.html" class="nav-item" data-tooltip="About">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                        <span>About</span>
+                    </a>
+                    <a href="emplois-en.html" class="nav-item" data-tooltip="Jobs">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                        <span>Jobs</span>
+                    </a>
+                    <a href="communiques-en.html" class="nav-item active">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M10 6h8"/><path d="M10 10h8"/><path d="M10 14h4"/></svg>
+                        <span>News</span>
+                    </a>
+                    <a href="nous-joindre-en.html" class="nav-item" data-tooltip="Contact">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                        <span>Contact</span>
+                    </a>
+                    <div class="lang-divider"></div>
+                    <a href="communiques.html" class="lang-switcher">
+                        <span>FR</span>
+                    </a>
+                </nav>
+                
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden p-2 hover:bg-white/10 rounded-lg transition-colors" onclick="toggleMobileMenu()" aria-label="Menu">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M3 12h18M3 6h18M3 18h18"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="mobile-menu">
+        <div class="container mx-auto px-4">
+            <button onclick="toggleMobileMenu()" class="absolute top-4 right-4 p-2 hover:bg-white/10 rounded-lg" aria-label="Close">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+            
+            <nav class="space-y-2 mt-8">
+                <a href="index-en.html" class="block p-4 rounded-lg hover:bg-white/10 transition-all">Home</a>
+                <a href="about.html" class="block p-4 rounded-lg hover:bg-white/10 transition-all">About</a>
+                <a href="emplois-en.html" class="block p-4 rounded-lg hover:bg-white/10 transition-all">Jobs</a>
+                <a href="communiques-en.html" class="block p-4 rounded-lg hover:bg-white/10 transition-all bg-white/10">News</a>
+                <a href="nous-joindre-en.html" class="block p-4 rounded-lg hover:bg-white/10 transition-all">Contact</a>
+                <a href="communiques.html" class="block p-4 rounded-lg hover:bg-white/10 transition-all">Français</a>
+            </nav>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <main class="pt-24 sm:pt-28 pb-20">
+        <!-- Hero Section -->
+        <section class="container mx-auto px-4 py-12 sm:py-16 text-center">
+            <h1 class="text-5xl sm:text-6xl lg:text-7xl font-black mb-4 fade-in">News</h1>
+            <p class="text-lg sm:text-xl text-white max-w-2xl mx-auto fade-in delay-100">
+                Stay informed about our latest events and announcements
+            </p>
+        </section>
+        
+        <!-- Press Releases List -->
+        <section class="container mx-auto px-4 py-8">
+            <div class="max-w-4xl mx-auto">
+                <div id="pressList" class="space-y-6">
+                    <!-- Press releases will be inserted here by JavaScript -->
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Press Release Modal -->
+    <div id="pressModal" class="modal-backdrop">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="sticky top-4 bg-black backdrop-blur-lg border-b border-white/10 p-6 flex justify-between items-start">
+                <div class="pr-4">
+                    <h2 id="modalTitle" class="text-2xl font-bold mb-1"></h2>
+                    <p id="modalDate" class="text-sm text-white"></p>
+                </div>
+                <button onclick="closePressModal()" class="p-2 hover:bg-white/10 rounded-lg transition-colors" aria-label="Close">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <div id="modalContent" class="p-6 article-content">
+                <!-- Article content will be inserted here -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- PDF Viewer Modal -->
+    <div id="pdfViewerModal" class="fixed inset-0 bg-black/95 backdrop-blur-sm hidden z-50">
+        <div class="h-full flex flex-col">
+            <!-- Modal Header -->
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-3 sm:p-4 bg-black border-b border-white/10">
+                <div class="mb-2 sm:mb-0 flex-1 min-w-0">
+                    <h3 id="pdfModalTitle" class="text-lg sm:text-xl font-semibold truncate text-white"></h3>
+                    <p id="pdfModalSubtitle" class="text-gray-400 text-xs sm:text-sm truncate"></p>
+                </div>
+                <div class="flex gap-1 sm:gap-2 flex-shrink-0">
+                    <button onclick="downloadCurrentPDF()" class="px-2 py-1 sm:px-3 sm:py-1 bg-blue-600 hover:bg-blue-700 rounded text-xs sm:text-sm transition-colors text-white">
+                        <span class="hidden sm:inline">Download</span>
+                        <svg class="w-4 h-4 sm:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                    </button>
+                    <button onclick="openCurrentPDFInTab()" class="px-2 py-1 sm:px-3 sm:py-1 bg-green-600 hover:bg-green-700 rounded text-xs sm:text-sm transition-colors text-white">
+                        <span class="hidden sm:inline">New tab</span>
+                        <svg class="w-4 h-4 sm:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                        </svg>
+                    </button>
+                    <button onclick="closePDFViewer()" class="p-1 sm:p-2 hover:bg-white/10 rounded-lg transition-colors text-white">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- PDF Container -->
+            <div class="flex-1 overflow-hidden relative">
+                <!-- Loading Indicator -->
+                <div id="pdfLoading" class="absolute inset-0 flex items-center justify-center bg-gray-900 z-10">
+                    <div class="text-center">
+                        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+                        <p class="text-gray-300 text-sm">Loading PDF...</p>
+                    </div>
+                </div>
+                
+                <!-- PDF Viewer -->
+                <div class="pdf-viewer h-full">
+                    <iframe id="pdfViewerFrame" 
+                            class="w-full h-full border-0" 
+                            style="min-height: 100%;"
+                            onload="hidePDFLoading()"
+                            onerror="showPDFFallback()">
+                    </iframe>
+                </div>
+                
+                <!-- Mobile Fallback -->
+                <div id="pdfFallback" class="hidden absolute inset-0 flex items-center justify-center bg-gray-900 p-4">
+                    <div class="text-center max-w-sm">
+                        <svg class="w-16 h-16 mx-auto mb-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"></path>
+                        </svg>
+                        <p class="text-lg font-semibold mb-2 text-white">PDF not supported</p>
+                        <p class="text-sm text-gray-400 mb-6">Your browser cannot display this PDF</p>
+                        <div class="space-y-3">
+                            <button onclick="openCurrentPDFInTab()" class="w-full px-4 py-2 bg-green-600 hover:bg-green-700 rounded-lg text-white font-medium transition-colors">
+                                Open in new tab
+                            </button>
+                            <button onclick="downloadCurrentPDF()" class="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-medium transition-colors">
+                                Download PDF
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="border-t border-white/10 py-12">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <img src="images/tonic-logo.png" alt="Groupe Tonic" style="height: 1.5rem; width: auto;" class="mb-2" />
+                    <p class="text-white">© 2025 Groupe Tonic. All rights reserved.</p>
+                </div>
+                <div class="flex gap-6">
+                    <a href="privacy-policy.html" class="text-white hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="terms-of-use.html" class="text-white hover:text-white transition-colors">Terms of Use</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Additional styles for link visibility -->
+    <style>
+        /* UNIVERSAL Word formatting support - preserve HTML structure */
+        #modalContent {
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        /* Links - ULTRA FORCE OVERRIDE all Word styles including bold wrapped links */
+        #modalContent a,
+        #modalContent a *,
+        #modalContent strong a,
+        #modalContent a strong,
+        #modalContent b a,
+        #modalContent a b,
+        .modal-content a,
+        #modalContent span[style*="color:#1155cc"],
+        #modalContent span[style*="text-decoration:underline"] {
+            text-decoration: underline !important;
+            color: #3b82f6 !important;
+            cursor: pointer !important;
+            background-color: transparent !important;
+        }
+        
+        #modalContent a:hover,
+        #modalContent a:hover *,
+        #modalContent strong a:hover,
+        #modalContent a:hover strong,
+        .modal-content a:hover {
+            color: #1d4ed8 !important;
+            background-color: transparent !important;
+        }
+        
+        /* Bold text - all variations */
+        #modalContent strong,
+        #modalContent b,
+        #modalContent span[style*="font-weight:bold"],
+        #modalContent span[style*="font-weight: bold"],
+        #modalContent span[style*="font-weight:700"],
+        #modalContent span[style*="font-weight: 700"] {
+            font-weight: bold !important;
+            color: rgba(255, 255, 255, 0.95) !important;
+        }
+        
+        /* Italic text */
+        #modalContent em,
+        #modalContent i,
+        #modalContent span[style*="font-style:italic"],
+        #modalContent span[style*="font-style: italic"] {
+            font-style: italic !important;
+        }
+        
+        /* Paragraphs - all types */
+        #modalContent p,
+        #modalContent div {
+            display: block !important;
+            margin-bottom: 1rem !important;
+            line-height: 1.7 !important;
+            color: rgba(255, 255, 255, 0.9) !important;
+        }
+        
+        /* Preserve inline styles for font sizes, colors, etc. */
+        #modalContent span[style],
+        #modalContent p[style],
+        #modalContent div[style] {
+            /* Let inline styles work but ensure visibility */
+            opacity: 1 !important;
+        }
+        
+        /* Font size preservation - ensure they show */
+        #modalContent [style*="font-size"] {
+            font-size: inherit !important;
+        }
+    </style>
+
+    <!-- Load press release data -->
+    <script src="js/communiques-data-en.js"></script>
+    
+    <!-- PDF Data -->
+    <script src="js/pdf-data.js"></script>
+
+    
+    <!-- Shared JavaScript -->
+    <script src="js/shared.js"></script>
+    
+    <!-- Page specific JavaScript -->
+    <script>
+        // Get category class for styling - 8 standardized categories
+        function getCategoryClass(category) {
+            const classMap = {
+                'Beach Pro Tour': 'cat-beach',
+                'Grands Prix Cyclistes': 'cat-cycling',
+                'Marathon Beneva 21K': 'cat-marathon',
+                'UCI 2026': 'cat-uci',
+                'Studio 76': 'cat-studio',
+                'Dock 619': 'cat-dock',
+                '21K de Montréal': 'cat-21k',
+                'Groupe Tonic': 'cat-tonic'
+            };
+            return classMap[category] || 'cat-tonic';
+        }
+        
+        // Render press releases - PDF content only
+        function renderPressReleases() {
+            const pressList = document.getElementById('pressList');
+            if (!pressList) return;
+            
+            // Get PDF news content only
+            const pdfNews = getPDFsByType('news');
+            const newsData = pdfNews.map(pdf => ({
+                id: `pdf-${pdf.id}`,
+                date: pdf.date,
+                title: pdf.title,
+                category: pdf.category,
+                summary: pdf.subtitle || 'PDF document available',
+                content: null, // Will trigger PDF viewer
+                image: pdf.image,
+                isPDF: true,
+                pdfData: pdf
+            }));
+            if (!newsData || newsData.length === 0) {
+                pressList.innerHTML = '<p class="text-white text-center py-8">No news available at this time.</p>';
+                return;
+            }
+            
+            // Store data globally for modal access
+            window.pressReleases = newsData;
+            
+            // Create press release cards
+            newsData.forEach((release, index) => {
+                const card = document.createElement('div');
+                card.className = `press-card p-6 rounded-xl cursor-pointer fade-in delay-${Math.min(index * 100, 500)}`;
+                card.dataset.releaseId = release.id;
+                
+                card.innerHTML = `
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        ${release.image ? `
+                            <div class="sm:w-48 h-32 sm:h-32 flex-shrink-0 relative">
+                                <img src="${release.image}" alt="${release.title}" class="w-full h-full object-cover rounded-lg" loading="lazy">
+                                ${release.category !== 'Groupe Tonic' ? `<div class="absolute inset-0 rounded-lg ${getCategoryClass(release.category)} opacity-40"></div>` : ''}
+                                ${release.isPDF ? `
+                                    <div class="absolute top-2 left-2 bg-red-600 rounded-lg p-1.5">
+                                        <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M4 18h12a2 2 0 002-2V6.414A2 2 0 0017.414 5L14 1.586A2 2 0 0012.586 1H4a2 2 0 00-2 2v13a2 2 0 002 2z"/>
+                                        </svg>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        ` : ''}
+                        <div class="flex-1">
+                            <div class="flex items-start justify-between mb-3">
+                                <span class="inline-block px-3 py-1 rounded-full text-xs font-medium text-white ${getCategoryClass(release.category)}">
+                                    ${release.category}
+                                </span>
+                                <span class="text-xs text-white">${formatDate(release.date)}</span>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2 text-white">${release.title}</h3>
+                            <p class="text-white line-clamp-3">${release.summary}</p>
+                            <div class="mt-4 flex items-center text-[#ff0e9b] text-sm font-medium">
+                                <span>${release.isPDF ? 'View PDF' : 'Read more'}</span>
+                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                // Add event listener with PDF check
+                card.addEventListener('click', () => {
+                    if (release.isPDF) {
+                        const pdfId = parseInt(release.id.replace('pdf-', ''));
+                        viewPDF(pdfId);
+                    } else {
+                        openPressModal(release.id);
+                    }
+                });
+                pressList.appendChild(card);
+            });
+        }
+        
+        // Get press release by ID
+        function getPressReleaseById(id) {
+            if (!window.pressReleases) return null;
+            return window.pressReleases.find(pr => pr.id === parseInt(id));
+        }
+        
+        // Open press release modal
+        function openPressModal(releaseId) {
+            const release = getPressReleaseById(releaseId);
+            if (!release) return;
+            
+            const modal = document.getElementById('pressModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalDate = document.getElementById('modalDate');
+            const modalContent = document.getElementById('modalContent');
+            
+            modalTitle.textContent = release.title;
+            modalDate.textContent = formatDate(release.date);
+            
+            // Handle empty content
+            if (!release.content || release.content.trim() === '') {
+                modalContent.innerHTML = '<p class="text-white/70 italic">Content not available.</p>';
+            } else {
+                // Split mega-paragraphs and inject with proper formatting
+                console.log('🎯 Processing and injecting Word HTML');
+                let processedContent = release.content;
+                
+                // If content is one massive <p> tag, split it intelligently
+                if (processedContent.startsWith('<p>') && processedContent.endsWith('</p>') && !processedContent.includes('</p><p>')) {
+                    console.log('📝 Splitting mega-paragraph');
+                    
+                    // Remove outer <p> tags
+                    let innerContent = processedContent.slice(3, -4);
+                    
+                    // Split on natural Word paragraph breaks visible in the document
+                    const breakPatterns = [
+                        /(<\/strong>\.<strong>L'élite mondiale)/g,   // Natural section break
+                        /(<\/strong>\.<strong>L'énergie de Montréal)/g, // Another natural break
+                        /(<\/strong>\.<strong>Plus qu'un simple)/g,   // Natural paragraph start
+                        /(<\/strong>\.<strong>Un événement)/g,       // Natural paragraph start
+                        /(<\/strong>\.<strong>Les billets)/g,        // Natural paragraph start
+                        /(<\/strong><strong>Déclarations<\/strong>)/g, // Major section
+                        /(<\/strong><strong>À propos)/g,             // About section
+                        /(<\/strong><strong>CONTACT)/g,              // Contact section
+                        /(<\/strong>\.<strong>«)/g                   // Period then new quote
+                    ];
+                    
+                    // Apply breaks
+                    breakPatterns.forEach(pattern => {
+                        innerContent = innerContent.replace(pattern, '$1</p><p>');
+                    });
+                    
+                    // Wrap back in paragraph tags
+                    processedContent = '<p>' + innerContent + '</p>';
+                    
+                    // Clean up empty paragraphs
+                    processedContent = processedContent.replace(/<p>\s*<\/p>/g, '');
+                }
+                
+                modalContent.innerHTML = processedContent;
+                
+                // Enhanced link fixing - handle all variations including bold-wrapped links
+                const links = modalContent.querySelectorAll('a');
+                console.log('🔗 Found links:', links.length);
+                links.forEach(link => {
+                    // Force link styles regardless of parent formatting
+                    link.style.setProperty('color', '#3b82f6', 'important');
+                    link.style.setProperty('text-decoration', 'underline', 'important');
+                    link.style.setProperty('background-color', 'transparent', 'important');
+                    
+                    // Also style any strong/bold children inside links
+                    const strongChildren = link.querySelectorAll('strong, b');
+                    strongChildren.forEach(strong => {
+                        strong.style.setProperty('color', '#3b82f6', 'important');
+                        strong.style.setProperty('text-decoration', 'underline', 'important');
+                    });
+                });
+                
+                // Fix Word-style link spans
+                const linkSpans = modalContent.querySelectorAll('span[style*="color:#1155cc"], span[style*="text-decoration:underline"]');
+                console.log('🔗 Found link-style spans:', linkSpans.length);
+                linkSpans.forEach(span => {
+                    span.style.setProperty('color', '#3b82f6', 'important');
+                    span.style.setProperty('text-decoration', 'underline', 'important');
+                    span.style.setProperty('background-color', 'transparent', 'important');
+                    span.style.cursor = 'pointer';
+                });
+            }
+            
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // Close press release modal
+        function closePressModal() {
+            const modal = document.getElementById('pressModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        // PDF viewer functions
+        let currentPDFData = null;
+        
+        function viewPDF(id) {
+            const saved = getPDFData();
+            const pdf = saved.find(p => p.id === id);
+            
+            if (!pdf) return;
+            
+            currentPDFData = pdf;
+            document.getElementById('pdfModalTitle').textContent = pdf.title;
+            document.getElementById('pdfModalSubtitle').textContent = pdf.subtitle || '';
+            
+            // Show modal and loading
+            document.getElementById('pdfViewerModal').classList.remove('hidden');
+            document.getElementById('pdfLoading').classList.remove('hidden');
+            document.getElementById('pdfFallback').classList.add('hidden');
+            
+            // Load PDF
+            const pdfUrl = pdf.data + '#toolbar=1&navpanes=1&scrollbar=1&view=FitH&zoom=page-fit';
+            document.getElementById('pdfViewerFrame').src = pdfUrl;
+            
+            // Fallback timeout for mobile/incompatible browsers
+            setTimeout(() => {
+                if (!document.getElementById('pdfLoading').classList.contains('hidden')) {
+                    showPDFFallback();
+                }
+            }, 5000);
+        }
+
+        function closePDFViewer() {
+            document.getElementById('pdfViewerModal').classList.add('hidden');
+            document.getElementById('pdfViewerFrame').src = '';
+            currentPDFData = null;
+        }
+
+        function downloadCurrentPDF() {
+            if (!currentPDFData) return;
+            
+            const link = document.createElement('a');
+            link.href = currentPDFData.data;
+            link.download = currentPDFData.filename;
+            link.click();
+        }
+
+        function openCurrentPDFInTab() {
+            if (!currentPDFData) return;
+            
+            window.open(currentPDFData.data, '_blank');
+        }
+
+        function hidePDFLoading() {
+            setTimeout(() => {
+                document.getElementById('pdfLoading').classList.add('hidden');
+            }, 500);
+        }
+        
+        function showPDFFallback() {
+            document.getElementById('pdfLoading').classList.add('hidden');
+            document.getElementById('pdfFallback').classList.remove('hidden');
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            renderPressReleases();
+            
+            // Modal backdrop click to close
+            document.getElementById('pressModal').addEventListener('click', function(e) {
+                if (e.target === e.currentTarget) {
+                    closePressModal();
+                }
+            });
+            
+            // Keyboard events
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closePressModal();
+                    closePDFViewer();
+                }
+            });
+            
+            // Close PDF modal when clicking outside
+            document.getElementById('pdfViewerModal').addEventListener('click', (e) => {
+                if (e.target === document.getElementById('pdfViewerModal')) {
+                    closePDFViewer();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
