@@ -448,14 +448,18 @@
         
         // Validate content exists
         function validateContent() {
-            const contentField = document.getElementById('content');
-            const descriptionField = document.getElementById('description');
-            
-            if (contentField && contentField.value.trim().length > 0) {
-                console.log('Content field has text:', contentField.value.length, 'characters');
-            }
-            if (descriptionField && descriptionField.value.trim().length > 0) {
-                console.log('Description field has text:', descriptionField.value.length, 'characters');
+            try {
+                const contentField = document.getElementById('content');
+                const descriptionField = document.getElementById('description');
+                
+                if (contentField && contentField.value && contentField.value.trim().length > 0) {
+                    console.log('✅ Content field has text:', contentField.value.length, 'characters');
+                }
+                if (descriptionField && descriptionField.value && descriptionField.value.trim().length > 0) {
+                    console.log('✅ Description field has text:', descriptionField.value.length, 'characters');
+                }
+            } catch (error) {
+                console.error('❌ Error in validateContent:', error);
             }
         }
 
@@ -719,7 +723,12 @@
                 
                 if (currentType === 'jobs') {
                     const descTextarea = document.getElementById('description');
-                    const descText = descTextarea.value;
+                    if (!descTextarea) {
+                        console.error('❌ Description textarea not found!');
+                        throw new Error('Description field not found');
+                    }
+                    
+                    const descText = descTextarea.value || '';
                     
                     // Use processed content if available, otherwise process the raw text
                     let descHtml = descTextarea.getAttribute('data-processed-content');
@@ -743,7 +752,12 @@
                     };
                 } else {
                     const contentTextarea = document.getElementById('content');
-                    const contentText = contentTextarea.value;
+                    if (!contentTextarea) {
+                        console.error('❌ Content textarea not found!');
+                        throw new Error('Content field not found');
+                    }
+                    
+                    const contentText = contentTextarea.value || '';
                     
                     // Use processed content if available, otherwise process the raw text
                     let contentHtml = contentTextarea.getAttribute('data-processed-content');
@@ -768,7 +782,7 @@
                     };
                 }
 
-                console.log('Saving data:', data);
+                console.log('💾 Saving data:', data);
                 
                 const url = isNew 
                     ? `/api/cms/${currentType}` 
@@ -800,7 +814,8 @@
                 alert(isNew ? '✅ Créé avec succès' : '✅ Modifié avec succès');
             } catch (error) {
                 console.error('❌ Save error:', error);
-                alert(`❌ Erreur de sauvegarde: ${error.message}`);
+                console.error('❌ Error details:', error.message, error.stack);
+                alert(`❌ Erreur de sauvegarde: ${error.message || 'Erreur inconnue'}`);
             }
         }
 
