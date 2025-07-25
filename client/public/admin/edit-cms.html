@@ -239,28 +239,48 @@
             return tmp.textContent || tmp.innerText || '';
         }
 
-        // Simple URL and email conversion
+        // Enhanced URL and email conversion with better detection
         function convertUrlsToLinks(text) {
-            if (!text || text.includes('<a href=')) return text;
+            if (!text) return text;
             
+            // Skip if already contains links (but allow partial processing)
             let result = text;
             
-            // 1. Email addresses
+            // 1. Email addresses (plus robuste)
             result = result.replace(
-                /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g,
-                '<a href="mailto:$&" style="text-decoration: underline; color: #1d4ed8;">$&</a>'
+                /(?<!["'>])\b([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,6})\b(?!["'<])/g,
+                '<a href="mailto:$1" style="text-decoration: underline; color: #1d4ed8; font-weight: normal;">$1</a>'
             );
             
-            // 2. URLs with http/https
+            // 2. URLs avec protocole (amélioré)
             result = result.replace(
-                /https?:\/\/[^\s<>"'\[\]{}|\\^`]+[^\s<>"'\[\]{}|\\^`.,;:!?]/g,
-                '<a href="$&" target="_blank" style="text-decoration: underline; color: #1d4ed8;">$&</a>'
+                /(?<!["'>])(https?:\/\/[A-Za-z0-9\-._~:/?#[\]@!$&'()*+,;=%]+)(?!["'<])/g,
+                '<a href="$1" target="_blank" rel="noopener" style="text-decoration: underline; color: #1d4ed8; font-weight: normal;">$1</a>'
             );
             
-            // 3. www domains
+            // 3. Domaines www (plus précis)
             result = result.replace(
-                /\bwww\.[A-Za-z0-9-]+\.[A-Za-z]{2,}(?:\.[A-Za-z]{2,})?(?:\/[^\s]*)?/g,
-                '<a href="https://$&" target="_blank" style="text-decoration: underline; color: #1d4ed8;">$&</a>'
+                /(?<!["'>])\b(www\.[A-Za-z0-9\-._~]+\.[A-Za-z]{2,6}(?:\/[A-Za-z0-9\-._~:/?#[\]@!$&'()*+,;=%]*)?)\b(?!["'<])/g,
+                '<a href="https://$1" target="_blank" rel="noopener" style="text-decoration: underline; color: #1d4ed8; font-weight: normal;">$1</a>'
+            );
+            
+            // 4. Domaines simples (plus sélectif pour éviter faux positifs)
+            result = result.replace(
+                /(?<![@\/."'>])\b([A-Za-z0-9\-]+\.(?:com|org|net|edu|gov|ca|fr|co\.uk|info|biz))\b(?![@\/."'<])/g,
+                function(match, domain) {
+                    // Éviter les faux positifs
+                    if (result.includes(`@${domain}`) || result.includes(`//${domain}`) || 
+                        result.includes(`www.${domain}`) || result.includes(`>${domain}<`)) {
+                        return match;
+                    }
+                    return `<a href="https://${domain}" target="_blank" rel="noopener" style="text-decoration: underline; color: #1d4ed8; font-weight: normal;">${domain}</a>`;
+                }
+            );
+            
+            // 5. Patterns spéciaux Word (liens cachés)
+            result = result.replace(
+                /\b(DOSSIER DE PRESSE|FORMULAIRE D['''´]ACCRÉDITATION|PRESS KIT|ACCREDITATION FORM)\s*>>>?\s*/gi,
+                '<a href="#" target="_blank" style="text-decoration: underline; color: #1d4ed8; font-weight: bold; background: #fff3cd; padding: 2px 4px; border-radius: 3px;">$1 ➤</a> <em style="color: #666; font-size: 0.9em;">(Remplacez # par l\'URL)</em>'
             );
             
             return result;
@@ -356,119 +376,202 @@
             console.log('✅ Paste handler completed');
         }
 
-        // Simple Word HTML processing
+        // Enhanced Word HTML processing with better formatting detection
         function processWordHTMLSimple(html) {
             if (!html || html.trim().length === 0) return '';
             
-            console.log('🔍 Processing Word HTML - Simple method');
+            console.log('🔍 Processing Word HTML - Enhanced method');
             
             // Create temporary container
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = html;
             
-            // Remove unwanted elements
-            const unwanted = tempDiv.querySelectorAll('meta, style, script, xml');
-            unwanted.forEach(el => el.remove());
+            // Remove unwanted elements but keep content
+            const unwanted = tempDiv.querySelectorAll('meta, style, script, xml, o\\:*, w\\:*');
+            unwanted.forEach(el => {
+                // Keep text content before removing
+                const textContent = el.textContent || '';
+                if (textContent.trim()) {
+                    el.replaceWith(document.createTextNode(textContent));
+                } else {
+                    el.remove();
+                }
+            });
             
-            // Get clean text with basic formatting
             let result = '';
-            const walker = document.createTreeWalker(
-                tempDiv,
-                NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT,
-                null,
-                false
-            );
             
-            let node;
-            let currentParagraph = '';
-            
-            while (node = walker.nextNode()) {
+            // More thorough processing
+            function processNode(node, inheritedFormatting = {}) {
                 if (node.nodeType === Node.TEXT_NODE) {
                     const text = node.textContent.trim();
                     if (text) {
-                        // Check if parent has formatting
                         let formattedText = text;
-                        let parent = node.parentElement;
                         
-                        while (parent && parent !== tempDiv) {
-                            const tagName = parent.tagName ? parent.tagName.toLowerCase() : '';
-                            const style = parent.style || {};
-                            
-                            // Bold formatting
-                            if (tagName === 'strong' || tagName === 'b' || 
-                                (style.fontWeight && (style.fontWeight === 'bold' || parseInt(style.fontWeight) >= 700))) {
-                                formattedText = `<strong>${formattedText}</strong>`;
-                                break;
-                            }
-                            
-                            // Links
-                            if (tagName === 'a' && parent.href) {
-                                formattedText = `<a href="${parent.href}" style="text-decoration: underline; color: #1d4ed8;" target="_blank">${formattedText}</a>`;
-                                break;
-                            }
-                            
-                            parent = parent.parentElement;
+                        // Apply inherited formatting
+                        if (inheritedFormatting.bold) {
+                            formattedText = `<strong>${formattedText}</strong>`;
+                        }
+                        if (inheritedFormatting.italic) {
+                            formattedText = `<em>${formattedText}</em>`;
+                        }
+                        if (inheritedFormatting.large) {
+                            formattedText = `<span style="font-size: 1.3em; font-weight: bold; display: inline-block; margin: 8px 0;">${formattedText}</span>`;
+                        }
+                        if (inheritedFormatting.link) {
+                            formattedText = `<a href="${inheritedFormatting.link}" style="text-decoration: underline; color: #1d4ed8;" target="_blank">${formattedText}</a>`;
                         }
                         
-                        currentParagraph += formattedText + ' ';
+                        return formattedText;
                     }
+                    return '';
                 } else if (node.nodeType === Node.ELEMENT_NODE) {
                     const tagName = node.tagName ? node.tagName.toLowerCase() : '';
+                    const style = node.style || {};
                     
-                    // Paragraph breaks
-                    if (tagName === 'p' || tagName === 'div' || tagName === 'br') {
-                        if (currentParagraph.trim()) {
-                            result += `<p>${currentParagraph.trim()}</p>\n`;
-                            currentParagraph = '';
-                        }
+                    // Determine formatting
+                    const formatting = { ...inheritedFormatting };
+                    
+                    // Bold detection (multiple ways)
+                    if (tagName === 'strong' || tagName === 'b' || 
+                        style.fontWeight === 'bold' || style.fontWeight === '700' || style.fontWeight === 'bolder' ||
+                        parseInt(style.fontWeight) >= 700) {
+                        formatting.bold = true;
                     }
+                    
+                    // Italic detection
+                    if (tagName === 'em' || tagName === 'i' || 
+                        style.fontStyle === 'italic') {
+                        formatting.italic = true;
+                    }
+                    
+                    // Large font detection (multiple ways)
+                    const fontSize = style.fontSize || '';
+                    if (tagName.match(/^h[1-6]$/) || 
+                        fontSize.includes('large') || fontSize.includes('x-large') ||
+                        (fontSize.includes('pt') && parseInt(fontSize) > 12) ||
+                        (fontSize.includes('px') && parseInt(fontSize) > 16) ||
+                        tagName === 'title' || 
+                        (style.fontSize && parseFloat(style.fontSize) > 1.1)) {
+                        formatting.large = true;
+                    }
+                    
+                    // Link detection
+                    if (tagName === 'a' && node.href) {
+                        formatting.link = node.href;
+                    }
+                    
+                    // Process children
+                    let childContent = '';
+                    for (let child of node.childNodes) {
+                        childContent += processNode(child, formatting);
+                    }
+                    
+                    // Handle paragraph breaks
+                    if (tagName === 'p' || tagName === 'div' || tagName === 'h1' || tagName === 'h2' || 
+                        tagName === 'h3' || tagName === 'h4' || tagName === 'h5' || tagName === 'h6') {
+                        if (childContent.trim()) {
+                            return `\n<p>${childContent.trim()}</p>\n`;
+                        }
+                    } else if (tagName === 'br') {
+                        return '\n';
+                    }
+                    
+                    return childContent;
                 }
+                return '';
             }
             
-            // Add any remaining paragraph
-            if (currentParagraph.trim()) {
-                result += `<p>${currentParagraph.trim()}</p>\n`;
-            }
+            // Process all content
+            result = processNode(tempDiv);
             
-            // Convert URLs and emails to links
+            // Clean up and convert links
+            result = result.replace(/\n\s*\n+/g, '\n').trim();
             result = convertUrlsToLinks(result);
             
-            return result.trim();
+            // Ensure we have proper paragraphs
+            if (result && !result.includes('<p>')) {
+                const lines = result.split('\n').filter(line => line.trim());
+                result = lines.map(line => `<p>${line.trim()}</p>`).join('\n');
+            }
+            
+            return result;
         }
 
-        // Simple plain text processing
+        // Enhanced plain text processing with better formatting detection
         function processPlainTextSimple(text) {
             if (!text || text.trim().length === 0) return '';
             
-            console.log('📝 Processing plain text - Simple method');
+            console.log('📝 Processing plain text - Enhanced method');
             
             // Clean up Word special characters
             let cleanText = text
                 .replace(/[\u2018\u2019]/g, "'") // Smart quotes
                 .replace(/[\u201C\u201D]/g, '"') // Smart quotes
                 .replace(/\u2013/g, '-') // En dash
-                .replace(/\u2014/g, '--') // Em dash
+                .replace(/\u2014/g, '—') // Em dash (keep long dash)
                 .replace(/\u2026/g, '...') // Ellipsis
-                .replace(/\u00A0/g, ' '); // Non-breaking space
+                .replace(/\u00A0/g, ' ') // Non-breaking space
+                .replace(/\r\n/g, '\n') // Windows line endings
+                .replace(/\r/g, '\n'); // Mac line endings
             
-            // Split into paragraphs based on double line breaks
-            const paragraphs = cleanText
+            // Detect and preserve bold text markers from plain text
+            cleanText = cleanText.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+            cleanText = cleanText.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+            
+            // Detect probable titles (lines that are shorter and followed by longer content)
+            const lines = cleanText.split('\n');
+            const processedLines = [];
+            
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (!line) continue;
+                
+                // Detect titles: short lines (< 80 chars) that are followed by longer content
+                // or lines that are all caps or start with caps and are short
+                const nextLine = lines[i + 1] ? lines[i + 1].trim() : '';
+                const isLikelyTitle = (
+                    (line.length < 80 && nextLine.length > line.length) ||
+                    (line === line.toUpperCase() && line.length > 5 && line.length < 60) ||
+                    (line.match(/^[A-ZÀÉÈÊËÏÎÔÖÙÚÛÜŸÇ][A-ZÀÉÈÊËÏÎÔÖÙÚÛÜŸÇ\s]{5,50}$/) && !line.includes('.'))
+                );
+                
+                if (isLikelyTitle) {
+                    processedLines.push(`<p><strong style="font-size: 1.3em; display: block; margin: 10px 0; color: #333;">${line}</strong></p>`);
+                } else {
+                    processedLines.push(line);
+                }
+            }
+            
+            // Join back and split into paragraphs
+            const rejoinedText = processedLines.join('\n');
+            const paragraphs = rejoinedText
                 .split(/\n\s*\n+/)
                 .map(para => para.trim().replace(/\n+/g, ' ').replace(/\s+/g, ' '))
-                .filter(para => para.length > 5);
+                .filter(para => para.length > 3);
             
             // If no clear paragraphs found, make reasonable splits
             if (paragraphs.length <= 1 && cleanText.length > 200) {
                 // Split on sentence endings followed by capital letters
                 const sentences = cleanText.split(/(?<=[.!?])\s+(?=[A-ZÀÉÈÊËÏÎÔÖÙÚÛÜŸÇ])/);
                 if (sentences.length > 1) {
-                    return sentences.map(sentence => `<p>${convertUrlsToLinks(sentence.trim())}</p>`).join('\n');
+                    return sentences.map(sentence => {
+                        const trimmed = sentence.trim();
+                        if (trimmed.includes('<strong style="font-size')) {
+                            return trimmed; // Already formatted as title
+                        }
+                        return `<p>${convertUrlsToLinks(trimmed)}</p>`;
+                    }).join('\n');
                 }
             }
             
             // Convert each paragraph and add links
             const result = paragraphs
-                .map(para => `<p>${convertUrlsToLinks(para)}</p>`)
+                .map(para => {
+                    if (para.includes('<strong style="font-size')) {
+                        return para; // Already formatted as title
+                    }
+                    return `<p>${convertUrlsToLinks(para)}</p>`;
+                })
                 .join('\n');
             
             return result || `<p>${convertUrlsToLinks(cleanText)}</p>`;
