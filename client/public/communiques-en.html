@@ -308,25 +308,63 @@
     
     <!-- Additional styles for link visibility -->
     <style>
-        /* Modal Link Styles - Ensure all links are underlined and visible */
-        .modal-content a,
-        #modalContent a {
+        /* UNIVERSAL Word formatting support - ALL elements */
+        #modalContent * {
+            color: inherit !important;
+        }
+        
+        /* Links - all types */
+        #modalContent a,
+        .modal-content a {
             text-decoration: underline !important;
             color: #3b82f6 !important;
             cursor: pointer !important;
         }
         
-        .modal-content a:hover,
-        #modalContent a:hover {
+        #modalContent a:hover,
+        .modal-content a:hover {
             color: #1d4ed8 !important;
         }
         
-        /* Ensure paragraphs display properly */
-        #modalContent p {
+        /* Bold text - all variations */
+        #modalContent strong,
+        #modalContent b,
+        #modalContent span[style*="font-weight:bold"],
+        #modalContent span[style*="font-weight: bold"],
+        #modalContent span[style*="font-weight:700"],
+        #modalContent span[style*="font-weight: 700"] {
+            font-weight: bold !important;
+            color: rgba(255, 255, 255, 0.95) !important;
+        }
+        
+        /* Italic text */
+        #modalContent em,
+        #modalContent i,
+        #modalContent span[style*="font-style:italic"],
+        #modalContent span[style*="font-style: italic"] {
+            font-style: italic !important;
+        }
+        
+        /* Paragraphs - all types */
+        #modalContent p,
+        #modalContent div {
             display: block !important;
             margin-bottom: 1rem !important;
             line-height: 1.7 !important;
             color: rgba(255, 255, 255, 0.9) !important;
+        }
+        
+        /* Preserve inline styles for font sizes, colors, etc. */
+        #modalContent span[style],
+        #modalContent p[style],
+        #modalContent div[style] {
+            /* Let inline styles work but ensure visibility */
+            opacity: 1 !important;
+        }
+        
+        /* Font size preservation - ensure they show */
+        #modalContent [style*="font-size"] {
+            font-size: inherit !important;
         }
     </style>
 
