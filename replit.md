@@ -381,6 +381,14 @@ The website is now fully operational and matches the original local/Netlify func
 - **Description width maximization**: Changed mobile layout from flex to block, content uses full screen width (w-full), buttons positioned below content for maximum text readability
 - **Status**: ✅ MOBILE-OPTIMIZED - CMS now provides excellent mobile experience with full-width content display and optimal text readability
 
+### Job Pages Content Update - July 25, 2025 ✅ COMPLETED
+- **"Why work for Groupe Tonic" section updated**: Replaced existing culture sections on both French and English job pages
+- **French content**: Three pillars - Équipe passionnée, Projets inspirants, Impact durable with exact user-provided messaging
+- **English content**: Translated equivalents - Passionate team, Inspiring projects, Lasting impact
+- **Visual consistency**: Updated styling with accent colors, improved spacing, and professional presentation
+- **Bilingual implementation**: Applied to both emplois.html and emplois-en.html for complete language coverage
+- **Status**: ✅ COMPLETED - Job pages now feature the exact "Why work for Groupe Tonic" messaging requested by client
+
 ### Codebase Cleanup - July 24, 2025 ✅ COMPLETED
 - **Removed entire Strapi CMS system**: Deleted cms/ directory, strapi-config/, and all Strapi-related files
 - **Cleaned package dependencies**: Uninstalled @strapi/strapi and removed 1257+ associated packages
