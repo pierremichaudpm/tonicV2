@@ -327,11 +327,9 @@
                 const htmlData = clipboardData.getData('text/html');
                 console.log('📄 HTML data length:', htmlData.length);
                 if (htmlData && htmlData.trim().length > 0) {
-                    // Extract text from HTML while preserving links
-                    const tempDiv = document.createElement('div');
-                    tempDiv.innerHTML = htmlData;
-                    pastedText = tempDiv.textContent || tempDiv.innerText || '';
-                    console.log('📝 Extracted text from HTML:', pastedText.length);
+                    // Process HTML to preserve formatting
+                    pastedText = cleanAndPreserveWordFormatting(htmlData);
+                    console.log('📝 Processed HTML with formatting:', pastedText.length);
                 }
             }
             
@@ -348,9 +346,17 @@
             
             console.log('📝 Final pasted content length:', pastedText.length);
             
-            // Process the content
-            const processedContent = processWordContent(pastedText);
-            console.log('🔧 Processed content length:', processedContent.length);
+            // Process the content - check if it already contains HTML formatting
+            let processedContent;
+            if (pastedText.includes('<strong>') || pastedText.includes('<em>') || pastedText.includes('<a href=')) {
+                // Already contains HTML formatting from cleanAndPreserveWordFormatting
+                processedContent = pastedText;
+                console.log('🎨 Content already formatted with HTML:', processedContent.length);
+            } else {
+                // Plain text - process normally
+                processedContent = processWordContent(pastedText);
+                console.log('🔧 Processed plain text content:', processedContent.length);
+            }
             
             // Get the textarea and update it
             const textarea = document.getElementById(fieldId);
@@ -359,14 +365,100 @@
                 return;
             }
             
-            // Store both raw and processed content
-            textarea.value = pastedText;
+            // For display in textarea, show plain text version
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = processedContent;
+            const plainTextForEditing = tempDiv.textContent || tempDiv.innerText || pastedText;
+            
+            // Store both versions
+            textarea.value = plainTextForEditing;
             textarea.setAttribute('data-processed-content', processedContent);
             
             // Show preview
             showContentPreview(fieldId, processedContent);
             
             console.log('✅ Paste processing completed successfully');
+        }
+        
+        // Clean and preserve Word formatting (bold, italic, larger text)
+        function cleanAndPreserveWordFormatting(html) {
+            if (!html) return '';
+            
+            // Create temporary div to work with HTML
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = html;
+            
+            // Remove unwanted Word elements but preserve formatting
+            const elementsToRemove = tempDiv.querySelectorAll('meta, style, script, xml, o\\:*, w\\:*');
+            elementsToRemove.forEach(el => el.remove());
+            
+            // Process and preserve formatting
+            let result = '';
+            
+            // Walk through all text nodes and elements
+            function processNode(node) {
+                if (node.nodeType === Node.TEXT_NODE) {
+                    return node.textContent.trim();
+                } else if (node.nodeType === Node.ELEMENT_NODE) {
+                    let content = '';
+                    
+                    // Process child nodes
+                    for (let child of node.childNodes) {
+                        content += processNode(child);
+                    }
+                    
+                    if (!content.trim()) return '';
+                    
+                    // Apply formatting based on element type
+                    const tagName = node.tagName ? node.tagName.toLowerCase() : '';
+                    const styles = node.style || {};
+                    
+                    // Bold formatting
+                    if (tagName === 'b' || tagName === 'strong' || 
+                        (styles.fontWeight && (styles.fontWeight === 'bold' || parseInt(styles.fontWeight) >= 700))) {
+                        content = `<strong>${content}</strong>`;
+                    }
+                    
+                    // Italic formatting
+                    if (tagName === 'i' || tagName === 'em' || styles.fontStyle === 'italic') {
+                        content = `<em>${content}</em>`;
+                    }
+                    
+                    // Larger text (headers or larger font sizes)
+                    if (tagName.match(/^h[1-6]$/) || 
+                        (styles.fontSize && (
+                            styles.fontSize.includes('pt') && parseInt(styles.fontSize) > 12 ||
+                            styles.fontSize.includes('px') && parseInt(styles.fontSize) > 16
+                        ))) {
+                        content = `<strong style="font-size: 1.2em;">${content}</strong>`;
+                    }
+                    
+                    // Preserve links
+                    if (tagName === 'a' && node.href) {
+                        content = `<a href="${node.href}" style="text-decoration: underline; color: #1d4ed8;">${content}</a>`;
+                    }
+                    
+                    return content;
+                }
+                return '';
+            }
+            
+            // Process all paragraphs and preserve structure
+            const paragraphs = tempDiv.querySelectorAll('p, div, h1, h2, h3, h4, h5, h6');
+            if (paragraphs.length > 0) {
+                paragraphs.forEach(para => {
+                    const content = processNode(para);
+                    if (content.trim()) {
+                        result += content + '\n\n';
+                    }
+                });
+            } else {
+                // No paragraph structure, process entire content
+                result = processNode(tempDiv);
+            }
+            
+            // Clean up extra whitespace but preserve intentional formatting
+            return result.trim();
         }
         
         // Clean Word's messy HTML and extract links
