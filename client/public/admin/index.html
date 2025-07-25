@@ -193,7 +193,8 @@
                     currentUser = username || 'admin';
                     localStorage.setItem('cms_token', authToken);
                     localStorage.setItem('currentUser', currentUser);
-                    showDashboard();
+                    // Redirect to the simple working CMS
+                    window.location.href = '/admin/edit-cms.html';
                 } else {
                     showError('Mot de passe incorrect');
                 }
