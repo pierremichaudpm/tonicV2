@@ -143,7 +143,8 @@
                                     Copiez-collez directement depuis Word. Le système créera automatiquement les paragraphes et liens.
                                 </p>
                                 <textarea id="description" placeholder="Copiez-collez la description ici..." rows="15" class="w-full p-3 border rounded bg-white"
-                                    oninput="validateContent()"></textarea>
+                                    oninput="validateContent()"
+                                    onpaste="handlePaste(event, 'description')"></textarea>
                                 <div id="descriptionPreview" class="mt-2 p-3 bg-gray-50 border rounded text-sm text-gray-600" style="display: none;">
                                     <strong>Aperçu:</strong> <span id="descriptionPreviewText"></span>
                                 </div>
@@ -178,7 +179,8 @@
                                     Copiez-collez directement depuis Word. Le système créera automatiquement les paragraphes et liens.
                                 </p>
                                 <textarea id="content" placeholder="Copiez-collez le contenu ici..." rows="15" class="w-full p-3 border rounded bg-white" 
-                                    oninput="validateContent()"></textarea>
+                                    oninput="validateContent()"
+                                    onpaste="handlePaste(event, 'content')"></textarea>
                                 <div id="contentPreview" class="mt-2 p-3 bg-gray-50 border rounded text-sm text-gray-600" style="display: none;">
                                     <strong>Aperçu:</strong> <span id="contentPreviewText"></span>
                                 </div>
@@ -282,23 +284,24 @@
             return result;
         }
         
-        // Properly attach paste handlers
+        // Properly attach paste handlers (backup - HTML onpaste should work)
         function attachPasteHandlers() {
             const descriptionField = document.getElementById('description');
             const contentField = document.getElementById('content');
             
             if (descriptionField) {
-                // Remove any existing onpaste attribute and add proper event listener
-                descriptionField.removeAttribute('onpaste');
-                descriptionField.addEventListener('paste', (e) => handlePaste(e, 'description'));
-                console.log('✅ Paste handler attached to description field');
+                console.log('✅ Description field found for paste handling');
             }
             
             if (contentField) {
-                // Remove any existing onpaste attribute and add proper event listener
-                contentField.removeAttribute('onpaste');
-                contentField.addEventListener('paste', (e) => handlePaste(e, 'content'));
-                console.log('✅ Paste handler attached to content field');
+                console.log('✅ Content field found for paste handling');
+            }
+            
+            // Test if handlePaste function exists
+            if (typeof handlePaste === 'function') {
+                console.log('✅ handlePaste function is available');
+            } else {
+                console.error('❌ handlePaste function not found!');
             }
         }
 
