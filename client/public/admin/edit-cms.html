@@ -334,26 +334,30 @@
                     
                     if (!content) return '';
                     
-                    // Split on natural Word paragraph breaks
-                    const naturalBreaks = [
-                        'L\'élite mondiale.',
-                        'L\'énergie de Montréal.',
-                        'Plus qu\'un simple',
-                        'Un événement',
-                        'Les billets',
-                        'Déclarations',
-                        'À propos'
+                    // Split long content into proper paragraphs using multiple break patterns
+                    let processedContent = content;
+                    
+                    // Define break patterns that indicate new paragraphs
+                    const breakPatterns = [
+                        { pattern: /(\. )(L'élite mondiale\.)/g, replacement: '$1</p>\n<p>$2' },
+                        { pattern: /(\. )(L'énergie de Montréal\.)/g, replacement: '$1</p>\n<p>$2' },
+                        { pattern: /(\. )(Plus qu'un simple)/g, replacement: '$1</p>\n<p>$2' },
+                        { pattern: /(\. )(Un événement)/g, replacement: '$1</p>\n<p>$2' },
+                        { pattern: /(\. )(Les billets)/g, replacement: '$1</p>\n<p>$2' },
+                        { pattern: /(immersives\. )(Un événement)/g, replacement: '$1</p>\n<p>$2' },
+                        { pattern: /(action\. )(Déclarations)/g, replacement: '$1</p>\n<p>$2' },
+                        { pattern: /(" )(« )/g, replacement: '$1</p>\n<p>$2' }, // New quote after speaker
+                        { pattern: /(canadienne\. )(« )/g, replacement: '$1</p>\n<p>$2' }
                     ];
                     
-                    let foundBreak = naturalBreaks.find(breakText => content.includes(breakText));
-                    if (foundBreak) {
-                        const parts = content.split(foundBreak);
-                        if (parts.length > 1) {
-                            const result = [];
-                            result.push(`<p>${parts[0].trim()}</p>`);
-                            result.push(`<p>${foundBreak}${parts.slice(1).join(foundBreak)}</p>`);
-                            return result.filter(p => p !== '<p></p>').join('\n');
-                        }
+                    // Apply all break patterns
+                    breakPatterns.forEach(({ pattern, replacement }) => {
+                        processedContent = processedContent.replace(pattern, replacement);
+                    });
+                    
+                    // If we made any splits, wrap the whole thing and return
+                    if (processedContent !== content) {
+                        return `<p>${processedContent}</p>`;
                     }
                     
                     // Don't automatically make everything bold - preserve Word's actual formatting
