@@ -313,8 +313,13 @@
             color: rgba(255, 255, 255, 0.9);
         }
         
-        /* Links - FORCE OVERRIDE all Word styles */
+        /* Links - ULTRA FORCE OVERRIDE all Word styles including bold wrapped links */
         #modalContent a,
+        #modalContent a *,
+        #modalContent strong a,
+        #modalContent a strong,
+        #modalContent b a,
+        #modalContent a b,
         .modal-content a,
         #modalContent span[style*="color:#1155cc"],
         #modalContent span[style*="text-decoration:underline"] {
@@ -325,6 +330,9 @@
         }
         
         #modalContent a:hover,
+        #modalContent a:hover *,
+        #modalContent strong a:hover,
+        #modalContent a:hover strong,
         .modal-content a:hover {
             color: #1d4ed8 !important;
             background-color: transparent !important;
@@ -506,22 +514,30 @@
                 
                 modalContent.innerHTML = processedContent;
                 
-                // Fix links immediately after injection
+                // Enhanced link fixing - handle all variations including bold-wrapped links
                 const links = modalContent.querySelectorAll('a');
                 console.log('🔗 Found links:', links.length);
                 links.forEach(link => {
-                    link.style.color = '#3b82f6';
-                    link.style.textDecoration = 'underline';
-                    link.style.backgroundColor = 'transparent';
+                    // Force link styles regardless of parent formatting
+                    link.style.setProperty('color', '#3b82f6', 'important');
+                    link.style.setProperty('text-decoration', 'underline', 'important');
+                    link.style.setProperty('background-color', 'transparent', 'important');
+                    
+                    // Also style any strong/bold children inside links
+                    const strongChildren = link.querySelectorAll('strong, b');
+                    strongChildren.forEach(strong => {
+                        strong.style.setProperty('color', '#3b82f6', 'important');
+                        strong.style.setProperty('text-decoration', 'underline', 'important');
+                    });
                 });
                 
-                // Also fix any spans that look like links
+                // Fix Word-style link spans
                 const linkSpans = modalContent.querySelectorAll('span[style*="color:#1155cc"], span[style*="text-decoration:underline"]');
                 console.log('🔗 Found link-style spans:', linkSpans.length);
                 linkSpans.forEach(span => {
-                    span.style.color = '#3b82f6';
-                    span.style.textDecoration = 'underline';
-                    span.style.backgroundColor = 'transparent';
+                    span.style.setProperty('color', '#3b82f6', 'important');
+                    span.style.setProperty('text-decoration', 'underline', 'important');
+                    span.style.setProperty('background-color', 'transparent', 'important');
                     span.style.cursor = 'pointer';
                 });
             }
