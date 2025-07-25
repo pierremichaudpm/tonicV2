@@ -34,14 +34,5 @@ const pressReleases = [
     "summary": "La 4e édition du Beach Pro Tour Montréal a accueilli plus de 45 000 spectateurs et confirmé Montréal comme destination privilégiée du volleyball de plage mondial.",
     "content": "<p>Montréal, le 20 août 2024 – La 4e édition du Beach Pro Tour Montréal s'est achevée dimanche soir sur une note triomphale, confirmant une fois de plus la place de Montréal sur la scène internationale du volleyball de plage.</p>\n<p>Organisé du 14 au 18 août au parc Jean-Drapeau, cet événement Elite16 a réuni les 16 meilleures paires masculines et féminines du circuit mondial pour cinq jours de compétition intense sous les projecteurs du Center Court.</p>\n<p>Une édition record</p>\n<p>Plus de 45 000 spectateurs sur les cinq jours                 16 paires par catégorie représentant 20 nations                 Diffusion en direct dans 100+ pays                 Prize money de 300 000$ USD distribué</p>\n<p>\"L'atmosphère électrisante du public montréalais et l'organisation impeccable font de cette étape l'une des préférées des athlètes sur le circuit\"</p>\n<p>Cette réussite confirme l'engagement de Groupe Tonic à positionner Montréal comme une destination de choix pour les grands événements sportifs internationaux.</p>",
     "image": "images/beach-pro-tour-hero.webp"
-  },
-  {
-    "id": 1753457442902,
-    "title": "Le Volleyball World Beach Pro Tour – Elite revient à Montréal!",
-    "date": "2025-06-17",
-    "category": "Beach Pro Tour",
-    "summary": "L’élite mondiale du volleyball de plage en action du 13 au 17 août 2025 au parc Jean-Drapeau\n",
-    "content": "",
-    "image": "images/beach-pro-tour-hero.webp"
   }
 ];
