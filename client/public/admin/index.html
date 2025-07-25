@@ -10,6 +10,13 @@
         .tonic-gradient {
             background: linear-gradient(135deg, #fe4445 0%, #ff6667 100%);
         }
+        
+        /* Hide browser notification popups */
+        .notification-overlay,
+        [role="dialog"][aria-label*="notification"],
+        [data-testid*="notification"] {
+            display: none !important;
+        }
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen">

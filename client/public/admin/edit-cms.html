@@ -5,6 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CMS Éditable - Groupe Tonic</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Hide browser notification popups and overlays */
+        .notification-overlay,
+        [role="dialog"][aria-label*="notification"],
+        [data-testid*="notification"] {
+            display: none !important;
+        }
+        
+        /* Ensure modal appears above any browser popups */
+        #editModal {
+            z-index: 999999 !important;
+        }
+    </style>
 </head>
 <body class="bg-gray-100">
     <div class="min-h-screen">

@@ -42,15 +42,5 @@ const jobListings = [
     "emailSubject": "Candidature - Plongeur",
     "applyEmail": "rh@gpcqm.ca",
     "deadline": ""
-  },
-  {
-    "id": 1753392830642,
-    "title": "test emploi",
-    "department": "Groupe Tonic",
-    "location": "lgueil",
-    "type": "qef",
-    "salary": "a voir",
-    "description": "fqbaertgbvterwagtebawbrrtbw",
-    "datePosted": "2025-07-24"
   }
 ];
