@@ -312,19 +312,41 @@
             // Get the clipboard data directly from the event
             const clipboardData = event.clipboardData || window.clipboardData;
             if (!clipboardData) {
-                console.log('⚠️ No clipboard data available, using fallback');
+                console.log('⚠️ No clipboard data available');
                 return;
             }
             
-            // Get the pasted text
-            let pastedText = clipboardData.getData('text/plain') || clipboardData.getData('text');
+            // Debug: Show what types are available
+            console.log('📋 Available clipboard types:', Array.from(clipboardData.types));
+            
+            // Try different data types
+            let pastedText = '';
+            
+            // Try text/html first (preserves Word formatting)
+            if (clipboardData.types.includes('text/html')) {
+                const htmlData = clipboardData.getData('text/html');
+                console.log('📄 HTML data length:', htmlData.length);
+                if (htmlData && htmlData.trim().length > 0) {
+                    // Extract text from HTML while preserving links
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = htmlData;
+                    pastedText = tempDiv.textContent || tempDiv.innerText || '';
+                    console.log('📝 Extracted text from HTML:', pastedText.length);
+                }
+            }
+            
+            // Fallback to plain text
+            if (!pastedText || pastedText.trim().length === 0) {
+                pastedText = clipboardData.getData('text/plain') || clipboardData.getData('text') || '';
+                console.log('📝 Plain text data:', pastedText.length);
+            }
             
             if (!pastedText || pastedText.trim().length === 0) {
-                console.log('⚠️ No text content in clipboard');
+                console.log('⚠️ No usable text content found in clipboard');
                 return;
             }
             
-            console.log('📝 Raw pasted content length:', pastedText.length);
+            console.log('📝 Final pasted content length:', pastedText.length);
             
             // Process the content
             const processedContent = processWordContent(pastedText);
