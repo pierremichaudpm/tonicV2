@@ -165,27 +165,12 @@
     </div>
 
     <script>
-        let token = localStorage.getItem('cms_token');
         let currentType = 'jobs';
         let currentLang = 'fr';
         let currentData = [];
 
-        // Improved token validation
-        function validateAndGetToken() {
-            const storedToken = localStorage.getItem('cms_token');
-            if (!storedToken || storedToken === 'null' || storedToken === 'undefined') {
-                console.log('No valid token found, redirecting to login');
-                window.location.href = '/admin/';
-                return null;
-            }
-            return storedToken;
-        }
-
-        // Initialize token check
-        token = validateAndGetToken();
-        if (!token) {
-            // Will redirect above
-        }
+        // Simple password check
+        const PASSWORD = 'admin123';
         
         // Strip HTML tags from text
         function stripHtml(html) {
@@ -221,29 +206,24 @@
         }
 
         function logout() {
-            localStorage.removeItem('cms_token');
             window.location.href = '/admin/';
         }
         
 
 
-        // Enhanced fetch with password authentication
+        // Simple fetch with password authentication
         async function fetchWithAuth(url, options = {}) {
-            const currentToken = validateAndGetToken();
-            if (!currentToken) return null;
-
             const response = await fetch(url, {
                 ...options,
                 headers: {
-                    'X-Admin-Password': currentToken,
+                    'X-Admin-Password': PASSWORD,
                     'Content-Type': 'application/json',
                     ...options.headers
                 }
             });
 
             if (response.status === 401 || response.status === 403) {
-                console.log('Password invalid, redirecting to login');
-                localStorage.removeItem('cms_token');
+                console.log('Authentication failed, redirecting to login');
                 window.location.href = '/admin/';
                 return null;
             }
