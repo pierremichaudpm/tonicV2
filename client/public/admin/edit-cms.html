@@ -286,34 +286,66 @@
 
         // Enhanced paste handling for Word documents
         function handlePaste(event, fieldId) {
-            event.preventDefault();
+            console.log('Paste event triggered for field:', fieldId);
             
-            // Get clipboard data
-            const clipboardData = (event.clipboardData || window.clipboardData);
-            let pastedData = '';
-            
-            console.log('Available clipboard types:', clipboardData.types);
-            
-            // Try to get HTML first (preserves Word links), then fall back to plain text
-            if (clipboardData.types.includes('text/html')) {
-                pastedData = clipboardData.getData('text/html');
-                console.log('Got HTML data:', pastedData.substring(0, 200));
-                pastedData = cleanWordHTML(pastedData);
-            } else {
-                pastedData = clipboardData.getData('text/plain');
-                console.log('Got plain text data:', pastedData.substring(0, 200));
+            try {
+                event.preventDefault();
+                
+                // Get clipboard data
+                const clipboardData = (event.clipboardData || window.clipboardData);
+                
+                if (!clipboardData) {
+                    console.error('No clipboard data available');
+                    return;
+                }
+                
+                let pastedData = '';
+                
+                console.log('Available clipboard types:', Array.from(clipboardData.types));
+                
+                // Try to get HTML first (preserves Word links), then fall back to plain text
+                if (clipboardData.types.includes('text/html')) {
+                    pastedData = clipboardData.getData('text/html');
+                    console.log('Got HTML data:', pastedData.substring(0, 200));
+                    pastedData = cleanWordHTML(pastedData);
+                } else if (clipboardData.types.includes('text/plain')) {
+                    pastedData = clipboardData.getData('text/plain');
+                    console.log('Got plain text data:', pastedData.substring(0, 200));
+                } else {
+                    console.log('No text data found in clipboard');
+                    return;
+                }
+                
+                // Process the content
+                const processedContent = processWordContent(pastedData);
+                console.log('Processed content length:', processedContent.length);
+                
+                // Insert into textarea
+                const textarea = document.getElementById(fieldId);
+                if (textarea) {
+                    textarea.value = processedContent;
+                    console.log('Content inserted into textarea');
+                    
+                    // Show preview
+                    showContentPreview(fieldId, processedContent);
+                } else {
+                    console.error('Textarea not found:', fieldId);
+                }
+                
+            } catch (error) {
+                console.error('Error in handlePaste:', error);
+                // Fallback: just get plain text
+                try {
+                    const plainText = (event.clipboardData || window.clipboardData).getData('text/plain');
+                    const textarea = document.getElementById(fieldId);
+                    if (textarea && plainText) {
+                        textarea.value = plainText;
+                        console.log('Fallback: inserted plain text');
+                    }
+                } catch (fallbackError) {
+                    console.error('Fallback also failed:', fallbackError);
+                }
             }
-            
-            // Process the content
-            const processedContent = processWordContent(pastedData);
-            console.log('Processed content:', processedContent);
-            
-            // Insert into textarea
-            const textarea = document.getElementById(fieldId);
-            textarea.value = processedContent;
-            
-            // Show preview
-            showContentPreview(fieldId, processedContent);
         }
         
         // Clean Word's messy HTML and extract links
@@ -401,12 +433,18 @@
         
         // Show content preview
         function showContentPreview(fieldId, content) {
+            console.log('Showing preview for field:', fieldId, 'Content length:', content.length);
+            
             const previewDiv = document.getElementById(fieldId + 'Preview');
             const previewText = document.getElementById(fieldId + 'PreviewText');
+            
             if (previewDiv && previewText && content) {
-                const shortPreview = content.substring(0, 150) + (content.length > 150 ? '...' : '');
+                const shortPreview = content.substring(0, 400) + (content.length > 400 ? '...' : '');
                 previewText.innerHTML = shortPreview; // Use innerHTML to show formatted content
                 previewDiv.style.display = 'block';
+                console.log('Preview shown successfully');
+            } else {
+                console.log('Preview elements not found:', fieldId + 'Preview', fieldId + 'PreviewText');
             }
         }
         
