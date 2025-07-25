@@ -309,68 +309,50 @@
         function handlePaste(event, fieldId) {
             console.log('🔥 PASTE EVENT TRIGGERED for field:', fieldId);
             
-            // Get the clipboard data directly from the event
+            // Prevent default paste behavior
+            event.preventDefault();
+            
             const clipboardData = event.clipboardData || window.clipboardData;
             if (!clipboardData) {
                 console.log('⚠️ No clipboard data available');
                 return;
             }
             
-            // Debug: Show what types are available
             console.log('📋 Available clipboard types:', Array.from(clipboardData.types));
             
-            // Try different data types
-            let pastedText = '';
+            let processedContent = '';
             
-            // Try text/html first (preserves Word formatting)
+            // Try HTML first (preserves Word formatting)
             if (clipboardData.types.includes('text/html')) {
                 const htmlData = clipboardData.getData('text/html');
-                console.log('📄 HTML data length:', htmlData.length);
-                if (htmlData && htmlData.trim().length > 0) {
-                    // Simple approach: extract text but preserve basic formatting
-                    pastedText = simpleWordFormatPreservation(htmlData);
-                    console.log('📝 Processed HTML with formatting:', pastedText.length);
-                }
+                console.log('📄 Processing HTML data');
+                processedContent = processWordHTML(htmlData);
             }
             
             // Fallback to plain text
-            if (!pastedText || pastedText.trim().length === 0) {
-                pastedText = clipboardData.getData('text/plain') || clipboardData.getData('text') || '';
-                console.log('📝 Plain text data:', pastedText.length);
+            if (!processedContent || processedContent.trim().length === 0) {
+                const plainText = clipboardData.getData('text/plain') || clipboardData.getData('text') || '';
+                console.log('📝 Processing plain text');
+                processedContent = processPlainText(plainText);
             }
             
-            if (!pastedText || pastedText.trim().length === 0) {
-                console.log('⚠️ No usable text content found in clipboard');
+            if (!processedContent || processedContent.trim().length === 0) {
+                console.log('⚠️ No usable content found');
                 return;
             }
             
-            console.log('📝 Final pasted content length:', pastedText.length);
-            
-            // Process the content - check if it already contains HTML formatting
-            let processedContent;
-            if (pastedText.includes('<strong>') || pastedText.includes('<em>') || pastedText.includes('<a href=')) {
-                // Already contains HTML formatting from cleanAndPreserveWordFormatting
-                processedContent = pastedText;
-                console.log('🎨 Content already formatted with HTML:', processedContent.length);
-            } else {
-                // Plain text - process normally
-                processedContent = processWordContent(pastedText);
-                console.log('🔧 Processed plain text content:', processedContent.length);
-            }
-            
-            // Get the textarea and update it
+            // Update textarea with plain text version for editing
             const textarea = document.getElementById(fieldId);
             if (!textarea) {
                 console.error('❌ Textarea not found:', fieldId);
                 return;
             }
             
-            // For display in textarea, show plain text version
+            // Store processed HTML and show plain text for editing
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = processedContent;
-            const plainTextForEditing = tempDiv.textContent || tempDiv.innerText || pastedText;
+            const plainTextForEditing = tempDiv.textContent || tempDiv.innerText || '';
             
-            // Store both versions
             textarea.value = plainTextForEditing;
             textarea.setAttribute('data-processed-content', processedContent);
             
@@ -380,164 +362,119 @@
             console.log('✅ Paste processing completed successfully');
         }
         
-        // Simple Word format preservation
-        function simpleWordFormatPreservation(html) {
-            if (!html) return '';
+        // Process Word HTML content
+        function processWordHTML(html) {
+            if (!html || html.trim().length === 0) return '';
             
-            console.log('🔍 Original HTML sample:', html.substring(0, 500));
+            console.log('🔍 Processing Word HTML');
             
-            // Create temporary div
+            // Create temporary container
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = html;
             
-            // Simple approach: convert common formatting tags
-            let content = tempDiv.innerHTML;
+            // Remove Word-specific elements safely
+            const unwantedElements = tempDiv.querySelectorAll('meta, style, script, xml');
+            unwantedElements.forEach(el => el.remove());
             
-            // Convert bold tags to our format
-            content = content.replace(/<b[^>]*>(.*?)<\/b>/gi, '**$1**');
-            content = content.replace(/<strong[^>]*>(.*?)<\/strong>/gi, '**$1**');
+            // Process all elements to preserve formatting
+            const processedHTML = processElementsRecursively(tempDiv);
             
-            // Convert italic tags
-            content = content.replace(/<i[^>]*>(.*?)<\/i>/gi, '*$1*');
-            content = content.replace(/<em[^>]*>(.*?)<\/em>/gi, '*$1*');
-            
-            // Get the text content
-            tempDiv.innerHTML = content;
-            let text = tempDiv.textContent || tempDiv.innerText || '';
-            
-            console.log('🎨 Text with markers:', text.substring(0, 300));
-            
-            // Convert back to HTML
-            text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-            text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
-            
-            console.log('✅ Final formatted text:', text.substring(0, 300));
-            
-            return text;
+            // Convert to proper paragraphs and clean up
+            return cleanAndStructureParagraphs(processedHTML);
         }
-        
-        // Clean and preserve Word formatting (bold, italic, larger text)
-        function cleanAndPreserveWordFormatting(html) {
-            if (!html) return '';
-            
-            // Create temporary div to work with HTML
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = html;
-            
-            // Remove unwanted Word elements but preserve formatting
-            const elementsToRemove = tempDiv.querySelectorAll('meta, style, script, xml');
-            elementsToRemove.forEach(el => el.remove());
-            
-            // Remove Word namespace elements separately
-            const wordElements = tempDiv.querySelectorAll('*');
-            wordElements.forEach(el => {
-                if (el.tagName && (el.tagName.startsWith('O:') || el.tagName.startsWith('W:'))) {
-                    el.remove();
-                }
-            });
-            
-            // Process and preserve formatting
+
+        function processElementsRecursively(element) {
             let result = '';
             
-            // Walk through all text nodes and elements
-            function processNode(node) {
+            for (let node of element.childNodes) {
                 if (node.nodeType === Node.TEXT_NODE) {
-                    return node.textContent.trim();
+                    const text = node.textContent.trim();
+                    if (text) {
+                        result += text + ' ';
+                    }
                 } else if (node.nodeType === Node.ELEMENT_NODE) {
-                    let content = '';
+                    const tagName = node.tagName.toLowerCase();
+                    const style = node.style || {};
+                    const childContent = processElementsRecursively(node);
                     
-                    // Process child nodes
-                    for (let child of node.childNodes) {
-                        content += processNode(child);
+                    if (!childContent.trim()) continue;
+                    
+                    // Handle different elements
+                    if (tagName === 'p' || tagName === 'div') {
+                        result += `\n${childContent}\n`;
+                    } else if (tagName === 'br') {
+                        result += '\n';
+                    } else if (tagName === 'a' && node.href) {
+                        result += `<a href="${node.href}" style="text-decoration: underline; color: #1d4ed8;" target="_blank">${childContent}</a>`;
+                    } else if (tagName === 'strong' || tagName === 'b' || 
+                               (style.fontWeight && (style.fontWeight === 'bold' || parseInt(style.fontWeight) >= 700))) {
+                        result += `<strong>${childContent}</strong>`;
+                    } else if (tagName === 'em' || tagName === 'i' || style.fontStyle === 'italic') {
+                        result += `<em>${childContent}</em>`;
+                    } else if (tagName.match(/^h[1-6]$/) || 
+                               (style.fontSize && (parseInt(style.fontSize) > 14 || style.fontSize.includes('large')))) {
+                        result += `<strong style="font-size: 1.2em; display: block; margin: 10px 0;">${childContent}</strong>`;
+                    } else {
+                        result += childContent;
                     }
-                    
-                    if (!content.trim()) return '';
-                    
-                    // Apply formatting based on element type
-                    const tagName = node.tagName ? node.tagName.toLowerCase() : '';
-                    const styles = node.style || {};
-                    
-                    // Bold formatting
-                    if (tagName === 'b' || tagName === 'strong' || 
-                        (styles.fontWeight && (styles.fontWeight === 'bold' || parseInt(styles.fontWeight) >= 700))) {
-                        content = `<strong>${content}</strong>`;
-                    }
-                    
-                    // Italic formatting
-                    if (tagName === 'i' || tagName === 'em' || styles.fontStyle === 'italic') {
-                        content = `<em>${content}</em>`;
-                    }
-                    
-                    // Larger text (headers or larger font sizes)
-                    if (tagName.match(/^h[1-6]$/) || 
-                        (styles.fontSize && (
-                            styles.fontSize.includes('pt') && parseInt(styles.fontSize) > 12 ||
-                            styles.fontSize.includes('px') && parseInt(styles.fontSize) > 16
-                        ))) {
-                        content = `<strong style="font-size: 1.2em;">${content}</strong>`;
-                    }
-                    
-                    // Preserve links
-                    if (tagName === 'a' && node.href) {
-                        content = `<a href="${node.href}" style="text-decoration: underline; color: #1d4ed8;">${content}</a>`;
-                    }
-                    
-                    return content;
                 }
-                return '';
             }
             
-            // Process all paragraphs and preserve structure
-            const paragraphs = tempDiv.querySelectorAll('p, div, h1, h2, h3, h4, h5, h6');
-            if (paragraphs.length > 0) {
-                paragraphs.forEach(para => {
-                    const content = processNode(para);
-                    if (content.trim()) {
-                        result += content + '\n\n';
-                    }
-                });
-            } else {
-                // No paragraph structure, process entire content
-                result = processNode(tempDiv);
-            }
-            
-            // Clean up extra whitespace but preserve intentional formatting
-            return result.trim();
+            return result;
         }
-        
-        // Clean Word's messy HTML and extract links
-        function cleanWordHTML(html) {
+
+        function cleanAndStructureParagraphs(html) {
             if (!html) return '';
             
-            // Create temporary div to safely work with HTML
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = html;
+            // Convert URLs and emails to links first
+            html = convertUrlsAndEmailsToLinks(html);
             
-            // Extract links first before cleaning
-            const links = tempDiv.querySelectorAll('a');
-            let linkMap = [];
+            // Split into paragraphs based on line breaks
+            const paragraphs = html.split(/\n\s*\n+/)
+                .map(para => para.trim().replace(/\n+/g, ' ').replace(/\s+/g, ' '))
+                .filter(para => para.length > 0);
             
-            links.forEach((link, index) => {
-                const linkText = link.textContent;
-                const linkUrl = link.href;
-                linkMap.push({
-                    text: linkText,
-                    url: linkUrl,
-                    placeholder: '___LINK_' + index + '___'
-                });
-                link.textContent = '___LINK_' + index + '___';
-            });
-            
-            // Get plain text (this removes all HTML formatting but preserves link placeholders)
-            let plainText = tempDiv.textContent || tempDiv.innerText || '';
-            
-            // Restore links with proper formatting
-            linkMap.forEach(link => {
-                plainText = plainText.replace(link.placeholder, '__LINK__' + link.text + '__LINKURL__' + link.url + '__');
-            });
-            
-            return plainText;
+            // Wrap non-HTML paragraphs in <p> tags
+            return paragraphs.map(para => {
+                // If already contains block elements, don't wrap
+                if (para.includes('<strong style="font-size') || para.includes('<h')) {
+                    return para;
+                }
+                return `<p>${para}</p>`;
+            }).join('\n');
         }
+
+        function processPlainText(text) {
+            if (!text || text.trim().length === 0) return '';
+            
+            console.log('📝 Processing plain text');
+            
+            // Clean up Word special characters
+            text = text.replace(/[\u2018\u2019]/g, "'") // Smart quotes
+                        .replace(/[\u201C\u201D]/g, '"') // Smart quotes
+                        .replace(/\u2013/g, '-') // En dash
+                        .replace(/\u2014/g, '--') // Em dash
+                        .replace(/\u2026/g, '...') // Ellipsis
+                        .replace(/\u00A0/g, ' '); // Non-breaking space
+            
+            // Convert URLs and emails to links
+            text = convertUrlsAndEmailsToLinks(text);
+            
+            // Split into paragraphs
+            const paragraphs = text.split(/\n\s*\n+/)
+                .map(para => para.trim().replace(/\n+/g, ' ').replace(/\s+/g, ' '))
+                .filter(para => para.length > 10);
+            
+            // If no clear paragraphs, split on sentence patterns that indicate new paragraphs
+            if (paragraphs.length <= 1 && text.length > 100) {
+                const sentences = text.split(/(?<=[.!?])\s+(?=[A-ZÀÉÈÊËÏÎÔÖÙÚÛÜŸÇ])/);
+                return sentences.map(sentence => `<p>${sentence.trim()}</p>`).join('\n');
+            }
+            
+            return paragraphs.map(para => `<p>${para}</p>`).join('\n');
+        }
+
+
         
         // Enhanced Word content processing
         function processWordContent(text) {
