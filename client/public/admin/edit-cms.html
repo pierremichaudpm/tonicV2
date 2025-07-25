@@ -239,47 +239,29 @@
             return tmp.textContent || tmp.innerText || '';
         }
 
-        // Enhanced link conversion with better Word document support
+        // Simple URL and email conversion
         function convertUrlsToLinks(text) {
-            // Skip if already contains HTML links (already processed)
-            if (text.includes('<a href=')) {
-                return text;
-            }
+            if (!text || text.includes('<a href=')) return text;
             
             let result = text;
             
-            // Handle email addresses (comprehensive regex)
-            const emailRegex = /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/gi;
-            result = result.replace(emailRegex, '<a href="mailto:$1" style="text-decoration: underline; color: #1d4ed8;">$1</a>');
+            // 1. Email addresses
+            result = result.replace(
+                /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g,
+                '<a href="mailto:$&" style="text-decoration: underline; color: #1d4ed8;">$&</a>'
+            );
             
-            // Handle URLs with protocols (improved regex)
-            const urlRegex = /(https?:\/\/[^\s<>"'\[\]{}|\\^`]+)/gi;
-            result = result.replace(urlRegex, '<a href="$1" target="_blank" style="text-decoration: underline; color: #1d4ed8;">$1</a>');
+            // 2. URLs with http/https
+            result = result.replace(
+                /https?:\/\/[^\s<>"'\[\]{}|\\^`]+[^\s<>"'\[\]{}|\\^`.,;:!?]/g,
+                '<a href="$&" target="_blank" style="text-decoration: underline; color: #1d4ed8;">$&</a>'
+            );
             
-            // Handle www domains
-            const wwwRegex = /(www\.[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(?:\.[a-zA-Z]{2,})?(?:\/[^\s]*)?)/gi;
-            result = result.replace(wwwRegex, '<a href="https://$1" target="_blank" style="text-decoration: underline; color: #1d4ed8;">$1</a>');
-            
-            // Handle domain names (careful to avoid false positives)
-            const domainRegex = /(?<![@\/])\b([a-zA-Z0-9-]+\.[a-zA-Z]{2,}(?:\.[a-zA-Z]{2,})?)\b(?![@\/])/gi;
-            result = result.replace(domainRegex, (match, domain) => {
-                // Skip if already part of an email or URL
-                if (result.includes(`@${domain}`) || result.includes(`//${domain}`) || result.includes(`www.${domain}`)) {
-                    return match;
-                }
-                // Skip common file extensions
-                if (match.match(/\.(pdf|doc|docx|xls|xlsx|jpg|png|gif)$/i)) {
-                    return match;
-                }
-                return `<a href="https://${domain}" target="_blank" style="text-decoration: underline; color: #1d4ed8;">${domain}</a>`;
-            });
-            
-            // Handle common hidden link patterns from Word documents
-            result = result.replace(/DOSSIER DE PRESSE\s*>>>/gi, '<a href="#" target="_blank" style="text-decoration: underline; color: #1d4ed8;">DOSSIER DE PRESSE >>></a> <em style="color: #666; font-size: 0.9em;">(Remplacez # par l\'URL du dossier)</em>');
-            result = result.replace(/FORMULAIRE D['''´]ACCRÉDITATION\s*>>>/gi, '<a href="#" target="_blank" style="text-decoration: underline; color: #1d4ed8;">FORMULAIRE D\'ACCRÉDITATION >>></a> <em style="color: #666; font-size: 0.9em;">(Remplacez # par l\'URL du formulaire)</em>');
-            
-            // Handle bold formatting
-            result = result.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            // 3. www domains
+            result = result.replace(
+                /\bwww\.[A-Za-z0-9-]+\.[A-Za-z]{2,}(?:\.[A-Za-z]{2,})?(?:\/[^\s]*)?/g,
+                '<a href="https://$&" target="_blank" style="text-decoration: underline; color: #1d4ed8;">$&</a>'
+            );
             
             return result;
         }
@@ -305,7 +287,7 @@
             }
         }
 
-        // Enhanced paste handling for Word documents
+        // Simple and reliable paste handling
         function handlePaste(event, fieldId) {
             console.log('🔥 PASTE EVENT TRIGGERED for field:', fieldId);
             
@@ -320,78 +302,165 @@
             
             console.log('📋 Available clipboard types:', Array.from(clipboardData.types));
             
-            let processedContent = '';
+            let rawText = '';
+            let processedHTML = '';
             
-            // Try HTML first (preserves Word formatting)
+            // Get the raw text first (this always works)
+            rawText = clipboardData.getData('text/plain') || clipboardData.getData('text') || '';
+            
+            // Try to get HTML if available (for Word documents)
             if (clipboardData.types.includes('text/html')) {
                 const htmlData = clipboardData.getData('text/html');
-                console.log('📄 Processing HTML data');
-                processedContent = processWordHTML(htmlData);
+                if (htmlData && htmlData.trim().length > 0) {
+                    console.log('📄 Processing HTML data');
+                    processedHTML = processWordHTMLSimple(htmlData);
+                }
             }
             
-            // Fallback to plain text
-            if (!processedContent || processedContent.trim().length === 0) {
-                const plainText = clipboardData.getData('text/plain') || clipboardData.getData('text') || '';
+            // Fallback to processing plain text
+            if (!processedHTML || processedHTML.trim().length === 0) {
                 console.log('📝 Processing plain text');
-                processedContent = processPlainText(plainText);
+                processedHTML = processPlainTextSimple(rawText);
             }
             
-            if (!processedContent || processedContent.trim().length === 0) {
-                console.log('⚠️ No usable content found');
-                return;
-            }
-            
-            // Update textarea with plain text version for editing
+            // Get the textarea
             const textarea = document.getElementById(fieldId);
             if (!textarea) {
                 console.error('❌ Textarea not found:', fieldId);
                 return;
             }
             
-            // Store processed HTML and show readable text for editing
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = processedContent;
-            let plainTextForEditing = tempDiv.textContent || tempDiv.innerText || '';
+            // SIMPLE: Just put the raw text in the textarea (this always works)
+            textarea.value = rawText;
             
-            // If no text extracted, use the raw processed content
-            if (!plainTextForEditing || plainTextForEditing.trim().length === 0) {
-                plainTextForEditing = processedContent;
+            // Store the processed HTML for when we save
+            textarea.setAttribute('data-processed-content', processedHTML);
+            
+            // Show preview of the formatted version
+            showContentPreview(fieldId, processedHTML);
+            
+            // Focus the textarea so user sees the content
+            textarea.focus();
+            
+            console.log('✅ Paste completed - Raw text length:', rawText.length, 'Processed HTML length:', processedHTML.length);
+        }
+
+        // Simple Word HTML processing
+        function processWordHTMLSimple(html) {
+            if (!html || html.trim().length === 0) return '';
+            
+            console.log('🔍 Processing Word HTML - Simple method');
+            
+            // Create temporary container
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = html;
+            
+            // Remove unwanted elements
+            const unwanted = tempDiv.querySelectorAll('meta, style, script, xml');
+            unwanted.forEach(el => el.remove());
+            
+            // Get clean text with basic formatting
+            let result = '';
+            const walker = document.createTreeWalker(
+                tempDiv,
+                NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT,
+                null,
+                false
+            );
+            
+            let node;
+            let currentParagraph = '';
+            
+            while (node = walker.nextNode()) {
+                if (node.nodeType === Node.TEXT_NODE) {
+                    const text = node.textContent.trim();
+                    if (text) {
+                        // Check if parent has formatting
+                        let formattedText = text;
+                        let parent = node.parentElement;
+                        
+                        while (parent && parent !== tempDiv) {
+                            const tagName = parent.tagName ? parent.tagName.toLowerCase() : '';
+                            const style = parent.style || {};
+                            
+                            // Bold formatting
+                            if (tagName === 'strong' || tagName === 'b' || 
+                                (style.fontWeight && (style.fontWeight === 'bold' || parseInt(style.fontWeight) >= 700))) {
+                                formattedText = `<strong>${formattedText}</strong>`;
+                                break;
+                            }
+                            
+                            // Links
+                            if (tagName === 'a' && parent.href) {
+                                formattedText = `<a href="${parent.href}" style="text-decoration: underline; color: #1d4ed8;" target="_blank">${formattedText}</a>`;
+                                break;
+                            }
+                            
+                            parent = parent.parentElement;
+                        }
+                        
+                        currentParagraph += formattedText + ' ';
+                    }
+                } else if (node.nodeType === Node.ELEMENT_NODE) {
+                    const tagName = node.tagName ? node.tagName.toLowerCase() : '';
+                    
+                    // Paragraph breaks
+                    if (tagName === 'p' || tagName === 'div' || tagName === 'br') {
+                        if (currentParagraph.trim()) {
+                            result += `<p>${currentParagraph.trim()}</p>\n`;
+                            currentParagraph = '';
+                        }
+                    }
+                }
             }
             
-            // Clear and set the textarea value
-            textarea.value = '';
-            setTimeout(() => {
-                textarea.value = plainTextForEditing;
-                console.log('📝 Setting textarea value length:', plainTextForEditing.length);
-                console.log('📝 Textarea value after setting:', textarea.value.length);
-                console.log('📝 First 100 chars of plain text:', plainTextForEditing.substring(0, 100));
-                
-                // Force the browser to update the display
-                textarea.style.display = 'none';
-                textarea.offsetHeight; // Force reflow
-                textarea.style.display = 'block';
-            }, 10);
+            // Add any remaining paragraph
+            if (currentParagraph.trim()) {
+                result += `<p>${currentParagraph.trim()}</p>\n`;
+            }
             
-            // Store the formatted HTML version for saving
-            textarea.setAttribute('data-processed-content', processedContent);
+            // Convert URLs and emails to links
+            result = convertUrlsToLinks(result);
             
-            // Trigger input event to ensure the interface updates
-            textarea.dispatchEvent(new Event('input', { bubbles: true }));
+            return result.trim();
+        }
+
+        // Simple plain text processing
+        function processPlainTextSimple(text) {
+            if (!text || text.trim().length === 0) return '';
             
-            // Force visual refresh and ensure visibility
-            textarea.style.height = 'auto';
-            textarea.style.height = textarea.scrollHeight + 'px';
-            textarea.focus();
-            textarea.blur();
-            textarea.focus();
+            console.log('📝 Processing plain text - Simple method');
             
-            // Scroll to show content
-            textarea.scrollTop = 0;
+            // Clean up Word special characters
+            let cleanText = text
+                .replace(/[\u2018\u2019]/g, "'") // Smart quotes
+                .replace(/[\u201C\u201D]/g, '"') // Smart quotes
+                .replace(/\u2013/g, '-') // En dash
+                .replace(/\u2014/g, '--') // Em dash
+                .replace(/\u2026/g, '...') // Ellipsis
+                .replace(/\u00A0/g, ' '); // Non-breaking space
             
-            // Show preview
-            showContentPreview(fieldId, processedContent);
+            // Split into paragraphs based on double line breaks
+            const paragraphs = cleanText
+                .split(/\n\s*\n+/)
+                .map(para => para.trim().replace(/\n+/g, ' ').replace(/\s+/g, ' '))
+                .filter(para => para.length > 5);
             
-            console.log('✅ Paste processing completed successfully');
+            // If no clear paragraphs found, make reasonable splits
+            if (paragraphs.length <= 1 && cleanText.length > 200) {
+                // Split on sentence endings followed by capital letters
+                const sentences = cleanText.split(/(?<=[.!?])\s+(?=[A-ZÀÉÈÊËÏÎÔÖÙÚÛÜŸÇ])/);
+                if (sentences.length > 1) {
+                    return sentences.map(sentence => `<p>${convertUrlsToLinks(sentence.trim())}</p>`).join('\n');
+                }
+            }
+            
+            // Convert each paragraph and add links
+            const result = paragraphs
+                .map(para => `<p>${convertUrlsToLinks(para)}</p>`)
+                .join('\n');
+            
+            return result || `<p>${convertUrlsToLinks(cleanText)}</p>`;
         }
         
         // Process Word HTML content
