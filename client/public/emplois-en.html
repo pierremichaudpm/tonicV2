@@ -449,8 +449,7 @@
 
         // Get all jobs - Using local data
         async function getAllJobs() {
-            const jobs = await loadJobsData();
-            return jobs || [];
+            return jobsData || [];
         }
 
         // Get days since posting
@@ -648,8 +647,8 @@
             DOM.modalTitle = document.getElementById('modalTitle');
             DOM.modalContent = document.getElementById('modalContent');
             
-            // Check if required functions are available
-            if (typeof loadJobsData !== 'function') {
+            // Check if job data is available
+            if (typeof jobsData === 'undefined' || !Array.isArray(jobsData)) {
                 DOM.jobsList.innerHTML = '<p class="text-white text-center py-8">Error loading. Please refresh the page.</p>';
                 return;
             }
