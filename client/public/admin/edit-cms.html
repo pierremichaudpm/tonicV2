@@ -309,42 +309,42 @@
         function handlePaste(event, fieldId) {
             console.log('🔥 PASTE EVENT TRIGGERED for field:', fieldId);
             
-            // Don't prevent default - let the normal paste happen first
-            // This ensures content appears in the textarea
+            // Get the clipboard data directly from the event
+            const clipboardData = event.clipboardData || window.clipboardData;
+            if (!clipboardData) {
+                console.log('⚠️ No clipboard data available, using fallback');
+                return;
+            }
             
-            // Use setTimeout to process after the paste completes
-            setTimeout(() => {
-                try {
-                    const textarea = document.getElementById(fieldId);
-                    if (!textarea) {
-                        console.error('❌ Textarea not found:', fieldId);
-                        return;
-                    }
-                    
-                    const rawContent = textarea.value;
-                    console.log('📝 Raw pasted content length:', rawContent.length);
-                    
-                    if (!rawContent || rawContent.trim().length === 0) {
-                        console.log('⚠️ No content detected after paste');
-                        return;
-                    }
-                    
-                    // Show a preview of what will be saved (processed version)
-                    const processedContent = processWordContent(rawContent);
-                    console.log('🔧 Processed content length:', processedContent.length);
-                    
-                    // Show preview
-                    showContentPreview(fieldId, processedContent);
-                    
-                    // Store the processed version in a data attribute for saving later
-                    textarea.setAttribute('data-processed-content', processedContent);
-                    
-                    console.log('✅ Paste processing completed successfully');
-                    
-                } catch (error) {
-                    console.error('❌ Error processing paste:', error);
-                }
-            }, 100); // Small delay to let paste complete
+            // Get the pasted text
+            let pastedText = clipboardData.getData('text/plain') || clipboardData.getData('text');
+            
+            if (!pastedText || pastedText.trim().length === 0) {
+                console.log('⚠️ No text content in clipboard');
+                return;
+            }
+            
+            console.log('📝 Raw pasted content length:', pastedText.length);
+            
+            // Process the content
+            const processedContent = processWordContent(pastedText);
+            console.log('🔧 Processed content length:', processedContent.length);
+            
+            // Get the textarea and update it
+            const textarea = document.getElementById(fieldId);
+            if (!textarea) {
+                console.error('❌ Textarea not found:', fieldId);
+                return;
+            }
+            
+            // Store both raw and processed content
+            textarea.value = pastedText;
+            textarea.setAttribute('data-processed-content', processedContent);
+            
+            // Show preview
+            showContentPreview(fieldId, processedContent);
+            
+            console.log('✅ Paste processing completed successfully');
         }
         
         // Clean Word's messy HTML and extract links
