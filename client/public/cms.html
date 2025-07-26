@@ -250,44 +250,31 @@
             padding-right: 10px;
         }
         
-        /* Content card layout - force consistent button display */
-        .content-card {
-            display: block !important;
-        }
-        
-        .content-card-flex {
-            display: flex !important;
+        /* Simple grid layout to force button consistency */
+        .content-card-grid {
+            display: grid !important;
+            grid-template-columns: 1fr 110px !important;
             gap: 1rem !important;
             width: 100% !important;
         }
         
-        .content-main {
-            flex: 1 !important;
-            min-width: 0 !important;
+        .content-main-grid {
+            grid-column: 1 !important;
         }
         
-        .content-buttons {
-            flex-shrink: 0 !important;
-            display: flex !important;
-            flex-direction: column !important;
-            gap: 0.5rem !important;
-            width: auto !important;
+        .content-buttons-grid {
+            grid-column: 2 !important;
+            display: block !important;
         }
         
-        .content-buttons button {
+        .content-buttons-grid button {
             display: block !important;
             width: 100px !important;
+            margin-bottom: 0.5rem !important;
         }
         
-        /* Responsive layout for smaller screens */
-        @media (max-width: 768px) {
-            .content-card-flex {
-                flex-direction: column !important;
-            }
-            .content-buttons {
-                flex-direction: row !important;
-                justify-content: flex-end !important;
-            }
+        .content-buttons-grid button:last-child {
+            margin-bottom: 0 !important;
         }
     </style>
 </head>
@@ -650,8 +637,8 @@
                     
                     return `
                         <div class="card content-card p-6 rounded-lg">
-                            <div class="content-card-flex">
-                                <div class="content-main">
+                            <div class="content-card-grid">
+                                <div class="content-main-grid">
                                     <h3 class="text-xl font-semibold text-gray-900 mb-2">${item.title || ''}</h3>
                                     ${item.subtitle ? `<p class="text-gray-600 mb-2">${item.subtitle}</p>` : ''}
                                     <div class="flex flex-wrap items-center gap-3 text-sm text-gray-500 mb-3">
@@ -663,7 +650,7 @@
                                         ${item.content ? item.content.substring(0, 200).replace(/<[^>]*>/g, '') + '...' : ''}
                                     </div>
                                 </div>
-                                <div class="content-buttons">
+                                <div class="content-buttons-grid">
                                     <button data-action="edit" data-id="${String(itemId).replace(/'/g, "\\\'")}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm whitespace-nowrap">
                                         ${currentLang === 'fr' ? 'Modifier' : 'Edit'}
                                     </button>
