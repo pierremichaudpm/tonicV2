@@ -250,30 +250,36 @@
             padding-right: 10px;
         }
         
-        /* Simple grid layout to force button consistency */
-        .content-card-grid {
-            display: grid !important;
-            grid-template-columns: 1fr 110px !important;
-            gap: 1rem !important;
-            width: 100% !important;
-        }
-        
-        .content-main-grid {
-            grid-column: 1 !important;
-        }
-        
-        .content-buttons-grid {
-            grid-column: 2 !important;
+        /* Completely reset and override all button styling */
+        .news-card-wrapper {
             display: block !important;
+            width: 100% !important;
+            position: relative !important;
         }
         
-        .content-buttons-grid button {
+        .news-content {
+            padding-right: 120px !important;
+        }
+        
+        .news-buttons {
+            position: absolute !important;
+            top: 1rem !important;
+            right: 1rem !important;
+            width: 100px !important;
+        }
+        
+        .news-buttons button {
             display: block !important;
             width: 100px !important;
-            margin-bottom: 0.5rem !important;
+            margin-bottom: 8px !important;
+            padding: 8px 16px !important;
+            font-size: 14px !important;
+            border-radius: 8px !important;
+            border: none !important;
+            cursor: pointer !important;
         }
         
-        .content-buttons-grid button:last-child {
+        .news-buttons button:last-child {
             margin-bottom: 0 !important;
         }
     </style>
@@ -636,28 +642,26 @@
                     const itemId = item.id || item.title || Math.random().toString(36);
                     
                     return `
-                        <div class="card content-card p-6 rounded-lg">
-                            <div class="content-card-grid">
-                                <div class="content-main-grid">
-                                    <h3 class="text-xl font-semibold text-gray-900 mb-2">${item.title || ''}</h3>
-                                    ${item.subtitle ? `<p class="text-gray-600 mb-2">${item.subtitle}</p>` : ''}
-                                    <div class="flex flex-wrap items-center gap-3 text-sm text-gray-500 mb-3">
-                                        <span class="px-3 py-1 rounded-full text-sm font-medium ${getCategoryClass(item.category)}">${item.category || ''}</span>
-                                        <span class="whitespace-nowrap">${item.date ? new Date(item.date).toLocaleDateString('fr-CA') : ''}</span>
-                                        ${item.salary ? `<span class="font-medium whitespace-nowrap">${item.salary}</span>` : ''}
-                                    </div>
-                                    <div class="text-gray-700 prose prose-sm">
-                                        ${item.content ? item.content.substring(0, 200).replace(/<[^>]*>/g, '') + '...' : ''}
-                                    </div>
+                        <div class="card content-card p-6 rounded-lg news-card-wrapper">
+                            <div class="news-content">
+                                <h3 class="text-xl font-semibold text-gray-900 mb-2">${item.title || ''}</h3>
+                                ${item.subtitle ? `<p class="text-gray-600 mb-2">${item.subtitle}</p>` : ''}
+                                <div class="flex flex-wrap items-center gap-3 text-sm text-gray-500 mb-3">
+                                    <span class="px-3 py-1 rounded-full text-sm font-medium ${getCategoryClass(item.category)}">${item.category || ''}</span>
+                                    <span class="whitespace-nowrap">${item.date ? new Date(item.date).toLocaleDateString('fr-CA') : ''}</span>
+                                    ${item.salary ? `<span class="font-medium whitespace-nowrap">${item.salary}</span>` : ''}
                                 </div>
-                                <div class="content-buttons-grid">
-                                    <button data-action="edit" data-id="${String(itemId).replace(/'/g, "\\\'")}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm whitespace-nowrap">
-                                        ${currentLang === 'fr' ? 'Modifier' : 'Edit'}
-                                    </button>
-                                    <button data-action="delete" data-id="${String(itemId).replace(/'/g, "\\\'")}" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm whitespace-nowrap">
-                                        ${currentLang === 'fr' ? 'Supprimer' : 'Delete'}
-                                    </button>
+                                <div class="text-gray-700 prose prose-sm">
+                                    ${item.content ? item.content.substring(0, 200).replace(/<[^>]*>/g, '') + '...' : ''}
                                 </div>
+                            </div>
+                            <div class="news-buttons">
+                                <button data-action="edit" data-id="${String(itemId).replace(/'/g, "\\\'")}" class="bg-blue-500 hover:bg-blue-600 text-white">
+                                    ${currentLang === 'fr' ? 'Modifier' : 'Edit'}
+                                </button>
+                                <button data-action="delete" data-id="${String(itemId).replace(/'/g, "\\\'")}" class="bg-red-500 hover:bg-red-600 text-white">
+                                    ${currentLang === 'fr' ? 'Supprimer' : 'Delete'}
+                                </button>
                             </div>
                         </div>
                     `;
