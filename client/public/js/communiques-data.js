@@ -23,5 +23,13 @@ const pressReleases = [
         "category": "Marathon Beneva 21K",
         "date": "2025-07-09",
         "content": "<p>vqqver</p>"
+    },
+    {
+        "id": "1753536838816",
+        "title": "daer",
+        "subtitle": "eqreqb",
+        "category": "Grands Prix Cyclistes",
+        "date": "2025-07-23",
+        "content": "<p>bb</p>"
     }
 ];
