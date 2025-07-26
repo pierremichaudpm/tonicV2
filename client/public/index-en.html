@@ -36,8 +36,9 @@
         @keyframes fadeInOut{0%{opacity:0;transform:translate(-50%,-50%) scale(.8)}20%{opacity:1;transform:translate(-50%,-50%) scale(1)}80%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) scale(.95)}}
         
         /* Base components */
-        .view-container{position:fixed;inset:0;opacity:0;pointer-events:none;transition:opacity 1.2s ease-out}
+        .view-container{position:fixed;inset:0;opacity:0;pointer-events:none;transition:opacity 1.5s ease-out}
         .view-container.active{opacity:1;pointer-events:auto}
+        .splash-container{transition:opacity 1.2s ease-out}
         .splash-container{position:fixed;inset:0;z-index:100;background:#000;display:flex;align-items:center;justify-content:center;padding:2rem;flex-direction:column;overflow:hidden}
         .splash-container::before{
             content: '';
@@ -356,7 +357,7 @@
         const TRANSITION_DELAY = 300;
         const AUTO_PLAY_INTERVAL = 7000;
         const GRID_DISPLAY_TIME = 10000;
-        const SPLASH_DISPLAY_TIME = 2000;
+        const SPLASH_DISPLAY_TIME = 4500;
         const WHEEL_THROTTLE = 500;
         const PAUSE_INDICATOR_TIME = 1000;
         const MOBILE_BREAKPOINT = 768;
