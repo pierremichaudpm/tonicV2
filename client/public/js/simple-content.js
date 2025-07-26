@@ -39,6 +39,22 @@ function getJobs() {
     return [];
 }
 
+// Get English news content
+function getNewsEn() {
+    if (typeof communiquesData !== 'undefined') {
+        return communiquesData;
+    }
+    return [];
+}
+
+// Get English jobs content
+function getJobsEn() {
+    if (typeof jobsData !== 'undefined') {
+        return jobsData;
+    }
+    return [];
+}
+
 // Add new content (basic implementation)
 function addNewContent(item) {
     if (item.type === 'news') {
@@ -54,20 +70,67 @@ function addNewContent(item) {
     }
 }
 
-// Delete content (basic implementation)
-function deleteContent(id) {
+// Add English content functions
+function addNewContentEn(item) {
+    item.id = Date.now();
+    if (typeof communiquesData !== 'undefined') {
+        communiquesData.unshift(item);
+    }
+}
+
+function addNewJobEn(item) {
+    item.id = Date.now();
+    if (typeof jobsData !== 'undefined') {
+        jobsData.unshift(item);
+    }
+}
+
+function addNewJob(item) {
+    item.id = Date.now();
+    if (typeof jobListings !== 'undefined') {
+        jobListings.unshift(item);
+    }
+}
+
+// Delete content functions
+function deleteNewsItem(id) {
     if (typeof pressReleases !== 'undefined') {
         const newsIndex = pressReleases.findIndex(item => item.id === id);
         if (newsIndex > -1) {
             pressReleases.splice(newsIndex, 1);
-            return;
         }
     }
-    
+}
+
+function deleteNewsItemEn(id) {
+    if (typeof communiquesData !== 'undefined') {
+        const newsIndex = communiquesData.findIndex(item => item.id === id);
+        if (newsIndex > -1) {
+            communiquesData.splice(newsIndex, 1);
+        }
+    }
+}
+
+function deleteJobItem(id) {
     if (typeof jobListings !== 'undefined') {
         const jobIndex = jobListings.findIndex(item => item.id === id);
         if (jobIndex > -1) {
             jobListings.splice(jobIndex, 1);
         }
     }
+}
+
+function deleteJobItemEn(id) {
+    if (typeof jobsData !== 'undefined') {
+        const jobIndex = jobsData.findIndex(item => item.id === id);
+        if (jobIndex > -1) {
+            jobsData.splice(jobIndex, 1);
+        }
+    }
+}
+
+// Legacy delete function for backward compatibility
+function deleteContent(id) {
+    deleteNewsItem(id);
+    deleteJobItem(id);
 }
