@@ -250,42 +250,34 @@
             padding-right: 10px;
         }
         
-        /* Fix button layout in content cards */
-        .content-card .button-container {
-            display: flex !important;
-            flex-direction: column !important;
-            gap: 0.5rem !important;
-            flex-shrink: 0 !important;
-            margin-left: 1rem !important;
+        /* Content card layout */
+        .content-card-flex {
+            display: flex;
+            gap: 1rem;
+            width: 100%;
+        }
+        
+        .content-main {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .content-buttons {
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
         }
         
         /* Responsive layout for smaller screens */
         @media (max-width: 768px) {
-            .content-card .card-layout {
-                flex-direction: column !important;
+            .content-card-flex {
+                flex-direction: column;
             }
-            .content-card .button-container {
-                flex-direction: row !important;
-                margin-left: 0 !important;
-                margin-top: 1rem !important;
-                justify-content: flex-end !important;
+            .content-buttons {
+                flex-direction: row;
+                justify-content: flex-end;
             }
-        }
-        
-        /* Force consistent button width in table cells */
-        .content-card table td:last-child {
-            width: 120px !important;
-            max-width: 120px !important;
-        }
-        
-        .content-card table td:last-child div {
-            width: 120px !important;
-            max-width: 120px !important;
-        }
-        
-        .content-card table td:last-child button {
-            width: 100% !important;
-            max-width: 120px !important;
         }
     </style>
 </head>
@@ -647,33 +639,29 @@
                     const itemId = item.id || item.title || Math.random().toString(36);
                     
                     return `
-                        <div class="card content-card p-6 rounded-lg" style="overflow: hidden;">
-                            <table style="width: 100%; table-layout: fixed;">
-                                <tr>
-                                    <td style="width: calc(100% - 140px); padding-right: 1rem; vertical-align: top;">
-                                        <h3 class="text-xl font-semibold text-gray-900 mb-2" style="word-break: break-word;">${item.title || ''}</h3>
-                                        ${item.subtitle ? `<p class="text-gray-600 mb-2" style="word-break: break-word;">${item.subtitle}</p>` : ''}
-                                        <div class="flex flex-wrap items-center gap-3 text-sm text-gray-500 mb-3">
-                                            <span class="px-3 py-1 rounded-full text-sm font-medium ${getCategoryClass(item.category)}">${item.category || ''}</span>
-                                            <span class="whitespace-nowrap">${item.date ? new Date(item.date).toLocaleDateString('fr-CA') : ''}</span>
-                                            ${item.salary ? `<span class="font-medium whitespace-nowrap">${item.salary}</span>` : ''}
-                                        </div>
-                                        <div class="text-gray-700 prose prose-sm" style="overflow-wrap: break-word;">
-                                            ${item.content ? item.content.substring(0, 200).replace(/<[^>]*>/g, '') + '...' : ''}
-                                        </div>
-                                    </td>
-                                    <td style="width: 120px; vertical-align: top;">
-                                        <div style="display: flex; flex-direction: column; gap: 0.5rem; width: 120px;">
-                                            <button data-action="edit" data-id="${String(itemId).replace(/'/g, "\\'")}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm" style="white-space: nowrap;">
-                                                ${currentLang === 'fr' ? 'Modifier' : 'Edit'}
-                                            </button>
-                                            <button data-action="delete" data-id="${String(itemId).replace(/'/g, "\\'")}" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm" style="white-space: nowrap;">
-                                                ${currentLang === 'fr' ? 'Supprimer' : 'Delete'}
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </table>
+                        <div class="card content-card p-6 rounded-lg">
+                            <div class="content-card-flex">
+                                <div class="content-main">
+                                    <h3 class="text-xl font-semibold text-gray-900 mb-2">${item.title || ''}</h3>
+                                    ${item.subtitle ? `<p class="text-gray-600 mb-2">${item.subtitle}</p>` : ''}
+                                    <div class="flex flex-wrap items-center gap-3 text-sm text-gray-500 mb-3">
+                                        <span class="px-3 py-1 rounded-full text-sm font-medium ${getCategoryClass(item.category)}">${item.category || ''}</span>
+                                        <span class="whitespace-nowrap">${item.date ? new Date(item.date).toLocaleDateString('fr-CA') : ''}</span>
+                                        ${item.salary ? `<span class="font-medium whitespace-nowrap">${item.salary}</span>` : ''}
+                                    </div>
+                                    <div class="text-gray-700 prose prose-sm">
+                                        ${item.content ? item.content.substring(0, 200).replace(/<[^>]*>/g, '') + '...' : ''}
+                                    </div>
+                                </div>
+                                <div class="content-buttons">
+                                    <button data-action="edit" data-id="${String(itemId).replace(/'/g, "\\\'")}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm whitespace-nowrap">
+                                        ${currentLang === 'fr' ? 'Modifier' : 'Edit'}
+                                    </button>
+                                    <button data-action="delete" data-id="${String(itemId).replace(/'/g, "\\\'")}" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm whitespace-nowrap">
+                                        ${currentLang === 'fr' ? 'Supprimer' : 'Delete'}
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     `;
                 }).join('');
