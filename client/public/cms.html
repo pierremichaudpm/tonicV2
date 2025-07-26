@@ -622,6 +622,7 @@
         // CRUD operations
         async function saveItem(e) {
             e.preventDefault();
+            console.log('saveItem called');
             
             const itemData = {
                 id: currentEditId || Date.now().toString(),
@@ -636,25 +637,36 @@
                 itemData.salary = document.getElementById('salary').value;
             }
 
+            console.log('Item data to save:', itemData);
+            console.log('Current type:', currentType, 'Current lang:', currentLang);
+
             try {
                 // Get current data
                 const response = await fetch(`/api/cms/content/${currentType}/${currentLang}`, {
                     headers: { 'x-admin-password': 'admin123' }
                 });
+                
+                console.log('Fetch response status:', response.status);
+                
                 const result = await response.json();
                 let items = result.data || [];
+                
+                console.log('Current items count:', items.length);
 
                 // Add or update item
                 if (currentEditId) {
                     const index = items.findIndex(item => String(item.id) === String(currentEditId));
                     if (index !== -1) {
                         items[index] = itemData;
+                        console.log('Updated item at index:', index);
                     }
                 } else {
                     items.push(itemData);
+                    console.log('Added new item, total count:', items.length);
                 }
 
                 // Save back
+                console.log('Saving data...');
                 const saveResponse = await fetch(`/api/cms/content/${currentType}/${currentLang}`, {
                     method: 'POST',
                     headers: {
@@ -664,16 +676,20 @@
                     body: JSON.stringify({ data: items })
                 });
 
+                console.log('Save response status:', saveResponse.status);
+                const saveResult = await saveResponse.json();
+                console.log('Save result:', saveResult);
+
                 if (saveResponse.ok) {
                     closeModal();
                     loadContent();
                     showToast('Élément enregistré avec succès!', 'success');
                 } else {
-                    alert('Erreur lors de la sauvegarde');
+                    alert('Erreur lors de la sauvegarde: ' + (saveResult.error || 'Unknown error'));
                 }
             } catch (error) {
                 console.error('Erreur de sauvegarde:', error);
-                alert('Erreur de sauvegarde');
+                alert('Erreur de sauvegarde: ' + error.message);
             }
         }
 

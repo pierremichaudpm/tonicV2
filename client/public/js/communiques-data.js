@@ -15,5 +15,13 @@ const pressReleases = [
         "category": "UCI 2026",
         "date": "2024-12-15",
         "content": "<p>Montréal a été officiellement désignée ville hôte des Championnats du monde UCI 2026.</p><p>Cet événement majeur du cyclisme international rassemblera les meilleurs cyclistes de la planète dans la métropole québécoise.</p>"
+    },
+    {
+        "id": "1753536442519",
+        "title": "wcw",
+        "subtitle": "vefeq",
+        "category": "Marathon Beneva 21K",
+        "date": "2025-07-09",
+        "content": "<p>vqqver</p>"
     }
 ];
