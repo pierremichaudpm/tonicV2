@@ -130,6 +130,29 @@
         .category-dock { background: #6b7280; color: white; }
         .category-21k { background: #f59e0b; color: white; }
         .category-tonic { background: #1f2937; color: white; }
+        
+        /* Quill editor toolbar styling for dark modal */
+        .ql-toolbar {
+            background: white !important;
+            border-color: #d1d5db !important;
+        }
+        
+        .ql-toolbar .ql-stroke {
+            stroke: #374151 !important;
+        }
+        
+        .ql-toolbar .ql-fill {
+            fill: #374151 !important;
+        }
+        
+        .ql-toolbar button:hover,
+        .ql-toolbar button.ql-active {
+            background: #f3f4f6 !important;
+        }
+        
+        .ql-picker-label {
+            color: #374151 !important;
+        }
     </style>
 </head>
 <body class="min-h-screen text-gray-900">
@@ -563,8 +586,6 @@
         }
 
         async function editItem(id) {
-            currentEditId = id;
-            
             try {
                 const response = await fetch(`/api/cms/content/${currentType}/${currentLang}`, {
                     headers: { 'x-admin-password': 'admin123' }
@@ -574,23 +595,36 @@
                 const item = items.find(i => (i.id == id) || (i.title == id));
                 
                 if (item) {
+                    // Set current edit ID
+                    currentEditId = id;
+                    
+                    // Show modal first
+                    document.getElementById('contentModal').classList.remove('hidden');
+                    
+                    // Update modal title
+                    const title = currentLang === 'en' ? 'Edit Content' : 'Modifier le contenu';
+                    document.getElementById('modalTitle').textContent = title;
+                    
+                    // Show/hide salary field
+                    document.getElementById('salaryField').style.display = currentType === 'jobs' ? 'block' : 'none';
+                    
                     // Populate form
                     document.getElementById('title').value = item.title || '';
                     document.getElementById('subtitle').value = item.subtitle || '';
                     document.getElementById('category').value = item.category || '';
                     document.getElementById('date').value = item.date || '';
-                    if (item.salary) {
+                    if (item.salary && document.getElementById('salary')) {
                         document.getElementById('salary').value = item.salary;
                     }
                     
+                    // Set Quill content
                     if (quill && item.content) {
                         quill.root.innerHTML = item.content;
                     }
-                    
-                    openModal(currentType, id);
                 }
             } catch (error) {
                 console.error('Erreur de chargement:', error);
+                alert('Erreur lors du chargement de l\'élément');
             }
         }
 
