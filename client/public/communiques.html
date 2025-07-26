@@ -77,6 +77,41 @@
             margin: 0 0.5rem;
             align-self: center;
         }
+
+        /* Navigation Container */
+        .nav-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 9999px;
+            width: 440px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            color: white;
+            text-decoration: none;
+            border-radius: 9999px;
+            transition: all 0.3s ease;
+            font-size: 0.875rem;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-item.active {
+            background: rgba(255, 255, 255, 0.1);
+        }
         
         /* Optimized styles with CSS custom properties */
         :root {
