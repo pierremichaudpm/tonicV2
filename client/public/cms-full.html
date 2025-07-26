@@ -676,62 +676,48 @@
         }
 
         async function deleteItem(id) {
-            console.log('Attempting to delete item with id:', id);
+            alert('DEBUG: Delete function called for ID: ' + id);
             
             if (!confirm('Êtes-vous sûr de vouloir supprimer cet élément?')) {
                 return;
             }
 
             try {
+                alert('DEBUG: Fetching current data...');
                 const response = await fetch(`/api/cms/content/${currentType}/${currentLang}`, {
                     headers: { 'x-admin-password': 'admin123' }
                 });
                 const result = await response.json();
                 let items = result.data || [];
                 
-                console.log('Items before delete:', items.length);
-                console.log('Looking for item with id:', id);
+                alert('DEBUG: Found ' + items.length + ' items before delete');
 
-                // Debug current items
-                items.forEach((item, index) => {
-                    console.log(`Item ${index}:`, {
-                        id: item.id,
-                        title: item.title,
-                        idType: typeof item.id,
-                        searchId: id,
-                        searchType: typeof id
-                    });
-                });
-
-                // Remove item by id or title - more explicit filtering
-                const initialCount = items.length;
+                // Simple deletion logic
+                const originalLength = items.length;
                 items = items.filter(item => {
-                    const idMatch = String(item.id) === String(id);
-                    const titleMatch = String(item.title) === String(id);
-                    const matches = idMatch || titleMatch;
+                    // Convert both to strings for comparison
+                    const itemIdStr = String(item.id);
+                    const searchIdStr = String(id);
+                    const itemTitleStr = String(item.title);
                     
-                    console.log(`Checking item "${item.title}":`, {
-                        itemId: item.id,
-                        searchId: id,
-                        idMatch,
-                        titleMatch,
-                        matches,
-                        keepItem: !matches
-                    });
+                    const shouldKeep = (itemIdStr !== searchIdStr) && (itemTitleStr !== searchIdStr);
                     
-                    return !matches; // Keep items that don't match
+                    if (!shouldKeep) {
+                        alert('DEBUG: Deleting item: ' + item.title + ' (ID: ' + item.id + ')');
+                    }
+                    
+                    return shouldKeep;
                 });
                 
-                console.log('Items after filter:', items.length);
-                console.log('Deleted items:', initialCount - items.length);
-
-                if (initialCount === items.length) {
-                    console.error('No items were deleted - check matching logic');
-                    alert('Aucun élément trouvé à supprimer');
+                alert('DEBUG: After filter: ' + items.length + ' items remain');
+                
+                if (originalLength === items.length) {
+                    alert('ERROR: No matching item found to delete!');
                     return;
                 }
 
-                // Save back
+                // Save the updated data
+                alert('DEBUG: Saving updated data...');
                 const saveResponse = await fetch(`/api/cms/content/${currentType}/${currentLang}`, {
                     method: 'POST',
                     headers: {
@@ -742,15 +728,13 @@
                 });
 
                 if (saveResponse.ok) {
-                    console.log('Delete successful, reloading content');
+                    alert('SUCCESS: Item deleted successfully!');
                     loadContent();
                 } else {
-                    console.error('Delete failed with response:', saveResponse.status);
-                    alert('Erreur lors de la suppression');
+                    alert('ERROR: Failed to save changes');
                 }
             } catch (error) {
-                console.error('Erreur de suppression:', error);
-                alert('Erreur de suppression');
+                alert('ERROR: ' + error.message);
             }
         }
 
