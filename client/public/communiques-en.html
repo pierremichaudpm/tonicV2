@@ -182,6 +182,34 @@
         .modal-backdrop.show .modal-content {
             transform: scale(1);
         }
+        
+        /* FORCE WHITE TEXT IN MODAL CONTENT */
+        #modalContent,
+        #modalContent *,
+        #modalContent p,
+        #modalContent div,
+        #modalContent span,
+        #modalContent h1,
+        #modalContent h2,
+        #modalContent h3,
+        #modalContent h4,
+        #modalContent h5,
+        #modalContent h6,
+        #modalContent strong,
+        #modalContent b,
+        #modalContent em,
+        #modalContent i,
+        #modalContent li,
+        #modalContent ul,
+        #modalContent ol {
+            color: white !important;
+        }
+        
+        /* Ensure links are visible */
+        #modalContent a {
+            color: #60a5fa !important;
+            text-decoration: underline !important;
+        }
     </style>
 </head>
 <body class="bg-black text-white min-h-screen">
