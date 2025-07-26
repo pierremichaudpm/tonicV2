@@ -1311,19 +1311,40 @@
                 // Set Quill editor content with full HTML preservation
                 if (quill) {
                     if (item.content) {
-                        // Clear and set content with full HTML preservation
-                        quill.setContents([]);
-                        quill.clipboard.dangerouslyPasteHTML(item.content);
+                        console.log('SETTING QUILL CONTENT - Original length:', item.content.length);
+                        console.log('SETTING QUILL CONTENT - First 500 chars:', item.content.substring(0, 500));
+                        console.log('SETTING QUILL CONTENT - Last 500 chars:', item.content.substring(item.content.length - 500));
                         
-                        // Force Quill to render all content by scrolling to end and back
-                        setTimeout(() => {
-                            const scrollContainer = quill.scrollingContainer || quill.container;
-                            const originalScrollTop = scrollContainer.scrollTop;
-                            scrollContainer.scrollTop = scrollContainer.scrollHeight;
+                        // Clear editor first
+                        quill.setContents([]);
+                        
+                        // Method 1: Direct HTML insertion bypassing Quill's paste limitations
+                        const editorElement = quill.container.querySelector('.ql-editor');
+                        if (editorElement) {
+                            editorElement.innerHTML = item.content;
+                            
+                            // Force Quill to acknowledge the content and update its internal state
                             setTimeout(() => {
-                                scrollContainer.scrollTop = originalScrollTop;
-                            }, 100);
-                        }, 100);
+                                // Get current HTML and verify it's complete
+                                const loadedHTML = editorElement.innerHTML;
+                                console.log('LOADED IN QUILL - Final length:', loadedHTML.length);
+                                console.log('LOADED IN QUILL - Content matches:', loadedHTML.length === item.content.length);
+                                console.log('LOADED IN QUILL - Truncation detected:', loadedHTML.length < item.content.length);
+                                
+                                // If truncation detected, try alternative method
+                                if (loadedHTML.length < item.content.length) {
+                                    console.log('QUILL TRUNCATED - Trying alternative method');
+                                    // Force complete content by chunks
+                                    editorElement.innerHTML = '';
+                                    editorElement.insertAdjacentHTML('afterbegin', item.content);
+                                    
+                                    setTimeout(() => {
+                                        const finalHTML = editorElement.innerHTML;
+                                        console.log('ALTERNATIVE METHOD - Final length:', finalHTML.length);
+                                    }, 100);
+                                }
+                            }, 200);
+                        }
                         
                         console.log('Loaded content length:', item.content.length);
                     } else {
