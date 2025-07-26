@@ -220,17 +220,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
         } as Record<string, string>,
         body: JSON.stringify({
           model: 'claude-sonnet-4-20250514',
-          max_tokens: 16384,
+          max_tokens: 8192,
           messages: [{
-            role: 'system',
-            content: `You are a professional translator. Your task is to translate content while preserving ALL HTML formatting exactly. You must return the COMPLETE translated text without any truncation, regardless of length.`
-          }, {
             role: 'user',
-            content: `Translate this ${fromLang === 'fr' ? 'French' : 'English'} text to ${toLang === 'en' ? 'English' : 'French'}:
-
-${text}
-
-CRITICAL: Return the COMPLETE translation. Do not truncate or summarize. Preserve all HTML tags exactly as they are.`
+            content: `Translate the following ${fromLang === 'fr' ? 'French' : 'English'} text to ${toLang === 'en' ? 'English' : 'French'}. 
+            
+            CRITICAL RULES:
+            1. Preserve ALL HTML tags exactly as they are (including spans, links, etc.)
+            2. Keep proper names in their original form (Montréal, Gilles-Villeneuve, etc.)
+            3. Maintain the same formatting and structure
+            4. Only translate the actual text content, not HTML attributes
+            5. Return the COMPLETE translated text with preserved HTML - do not truncate
+            6. Translate ALL content, even long passages
+            
+            Text to translate:
+            ${text}`
           }]
         })
       });
