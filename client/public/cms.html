@@ -976,21 +976,52 @@
             return text; // Return unchanged if not French to English
         }
 
-        // Auto-translate content to other language
+        // Auto-translate content to other language - ENHANCED for complete content
         async function autoTranslateContent(itemData, sourceLang) {
             const targetLang = sourceLang === 'fr' ? 'en' : 'fr';
             console.log('autoTranslateContent called:', sourceLang, '->', targetLang);
-            console.log('Item data:', itemData);
+            console.log('Item data received length:', itemData.content?.length);
             
             try {
-                // Create translated version
+                // CRITICAL FIX: Get complete original content directly from data files
+                let completeItemData = { ...itemData };
+                
+                console.log('Fetching complete source data to avoid truncation...');
+                const completeSourceResponse = await fetch(`/api/cms/content/${currentType}/${sourceLang}`, {
+                    headers: { 
+                        'x-admin-password': 'admin123',
+                        'Cache-Control': 'no-cache'
+                    }
+                });
+                
+                if (completeSourceResponse.ok) {
+                    const completeResult = await completeSourceResponse.json();
+                    const completeItems = completeResult.data || [];
+                    const completeSourceItem = completeItems.find(item => String(item.id) === String(itemData.id));
+                    
+                    if (completeSourceItem) {
+                        console.log('Found complete source content');
+                        console.log('Original truncated length:', itemData.content?.length || 0);
+                        console.log('Complete content length:', completeSourceItem.content?.length || 0);
+                        
+                        if (completeSourceItem.content && completeSourceItem.content.length > (itemData.content?.length || 0)) {
+                            console.log('Using complete content from data file for translation');
+                            completeItemData = { ...completeSourceItem };
+                        }
+                    }
+                }
+                
+                // Create translated version using complete data
+                console.log('Translating complete content of length:', completeItemData.content?.length || 0);
                 const translatedItem = {
-                    ...itemData,
-                    title: await translateText(itemData.title, sourceLang, targetLang),
-                    subtitle: itemData.subtitle ? await translateText(itemData.subtitle, sourceLang, targetLang) : '',
-                    content: await translateText(itemData.content, sourceLang, targetLang),
+                    ...completeItemData,
+                    title: await translateText(completeItemData.title, sourceLang, targetLang),
+                    subtitle: completeItemData.subtitle ? await translateText(completeItemData.subtitle, sourceLang, targetLang) : '',
+                    content: await translateText(completeItemData.content, sourceLang, targetLang),
                     isAutoTranslated: true
                 };
+                
+                console.log('Final translated content length:', translatedItem.content?.length || 0);
                 
                 // Get target language items
                 const response = await fetch(`/api/cms/content/${currentType}/${targetLang}`, {
@@ -1006,7 +1037,7 @@
                 let targetItems = result.data || [];
                 
                 // Check if item already exists and is manually edited
-                const existingIndex = targetItems.findIndex(item => String(item.id) === String(itemData.id));
+                const existingIndex = targetItems.findIndex(item => String(item.id) === String(completeItemData.id));
                 if (existingIndex !== -1 && !targetItems[existingIndex].isAutoTranslated) {
                     console.log('Not overriding manually edited content');
                     return;
@@ -1030,7 +1061,7 @@
                 });
                 
                 if (saveResponse.ok) {
-                    console.log(`Auto-translated content to ${targetLang}`);
+                    console.log(`Complete auto-translation saved to ${targetLang} with ${translatedItem.content?.length || 0} characters`);
                 } else {
                     console.log('Failed to save translated content');
                 }
