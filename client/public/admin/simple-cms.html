@@ -107,8 +107,8 @@
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
         }
         
-        /* Force all text in add modal to be white */
-        #addModal * {
+        /* Force all text in add modal to be white - strongest override */
+        #addModal, #addModal *, #addModal label, #addModal h2, #addModal div, #addModal span {
             color: white !important;
         }
         
@@ -127,6 +127,11 @@
         #addModal option {
             color: black !important;
             background-color: white !important;
+        }
+        
+        /* Tailwind override - force text color */
+        #addModal .text-sm, #addModal .font-medium, #addModal .block {
+            color: white !important;
         }
     </style>
 </head>
@@ -202,24 +207,24 @@
 
         <!-- Add Content Modal -->
         <div id="addModal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
-            <div class="bg-gray-800 rounded-lg p-6 w-full max-w-3xl max-h-90vh overflow-y-auto">
-                <h2 class="text-2xl font-bold mb-6 text-white">Ajouter du contenu</h2>
+            <div class="bg-gray-800 rounded-lg p-6 w-full max-w-3xl max-h-90vh overflow-y-auto" style="color: white;">
+                <h2 class="text-2xl font-bold mb-6" style="color: white !important;">Ajouter du contenu</h2>
                 <form id="addForm">
                     <div class="grid md:grid-cols-2 gap-4 mb-6">
                         <div>
-                            <label class="block text-sm font-medium mb-2 text-white">Titre *</label>
+                            <label class="block text-sm font-medium mb-2" style="color: white !important;">Titre *</label>
                             <input type="text" id="title" required
                                    class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white">
                         </div>
                         
                         <div>
-                            <label class="block text-sm font-medium mb-2 text-white">Sous-titre *</label>
+                            <label class="block text-sm font-medium mb-2" style="color: white !important;">Sous-titre *</label>
                             <input type="text" id="subtitle" required
                                    class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white">
                         </div>
                         
                         <div>
-                            <label class="block text-sm font-medium mb-2 text-white">Catégorie *</label>
+                            <label class="block text-sm font-medium mb-2" style="color: white !important;">Catégorie *</label>
                             <select id="category" required
                                     class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white">
                                 <option value="">Sélectionner...</option>
@@ -235,20 +240,20 @@
                         </div>
                         
                         <div>
-                            <label class="block text-sm font-medium mb-2 text-white">Date *</label>
+                            <label class="block text-sm font-medium mb-2" style="color: white !important;">Date *</label>
                             <input type="date" id="date" required
                                    class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white">
                         </div>
                     </div>
                     
                     <div id="jobFields" class="hidden mb-6">
-                        <label class="block text-sm font-medium mb-2 text-white">Salaire (optionnel)</label>
+                        <label class="block text-sm font-medium mb-2" style="color: white !important;">Salaire (optionnel)</label>
                         <input type="text" id="salary" placeholder="Ex: 50 000$ - 65 000$"
                                class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white">
                     </div>
                     
                     <div class="mb-6">
-                        <label class="block text-sm font-medium mb-2 text-white">
+                        <label class="block text-sm font-medium mb-2" style="color: white !important;">
                             Contenu * 
                             <span class="text-gray-400 text-xs">(Utilisez la barre d'outils pour formater votre texte)</span>
                         </label>
