@@ -249,6 +249,28 @@
             overflow-y: auto;
             padding-right: 10px;
         }
+        
+        /* Fix button layout in content cards */
+        .content-card .button-container {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 0.5rem !important;
+            flex-shrink: 0 !important;
+            margin-left: 1rem !important;
+        }
+        
+        /* Responsive layout for smaller screens */
+        @media (max-width: 768px) {
+            .content-card .card-layout {
+                flex-direction: column !important;
+            }
+            .content-card .button-container {
+                flex-direction: row !important;
+                margin-left: 0 !important;
+                margin-top: 1rem !important;
+                justify-content: flex-end !important;
+            }
+        }
     </style>
 </head>
 <body class="min-h-screen text-gray-900">
@@ -610,8 +632,8 @@
                     
                     return `
                         <div class="card content-card p-6 rounded-lg" style="overflow: hidden; position: relative;">
-                            <div style="display: flex; flex-direction: row; gap: 1rem; align-items: flex-start;">
-                                <div style="flex: 1; min-width: 0;">
+                            <div class="card-layout" style="display: flex; flex-direction: row; gap: 1rem; align-items: flex-start;">
+                                <div style="flex: 1 1 auto; min-width: 0; max-width: calc(100% - 140px);">
                                     <h3 class="text-xl font-semibold text-gray-900 mb-2" style="word-break: break-word;">${item.title || ''}</h3>
                                     ${item.subtitle ? `<p class="text-gray-600 mb-2" style="word-break: break-word;">${item.subtitle}</p>` : ''}
                                     <div class="flex flex-wrap items-center gap-3 text-sm text-gray-500 mb-3">
@@ -623,7 +645,7 @@
                                         ${item.content ? item.content.substring(0, 200).replace(/<[^>]*>/g, '') + '...' : ''}
                                     </div>
                                 </div>
-                                <div style="display: flex; flex-direction: column; gap: 0.5rem; flex-shrink: 0;">
+                                <div class="button-container">
                                     <button data-action="edit" data-id="${String(itemId).replace(/'/g, "\\'")}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm" style="white-space: nowrap;">
                                         ${currentLang === 'fr' ? 'Modifier' : 'Edit'}
                                     </button>
