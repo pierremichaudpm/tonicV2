@@ -27,10 +27,31 @@ const readDataFile = (filename: string) => {
         const filePath = path.join(__dirname, '../client/public/js', filename);
         const content = fs.readFileSync(filePath, 'utf8');
         
-        // Extract the array from the JavaScript file
-        const match = content.match(/const \w+ = (\[[\s\S]*?\]);/);
+        // Extract the array from the JavaScript file based on variable names
+        let match;
+        if (filename.includes('emplois-data-en')) {
+            match = content.match(/const\s+jobsData\s*=\s*(\[[\s\S]*?\]);/);
+        } else if (filename.includes('emplois-data')) {
+            match = content.match(/const\s+jobListings\s*=\s*(\[[\s\S]*?\]);/);
+        } else if (filename.includes('communiques-data-en')) {
+            match = content.match(/const\s+communiquesData\s*=\s*(\[[\s\S]*?\]);/);
+        } else if (filename.includes('communiques-data')) {
+            match = content.match(/const\s+pressReleases\s*=\s*(\[[\s\S]*?\]);/);
+        }
+        
         if (match) {
-            return JSON.parse(match[1]);
+            try {
+                // First try JSON parsing for simple cases
+                return JSON.parse(match[1]);
+            } catch (e) {
+                // If JSON fails, evaluate the JavaScript array (safe in controlled context)
+                try {
+                    return eval('(' + match[1] + ')');
+                } catch (evalError) {
+                    console.error('Both JSON and eval failed:', evalError);
+                    return [];
+                }
+            }
         }
         return [];
     } catch (error) {
