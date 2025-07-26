@@ -123,10 +123,34 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, rgba(220, 38, 38, 0.25), rgba(249, 115, 22, 0.20), rgba(255, 255, 255, 0.12));
+            background: 
+                radial-gradient(ellipse 120% 80% at 20% 30%, rgba(255, 87, 51, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse 100% 70% at 80% 70%, rgba(255, 107, 107, 0.12) 0%, transparent 50%),
+                radial-gradient(ellipse 90% 60% at 50% 90%, rgba(249, 115, 22, 0.10) 0%, transparent 50%),
+                linear-gradient(135deg, rgba(220, 38, 38, 0.08), rgba(249, 115, 22, 0.06), rgba(255, 255, 255, 0.04));
             border-radius: inherit;
             pointer-events: none;
             z-index: 1;
+            animation: subtleFlow 8s ease-in-out infinite;
+        }
+        
+        @keyframes subtleFlow {
+            0%, 100% { 
+                transform: translateX(0) translateY(0) scale(1);
+                opacity: 1;
+            }
+            25% { 
+                transform: translateX(1px) translateY(-1px) scale(1.01);
+                opacity: 0.9;
+            }
+            50% { 
+                transform: translateX(-1px) translateY(1px) scale(0.99);
+                opacity: 1.1;
+            }
+            75% { 
+                transform: translateX(1px) translateY(1px) scale(1.01);
+                opacity: 0.95;
+            }
         }
         
         .job-card > * {
