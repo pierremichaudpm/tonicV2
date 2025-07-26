@@ -3,9 +3,14 @@ const jobsData = [
     {
         "id": "1753565034482",
         "title": "Coordinator, Events",
-        "subtitle": "The text you provided is:\n\n\"Permanent\"\n\nThis word is the same in both French and English, so the translation is:\n\nPermanent",
+        "subtitle": "Permanent",
         "category": "Dock 619",
         "date": "2025-07-15",
+        "location": "Longueuil",
+        "department": "Events",
+        "type": "Full time",
+        "datePosted": "2025-07-15",
+        "startDate": "Immediately",
         "content": "<p>Dock619 is a multifunctional event space located in the industrial district of Longueuil. The interaction between its industrial architecture and warm design creates a unique atmosphere. Dock619 offers the opportunity to welcome guests in a uniquely designed space thanks to its modern style, cutting-edge technology, offering an open market cuisine. Its spaces are sure to suit all types of events, whether for a corporate event, a launch, an office party, a culinary workshop or for a larger scale event. </p><p><br></p><p><strong>Your mission </strong></p><p><br></p><p>Support the team in organizing, logistics and executing events, as well as in deploying internal and external communications, participate in promoting the event hall to a target audience and ensure the smooth running of ongoing events. </p><p><br></p><p><strong>Your responsibilities </strong></p><p><br></p><p>- Manage DOCK619's social media and update the website; </p><p>- Plan and coordinate logistical aspects of events (schedules, proceedings and scenarios, menu choices, etc.); </p><p>- Establish server schedules and create mini-training sessions to improve their knowledge of the menu and service techniques; </p><p>- Participate in hiring new servers; </p><p>- Perform various clerical work such as maintaining the event calendar and participating in inventory taking. </p><p><br></p><p><strong>Your profile </strong></p><p><br></p><p>- College diploma in a relevant field </p><p>- Professional experience in event organization, event marketing or project management </p><p>- Strong interest in social media - Proficiency in the Office suite and experience with Photoshop </p><p>- Passionate about organization and events </p><p>- Initiative, proactivity, creativity, dynamism, versatility and team spirit </p><p>- Sense of organization, attention to detail and concern for detail </p><p>- Good priority management and ability to handle multiple files at once </p><p>- Perfect command of the French language and good knowledge of the English language </p><p>- Available to work outside regular hours during events </p><p><br></p><p><strong>Our offer! </strong></p><p><br></p><p>- Workplace in Longueuil; </p><p>- Participation in stimulating projects within a growing team; </p><p>- Internal mobility; </p><p>- Complete competitive benefits package. </p><p><br></p><p>Apply by sending your resume to: <a href=\"mailto:rh@gpcqm.ca\" target=\"_blank\">rh@gpcqm.ca</a></p>",
         "salary": "",
         "isAutoTranslated": true
