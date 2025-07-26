@@ -37,7 +37,7 @@
         @keyframes fadeInOut{0%{opacity:0;transform:translate(-50%,-50%) scale(.8)}20%{opacity:1;transform:translate(-50%,-50%) scale(1)}80%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) scale(.95)}}
         
         /* Base components */
-        .view-container{position:fixed;inset:0;opacity:0;pointer-events:none;transition:opacity .5s ease}
+        .view-container{position:fixed;inset:0;opacity:0;pointer-events:none;transition:opacity 1.2s ease-out}
         .view-container.active{opacity:1;pointer-events:auto}
         .splash-container{position:fixed;inset:0;z-index:100;background:#000;display:flex;align-items:center;justify-content:center;padding:2rem;flex-direction:column;overflow:hidden}
         .splash-container::before{
@@ -59,7 +59,18 @@
         .splash-tagline{font-size:clamp(1rem,2.5vw,1.5rem);font-weight:500;color:#fff;text-align:center;text-shadow:0 2px 10px rgba(0,0,0,.8);opacity:0;animation:fadeInSoft 1.2s ease-out .3s forwards;margin-top:3rem;position:relative;z-index:2}
         
         /* Grid - Updated 2:34 AM for MUCH darker backgrounds */
-        .grid-selection-container{position:fixed;inset:0;z-index:90;background:#000;display:flex;flex-direction:column;height:100vh;height:100dvh;overflow:hidden}
+        .grid-selection-container{position:fixed;inset:0;z-index:90;background:#000;display:flex;flex-direction:column;height:100vh;height:100dvh;overflow:hidden;position:relative}
+        .grid-selection-container::before{
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(ellipse 200% 150% at 20% 30%, rgba(255, 87, 51, 0.08) 0%, transparent 80%),
+                radial-gradient(ellipse 150% 100% at 80% 70%, rgba(249, 115, 22, 0.06) 0%, transparent 75%),
+                linear-gradient(135deg, rgba(220, 38, 38, 0.03), transparent 70%);
+            pointer-events: none;
+            z-index: 1;
+        }
         .grid-selection-container header{flex-shrink:0;height:65px}
         .grid-wrapper{flex:1;padding:calc(80px + 0.25rem) max(1.5rem,3vw) 0.25rem;display:flex;align-items:center;justify-content:center;min-height:0;overflow:hidden}
         .selection-grid{display:grid;gap:12px;width:100%;height:100%;max-width:1190px;max-height:85vh;margin:auto}
