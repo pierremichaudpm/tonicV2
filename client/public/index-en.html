@@ -24,6 +24,7 @@
         
         /* Core animations */
         @keyframes fadeInSoft{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes fadeOutSoft{to{opacity:0}}
         @keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
         @keyframes scaleIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
         @keyframes slideIn{from{opacity:0;transform:translateX(-30px)}to{opacity:1;transform:translateX(0)}}
@@ -53,7 +54,7 @@
             pointer-events: none;
             z-index: 1;
             opacity: 0;
-            animation: fadeInSoft 1.5s ease-out .8s forwards;
+            animation: fadeInSoft 1.5s ease-out .8s forwards, fadeOutSoft 1.8s ease-out 3.5s forwards;
         }
         .splash-logo{width:clamp(300px,50vw,600px);height:auto;opacity:0;animation:fadeInSoft 1.2s ease-out forwards;filter:drop-shadow(0 4px 20px rgba(0,0,0,.8));position:relative;z-index:2}
         .splash-tagline{font-size:clamp(1rem,2.5vw,1.5rem);font-weight:500;color:#fff;text-align:center;text-shadow:0 2px 10px rgba(0,0,0,.8);opacity:0;animation:fadeInSoft 1.2s ease-out .3s forwards;margin-top:3rem;position:relative;z-index:2}
