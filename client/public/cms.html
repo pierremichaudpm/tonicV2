@@ -778,56 +778,91 @@
             currentEditId = null;
         }
 
-        // Smart translation function - translates key phrases while preserving HTML and structure
+        // Smart translation function - translates text while preserving HTML structure
         async function translateText(text, fromLang = 'fr', toLang = 'en') {
             if (!text || !text.trim()) return text;
             
-            // Key phrase translations - more contextual and less word-by-word
-            const phraseTranslations = {
-                // Complete phrases first (most specific)
-                'Le Volleyball World Beach Pro Tour – Elite revient à Montréal!': 'The Volleyball World Beach Pro Tour – Elite returns to Montreal!',
-                'L\'élite mondiale du volleyball de plage en action du 13 au 17 août 2025 au parc Jean-Drapeau': 'The world elite of beach volleyball in action from August 13 to 17, 2025 at Jean-Drapeau Park',
-                'revient à Montréal': 'returns to Montreal',
-                'au parc Jean-Drapeau': 'at Jean-Drapeau Park',
-                'L\'élite mondiale du volleyball de plage': 'The world elite of beach volleyball',
-                'en action du': 'in action from',
-                'Coordonnateur d\'événements': 'Event Coordinator',
-                'Coordonnatrice d\'événements': 'Event Coordinator',
-                'Rejoignez notre équipe': 'Join our team',
-                'Nous recherchons': 'We are looking for',
-                'Responsabilités principales': 'Main Responsibilities',  
-                'Profil recherché': 'Required Profile',
-                'du 13 au 17 août 2025': 'from August 13 to 17, 2025',
-                'Montréal,': 'Montreal,',
+            // If translating from French to English
+            if (fromLang === 'fr' && toLang === 'en') {
+                // First, extract and preserve HTML tags
+                const htmlTags = [];
+                let workingText = text.replace(/<[^>]*>/g, (match) => {
+                    htmlTags.push(match);
+                    return `__HTML_TAG_${htmlTags.length - 1}__`;
+                });
                 
-                // Common words - only very specific ones to avoid breaking text
-                'août': 'August',
-                'juin': 'June',
-                'juillet': 'July',
-                'septembre': 'September',
-                'octobre': 'October',
-                'novembre': 'November',
-                'décembre': 'December',
-                'janvier': 'January',
-                'février': 'February',
-                'mars': 'March',
-                'avril': 'April',
-                'mai': 'May'
-            };
-            
-            let translated = text;
-            
-            // Apply phrase translations in order of length (longest first to avoid partial matches)
-            const sortedPhrases = Object.entries(phraseTranslations)
-                .sort(([a], [b]) => b.length - a.length);
-            
-            for (const [french, english] of sortedPhrases) {
-                // Use case-insensitive global replacement
-                const regex = new RegExp(french.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
-                translated = translated.replace(regex, english);
+                // Complete sentence translations (most specific first)
+                const translations = {
+                    'Le Volleyball World Beach Pro Tour – Elite revient à Montréal!': 'The Volleyball World Beach Pro Tour – Elite returns to Montreal!',
+                    'L\'élite mondiale du volleyball de plage en action du 13 au 17 août 2025 au parc Jean-Drapeau': 'The world elite of beach volleyball in action from August 13 to 17, 2025 at Jean-Drapeau Park',
+                    'Le plus haut niveau du volleyball de plage est de retour à Montréal!': 'The highest level of beach volleyball is back in Montreal!',
+                    'transformera le légendaire circuit Gilles-Villeneuve en une arène spectaculaire où s\'affronteront les meilleures équipes féminines et masculines au monde': 'will transform the legendary Gilles-Villeneuve circuit into a spectacular arena where the world\'s best women\'s and men\'s teams will compete',
+                    
+                    // Phrase translations
+                    'Du 13 au 17 août 2025, le': 'From August 13 to 17, 2025, the',
+                    'du 13 au 17 août': 'from August 13 to 17',
+                    'le 17 juin 2025': 'June 17, 2025',
+                    'le 16 juillet 2025': 'July 16, 2025',
+                    'Montréal, le 17 juin 2025': 'Montreal, June 17, 2025',
+                    'transformera le légendaire circuit Gilles-Villeneuve': 'will transform the legendary Gilles-Villeneuve circuit',
+                    'en une arène spectaculaire': 'into a spectacular arena',
+                    'où s\'affronteront': 'where will compete',
+                    'les meilleures équipes': 'the best teams',
+                    'féminines et masculines au monde': 'women\'s and men\'s teams in the world',
+                    'L\'élite mondiale du volleyball de plage': 'The world elite of beach volleyball',
+                    'volleyball de plage': 'beach volleyball',
+                    'est de retour à Montréal': 'is back in Montreal',
+                    'revient à Montréal': 'returns to Montreal',
+                    'au parc Jean-Drapeau': 'at Jean-Drapeau Park',
+                    
+                    // Job-related translations
+                    'Coordonnateur d\'événements': 'Event Coordinator',
+                    'Rejoignez notre équipe pour organiser des événements sportifs d\'envergure': 'Join our team to organize large-scale sporting events',
+                    'Nous recherchons': 'We are looking for',
+                    'Responsabilités principales': 'Main Responsibilities',
+                    'Profil recherché': 'Required Profile',
+                    
+                    // Location names
+                    'Montréal': 'Montreal',
+                    'parc Jean-Drapeau': 'Jean-Drapeau Park',
+                    'circuit Gilles-Villeneuve': 'Gilles-Villeneuve Circuit',
+                    
+                    // Months
+                    'août 2025': 'August 2025',
+                    'juillet 2025': 'July 2025', 
+                    'juin 2025': 'June 2025',
+                    'août': 'August',
+                    'juillet': 'July',
+                    'juin': 'June',
+                    'septembre': 'September',
+                    'octobre': 'October',
+                    'novembre': 'November',
+                    'décembre': 'December',
+                    'janvier': 'January',
+                    'février': 'February',
+                    'mars': 'March',
+                    'avril': 'April',
+                    'mai': 'May'
+                };
+                
+                // Apply translations from longest to shortest
+                const sortedTranslations = Object.entries(translations)
+                    .sort(([a], [b]) => b.length - a.length);
+                
+                for (const [french, english] of sortedTranslations) {
+                    const regex = new RegExp(french.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+                    workingText = workingText.replace(regex, english);
+                }
+                
+                // Restore HTML tags
+                htmlTags.forEach((tag, index) => {
+                    workingText = workingText.replace(`__HTML_TAG_${index}__`, tag);
+                });
+                
+                return workingText;
             }
             
-            return translated;
+            return text; // Return unchanged if not French to English
         }
 
         // Auto-translate content to other language
