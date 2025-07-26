@@ -271,6 +271,22 @@
                 justify-content: flex-end !important;
             }
         }
+        
+        /* Force consistent button width in table cells */
+        .content-card table td:last-child {
+            width: 120px !important;
+            max-width: 120px !important;
+        }
+        
+        .content-card table td:last-child div {
+            width: 120px !important;
+            max-width: 120px !important;
+        }
+        
+        .content-card table td:last-child button {
+            width: 100% !important;
+            max-width: 120px !important;
+        }
     </style>
 </head>
 <body class="min-h-screen text-gray-900">
