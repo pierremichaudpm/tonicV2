@@ -725,6 +725,12 @@
                 console.log('Items after filter:', items.length);
                 console.log('Deleted items:', initialCount - items.length);
 
+                if (initialCount === items.length) {
+                    console.error('No items were deleted - check matching logic');
+                    alert('Aucun élément trouvé à supprimer');
+                    return;
+                }
+
                 // Save back
                 const saveResponse = await fetch(`/api/cms/content/${currentType}/${currentLang}`, {
                     method: 'POST',
