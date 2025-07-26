@@ -1,8 +1,8 @@
 // French news data  
 const pressReleases = [
     {
-        "id": 1,
-        "title": "Grands Prix Cyclistes - Saison 2025",
+        "id": "1",
+        "title": "Grands Prix Cyclistes - fake",
         "subtitle": "Les courses cyclistes emblématiques du Québec",
         "category": "Grands Prix Cyclistes",
         "date": "2025-01-10",
