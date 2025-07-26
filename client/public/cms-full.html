@@ -121,15 +121,15 @@
             color: #94a3b8 !important;
         }
         
-        /* Category color schemes */
-        .category-beach { background: #ff0e9b; color: white; }
-        .category-cyclistes { background: #8b5cf6; color: white; }
-        .category-marathon { background: #ef4444; color: white; }
-        .category-uci { background: #3b82f6; color: white; }
-        .category-studio { background: #10b981; color: white; }
-        .category-dock { background: #6b7280; color: white; }
-        .category-21k { background: #f59e0b; color: white; }
-        .category-tonic { background: #1f2937; color: white; }
+        /* Category color schemes - using Tailwind colors */
+        .bg-pink-500 { background: #ec4899; }
+        .bg-purple-500 { background: #a855f7; }
+        .bg-red-500 { background: #ef4444; }
+        .bg-blue-500 { background: #3b82f6; }
+        .bg-green-500 { background: #10b981; }
+        .bg-gray-600 { background: #4b5563; }
+        .bg-yellow-500 { background: #eab308; }
+        .bg-gray-900 { background: #111827; }
         
         /* Quill editor toolbar styling for dark modal */
         .ql-toolbar {
@@ -471,14 +471,14 @@
         // Category color mapping
         function getCategoryClass(category) {
             const categoryMap = {
-                'Beach Pro Tour': 'category-beach',
-                'Grands Prix Cyclistes': 'category-cyclistes', 
-                'Marathon Beneva 21K': 'category-marathon',
-                'UCI 2026': 'category-uci',
-                'Studio 76': 'category-studio',
-                'Dock 619': 'category-dock',
-                '21K de Montréal': 'category-21k',
-                'Groupe Tonic': 'category-tonic'
+                'Beach Pro Tour': 'bg-pink-500 text-white', // Pink
+                'Grands Prix Cyclistes': 'bg-purple-500 text-white', // Purple
+                'Marathon Beneva 21K': 'bg-red-500 text-white', // Red
+                'UCI 2026': 'bg-blue-500 text-white', // Blue
+                'Studio 76': 'bg-green-500 text-white', // Green
+                'Dock 619': 'bg-gray-600 text-white', // Gray
+                '21K de Montréal': 'bg-yellow-500 text-white', // Yellow
+                'Groupe Tonic': 'bg-gray-900 text-white' // Dark gray
             };
             return categoryMap[category] || 'bg-gray-500 text-white';
         }
@@ -709,8 +709,10 @@
             }
 
             try {
+                console.log('Deleting item with ID:', id);
+                
                 // Call the DELETE endpoint
-                const deleteResponse = await fetch(`/api/cms/content/${currentType}/${currentLang}/${id}`, {
+                const deleteResponse = await fetch(`/api/cms/content/${currentType}/${currentLang}/${encodeURIComponent(id)}`, {
                     method: 'DELETE',
                     headers: {
                         'x-admin-password': 'admin123'
@@ -718,11 +720,21 @@
                 });
 
                 const result = await deleteResponse.json();
+                console.log('Delete response:', result);
                 
                 if (deleteResponse.ok && result.success) {
                     // Immediately reload content after successful delete
                     loadContent();
-                    alert('Élément supprimé avec succès!');
+                    
+                    // Show success message
+                    const successDiv = document.createElement('div');
+                    successDiv.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50';
+                    successDiv.textContent = 'Élément supprimé avec succès!';
+                    document.body.appendChild(successDiv);
+                    
+                    setTimeout(() => {
+                        document.body.removeChild(successDiv);
+                    }, 2000);
                 } else {
                     throw new Error(result.error || 'Erreur lors de la suppression');
                 }

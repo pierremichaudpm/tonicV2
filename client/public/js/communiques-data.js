@@ -1,14 +1,6 @@
 // French news data  
 const pressReleases = [
     {
-        "id": "1",
-        "title": "Grands Prix Cyclistes - fake",
-        "subtitle": "Les courses cyclistes emblématiques du Québec",
-        "category": "Grands Prix Cyclistes",
-        "date": "2025-01-10",
-        "content": "<p>La saison 2025 des Grands Prix Cyclistes du Québec est officiellement lancée avec un calendrier riche en émotions.</p><p>Nos courses emblématiques continuent de rassembler les meilleurs cyclistes du circuit international dans des parcours spectaculaires.</p><h3>Programme 2025</h3><ul><li>Grand Prix Cycliste de Québec - Septembre 2025</li><li>Grand Prix Cycliste de Montréal - Septembre 2025</li><li>Épreuves de qualification régionales</li></ul>"
-    },
-    {
         "id": 2,
         "title": "Marathon Beneva 21K - Inscriptions",
         "subtitle": "La course emblématique de Montréal",
