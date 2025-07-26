@@ -748,6 +748,7 @@
                     document.getElementById('autoTranslate').checked = true;
                 }
             } else {
+                // Hide translation toggle completely when editing in English
                 autoTranslateContainer.style.display = 'none';
             }
             
@@ -1223,6 +1224,15 @@
         function toggleLanguage() {
             // Toggle between fr and en
             currentLang = currentLang === 'fr' ? 'en' : 'fr';
+            
+            // Hide/show auto-translation toggle based on language
+            const autoTranslateContainer = document.getElementById('autoTranslate').closest('div');
+            if (currentLang === 'fr') {
+                autoTranslateContainer.style.display = 'flex';
+            } else {
+                autoTranslateContainer.style.display = 'none';
+            }
+            
             loadContent();
             updateLanguageLabels();
             updateLanguageToggleText();
