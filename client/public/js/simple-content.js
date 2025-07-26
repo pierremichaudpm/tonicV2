@@ -25,8 +25,8 @@ function formatDate(dateString) {
 
 // Get news content
 function getNews() {
-    if (typeof communiquesData !== 'undefined') {
-        return communiquesData;
+    if (typeof pressReleases !== 'undefined') {
+        return pressReleases;
     }
     return [];
 }
@@ -43,8 +43,8 @@ function getJobs() {
 function addNewContent(item) {
     if (item.type === 'news') {
         item.id = Date.now();
-        if (typeof communiquesData !== 'undefined') {
-            communiquesData.unshift(item);
+        if (typeof pressReleases !== 'undefined') {
+            pressReleases.unshift(item);
         }
     } else if (item.type === 'jobs') {
         item.id = Date.now();
@@ -56,10 +56,10 @@ function addNewContent(item) {
 
 // Delete content (basic implementation)
 function deleteContent(id) {
-    if (typeof communiquesData !== 'undefined') {
-        const newsIndex = communiquesData.findIndex(item => item.id === id);
+    if (typeof pressReleases !== 'undefined') {
+        const newsIndex = pressReleases.findIndex(item => item.id === id);
         if (newsIndex > -1) {
-            communiquesData.splice(newsIndex, 1);
+            pressReleases.splice(newsIndex, 1);
             return;
         }
     }

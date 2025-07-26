@@ -1,5 +1,5 @@
-// French news data
-const communiquesData = [
+// French news data  
+const pressReleases = [
     {
         id: 1,
         title: "Beach Pro Tour 2025 - Événement majeur à Montréal",

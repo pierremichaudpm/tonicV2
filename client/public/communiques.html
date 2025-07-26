@@ -3,128 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Communiqués de presse | Groupe Tonic</title>
+    <title>Actualités | Groupe Tonic</title>
+    
+    <!-- SEO Meta Tags -->
     <meta name="description" content="Découvrez les dernières actualités et communiqués de presse de Groupe Tonic, organisateur d'événements sportifs au Québec depuis plus de 40 ans.">
+    
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.cbc.ca">
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: {
-                        accent: '#3b82f6'
+                    typography: {
+                        invert: {
+                            css: {
+                                '--tw-prose-body': 'white',
+                                '--tw-prose-headings': 'white',
+                                '--tw-prose-lead': 'white',
+                                '--tw-prose-links': '#60a5fa',
+                                '--tw-prose-bold': 'white',
+                                '--tw-prose-bullets': 'white',
+                                '--tw-prose-hr': 'white',
+                                '--tw-prose-quotes': 'white',
+                                '--tw-prose-quote-borders': 'white',
+                                '--tw-prose-captions': 'white',
+                                '--tw-prose-code': 'white',
+                                '--tw-prose-pre-code': 'white',
+                                '--tw-prose-pre-bg': 'rgb(0 0 0 / 50%)',
+                                '--tw-prose-th-borders': 'white',
+                                '--tw-prose-td-borders': 'white',
+                            }
+                        }
                     }
                 }
             }
         }
     </script>
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-        }
-        
-        .line-clamp-2 {
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-        
-        .pr-card {
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(147, 51, 234, 0.1) 100%);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
-        }
-        
-        .pr-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(147, 51, 234, 0.15) 100%);
-        }
-        
-        /* Category Colors */
-        .bg-pink-500 { background-color: #ff0e9b; }
-        .bg-lime-500 { background-color: #b7d233; }
-        .bg-purple-600 { background-color: #463092; }
-        .bg-red-600 { background-color: #da273b; }
-        .bg-cyan-500 { background-color: #06b6d4; }
-        .bg-gray-500 { background-color: #6b7280; }
-        .bg-amber-500 { background-color: #f59e0b; }
-        .bg-orange-500 { background-color: #f97316; }
-        
-        /* Mobile Menu Styles */
-        .mobile-menu {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background: rgba(15, 23, 42, 0.98);
-            backdrop-filter: blur(10px);
-            z-index: 50;
-            opacity: 0;
-            transform: translateY(-100%);
-            transition: all 0.3s ease;
-        }
-        
-        .mobile-menu.active {
-            display: flex;
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        @media (min-width: 768px) {
-            .mobile-menu { display: none !important; }
-        }
-        
-        /* Modal styles */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(5px);
-            z-index: 1000;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .modal.active {
-            display: flex;
-            opacity: 1;
-        }
-        
-        .modal-content {
-            background: #1e293b;
-            border-radius: 12px;
-            max-width: 800px;
-            width: 90%;
-            max-height: 90vh;
-            overflow-y: auto;
-            margin: auto;
-            animation: modalSlideIn 0.3s ease;
-        }
-        
-        @keyframes modalSlideIn {
-            from { transform: translateY(-50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        
-        .fade-in {
-            animation: fadeIn 0.6s ease forwards;
-            opacity: 0;
-        }
-        
-        @keyframes fadeIn {
-            to { opacity: 1; }
-        }
-    </style>
+    
+    <!-- Shared Styles -->
+    <link rel="stylesheet" href="css/shared.css">
 </head>
-<body class="bg-slate-900 text-white overflow-x-hidden">
+<body class="bg-slate-900 min-h-screen">
+    
     <!-- Header -->
     <header class="py-6 sm:py-8 px-4">
         <div class="max-w-7xl mx-auto">
@@ -138,16 +62,17 @@
                 
                 <!-- Desktop Navigation -->
                 <nav class="hidden md:flex items-center space-x-6">
-                    <a href="index.html" class="text-white hover:text-accent transition-colors">Accueil</a>
-                    <a href="a-propos.html" class="text-white hover:text-accent transition-colors">À propos</a>
-                    <a href="communiques.html" class="text-accent font-medium">Actualités</a>
-                    <a href="emplois.html" class="text-white hover:text-accent transition-colors">Emplois</a>
-                    <a href="contact.html" class="text-white hover:text-accent transition-colors">Contact</a>
-                    <a href="communiques-en.html" class="text-white hover:text-accent transition-colors text-sm">EN</a>
+                    <a href="index.html" class="nav-link">Accueil</a>
+                    <a href="a-propos.html" class="nav-link">À propos</a>
+                    <a href="communiques.html" class="nav-link nav-link-active">Actualités</a>
+                    <a href="emplois.html" class="nav-link">Emplois</a>
+                    <a href="contact.html" class="nav-link">Contact</a>
+                    <div class="lang-divider"></div>
+                    <a href="communiques-en.html" class="lang-switcher">EN</a>
                 </nav>
                 
                 <!-- Mobile Menu Button -->
-                <button id="mobileMenuBtn" class="md:hidden text-white">
+                <button class="md:hidden text-white" onclick="toggleMobileMenu()">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                     </svg>
@@ -157,19 +82,21 @@
     </header>
 
     <!-- Mobile Menu -->
-    <div id="mobileMenu" class="mobile-menu">
-        <div class="flex flex-col items-center justify-center h-full space-y-8">
-            <button id="closeMobileMenu" class="absolute top-6 right-6 text-white">
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-content">
+            <button class="mobile-close" onclick="toggleMobileMenu()">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
             </button>
-            <a href="index.html" class="text-white text-xl hover:text-accent transition-colors">Accueil</a>
-            <a href="a-propos.html" class="text-white text-xl hover:text-accent transition-colors">À propos</a>
-            <a href="communiques.html" class="text-accent text-xl font-medium">Actualités</a>
-            <a href="emplois.html" class="text-white text-xl hover:text-accent transition-colors">Emplois</a>
-            <a href="contact.html" class="text-white text-xl hover:text-accent transition-colors">Contact</a>
-            <a href="communiques-en.html" class="text-white text-xl hover:text-accent transition-colors">EN</a>
+            <nav class="mobile-nav">
+                <a href="index.html" class="mobile-nav-link">Accueil</a>
+                <a href="a-propos.html" class="mobile-nav-link">À propos</a>
+                <a href="communiques.html" class="mobile-nav-link mobile-nav-link-active">Actualités</a>
+                <a href="emplois.html" class="mobile-nav-link">Emplois</a>
+                <a href="contact.html" class="mobile-nav-link">Contact</a>
+                <a href="communiques-en.html" class="mobile-nav-link">EN</a>
+            </nav>
         </div>
     </div>
 
@@ -189,7 +116,7 @@
     </main>
 
     <!-- News Modal -->
-    <div id="pressModal" class="modal">
+    <div class="modal-backdrop" id="newsModal">
         <div class="modal-content">
             <div class="bg-black p-4 flex justify-between items-center">
                 <div>
@@ -209,85 +136,96 @@
     </div>
 
     <!-- Footer -->
-    <footer class="bg-slate-800 mt-16 py-12">
-        <div class="max-w-6xl mx-auto px-6">
-            <div class="grid md:grid-cols-4 gap-8">
-                <div class="md:col-span-2">
-                    <img src="images/tonic-logo.png" alt="Groupe Tonic" class="h-8 w-auto mb-4">
-                    <p class="text-gray-400 mb-4">Créateur d'expériences mémorables depuis plus de 40 ans.</p>
-                    <p class="text-gray-400 text-sm">
-                        615 Rue le Breton<br>
-                        Longueuil, QC J4G 1R9<br>
-                        <a href="mailto:info@groupetonic.ca" class="text-accent hover:underline">info@groupetonic.ca</a>
-                    </p>
+    <footer class="bg-slate-800 mt-16 py-8">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <img src="images/tonic-logo.png" alt="Groupe Tonic" style="height: 1.5rem; width: auto;" class="mb-2" />
+                    <p class="text-white">© 2025 Groupe Tonic. Tous droits réservés.</p>
                 </div>
-                
-                <div>
-                    <h3 class="text-white font-semibold mb-4">Navigation</h3>
-                    <ul class="space-y-2 text-gray-400">
-                        <li><a href="index.html" class="hover:text-white transition-colors">Accueil</a></li>
-                        <li><a href="a-propos.html" class="hover:text-white transition-colors">À propos</a></li>
-                        <li><a href="communiques.html" class="hover:text-white transition-colors">Actualités</a></li>
-                        <li><a href="emplois.html" class="hover:text-white transition-colors">Emplois</a></li>
-                        <li><a href="contact.html" class="hover:text-white transition-colors">Contact</a></li>
-                    </ul>
+                <div class="flex gap-6">
+                    <a href="politique-de-confidentialite.html" class="text-white hover:text-white transition-colors">Politique de confidentialité</a>
+                    <a href="conditions-utilisation.html" class="text-white hover:text-white transition-colors">Conditions d'utilisation</a>
                 </div>
-                
-                <div>
-                    <h3 class="text-white font-semibold mb-4">Informations légales</h3>
-                    <ul class="space-y-2 text-gray-400">
-                        <li><a href="politique-de-confidentialite.html" class="hover:text-white transition-colors">Politique de confidentialité</a></li>
-                        <li><a href="conditions-utilisation.html" class="hover:text-white transition-colors">Conditions d'utilisation</a></li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-                <p>&copy; 2025 Groupe Tonic. Tous droits réservés.</p>
             </div>
         </div>
     </footer>
 
+    <!-- Load news data -->
     <script src="js/communiques-data.js"></script>
+    
+    <!-- Simple Content -->
     <script src="js/simple-content.js"></script>
+    
+    <!-- Shared JavaScript -->
+    <script src="js/shared.js"></script>
+    
+    <!-- Page specific JavaScript - Matching jobs page structure -->
     <script>
-        // DOM elements
-        let DOM = {};
+        // Cache DOM elements
+        const DOM = {
+            prList: null,
+            modal: null,
+            modalTitle: null,
+            modalContent: null
+        };
+        
+        // State management
+        const state = {
+            isModalOpen: false
+        };
 
-        // Get category class for styling
-        function getCategoryClass(category) {
-            const categoryMap = {
-                'Beach Pro Tour': 'bg-pink-500',
-                'Grands Prix Cyclistes': 'bg-lime-500',
-                'Marathon Beneva 21K': 'bg-purple-600',
-                'UCI 2026': 'bg-red-600',
-                'Studio 76': 'bg-cyan-500',
-                'Dock 619': 'bg-gray-500',
-                '21K de Montréal': 'bg-amber-500',
-                'Groupe Tonic': 'bg-orange-500'
-            };
-            return categoryMap[category] || 'bg-gray-500';
+        // Category image mapping (matching CMS system)
+        const categoryImageMap = {
+            'Beach Pro Tour': 'images/beach-pro-tour-hero.webp',
+            'Grands Prix Cyclistes': 'images/grands-prix-cyclistes-hero.jpg',
+            'Marathon Beneva 21K': 'images/marathon-beneva-hero.jpg',
+            'UCI 2026': 'images/montreal-2026-uci-hero.jpg',
+            'Studio 76': 'images/studio76-logo.png',
+            'Dock 619': 'images/dock619-hero-new.jpg',
+            '21K de Montréal': 'images/21k-hero.jpg',
+            'Groupe Tonic': 'images/tonic-logo.png'
+        };
+
+        // Get category image
+        function getCategoryImage(category) {
+            return categoryImageMap[category] || 'images/tonic-logo.png';
         }
+        
+        // Get category class for styling based on category colors
+        const getCategoryClass = (category) => {
+            const classMap = {
+                'Beach Pro Tour': 'category-beach',
+                'Grands Prix Cyclistes': 'category-cycling',
+                'Marathon Beneva 21K': 'category-marathon',
+                'UCI 2026': 'category-uci',
+                'Studio 76': 'category-studio',
+                'Dock 619': 'category-dock',
+                '21K de Montréal': 'category-21k',
+                'Groupe Tonic': 'category-tonic'
+            };
+            return classMap[category] || 'category-tonic';
+        };
 
-        // Render news content with colored cards
+        // Render news with colored cards - matching jobs structure
         function renderNews() {
-            const newsContent = getNews();
+            const news = getNews();
             
-            if (newsContent.length === 0) {
+            if (news.length === 0) {
                 DOM.prList.innerHTML = '<p class="text-white text-center py-8">Aucun communiqué disponible.</p>';
                 return;
             }
             
             // Sort by date (newest first)
-            newsContent.sort((a, b) => new Date(b.date) - new Date(a.date));
+            news.sort((a, b) => new Date(b.date) - new Date(a.date));
             
-            DOM.prList.innerHTML = newsContent.map((item, index) => {
+            DOM.prList.innerHTML = news.map((item, index) => {
                 const categoryClass = getCategoryClass(item.category);
-                const image = getImage(item.category);
+                const image = getCategoryImage(item.category);
                 
                 return `
-                    <div class="pr-card relative rounded-xl p-6 sm:p-8 cursor-pointer fade-in delay-${Math.min(index * 100, 500)}" 
-                         data-pr-id="${item.id}"
+                    <div class="job-card relative rounded-xl p-6 sm:p-8 cursor-pointer fade-in delay-${Math.min(index * 100, 500)}" 
+                         data-news-id="${item.id}"
                          onclick="openNewsModal(${item.id})">
                         <div class="flex flex-col sm:flex-row gap-4">
                             <div class="sm:w-48 h-32 sm:h-32 flex-shrink-0 relative">
@@ -304,7 +242,7 @@
                                 <h2 class="text-xl sm:text-2xl font-bold mb-2 text-white hover:text-white transition-colors">
                                     ${item.title}
                                 </h2>
-                                <p class="text-white line-clamp-2">${item.subtitle}</p>
+                                <p class="text-white line-clamp-2 mb-2">${item.subtitle}</p>
                                 <div class="mt-4 text-accent font-medium text-sm flex items-center gap-1">
                                     <span>Lire la suite</span>
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -320,73 +258,52 @@
 
         // Open news modal with mobile-friendly content
         function openNewsModal(id) {
-            const content = getNews().find(item => item.id === id);
-            if (!content) return;
+            const item = getNews().find(news => news.id === id);
+            if (!item) return;
             
-            const modal = document.getElementById('pressModal');
-            const modalTitle = document.getElementById('modalTitle');
-            const modalDate = document.getElementById('modalDate');
-            const modalContent = document.getElementById('modalContent');
-            
-            modalTitle.textContent = content.title;
-            modalDate.textContent = formatDate(content.date);
-            modalContent.innerHTML = `<div class="text-white prose prose-invert max-w-none">${content.content}</div>`;
-            
-            modal.classList.add('active');
+            DOM.modalTitle.textContent = item.title;
+            DOM.modalContent.innerHTML = `
+                <div class="text-white">
+                    <div class="mb-4">
+                        <span class="px-3 py-1 ${getCategoryClass(item.category)} text-white text-sm rounded-full">${item.category}</span>
+                    </div>
+                    <div class="prose prose-invert max-w-none">${item.content}</div>
+                </div>
+            `;
+            DOM.modal.classList.add('active');
             document.body.style.overflow = 'hidden';
         }
 
         // Close modal
         function closeModal() {
-            const modal = document.getElementById('pressModal');
-            modal.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        // Mobile menu functionality
-        function setupMobileMenu() {
-            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-            const mobileMenu = document.getElementById('mobileMenu');
-            const closeMobileMenu = document.getElementById('closeMobileMenu');
-
-            mobileMenuBtn?.addEventListener('click', () => {
-                mobileMenu.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            });
-
-            closeMobileMenu?.addEventListener('click', () => {
-                mobileMenu.classList.remove('active');
+            if (DOM.modal) {
+                DOM.modal.classList.remove('active');
                 document.body.style.overflow = '';
-            });
-
-            // Close on background click
-            mobileMenu?.addEventListener('click', (e) => {
-                if (e.target === mobileMenu) {
-                    mobileMenu.classList.remove('active');
-                    document.body.style.overflow = '';
-                }
-            });
+            }
         }
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             DOM.prList = document.getElementById('prList');
-            setupMobileMenu();
+            DOM.modal = document.getElementById('newsModal');
+            DOM.modalTitle = document.getElementById('modalTitle');
+            DOM.modalContent = document.getElementById('modalContent');
+            
+            // Render news
             renderNews();
             
             // Refresh content every 5 seconds to show new entries
             setInterval(renderNews, 5000);
             
-            // Close modal on background click
-            document.getElementById('pressModal')?.addEventListener('click', (e) => {
-                if (e.target.id === 'pressModal') {
+            // Modal close handlers
+            DOM.modal?.addEventListener('click', (e) => {
+                if (e.target === DOM.modal) {
                     closeModal();
                 }
             });
             
-            // Close modal on escape key
             document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') {
+                if (e.key === 'Escape' && state.isModalOpen) {
                     closeModal();
                 }
             });
