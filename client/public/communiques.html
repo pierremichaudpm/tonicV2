@@ -226,16 +226,19 @@
             return new Date(dateString).toLocaleDateString('fr-FR', options);
         }
 
-        // Simple modal
-        function showModal(title, content, date) {
+        // Open news modal with mobile-friendly content
+        function openNewsModal(id) {
+            const content = getNews().find(item => item.id === id);
+            if (!content) return;
+            
             const modal = document.getElementById('pressModal');
             const modalTitle = document.getElementById('modalTitle');
             const modalDate = document.getElementById('modalDate');
             const modalContent = document.getElementById('modalContent');
             
-            modalTitle.textContent = title;
-            modalDate.textContent = formatDate(date);
-            modalContent.innerHTML = `<div class="text-white prose prose-invert max-w-none">${content}</div>`;
+            modalTitle.textContent = content.title;
+            modalDate.textContent = formatDate(content.date);
+            modalContent.innerHTML = `<div class="text-white prose prose-invert max-w-none">${content.content}</div>`;
             
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -310,36 +313,62 @@
             document.getElementById('pdfFallback').classList.remove('hidden');
         }
 
-        // Simple news rendering
+        // Render news content with colored cards
         function renderNews() {
-            const news = getNews();
+            const newsContent = getNews();
             
-            if (news.length === 0) {
+            if (newsContent.length === 0) {
                 DOM.prList.innerHTML = '<p class="text-white text-center py-8">Aucun communiqué disponible.</p>';
                 return;
             }
             
-            DOM.prList.innerHTML = news.map(item => `
-                <div class="bg-white rounded-xl p-6 cursor-pointer hover:shadow-lg transition-shadow" onclick="showModal('${item.title}', '${item.content}', '${item.date}')">
-                    <div class="flex gap-4">
-                        <img src="${getImage(item.category)}" alt="${item.category}" class="w-24 h-16 object-cover rounded-lg">
-                        <div class="flex-1">
-                            <div class="flex items-center gap-2 mb-2">
-                                <span class="px-3 py-1 bg-blue-500 text-white text-xs rounded-full">${item.category}</span>
-                                <span class="text-gray-500 text-sm">${formatDate(item.date)}</span>
+            // Sort by date (newest first)
+            newsContent.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            DOM.prList.innerHTML = newsContent.map((item, index) => {
+                const categoryClass = getCategoryClass(item.category);
+                const image = getImage(item.category);
+                
+                return `
+                    <div class="pr-card relative rounded-xl p-6 sm:p-8 cursor-pointer fade-in delay-${Math.min(index * 100, 500)}" 
+                         data-pr-id="${item.id}"
+                         onclick="openNewsModal(${item.id})">
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <div class="sm:w-48 h-32 sm:h-32 flex-shrink-0 relative">
+                                <img src="${image}" alt="${item.category}" class="w-full h-full object-cover rounded-lg" loading="lazy">
+                                ${item.category !== 'Groupe Tonic' ? `<div class="absolute inset-0 rounded-lg ${categoryClass} opacity-40"></div>` : ''}
                             </div>
-                            <h3 class="font-bold text-lg mb-1">${item.title}</h3>
-                            <p class="text-gray-600">${item.subtitle}</p>
+                            <div class="flex-1">
+                                <div class="flex items-start justify-between gap-4 mb-2">
+                                    <span class="inline-block px-3 py-1 rounded-full text-xs font-medium text-white ${categoryClass}">
+                                        ${item.category}
+                                    </span>
+                                    <span class="text-sm text-white whitespace-nowrap">${formatDate(item.date)}</span>
+                                </div>
+                                <h2 class="text-xl sm:text-2xl font-bold mb-2 text-white hover:text-white transition-colors">
+                                    ${item.title}
+                                </h2>
+                                <p class="text-white line-clamp-2">${item.subtitle}</p>
+                                <div class="mt-4 text-accent font-medium text-sm flex items-center gap-1">
+                                    <span>Lire la suite</span>
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                    </svg>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             DOM.prList = document.getElementById('prList');
             renderNews();
+            
+            // Refresh content every 3 seconds to show new entries
+            setInterval(renderNews, 3000);
             
             // Close PDF modal when clicking outside
             document.getElementById('pdfViewerModal').addEventListener('click', (e) => {
