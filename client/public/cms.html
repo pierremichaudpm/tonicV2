@@ -224,6 +224,31 @@
         body.dark .bg-red-500:hover {
             background: #dc2626 !important;
         }
+        
+        /* Make Quill toolbar sticky when scrolling */
+        #contentModal .modal-content {
+            position: relative;
+        }
+        
+        #contentModal .ql-toolbar {
+            position: sticky !important;
+            top: 0 !important;
+            z-index: 100 !important;
+            background: white !important;
+            border-bottom: 1px solid #ccc !important;
+        }
+        
+        /* Add some padding to the modal content for better spacing */
+        #contentModal .overflow-y-auto {
+            overflow-y: visible !important;
+        }
+        
+        /* Make only the form scrollable */
+        #contentForm {
+            max-height: calc(90vh - 100px);
+            overflow-y: auto;
+            padding-right: 10px;
+        }
     </style>
 </head>
 <body class="min-h-screen text-gray-900">
