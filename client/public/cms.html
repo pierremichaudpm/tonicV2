@@ -631,29 +631,33 @@
                     const itemId = item.id || item.title || Math.random().toString(36);
                     
                     return `
-                        <div class="card content-card p-6 rounded-lg" style="overflow: hidden; position: relative;">
-                            <div style="display: flex; flex-direction: row; gap: 1rem; align-items: flex-start; width: 100%;">
-                                <div style="flex: 1; min-width: 0;">
-                                    <h3 class="text-xl font-semibold text-gray-900 mb-2" style="word-break: break-word;">${item.title || ''}</h3>
-                                    ${item.subtitle ? `<p class="text-gray-600 mb-2" style="word-break: break-word;">${item.subtitle}</p>` : ''}
-                                    <div class="flex flex-wrap items-center gap-3 text-sm text-gray-500 mb-3">
-                                        <span class="px-3 py-1 rounded-full text-sm font-medium ${getCategoryClass(item.category)}">${item.category || ''}</span>
-                                        <span class="whitespace-nowrap">${item.date ? new Date(item.date).toLocaleDateString('fr-CA') : ''}</span>
-                                        ${item.salary ? `<span class="font-medium whitespace-nowrap">${item.salary}</span>` : ''}
-                                    </div>
-                                    <div class="text-gray-700 prose prose-sm" style="max-width: 100%; overflow-wrap: break-word;">
-                                        ${item.content ? item.content.substring(0, 200).replace(/<[^>]*>/g, '') + '...' : ''}
-                                    </div>
-                                </div>
-                                <div style="display: flex; flex-direction: column; gap: 0.5rem; flex-shrink: 0; align-items: stretch; min-width: 120px;">
-                                    <button data-action="edit" data-id="${String(itemId).replace(/'/g, "\\'")}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm" style="white-space: nowrap;">
-                                        ${currentLang === 'fr' ? 'Modifier' : 'Edit'}
-                                    </button>
-                                    <button data-action="delete" data-id="${String(itemId).replace(/'/g, "\\'")}" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm" style="white-space: nowrap;">
-                                        ${currentLang === 'fr' ? 'Supprimer' : 'Delete'}
-                                    </button>
-                                </div>
-                            </div>
+                        <div class="card content-card p-6 rounded-lg" style="overflow: hidden;">
+                            <table style="width: 100%; table-layout: fixed;">
+                                <tr>
+                                    <td style="width: calc(100% - 140px); padding-right: 1rem; vertical-align: top;">
+                                        <h3 class="text-xl font-semibold text-gray-900 mb-2" style="word-break: break-word;">${item.title || ''}</h3>
+                                        ${item.subtitle ? `<p class="text-gray-600 mb-2" style="word-break: break-word;">${item.subtitle}</p>` : ''}
+                                        <div class="flex flex-wrap items-center gap-3 text-sm text-gray-500 mb-3">
+                                            <span class="px-3 py-1 rounded-full text-sm font-medium ${getCategoryClass(item.category)}">${item.category || ''}</span>
+                                            <span class="whitespace-nowrap">${item.date ? new Date(item.date).toLocaleDateString('fr-CA') : ''}</span>
+                                            ${item.salary ? `<span class="font-medium whitespace-nowrap">${item.salary}</span>` : ''}
+                                        </div>
+                                        <div class="text-gray-700 prose prose-sm" style="overflow-wrap: break-word;">
+                                            ${item.content ? item.content.substring(0, 200).replace(/<[^>]*>/g, '') + '...' : ''}
+                                        </div>
+                                    </td>
+                                    <td style="width: 120px; vertical-align: top;">
+                                        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                                            <button data-action="edit" data-id="${String(itemId).replace(/'/g, "\\'")}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm" style="white-space: nowrap; width: 100%;">
+                                                ${currentLang === 'fr' ? 'Modifier' : 'Edit'}
+                                            </button>
+                                            <button data-action="delete" data-id="${String(itemId).replace(/'/g, "\\'")}" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm" style="white-space: nowrap; width: 100%;">
+                                                ${currentLang === 'fr' ? 'Supprimer' : 'Delete'}
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
                     `;
                 }).join('');
