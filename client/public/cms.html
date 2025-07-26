@@ -591,25 +591,25 @@
                     const itemId = item.id || item.title || Math.random().toString(36);
                     
                     return `
-                        <div class="card content-card p-6 rounded-lg">
-                            <div class="flex flex-col">
-                                <div class="flex-1 mb-4">
-                                    <h3 class="text-xl font-semibold text-gray-900 mb-2">${item.title || ''}</h3>
-                                    ${item.subtitle ? `<p class="text-gray-600 mb-2">${item.subtitle}</p>` : ''}
+                        <div class="card content-card p-6 rounded-lg" style="overflow: hidden;">
+                            <div class="flex flex-col space-y-4">
+                                <div class="flex-1">
+                                    <h3 class="text-xl font-semibold text-gray-900 mb-2" style="word-break: break-word;">${item.title || ''}</h3>
+                                    ${item.subtitle ? `<p class="text-gray-600 mb-2" style="word-break: break-word;">${item.subtitle}</p>` : ''}
                                     <div class="flex flex-wrap items-center gap-3 text-sm text-gray-500 mb-3">
                                         <span class="px-3 py-1 rounded-full text-sm font-medium ${getCategoryClass(item.category)}">${item.category || ''}</span>
-                                        <span>${item.date ? new Date(item.date).toLocaleDateString('fr-CA') : ''}</span>
-                                        ${item.salary ? `<span class="font-medium">${item.salary}</span>` : ''}
+                                        <span class="whitespace-nowrap">${item.date ? new Date(item.date).toLocaleDateString('fr-CA') : ''}</span>
+                                        ${item.salary ? `<span class="font-medium whitespace-nowrap">${item.salary}</span>` : ''}
                                     </div>
-                                    <div class="text-gray-700 prose prose-sm">
-                                        ${item.content ? item.content.substring(0, 200) + '...' : ''}
+                                    <div class="text-gray-700 prose prose-sm" style="max-width: 100%; overflow-wrap: break-word;">
+                                        ${item.content ? item.content.substring(0, 200).replace(/<[^>]*>/g, '') + '...' : ''}
                                     </div>
                                 </div>
-                                <div class="flex justify-end gap-3">
-                                    <button data-action="edit" data-id="${String(itemId).replace(/'/g, "\\'")}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm">
+                                <div class="flex flex-row justify-end gap-3 pt-2 border-t border-gray-100">
+                                    <button data-action="edit" data-id="${String(itemId).replace(/'/g, "\\'")}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm flex-shrink-0">
                                         Modifier
                                     </button>
-                                    <button data-action="delete" data-id="${String(itemId).replace(/'/g, "\\'")}" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm">
+                                    <button data-action="delete" data-id="${String(itemId).replace(/'/g, "\\'")}" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm flex-shrink-0">
                                         Supprimer
                                     </button>
                                 </div>
