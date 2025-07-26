@@ -55,6 +55,14 @@ const ${variableName} = ${JSON.stringify(data, null, 4)};`;
 };
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Serve static files from the public directory
+  const publicPath = path.join(process.cwd(), "client", "public");
+  
+  // Serve CMS directly - MUST be first before any other middleware
+  app.get("/cms", (req, res) => {
+    res.sendFile(path.join(publicPath, "cms.html"));
+  });
+
   // CMS API Routes
   
   // Get content endpoint
