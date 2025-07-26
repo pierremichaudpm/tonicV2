@@ -537,32 +537,117 @@
                 return;
             }
 
-            container.innerHTML = items.map(item => `
-                <div class="card content-card p-6 rounded-lg">
-                    <div class="flex justify-between items-start">
-                        <div class="flex-1">
-                            <h3 class="text-xl font-semibold text-gray-900 mb-2">${item.title}</h3>
-                            ${item.subtitle ? `<p class="text-gray-600 mb-2">${item.subtitle}</p>` : ''}
-                            <div class="flex items-center space-x-4 text-sm text-gray-500 mb-3">
-                                <span class="px-3 py-1 rounded-full text-sm font-medium ${getCategoryClass(item.category)}">${item.category}</span>
-                                <span>${new Date(item.date).toLocaleDateString('fr-CA')}</span>
-                                ${item.salary ? `<span class="font-medium">${item.salary}</span>` : ''}
-                            </div>
-                            <div class="text-gray-700 prose prose-sm">
-                                ${item.content ? item.content.substring(0, 200) + '...' : ''}
-                            </div>
-                        </div>
-                        <div class="flex space-x-2 ml-4 flex-shrink-0">
-                            <button onclick="editItem('${String(item.id || item.title).replace(/'/g, "\\'")}')" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition-all shadow-sm">
-                                Modifier
-                            </button>
-                            <button onclick="deleteItem('${String(item.id || item.title).replace(/'/g, "\\'")}')" class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition-all shadow-sm">
-                                Supprimer
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
+            // Clear container first
+            container.innerHTML = '';
+
+            // Create elements directly to avoid template literal issues
+            items.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'card content-card p-6 rounded-lg';
+                
+                const mainDiv = document.createElement('div');
+                mainDiv.className = 'flex justify-between items-start';
+                
+                // Content section
+                const contentDiv = document.createElement('div');
+                contentDiv.className = 'flex-1';
+                
+                const title = document.createElement('h3');
+                title.className = 'text-xl font-semibold text-gray-900 mb-2';
+                title.textContent = item.title;
+                contentDiv.appendChild(title);
+                
+                if (item.subtitle) {
+                    const subtitle = document.createElement('p');
+                    subtitle.className = 'text-gray-600 mb-2';
+                    subtitle.textContent = item.subtitle;
+                    contentDiv.appendChild(subtitle);
+                }
+                
+                // Meta info
+                const metaDiv = document.createElement('div');
+                metaDiv.className = 'flex items-center space-x-4 text-sm text-gray-500 mb-3';
+                
+                // Category badge with forced colors
+                const categorySpan = document.createElement('span');
+                categorySpan.className = 'px-3 py-1 rounded-full text-sm font-medium';
+                categorySpan.textContent = item.category;
+                
+                // Apply category colors directly
+                if (item.category === 'Beach Pro Tour') {
+                    categorySpan.style.backgroundColor = '#ec4899';
+                    categorySpan.style.color = 'white';
+                } else if (item.category === 'Grands Prix Cyclistes') {
+                    categorySpan.style.backgroundColor = '#a855f7';
+                    categorySpan.style.color = 'white';
+                } else if (item.category === 'Marathon Beneva 21K') {
+                    categorySpan.style.backgroundColor = '#ef4444';
+                    categorySpan.style.color = 'white';
+                } else if (item.category === 'UCI 2026') {
+                    categorySpan.style.backgroundColor = '#3b82f6';
+                    categorySpan.style.color = 'white';
+                } else if (item.category === 'Studio 76') {
+                    categorySpan.style.backgroundColor = '#10b981';
+                    categorySpan.style.color = 'white';
+                } else if (item.category === 'Dock 619') {
+                    categorySpan.style.backgroundColor = '#4b5563';
+                    categorySpan.style.color = 'white';
+                } else if (item.category === '21K de Montréal') {
+                    categorySpan.style.backgroundColor = '#eab308';
+                    categorySpan.style.color = 'white';
+                } else if (item.category === 'Groupe Tonic') {
+                    categorySpan.style.backgroundColor = '#111827';
+                    categorySpan.style.color = 'white';
+                } else {
+                    categorySpan.style.backgroundColor = '#6b7280';
+                    categorySpan.style.color = 'white';
+                }
+                
+                metaDiv.appendChild(categorySpan);
+                
+                const dateSpan = document.createElement('span');
+                dateSpan.textContent = new Date(item.date).toLocaleDateString('fr-CA');
+                metaDiv.appendChild(dateSpan);
+                
+                if (item.salary) {
+                    const salarySpan = document.createElement('span');
+                    salarySpan.className = 'font-medium';
+                    salarySpan.textContent = item.salary;
+                    metaDiv.appendChild(salarySpan);
+                }
+                
+                contentDiv.appendChild(metaDiv);
+                
+                // Content preview
+                const contentPreview = document.createElement('div');
+                contentPreview.className = 'text-gray-700 prose prose-sm';
+                contentPreview.innerHTML = item.content ? item.content.substring(0, 200) + '...' : '';
+                contentDiv.appendChild(contentPreview);
+                
+                mainDiv.appendChild(contentDiv);
+                
+                // Buttons section
+                const buttonsDiv = document.createElement('div');
+                buttonsDiv.className = 'flex space-x-2 ml-4 flex-shrink-0';
+                
+                // Edit button
+                const editBtn = document.createElement('button');
+                editBtn.className = 'bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition-all shadow-sm';
+                editBtn.textContent = 'Modifier';
+                editBtn.onclick = function() { editItem(String(item.id || item.title)); };
+                buttonsDiv.appendChild(editBtn);
+                
+                // Delete button
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition-all shadow-sm';
+                deleteBtn.textContent = 'Supprimer';
+                deleteBtn.onclick = function() { deleteItem(String(item.id || item.title)); };
+                buttonsDiv.appendChild(deleteBtn);
+                
+                mainDiv.appendChild(buttonsDiv);
+                card.appendChild(mainDiv);
+                container.appendChild(card);
+            });
         }
 
         // Modal management
