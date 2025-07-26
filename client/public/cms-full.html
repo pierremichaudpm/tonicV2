@@ -11,12 +11,25 @@
         body { 
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
             background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            transition: all 0.3s ease;
+        }
+        
+        body.dark {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: #e2e8f0;
         }
         
         .card {
             background: white;
             border: 1px solid #e2e8f0;
             box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        body.dark .card {
+            background: #334155;
+            border: 1px solid #475569;
+            color: #e2e8f0;
         }
         
         .btn-primary {
@@ -52,6 +65,49 @@
         .modal {
             backdrop-filter: blur(4px);
         }
+        
+        body.dark .bg-white {
+            background: #334155 !important;
+            color: #e2e8f0;
+        }
+        
+        body.dark input, body.dark select, body.dark textarea {
+            background: #475569 !important;
+            border-color: #64748b !important;
+            color: #e2e8f0 !important;
+        }
+        
+        body.dark .text-gray-900 {
+            color: #e2e8f0 !important;
+        }
+        
+        body.dark .text-gray-700 {
+            color: #cbd5e1 !important;
+        }
+        
+        body.dark .text-gray-600 {
+            color: #94a3b8 !important;
+        }
+        
+        body.dark .text-gray-500 {
+            color: #64748b !important;
+        }
+        
+        body.dark .bg-gray-50 {
+            background: #1e293b !important;
+        }
+        
+        body.dark .bg-gray-200 {
+            background: #475569 !important;
+        }
+        
+        body.dark .border-gray-200 {
+            border-color: #475569 !important;
+        }
+        
+        body.dark .border-gray-300 {
+            border-color: #64748b !important;
+        }
     </style>
 </head>
 <body class="min-h-screen text-gray-900">
@@ -64,11 +120,14 @@
                     <h1 class="text-xl font-semibold text-gray-900">Content Management System</h1>
                 </div>
                 <div class="flex gap-4 items-center">
+                    <button onclick="toggleDarkMode()" class="text-gray-600 hover:text-gray-800 px-3 py-2" title="Toggle dark mode">
+                        🌓
+                    </button>
                     <select id="languageToggle" class="bg-white border border-gray-300 rounded px-3 py-2 text-gray-700">
                         <option value="fr">Français</option>
                         <option value="en">English</option>
                     </select>
-                    <button onclick="logout()" class="text-red-600 hover:text-red-700 px-3 py-2">Sortie</button>
+                    <button onclick="logout()" class="text-red-600 hover:text-red-700 px-3 py-2" id="logoutBtn">Sortie</button>
                 </div>
             </div>
         </header>
@@ -79,19 +138,21 @@
                 <!-- Navigation Tabs -->
                 <div class="flex gap-2 mb-6">
                     <button onclick="showSection('jobs')" id="jobsTab" class="px-4 py-2 rounded-lg btn-primary text-white">
-                        Emplois
+                        <span class="fr-text">Emplois</span><span class="en-text hidden">Jobs</span>
                     </button>
                     <button onclick="showSection('news')" id="newsTab" class="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-700">
-                        Nouvelles
+                        <span class="fr-text">Nouvelles</span><span class="en-text hidden">News</span>
                     </button>
                 </div>
 
                 <!-- Content Sections -->
                 <div id="jobsSection" class="section">
                     <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-2xl font-bold text-gray-900">Gestion des Emplois</h2>
+                        <h2 class="text-2xl font-bold text-gray-900">
+                            <span class="fr-text">Gestion des Emplois</span><span class="en-text hidden">Job Management</span>
+                        </h2>
                         <button onclick="openModal('job')" class="btn-primary text-white px-4 py-2 rounded-lg hover:shadow-md transition-all">
-                            Ajouter un emploi
+                            <span class="fr-text">Ajouter un emploi</span><span class="en-text hidden">Add Job</span>
                         </button>
                     </div>
                     <div id="jobsList" class="space-y-4">
@@ -101,9 +162,11 @@
 
                 <div id="newsSection" class="section hidden">
                     <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-2xl font-bold text-gray-900">Gestion des Nouvelles</h2>
+                        <h2 class="text-2xl font-bold text-gray-900">
+                            <span class="fr-text">Gestion des Nouvelles</span><span class="en-text hidden">News Management</span>
+                        </h2>
                         <button onclick="openModal('news')" class="btn-primary text-white px-4 py-2 rounded-lg hover:shadow-md transition-all">
-                            Ajouter une nouvelle
+                            <span class="fr-text">Ajouter une nouvelle</span><span class="en-text hidden">Add News</span>
                         </button>
                     </div>
                     <div id="newsList" class="space-y-4">
@@ -523,8 +586,21 @@
             }
         }
 
+        // Dark mode functionality
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark');
+            localStorage.setItem('darkMode', document.body.classList.contains('dark'));
+        }
+
+        function initializeDarkMode() {
+            if (localStorage.getItem('darkMode') === 'true') {
+                document.body.classList.add('dark');
+            }
+        }
+
         // Initialize app
         document.addEventListener('DOMContentLoaded', function() {
+            initializeDarkMode();
             // Login form
             document.getElementById('loginForm').addEventListener('submit', function(e) {
                 e.preventDefault();
@@ -549,26 +625,18 @@
         });
 
         function updateLanguageLabels() {
+            // Toggle visibility of French/English text elements
+            const frElements = document.querySelectorAll('.fr-text');
+            const enElements = document.querySelectorAll('.en-text');
+            
             if (currentLang === 'en') {
-                document.querySelector('button[onclick="logout()"]').textContent = 'Logout';
-                if (document.getElementById('jobsSection').style.display !== 'none') {
-                    document.querySelector('#jobsSection h2').textContent = 'Job Management';
-                    document.querySelector('#jobsSection button').textContent = 'Add Job';
-                }
-                if (document.getElementById('newsSection').style.display !== 'none') {
-                    document.querySelector('#newsSection h2').textContent = 'News Management';
-                    document.querySelector('#newsSection button').textContent = 'Add News';
-                }
+                frElements.forEach(el => el.classList.add('hidden'));
+                enElements.forEach(el => el.classList.remove('hidden'));
+                document.getElementById('logoutBtn').textContent = 'Logout';
             } else {
-                document.querySelector('button[onclick="logout()"]').textContent = 'Sortie';
-                if (document.getElementById('jobsSection').style.display !== 'none') {
-                    document.querySelector('#jobsSection h2').textContent = 'Gestion des Emplois';
-                    document.querySelector('#jobsSection button').textContent = 'Ajouter un emploi';
-                }
-                if (document.getElementById('newsSection').style.display !== 'none') {
-                    document.querySelector('#newsSection h2').textContent = 'Gestion des Nouvelles';
-                    document.querySelector('#newsSection button').textContent = 'Ajouter une nouvelle';
-                }
+                frElements.forEach(el => el.classList.remove('hidden'));
+                enElements.forEach(el => el.classList.add('hidden'));
+                document.getElementById('logoutBtn').textContent = 'Sortie';
             }
         }
     </script>
