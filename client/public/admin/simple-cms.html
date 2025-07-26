@@ -18,15 +18,6 @@
     <script src="../js/simple-content.js"></script>
     
     <style>
-        /* Tonic Brand Colors */
-        :root {
-            --tonic-primary: #f97316;
-            --tonic-secondary: #ea580c;
-            --tonic-accent: #fb923c;
-            --tonic-dark: #1a1a1a;
-            --tonic-light: #fef3c7;
-        }
-
         /* Category Colors */
         .category-beach { background-color: #ff0e9b; }
         .category-cycling { background-color: #b7d233; }
@@ -35,50 +26,44 @@
         .category-studio { background-color: #06b6d4; }
         .category-dock { background-color: #6b7280; }
         .category-21k { background-color: #f59e0b; }
-        .category-tonic { background-color: #f97316; }
+        .category-tonic { background-color: #6b7280; }
         
-        /* Tonic Branded Components */
-        .tonic-header {
-            background: linear-gradient(135deg, var(--tonic-dark) 0%, #2d2d2d 100%);
-            border-bottom: 2px solid var(--tonic-primary);
+        /* Standard Components */
+        .header {
+            background: #1f2937;
+            border-bottom: 1px solid #374151;
         }
         
-        .tonic-btn-primary {
-            background: linear-gradient(135deg, var(--tonic-primary) 0%, var(--tonic-secondary) 100%);
+        .btn-primary {
+            background: #3b82f6;
             border: none;
             transition: all 0.3s ease;
         }
         
-        .tonic-btn-primary:hover {
-            background: linear-gradient(135deg, var(--tonic-secondary) 0%, var(--tonic-primary) 100%);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.4);
+        .btn-primary:hover {
+            background: #2563eb;
         }
         
-        .tonic-card {
-            background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(234, 88, 12, 0.05) 100%);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(249, 115, 22, 0.2);
-            border-radius: 1rem;
+        .card {
+            background: #374151;
+            border: 1px solid #4b5563;
+            border-radius: 0.5rem;
         }
         
         .language-toggle {
-            background: var(--tonic-primary);
-            border: 2px solid var(--tonic-accent);
-            border-radius: 50px;
-            position: relative;
-            overflow: hidden;
+            background: #3b82f6;
+            border: 1px solid #4b5563;
+            border-radius: 0.5rem;
             transition: all 0.3s ease;
         }
         
         .language-toggle:hover {
-            background: var(--tonic-secondary);
-            box-shadow: 0 0 20px rgba(249, 115, 22, 0.3);
+            background: #2563eb;
         }
         
         .lang-active {
-            background: white !important;
-            color: var(--tonic-primary) !important;
+            background: #1f2937 !important;
+            color: white !important;
             font-weight: bold;
         }
         
@@ -91,36 +76,36 @@
         
         .ql-toolbar {
             background-color: #374151 !important;
-            border: 1px solid var(--tonic-primary) !important;
+            border: 1px solid #4b5563 !important;
             border-bottom: none !important;
         }
         
         .ql-toolbar .ql-stroke {
-            stroke: var(--tonic-accent) !important;
+            stroke: #9ca3af !important;
         }
         
         .ql-toolbar .ql-fill {
-            fill: var(--tonic-accent) !important;
+            fill: #9ca3af !important;
         }
         
         .ql-toolbar button:hover {
-            background-color: rgba(249, 115, 22, 0.2) !important;
+            background-color: rgba(75, 85, 99, 0.3) !important;
         }
         
         .ql-toolbar button.ql-active {
-            background-color: var(--tonic-primary) !important;
+            background-color: #3b82f6 !important;
         }
         
         .ql-container {
-            border: 1px solid var(--tonic-primary) !important;
+            border: 1px solid #4b5563 !important;
             border-top: none !important;
         }
         
-        /* Login Modal Tonic Styling */
-        .tonic-login {
-            background: linear-gradient(135deg, var(--tonic-dark) 0%, #2d2d2d 100%);
-            border: 2px solid var(--tonic-primary);
-            box-shadow: 0 20px 40px rgba(249, 115, 22, 0.3);
+        /* Login Modal Styling */
+        .login-modal {
+            background: #1f2937;
+            border: 1px solid #374151;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
         }
     </style>
 </head>
@@ -128,16 +113,15 @@
 
     <!-- Login Modal -->
     <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
-        <div class="tonic-login rounded-lg p-8 max-w-md w-full m-4">
+        <div class="login-modal rounded-lg p-8 max-w-md w-full m-4">
             <div class="text-center mb-6">
                 <img src="../images/tonic-logo.png" alt="Groupe Tonic" class="h-12 mx-auto mb-4" />
                 <h2 class="text-2xl font-bold text-white">Content Management System</h2>
-                <p class="text-gray-300 text-sm">Créateur d'expériences mémorables</p>
             </div>
             <form id="loginForm">
                 <input type="password" id="passwordInput" placeholder="Enter password" 
-                       class="w-full px-4 py-3 bg-gray-700 border-2 border-gray-600 rounded-lg mb-6 text-white focus:border-orange-500 focus:outline-none transition-colors">
-                <button type="submit" class="w-full tonic-btn-primary text-white py-3 rounded-lg font-semibold">
+                       class="w-full px-4 py-3 bg-gray-700 border-2 border-gray-600 rounded-lg mb-6 text-white focus:border-blue-500 focus:outline-none transition-colors">
+                <button type="submit" class="w-full btn-primary text-white py-3 rounded-lg font-semibold">
                     Access CMS
                 </button>
             </form>
@@ -146,13 +130,12 @@
 
     <!-- CMS Interface -->
     <div id="cmsInterface" class="hidden min-h-screen">
-        <header class="tonic-header shadow-lg p-6">
+        <header class="header shadow-lg p-6">
             <div class="flex justify-between items-center max-w-6xl mx-auto">
                 <div class="flex items-center gap-4">
                     <img src="../images/tonic-logo.png" alt="Groupe Tonic" class="h-8" />
                     <div>
-                        <h1 class="text-xl font-bold text-white">Content Management System</h1>
-                        <p class="text-orange-300 text-xs">Créateur d'expériences mémorables</p>
+                        <h1 class="text-xl font-bold text-white">CMS</h1>
                     </div>
                 </div>
                 <div class="flex items-center gap-4">
@@ -175,7 +158,7 @@
             <!-- Content Type Selector -->
             <div class="flex gap-4 mb-6">
                 <button onclick="showContent('news')" id="newsBtn" 
-                        class="tonic-btn-primary px-6 py-3 text-white rounded-lg">
+                        class="btn-primary px-6 py-3 text-white rounded-lg">
                     <span class="fr-text">Actualités</span><span class="en-text hidden">News</span>
                 </button>
                 <button onclick="showContent('jobs')" id="jobsBtn" 
@@ -186,7 +169,7 @@
 
             <!-- Add Content Button -->
             <button onclick="showAddForm()" 
-                    class="tonic-btn-primary text-white px-6 py-3 rounded-lg mb-6">
+                    class="btn-primary text-white px-6 py-3 rounded-lg mb-6">
                 + <span class="fr-text">Ajouter du contenu</span><span class="en-text hidden">Add Content</span>
             </button>
 
@@ -405,7 +388,7 @@
                 const image = getImage(item.category);
                 
                 return `
-                    <div class="tonic-card rounded-xl p-6">
+                    <div class="card rounded-xl p-6">
                         <div class="flex gap-4">
                             <div class="w-24 h-20 flex-shrink-0 relative">
                                 <img src="${image}" alt="${item.category}" class="w-full h-full object-cover rounded-lg">
@@ -423,7 +406,7 @@
                                 </div>
                                 <h3 class="font-bold text-lg mb-2 text-white">${item.title}</h3>
                                 <p class="text-orange-200 text-sm mb-3">${item.subtitle}</p>
-                                ${item.salary ? `<span class="inline-block px-3 py-1 tonic-btn-primary text-white text-xs rounded-full mb-2">${item.salary}</span>` : ''}
+                                ${item.salary ? `<span class="inline-block px-3 py-1 btn-primary text-white text-xs rounded-full mb-2">${item.salary}</span>` : ''}
                                 <p class="text-orange-300 text-xs">${formatDate(item.date)}</p>
                                 <div class="mt-3 text-gray-200 text-sm">
                                     <div class="max-h-20 overflow-hidden">
