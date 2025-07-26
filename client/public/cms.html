@@ -647,11 +647,11 @@
                                         </div>
                                     </td>
                                     <td style="width: 120px; vertical-align: top;">
-                                        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                                            <button data-action="edit" data-id="${String(itemId).replace(/'/g, "\\'")}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm" style="white-space: nowrap; width: 100%;">
+                                        <div style="display: flex; flex-direction: column; gap: 0.5rem; width: 120px;">
+                                            <button data-action="edit" data-id="${String(itemId).replace(/'/g, "\\'")}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm" style="white-space: nowrap;">
                                                 ${currentLang === 'fr' ? 'Modifier' : 'Edit'}
                                             </button>
-                                            <button data-action="delete" data-id="${String(itemId).replace(/'/g, "\\'")}" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm" style="white-space: nowrap; width: 100%;">
+                                            <button data-action="delete" data-id="${String(itemId).replace(/'/g, "\\'")}" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm" style="white-space: nowrap;">
                                                 ${currentLang === 'fr' ? 'Supprimer' : 'Delete'}
                                             </button>
                                         </div>
