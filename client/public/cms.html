@@ -833,6 +833,8 @@
         // Auto-translate content to other language
         async function autoTranslateContent(itemData, sourceLang) {
             const targetLang = sourceLang === 'fr' ? 'en' : 'fr';
+            console.log('autoTranslateContent called:', sourceLang, '->', targetLang);
+            console.log('Item data:', itemData);
             
             try {
                 // Create translated version
@@ -961,8 +963,15 @@
                 if (saveResponse.ok) {
                     // Auto-translate to other language if this is French content and toggle is enabled
                     const autoTranslateCheckbox = document.getElementById('autoTranslate');
+                    console.log('Auto-translate checkbox:', autoTranslateCheckbox);
+                    console.log('Checkbox checked:', autoTranslateCheckbox ? autoTranslateCheckbox.checked : 'N/A');
+                    console.log('Current language:', currentLang);
+                    
                     if (currentLang === 'fr' && autoTranslateCheckbox && autoTranslateCheckbox.checked) {
+                        console.log('Starting auto-translation...');
                         await autoTranslateContent(itemData, currentLang);
+                    } else {
+                        console.log('Auto-translation skipped');
                     }
                     
                     closeModal();
