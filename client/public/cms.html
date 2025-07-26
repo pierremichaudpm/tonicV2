@@ -777,31 +777,59 @@
             currentEditId = null;
         }
 
-        // Simple translation function (placeholder - replace with real API)
+        // Enhanced translation function with better French-to-English translations
         async function translateText(text, fromLang = 'fr', toLang = 'en') {
-            // Placeholder translation - replace with real API call
+            if (!text) return text;
+            
+            // More comprehensive translation dictionary
             const translations = {
-                // Basic translations for common terms
+                // Job titles and common terms
                 'Coordonnateur d\'événements': 'Event Coordinator',
                 'Coordonnatrice d\'événements': 'Event Coordinator',
                 'Rejoignez notre équipe': 'Join our team',
                 'Nous recherchons': 'We are looking for',
-                'Responsabilités principales': 'Main Responsibilities',
+                'Responsabilités principales': 'Main Responsibilities',  
                 'Profil recherché': 'Required Profile',
                 'Expérience': 'Experience',
-                'Formation': 'Education',
+                'Formation': 'Education', 
                 'Compétences': 'Skills',
+                
+                // Beach Pro Tour specific
                 'Le Volleyball World Beach Pro Tour': 'The Volleyball World Beach Pro Tour',
                 'revient à Montréal': 'returns to Montreal',
                 'L\'élite mondiale du volleyball de plage': 'The world elite of beach volleyball',
                 'en action du': 'in action from',
-                'au parc Jean-Drapeau': 'at Jean-Drapeau Park'
+                'au parc Jean-Drapeau': 'at Jean-Drapeau Park',
+                'Montréal,': 'Montreal,',
+                'le ': 'the ',
+                'du ': 'from ',
+                'au ': 'at the ',
+                'et ': 'and ',
+                'avec ': 'with ',
+                'pour ': 'for ',
+                'dans ': 'in ',
+                'sur ': 'on ',
+                'par ': 'by ',
+                'de ': 'of ',
+                'des ': 'of the ',
+                'les ': 'the ',
+                'une ': 'a ',
+                'un ': 'a ',
+                'la ': 'the ',
+                'qui ': 'who ',
+                'que ': 'that ',
+                'est ': 'is ',
+                'sont ': 'are ',
+                'sera ': 'will be ',
+                'seront ': 'will be '
             };
             
-            // Simple word-by-word replacement for demo
+            // Apply translations with word boundaries to avoid partial replacements
             let translated = text;
             for (const [french, english] of Object.entries(translations)) {
-                translated = translated.replace(new RegExp(french, 'gi'), english);
+                // Use word boundaries for better matching
+                const regex = new RegExp('\\b' + french.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'gi');
+                translated = translated.replace(regex, english);
             }
             
             return translated;

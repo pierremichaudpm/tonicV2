@@ -374,7 +374,7 @@
                 const categoryImage = getCategoryImage(item.category);
                 
                 return `
-                    <article class="news-card p-6 cursor-pointer" onclick="openModal(${item.id})">
+                    <article class="news-card p-6 cursor-pointer" onclick="openModal('${item.id}')">
                         <div class="flex gap-6">
                             <div class="sm:w-48 w-24 h-32 flex-shrink-0 relative">
                                 <img src="${categoryImage}" alt="${item.category}" 
@@ -407,7 +407,7 @@
 
         // Modal functions
         function openModal(id) {
-            const item = getNewsEn().find(news => news.id === id);
+            const item = getNewsEn().find(news => String(news.id) === String(id));
             if (!item) return;
             
             DOM.modalTitle.textContent = item.title;
