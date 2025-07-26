@@ -489,11 +489,9 @@
         </div>
     </footer>
     
-    <!-- Load job data -->
+    <!-- Job data -->
     <script src="js/emplois-data-en.js"></script>
-    
-    <!-- PDF Data -->
-    <script src="js/pdf-data.js"></script>
+    <script src="js/simple-content.js"></script>
 
     
     <!-- Shared JavaScript -->
@@ -562,27 +560,7 @@
             return classMap[department] || 'category-tonic';
         };
 
-        // Get all jobs - PDF content only
-        async function getAllJobs() {
-            // Get PDF job content only
-            const pdfJobs = getPDFsByType('job');
-            
-            // Convert PDF jobs to the expected format
-            return pdfJobs.map(pdf => ({
-                id: `pdf-${pdf.id}`,
-                title: pdf.title,
-                department: pdf.category,
-                location: 'Montreal, QC', // Default location
-                type: 'Full-time', // Default type
-                datePosted: pdf.date,
-                startDate: 'To be determined', // Default start date
-                description: pdf.subtitle || 'See PDF document for more details',
-                emailSubject: `Application - ${pdf.title}`,
-                salary: 'To be discussed', // Default salary
-                isPDF: true,
-                pdfData: pdf
-            }));
-        }
+
 
         // Get days since posting
         function getDaysSincePosting(dateString) {
@@ -895,7 +873,7 @@
             });
             
             // Initial render
-            renderJobs().catch(console.error);
+            renderJobs();
         });
     </script>
 </body>

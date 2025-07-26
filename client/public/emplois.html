@@ -661,6 +661,7 @@
             `;
             DOM.modal.classList.add('active');
             document.body.style.overflow = 'hidden';
+            state.isModalOpen = true;
         }
 
         // Get days since posting
@@ -919,10 +920,20 @@
             DOM.modalContent = document.getElementById('modalContent');
             
             // Render jobs
-            renderJobs();
+            try {
+                renderJobs();
+            } catch (error) {
+                console.error('Error rendering jobs:', error);
+            }
             
             // Refresh content every 3 seconds to show new entries
-            setInterval(renderJobs, 3000);
+            setInterval(() => {
+                try {
+                    renderJobs();
+                } catch (error) {
+                    console.error('Error rendering jobs:', error);
+                }
+            }, 3000);
             
             // Event delegation for job cards (PDF and regular)
             DOM.jobsList.addEventListener('click', function(e) {
