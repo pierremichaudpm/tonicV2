@@ -106,6 +106,28 @@
             border: 1px solid #374151;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
         }
+        
+        /* Force all text in add modal to be white */
+        #addModal * {
+            color: white !important;
+        }
+        
+        /* Keep specific gray text for hints */
+        #addModal .text-gray-400 {
+            color: #9ca3af !important;
+        }
+        
+        /* Ensure input text remains white */
+        #addModal input, #addModal select, #addModal textarea {
+            color: white !important;
+            background-color: #374151 !important;
+        }
+        
+        /* Option text should be visible (black on white) */
+        #addModal option {
+            color: black !important;
+            background-color: white !important;
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-white min-h-screen">
