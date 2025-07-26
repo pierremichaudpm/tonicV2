@@ -455,6 +455,23 @@
                         </div>
                     </div>
                     
+                    <!-- Auto-translation toggle -->
+                    <div class="flex items-center space-x-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                        <input 
+                            type="checkbox" 
+                            id="autoTranslate" 
+                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+                            checked
+                        >
+                        <label for="autoTranslate" class="text-sm font-medium text-blue-800">
+                            <span class="fr-text">Traduction automatique</span><span class="en-text hidden">Automatic Translation</span>
+                            <span class="block text-xs text-blue-600 mt-1">
+                                <span class="fr-text">Créer automatiquement une version anglaise de ce contenu</span>
+                                <span class="en-text hidden">Automatically create an English version of this content</span>
+                            </span>
+                        </label>
+                    </div>
+                    
                     <div>
                         <label for="content" class="block text-sm font-medium text-gray-700 mb-2">Contenu</label>
                         <div id="editor" class="bg-white border border-gray-300 rounded-md"></div>
@@ -722,6 +739,18 @@
             // Show/hide salary field based on type
             document.getElementById('salaryField').style.display = type === 'job' || currentType === 'jobs' ? 'block' : 'none';
             
+            // Show/hide auto-translation toggle (only show for French language)
+            const autoTranslateContainer = document.getElementById('autoTranslate').closest('div');
+            if (currentLang === 'fr') {
+                autoTranslateContainer.style.display = 'flex';
+                // Reset checkbox to checked for new items
+                if (!itemId) {
+                    document.getElementById('autoTranslate').checked = true;
+                }
+            } else {
+                autoTranslateContainer.style.display = 'none';
+            }
+            
             // Update modal title
             const isEdit = itemId !== null;
             const title = isEdit ? 
@@ -907,8 +936,9 @@
                 console.log('Save result:', saveResult);
 
                 if (saveResponse.ok) {
-                    // Auto-translate to other language if this is French content
-                    if (currentLang === 'fr') {
+                    // Auto-translate to other language if this is French content and toggle is enabled
+                    const autoTranslateCheckbox = document.getElementById('autoTranslate');
+                    if (currentLang === 'fr' && autoTranslateCheckbox && autoTranslateCheckbox.checked) {
                         await autoTranslateContent(itemData, currentLang);
                     }
                     
