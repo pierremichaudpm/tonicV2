@@ -112,12 +112,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
   });
   
-  // Serve static files from the public directory
-  const publicPath = path.join(process.cwd(), "client", "public");
-  
-  // Serve CMS directly before Vite middleware can catch it
-  app.get("/cms", (req, res) => {
-    res.sendFile(path.join(publicPath, "cms.html"));
+  // Login endpoint for CMS
+  app.post('/api/cms/login', (req, res) => {
+    const { password } = req.body;
+    if (password === ADMIN_PASSWORD) {
+      res.json({ success: true, message: 'Login successful' });
+    } else {
+      res.status(401).json({ success: false, message: 'Invalid password' });
+    }
   });
   
   // Serve CSS, JS, and images as static files
@@ -194,18 +196,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.sendFile(path.join(publicPath, "index-en.html"));
   });
 
-  // Admin routes
-  app.get("/admin", (req, res) => {
-    res.sendFile(path.join(publicPath, "admin", "simple-cms.html"));
-  });
 
-  app.get("/admin/", (req, res) => {
-    res.sendFile(path.join(publicPath, "admin", "simple-cms.html"));
-  });
-
-  app.get("/admin/simple-cms.html", (req, res) => {
-    res.sendFile(path.join(publicPath, "admin", "simple-cms.html"));
-  });
 
 
 
