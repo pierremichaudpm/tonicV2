@@ -632,8 +632,8 @@
                     
                     return `
                         <div class="card content-card p-6 rounded-lg" style="overflow: hidden; position: relative;">
-                            <div class="card-layout" style="display: flex; flex-direction: row; gap: 1rem; align-items: flex-start;">
-                                <div style="flex: 1 1 auto; min-width: 0; max-width: calc(100% - 140px);">
+                            <div style="display: flex; flex-direction: row; gap: 1rem; align-items: flex-start; width: 100%;">
+                                <div style="flex: 1; min-width: 0;">
                                     <h3 class="text-xl font-semibold text-gray-900 mb-2" style="word-break: break-word;">${item.title || ''}</h3>
                                     ${item.subtitle ? `<p class="text-gray-600 mb-2" style="word-break: break-word;">${item.subtitle}</p>` : ''}
                                     <div class="flex flex-wrap items-center gap-3 text-sm text-gray-500 mb-3">
@@ -645,7 +645,7 @@
                                         ${item.content ? item.content.substring(0, 200).replace(/<[^>]*>/g, '') + '...' : ''}
                                     </div>
                                 </div>
-                                <div class="button-container">
+                                <div style="display: flex; flex-direction: column; gap: 0.5rem; flex-shrink: 0; align-items: stretch; min-width: 120px;">
                                     <button data-action="edit" data-id="${String(itemId).replace(/'/g, "\\'")}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm" style="white-space: nowrap;">
                                         ${currentLang === 'fr' ? 'Modifier' : 'Edit'}
                                     </button>
