@@ -1186,16 +1186,37 @@
                         console.log('Starting auto-translation...');
                         submitBtn.textContent = 'Traduction...';
                         
-                        // Use original complete data for translation instead of potentially truncated Quill content
-                        const dataForTranslation = { ...itemData };
-                        if (originalEditData && originalEditData.content && originalEditData.content.length > itemData.content.length) {
-                            console.log('Using original complete content for translation');
-                            console.log('Original content length:', originalEditData.content.length);
-                            console.log('Quill content length:', itemData.content.length);
-                            dataForTranslation.content = originalEditData.content;
-                        }
+                        // CRITICAL FIX: Bypass Quill completely and use saved data directly for translation
+                        console.log('Bypassing Quill editor - using freshly saved data for translation');
                         
-                        await autoTranslateContent(dataForTranslation, currentLang);
+                        // Get the complete data that was just saved to ensure we have the full content
+                        const freshDataResponse = await fetch(`/api/cms/content/${currentType}/${currentLang}`, {
+                            headers: { 
+                                'x-admin-password': 'admin123',
+                                'Cache-Control': 'no-cache'
+                            }
+                        });
+                        
+                        if (freshDataResponse.ok) {
+                            const freshResult = await freshDataResponse.json();
+                            const freshItems = freshResult.data || [];
+                            const completeItemForTranslation = freshItems.find(item => String(item.id) === String(itemData.id));
+                            
+                            if (completeItemForTranslation) {
+                                console.log('Found complete saved item for translation');
+                                console.log('Complete saved content length:', completeItemForTranslation.content?.length || 0);
+                                console.log('Quill content length (for comparison):', itemData.content?.length || 0);
+                                
+                                // Use the complete saved data for translation
+                                await autoTranslateContent(completeItemForTranslation, currentLang);
+                            } else {
+                                console.log('Could not find saved item, falling back to Quill data');
+                                await autoTranslateContent(itemData, currentLang);
+                            }
+                        } else {
+                            console.log('Could not fetch fresh data, falling back to Quill data');
+                            await autoTranslateContent(itemData, currentLang);
+                        }
                     } else {
                         console.log('Auto-translation skipped');
                     }
