@@ -565,8 +565,6 @@
                 </div>
             `).join('');
 
-            // Add event listeners using delegation
-            container.addEventListener('click', handleItemAction);
         }
 
         // FIXED: New event handler using event delegation
@@ -606,7 +604,7 @@
             
             // If editing, load the item data
             if (isEdit) {
-                loadItemForEdit(itemId);
+                editItem(itemId);
             }
             
             document.getElementById('contentModal').classList.remove('hidden');
@@ -829,6 +827,21 @@
                 currentLang = e.target.value;
                 loadContent();
                 updateLanguageLabels();
+            });
+            
+            // Add event delegation for all content buttons at document level
+            document.addEventListener('click', function(e) {
+                const button = e.target.closest('button[data-action]');
+                if (!button) return;
+                
+                const action = button.getAttribute('data-action');
+                const id = button.getAttribute('data-id');
+                
+                if (action === 'edit') {
+                    editItem(id);
+                } else if (action === 'delete') {
+                    deleteItem(id);
+                }
             });
 
             // Show login modal initially
