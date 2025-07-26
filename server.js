@@ -2,6 +2,7 @@ import express from 'express';
 import path from 'path';
 import fs from 'fs/promises';
 import { fileURLToPath } from 'url';
+import fetch from 'node-fetch';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -149,6 +150,59 @@ app.delete('/api/cms/news/:id', authenticate, async (req, res) => {
   const filtered = news.filter(n => n.id != req.params.id);
   await writeData(`news-${lang}.json`, filtered);
   res.json({ message: 'News deleted' });
+});
+
+// AI Translation endpoint (password protected)
+app.post('/api/translate', authenticate, async (req, res) => {
+  try {
+    const { text, fromLang, toLang } = req.body;
+    
+    if (!text || !fromLang || !toLang) {
+      return res.status(400).json({ error: 'Missing required parameters' });
+    }
+    
+    // Use Anthropic API for translation
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': process.env.ANTHROPIC_API_KEY,
+        'anthropic-version': '2023-06-01'
+      },
+      body: JSON.stringify({
+        model: 'claude-3-5-sonnet-20241022',
+        max_tokens: 2000,
+        messages: [{
+          role: 'user',
+          content: `Translate the following ${fromLang === 'fr' ? 'French' : 'English'} text to ${toLang === 'en' ? 'English' : 'French'}. 
+          
+          IMPORTANT RULES:
+          1. Preserve ALL HTML tags exactly as they are (including spans, links, etc.)
+          2. Keep proper names in their original form (Montréal Beach Pro Tour, Gilles-Villeneuve, etc.)
+          3. Maintain the same formatting and structure
+          4. Only translate the actual text content, not HTML attributes
+          5. Return only the translated text with preserved HTML
+          
+          Text to translate:
+          ${text}`
+        }]
+      })
+    });
+    
+    if (!response.ok) {
+      console.error('Anthropic API error:', response.status);
+      return res.status(500).json({ error: 'Translation service unavailable' });
+    }
+    
+    const result = await response.json();
+    const translatedText = result.content[0]?.text || text;
+    
+    res.json({ translatedText });
+    
+  } catch (error) {
+    console.error('Translation error:', error);
+    res.status(500).json({ error: 'Translation failed' });
+  }
 });
 
 // Serve admin login page

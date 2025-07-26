@@ -4,6 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import express from "express";
+import fetch from 'node-fetch';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -172,7 +173,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Filter out the item with matching ID
       const originalLength = data.length;
-      const filteredData = data.filter(item => {
+      const filteredData = data.filter((item: any) => {
           return String(item.id) !== String(id) && String(item.title) !== String(id);
       });
       
@@ -197,6 +198,59 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({ success: true, message: 'Login successful' });
     } else {
       res.status(401).json({ success: false, message: 'Invalid password' });
+    }
+  });
+
+  // AI Translation endpoint (password protected)
+  app.post('/api/translate', authenticate, async (req, res) => {
+    try {
+      const { text, fromLang, toLang } = req.body;
+      
+      if (!text || !fromLang || !toLang) {
+        return res.status(400).json({ error: 'Missing required parameters' });
+      }
+      
+      // Use Anthropic API for translation
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': process.env.ANTHROPIC_API_KEY || '',
+          'anthropic-version': '2023-06-01'
+        } as Record<string, string>,
+        body: JSON.stringify({
+          model: 'claude-3-5-sonnet-20241022',
+          max_tokens: 2000,
+          messages: [{
+            role: 'user',
+            content: `Translate the following ${fromLang === 'fr' ? 'French' : 'English'} text to ${toLang === 'en' ? 'English' : 'French'}. 
+            
+            IMPORTANT RULES:
+            1. Preserve ALL HTML tags exactly as they are (including spans, links, etc.)
+            2. Keep proper names in their original form (Montréal Beach Pro Tour, Gilles-Villeneuve, etc.)
+            3. Maintain the same formatting and structure
+            4. Only translate the actual text content, not HTML attributes
+            5. Return only the translated text with preserved HTML
+            
+            Text to translate:
+            ${text}`
+          }]
+        })
+      });
+      
+      if (!response.ok) {
+        console.error('Anthropic API error:', response.status);
+        return res.status(500).json({ error: 'Translation service unavailable' });
+      }
+      
+      const result = await response.json() as any;
+      const translatedText = result.content?.[0]?.text || text;
+      
+      res.json({ translatedText });
+      
+    } catch (error) {
+      console.error('Translation error:', error);
+      res.status(500).json({ error: 'Translation failed' });
     }
   });
   

@@ -778,8 +778,45 @@
             currentEditId = null;
         }
 
-        // Smart translation function - translates text while preserving HTML structure
+        // AI-powered translation function using Anthropic API
         async function translateText(text, fromLang = 'fr', toLang = 'en') {
+            if (!text || !text.trim()) return text;
+            if (fromLang === toLang) return text;
+            
+            try {
+                console.log('Starting AI translation:', text.substring(0, 100) + '...');
+                
+                // Call backend translation API
+                const response = await fetch('/api/translate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-admin-password': 'admin123'
+                    },
+                    body: JSON.stringify({
+                        text: text,
+                        fromLang: fromLang,
+                        toLang: toLang
+                    })
+                });
+                
+                if (!response.ok) {
+                    console.error('Translation API error:', response.status);
+                    return await fallbackTranslation(text, fromLang, toLang);
+                }
+                
+                const result = await response.json();
+                console.log('AI translation successful');
+                return result.translatedText || text;
+                
+            } catch (error) {
+                console.error('Translation failed:', error);
+                return await fallbackTranslation(text, fromLang, toLang);
+            }
+        }
+        
+        // Fallback translation using phrase dictionary
+        async function fallbackTranslation(text, fromLang = 'fr', toLang = 'en') {
             if (!text || !text.trim()) return text;
             
             // If translating from French to English
@@ -791,7 +828,7 @@
                     return `__HTML_TAG_${htmlTags.length - 1}__`;
                 });
                 
-                // Comprehensive translation dictionary (most specific phrases first)
+                // Essential translations for fallback
                 const translations = {
                     // Complete sentences
                     'Le Volleyball World Beach Pro Tour – Elite revient à Montréal!': 'The Volleyball World Beach Pro Tour – Elite returns to Montreal!',
