@@ -11,6 +11,15 @@
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
     
     <style>
+        /* Tonic Brand Colors */
+        :root {
+            --tonic-primary: #f97316;
+            --tonic-secondary: #ea580c;
+            --tonic-accent: #fb923c;
+            --tonic-dark: #1a1a1a;
+            --tonic-light: #fef3c7;
+        }
+
         /* Category Colors */
         .category-beach { background-color: #ff0e9b; }
         .category-cycling { background-color: #b7d233; }
@@ -21,40 +30,90 @@
         .category-21k { background-color: #f59e0b; }
         .category-tonic { background-color: #f97316; }
         
-        .pr-card {
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(147, 51, 234, 0.1) 100%);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        /* Tonic Branded Components */
+        .tonic-header {
+            background: linear-gradient(135deg, var(--tonic-dark) 0%, #2d2d2d 100%);
+            border-bottom: 2px solid var(--tonic-primary);
         }
         
-        /* Dark Quill Editor Theme */
+        .tonic-btn-primary {
+            background: linear-gradient(135deg, var(--tonic-primary) 0%, var(--tonic-secondary) 100%);
+            border: none;
+            transition: all 0.3s ease;
+        }
+        
+        .tonic-btn-primary:hover {
+            background: linear-gradient(135deg, var(--tonic-secondary) 0%, var(--tonic-primary) 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.4);
+        }
+        
+        .tonic-card {
+            background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(234, 88, 12, 0.05) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(249, 115, 22, 0.2);
+            border-radius: 1rem;
+        }
+        
+        .language-toggle {
+            background: var(--tonic-primary);
+            border: 2px solid var(--tonic-accent);
+            border-radius: 50px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .language-toggle:hover {
+            background: var(--tonic-secondary);
+            box-shadow: 0 0 20px rgba(249, 115, 22, 0.3);
+        }
+        
+        .lang-active {
+            background: white !important;
+            color: var(--tonic-primary) !important;
+            font-weight: bold;
+        }
+        
+        /* Dark Quill Editor Theme with Tonic Colors */
         .ql-editor {
             background-color: #1f2937 !important;
             color: white !important;
-            border: 1px solid #374151 !important;
+            border: 1px solid var(--tonic-primary) !important;
         }
         
         .ql-toolbar {
             background-color: #374151 !important;
-            border: 1px solid #4b5563 !important;
+            border: 1px solid var(--tonic-primary) !important;
             border-bottom: none !important;
         }
         
         .ql-toolbar .ql-stroke {
-            stroke: white !important;
+            stroke: var(--tonic-accent) !important;
         }
         
         .ql-toolbar .ql-fill {
-            fill: white !important;
+            fill: var(--tonic-accent) !important;
         }
         
         .ql-toolbar button:hover {
-            background-color: #4b5563 !important;
+            background-color: rgba(249, 115, 22, 0.2) !important;
+        }
+        
+        .ql-toolbar button.ql-active {
+            background-color: var(--tonic-primary) !important;
         }
         
         .ql-container {
-            border: 1px solid #374151 !important;
+            border: 1px solid var(--tonic-primary) !important;
             border-top: none !important;
+        }
+        
+        /* Login Modal Tonic Styling */
+        .tonic-login {
+            background: linear-gradient(135deg, var(--tonic-dark) 0%, #2d2d2d 100%);
+            border: 2px solid var(--tonic-primary);
+            box-shadow: 0 20px 40px rgba(249, 115, 22, 0.3);
         }
     </style>
 </head>
@@ -62,13 +121,17 @@
 
     <!-- Login Modal -->
     <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
-        <div class="bg-gray-800 rounded-lg p-6 max-w-sm w-full m-4">
-            <h2 class="text-xl font-bold mb-4 text-center">CMS Groupe Tonic</h2>
+        <div class="tonic-login rounded-lg p-8 max-w-md w-full m-4">
+            <div class="text-center mb-6">
+                <img src="../images/tonic-logo.png" alt="Groupe Tonic" class="h-12 mx-auto mb-4" />
+                <h2 class="text-2xl font-bold text-white">Content Management System</h2>
+                <p class="text-gray-300 text-sm">Créateur d'expériences mémorables</p>
+            </div>
             <form id="loginForm">
-                <input type="password" id="passwordInput" placeholder="Mot de passe" 
-                       class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg mb-4 text-white">
-                <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
-                    Se connecter
+                <input type="password" id="passwordInput" placeholder="Enter password" 
+                       class="w-full px-4 py-3 bg-gray-700 border-2 border-gray-600 rounded-lg mb-6 text-white focus:border-orange-500 focus:outline-none transition-colors">
+                <button type="submit" class="w-full tonic-btn-primary text-white py-3 rounded-lg font-semibold">
+                    Access CMS
                 </button>
             </form>
         </div>
@@ -76,16 +139,26 @@
 
     <!-- CMS Interface -->
     <div id="cmsInterface" class="hidden min-h-screen">
-        <header class="bg-gray-800 shadow p-4">
+        <header class="tonic-header shadow-lg p-6">
             <div class="flex justify-between items-center max-w-6xl mx-auto">
-                <h1 class="text-xl font-bold">CMS - Gestion de contenu</h1>
                 <div class="flex items-center gap-4">
-                    <button onclick="toggleLanguage()" id="langToggle" class="text-sm px-3 py-1 bg-blue-600 rounded hover:bg-blue-700 transition-colors">
-                        Français / English
-                    </button>
-                    <span id="langIndicator" class="text-sm px-3 py-1 bg-gray-600 rounded">FR</span>
-                    <button onclick="logout()" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
-                        Déconnexion
+                    <img src="../images/tonic-logo.png" alt="Groupe Tonic" class="h-8" />
+                    <div>
+                        <h1 class="text-xl font-bold text-white">Content Management System</h1>
+                        <p class="text-orange-300 text-xs">Créateur d'expériences mémorables</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="language-toggle flex rounded-full p-1">
+                        <button onclick="setLanguage('fr')" id="langFr" class="px-4 py-2 rounded-full text-sm font-medium transition-all lang-active">
+                            Français
+                        </button>
+                        <button onclick="setLanguage('en')" id="langEn" class="px-4 py-2 rounded-full text-sm font-medium transition-all text-white">
+                            English
+                        </button>
+                    </div>
+                    <button onclick="logout()" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors">
+                        Logout
                     </button>
                 </div>
             </div>
@@ -95,19 +168,19 @@
             <!-- Content Type Selector -->
             <div class="flex gap-4 mb-6">
                 <button onclick="showContent('news')" id="newsBtn" 
-                        class="px-6 py-3 bg-blue-600 text-white rounded-lg">
-                    Actualités
+                        class="tonic-btn-primary px-6 py-3 text-white rounded-lg">
+                    <span class="fr-text">Actualités</span><span class="en-text hidden">News</span>
                 </button>
                 <button onclick="showContent('jobs')" id="jobsBtn" 
                         class="px-6 py-3 bg-gray-700 text-gray-300 rounded-lg hover:bg-gray-600">
-                    Emplois
+                    <span class="fr-text">Emplois</span><span class="en-text hidden">Jobs</span>
                 </button>
             </div>
 
             <!-- Add Content Button -->
             <button onclick="showAddForm()" 
-                    class="bg-green-600 text-white px-6 py-3 rounded-lg mb-6 hover:bg-green-700">
-                + Ajouter du contenu
+                    class="tonic-btn-primary text-white px-6 py-3 rounded-lg mb-6">
+                + <span class="fr-text">Ajouter du contenu</span><span class="en-text hidden">Add Content</span>
             </button>
 
             <!-- Content Display -->
@@ -238,11 +311,40 @@
             });
         }
 
-        // Language toggle functionality
-        function toggleLanguage() {
-            currentLanguage = currentLanguage === 'fr' ? 'en' : 'fr';
-            document.getElementById('langIndicator').textContent = currentLanguage.toUpperCase();
+        // Language toggle functionality  
+        function setLanguage(lang) {
+            currentLanguage = lang;
+            
+            // Update button styles
+            const frBtn = document.getElementById('langFr');
+            const enBtn = document.getElementById('langEn');
+            
+            if (lang === 'fr') {
+                frBtn.classList.add('lang-active');
+                enBtn.classList.remove('lang-active');
+                enBtn.classList.add('text-white');
+            } else {
+                enBtn.classList.add('lang-active');
+                frBtn.classList.remove('lang-active');
+                frBtn.classList.add('text-white');
+            }
+            
+            // Update text content
+            updateLanguageText();
             loadContent();
+        }
+        
+        function updateLanguageText() {
+            const frTexts = document.querySelectorAll('.fr-text');
+            const enTexts = document.querySelectorAll('.en-text');
+            
+            if (currentLanguage === 'fr') {
+                frTexts.forEach(el => el.classList.remove('hidden'));
+                enTexts.forEach(el => el.classList.add('hidden'));
+            } else {
+                frTexts.forEach(el => el.classList.add('hidden'));
+                enTexts.forEach(el => el.classList.remove('hidden'));
+            }
         }
 
         // Content type switching
@@ -254,11 +356,11 @@
             const jobsBtn = document.getElementById('jobsBtn');
             
             if (type === 'news') {
-                newsBtn.className = 'px-6 py-3 bg-blue-600 text-white rounded-lg';
+                newsBtn.className = 'tonic-btn-primary px-6 py-3 text-white rounded-lg';
                 jobsBtn.className = 'px-6 py-3 bg-gray-700 text-gray-300 rounded-lg hover:bg-gray-600';
             } else {
                 newsBtn.className = 'px-6 py-3 bg-gray-700 text-gray-300 rounded-lg hover:bg-gray-600';
-                jobsBtn.className = 'px-6 py-3 bg-blue-600 text-white rounded-lg';
+                jobsBtn.className = 'tonic-btn-primary px-6 py-3 text-white rounded-lg';
             }
             
             // Show/hide job-specific fields
@@ -296,7 +398,7 @@
                 const image = getImage(item.category);
                 
                 return `
-                    <div class="pr-card rounded-xl p-6">
+                    <div class="tonic-card rounded-xl p-6">
                         <div class="flex gap-4">
                             <div class="w-24 h-20 flex-shrink-0 relative">
                                 <img src="${image}" alt="${item.category}" class="w-full h-full object-cover rounded-lg">
@@ -308,15 +410,15 @@
                                         ${item.category}
                                     </span>
                                     <button onclick="deleteContent(${item.id})" 
-                                            class="text-red-400 hover:text-red-300 text-sm px-3 py-1 hover:bg-red-900/20 rounded">
-                                        Supprimer
+                                            class="text-red-400 hover:text-red-300 text-sm px-3 py-1 hover:bg-red-900/20 rounded transition-colors">
+                                        Delete
                                     </button>
                                 </div>
-                                <h3 class="font-bold text-lg mb-2">${item.title}</h3>
-                                <p class="text-gray-300 text-sm mb-3">${item.subtitle}</p>
-                                ${item.salary ? `<span class="inline-block px-3 py-1 bg-green-600 text-white text-xs rounded-full mb-2">${item.salary}</span>` : ''}
-                                <p class="text-gray-400 text-xs">${formatDate(item.date)}</p>
-                                <div class="mt-3 text-gray-300 text-sm">
+                                <h3 class="font-bold text-lg mb-2 text-white">${item.title}</h3>
+                                <p class="text-orange-200 text-sm mb-3">${item.subtitle}</p>
+                                ${item.salary ? `<span class="inline-block px-3 py-1 tonic-btn-primary text-white text-xs rounded-full mb-2">${item.salary}</span>` : ''}
+                                <p class="text-orange-300 text-xs">${formatDate(item.date)}</p>
+                                <div class="mt-3 text-gray-200 text-sm">
                                     <div class="max-h-20 overflow-hidden">
                                         ${item.content.substring(0, 150)}${item.content.length > 150 ? '...' : ''}
                                     </div>
@@ -440,6 +542,9 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Set focus on password field
             document.getElementById('passwordInput').focus();
+            
+            // Initialize language
+            updateLanguageText();
         });
     </script>
 </body>
