@@ -81,7 +81,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Serve CMS directly - MUST be first before any other middleware
   app.get("/cms", (req, res) => {
-    res.sendFile(path.join(publicPath, "cms-full.html"));
+    res.sendFile(path.join(publicPath, "cms.html"));
   });
 
   // CMS API Routes
