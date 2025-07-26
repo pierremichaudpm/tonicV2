@@ -77,6 +77,26 @@
         .cat-21k { background: linear-gradient(135deg, #f59e0b, rgba(245, 158, 11, 0.8)); }
         .cat-tonic { background: linear-gradient(135deg, #f97316, rgba(249, 115, 22, 0.8)); }
 
+        /* News card subtle orange overlay for better contrast */
+        .news-card {
+            position: relative;
+        }
+        
+        .news-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(249, 115, 22, 0.04), rgba(249, 115, 22, 0.02));
+            border-radius: inherit;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .news-card > * {
+            position: relative;
+            z-index: 2;
+        }
+
         /* Modal styles */
         .modal-backdrop {
             position: fixed;

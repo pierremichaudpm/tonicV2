@@ -114,6 +114,26 @@
         .category-21k { --cat-color: #f59e0b; background: linear-gradient(135deg, var(--cat-color), rgba(245, 158, 11, 0.8)); }
         .category-tonic { --cat-color: #f97316; background: linear-gradient(135deg, var(--cat-color), rgba(249, 115, 22, 0.8)); }
 
+        /* Job card subtle orange overlay for better contrast */
+        .job-card {
+            position: relative;
+        }
+        
+        .job-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(249, 115, 22, 0.04), rgba(249, 115, 22, 0.02));
+            border-radius: inherit;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .job-card > * {
+            position: relative;
+            z-index: 2;
+        }
+
         /* Special styling for Tonic logo images in job cards */
         .job-card img[src*="tonic-logo.png"] {
             width: 180px !important;
