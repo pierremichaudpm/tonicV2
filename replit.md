@@ -392,7 +392,9 @@ The website is now fully operational and matches the original local/Netlify func
 - **Data persistence**: All changes saved to JavaScript arrays and visible on website pages
 - **Normal color scheme**: Removed Tonic branding colors, using standard blue/gray theme while keeping logo
 - **Navigation consistency**: News pages now use identical navigation structure as other pages
-- **Status**: ✅ FULLY FUNCTIONAL - CMS provides complete content management with create, edit, delete capabilities
+- **Delete functionality fix**: Resolved delete button issues by using data attributes and custom modal instead of browser confirm
+- **Category color system**: Beach Pro Tour (Pink), UCI 2026 (Blue), Grands Prix Cyclistes (Purple), Marathon Beneva (Red), Studio 76 (Green), Dock 619 (Gray), 21K de Montréal (Yellow), Groupe Tonic (Dark gray)
+- **Status**: ✅ FULLY FUNCTIONAL - CMS provides complete content management with working delete functionality and proper category colors
 
 ### Job Pages Content Update - July 25, 2025 ✅ COMPLETED
 - **"Why work for Groupe Tonic" section updated**: Replaced existing culture sections on both French and English job pages
