@@ -809,6 +809,11 @@
                 
                 const result = await response.json();
                 console.log('AI translation successful');
+                console.log('INVESTIGATION - AI returned content length:', result.translatedText?.length || 0);
+                console.log('INVESTIGATION - AI returned content (first 500 chars):');
+                console.log(result.translatedText?.substring(0, 500));
+                console.log('INVESTIGATION - AI returned content (last 500 chars):');
+                console.log(result.translatedText?.substring(result.translatedText?.length - 500));
                 return result.translatedText || text;
                 
             } catch (error) {
@@ -1013,6 +1018,11 @@
                 
                 // Create translated version using complete data
                 console.log('Translating complete content of length:', completeItemData.content?.length || 0);
+                console.log('INVESTIGATION - Content being sent to AI translator (first 500 chars):');
+                console.log(completeItemData.content?.substring(0, 500));
+                console.log('INVESTIGATION - Content being sent to AI translator (last 500 chars):');
+                console.log(completeItemData.content?.substring(completeItemData.content.length - 500));
+                
                 const translatedItem = {
                     ...completeItemData,
                     title: await translateText(completeItemData.title, sourceLang, targetLang),
@@ -1206,6 +1216,10 @@
                                 console.log('Found complete saved item for translation');
                                 console.log('Complete saved content length:', completeItemForTranslation.content?.length || 0);
                                 console.log('Quill content length (for comparison):', itemData.content?.length || 0);
+                                console.log('INVESTIGATION - First 500 chars of complete content:');
+                                console.log(completeItemForTranslation.content?.substring(0, 500));
+                                console.log('INVESTIGATION - Last 500 chars of complete content:');
+                                console.log(completeItemForTranslation.content?.substring(completeItemForTranslation.content.length - 500));
                                 
                                 // Use the complete saved data for translation
                                 await autoTranslateContent(completeItemForTranslation, currentLang);
