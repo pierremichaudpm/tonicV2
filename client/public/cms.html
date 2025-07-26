@@ -1049,13 +1049,22 @@
             submitBtn.textContent = 'Sauvegarde...';
             submitBtn.disabled = true;
             
+            // Get complete content from Quill
+            let fullContent = '';
+            if (quill) {
+                // Try multiple methods to get complete content
+                fullContent = quill.getSemanticHTML() || quill.container.firstChild.innerHTML || quill.root.innerHTML;
+                console.log('Full content length:', fullContent.length);
+                console.log('Content preview:', fullContent.substring(0, 200) + '...');
+            }
+            
             const itemData = {
                 id: currentEditId || Date.now().toString(),
                 title: document.getElementById('title').value,
                 subtitle: document.getElementById('subtitle').value,
                 category: document.getElementById('category').value,
                 date: document.getElementById('date').value,
-                content: quill ? quill.root.innerHTML : ''
+                content: fullContent
             };
 
             if (currentType === 'jobs') {
@@ -1201,10 +1210,12 @@
                     salaryInput.value = item.salary;
                 }
                 
-                // Set Quill editor content
+                // Set Quill editor content with full HTML preservation
                 if (quill) {
                     if (item.content) {
-                        quill.root.innerHTML = item.content;
+                        // Use pasteHTML for better content preservation
+                        quill.clipboard.dangerouslyPasteHTML(item.content);
+                        console.log('Loaded content length:', item.content.length);
                     } else {
                         quill.setText('');
                     }

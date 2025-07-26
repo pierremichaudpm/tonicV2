@@ -332,6 +332,17 @@ The website is now fully operational and matches the original local/Netlify func
 - **Simple CMS preserved**: Working edit-cms.html system remains bulletproof and isolated
 - **Status**: ✅ PRODUCTION READY - Clean, optimized codebase with 60% reduction in unused files/code
 
+### AI Translation System Enhancement - January 26, 2025 ✅ COMPLETED
+- **Claude 4.0 Sonnet integration**: Upgraded from Claude 3.5 to latest Claude 4.0 model for superior translation quality
+- **Increased token limit**: Doubled from 2000 to 4000 tokens to handle complete long-form French press releases
+- **Complete content preservation**: Enhanced Quill editor handling to capture and translate entire articles without truncation
+- **HTML formatting preservation**: Maintains all spans, links, colors, and formatting during translation process
+- **Visual loading feedback**: Added "Sauvegarde..." and "Traduction..." states for better user experience
+- **Robust error handling**: Comprehensive fallback system with phrase dictionary backup
+- **French content saving fixed**: Resolved blocking issues preventing French content from being saved properly
+- **Production integration**: AI translation endpoint properly integrated with authentication and error handling
+- **Status**: ✅ FULLY FUNCTIONAL - Complete, professional-quality French-to-English translation system operational
+
 ### Jobs Page Visual Consistency - July 24, 2025 ✅ COMPLETED
 - **Layout standardization**: Updated job cards to match exact news format with horizontal layout (image left, content right)
 - **Image sizing**: Applied consistent sm:w-48 h-32 image dimensions matching news pages
