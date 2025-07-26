@@ -390,6 +390,16 @@ The website is now fully operational and matches the original local/Netlify func
 - **Cross-page language switching**: Fixed FR/EN toggle links between corresponding legal pages
 - **Status**: ✅ FULLY FUNCTIONAL - All modal headers opaque, all legal page navigation working properly
 
+### Quill CMS Heading Display Fix - January 26, 2025 ✅ COMPLETED
+- **Issue resolved**: Web pages now properly display bigger titles created with Quill editor in CMS
+- **Root cause**: Web pages were missing CSS for Quill-specific heading classes (ql-size-huge, ql-size-large, ql-header-1/2/3)
+- **Solution implemented**: Added comprehensive Quill heading styles to shared.css with proper font sizes:
+  - Huge headings: 2.5em (ql-size-huge)
+  - Large headings: 1.75em (ql-size-large)
+  - Header 1: 2em, Header 2: 1.5em, Header 3: 1.25em
+- **Modal compatibility**: Ensured all Quill headings display in white color within modals
+- **Status**: ✅ PRODUCTION READY - All CMS heading formats now render correctly on web pages
+
 ### CMS Complete Functionality Fix - January 26, 2025 ✅ COMPLETED
 - **Fixed JavaScript errors**: Removed duplicate `categoryImages` declaration that was preventing CMS from loading
 - **Added full edit functionality**: Content can now be edited with pre-populated form fields and Quill editor
