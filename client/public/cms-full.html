@@ -179,6 +179,27 @@
             color: #374151 !important;
             background: white !important;
         }
+        
+        /* Button styling for dark mode */
+        body.dark .content-card button {
+            color: white !important;
+        }
+        
+        body.dark .bg-blue-500 {
+            background: #3b82f6 !important;
+        }
+        
+        body.dark .bg-red-500 {
+            background: #ef4444 !important;
+        }
+        
+        body.dark .bg-blue-500:hover {
+            background: #2563eb !important;
+        }
+        
+        body.dark .bg-red-500:hover {
+            background: #dc2626 !important;
+        }
     </style>
 </head>
 <body class="min-h-screen text-gray-900">
@@ -507,11 +528,11 @@
                                 ${item.content ? item.content.substring(0, 200) + '...' : ''}
                             </div>
                         </div>
-                        <div class="flex space-x-2 ml-4">
-                            <button onclick="editItem('${item.id || item.title}')" class="text-blue-600 hover:text-blue-800 px-3 py-1 rounded bg-blue-50">
+                        <div class="flex space-x-2 ml-4 flex-shrink-0">
+                            <button onclick="editItem('${item.id || item.title}')" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition-all shadow-sm">
                                 Modifier
                             </button>
-                            <button onclick="deleteItem('${item.id || item.title}')" class="text-red-600 hover:text-red-800 px-3 py-1 rounded bg-red-50">
+                            <button onclick="deleteItem('${item.id || item.title}')" class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition-all shadow-sm">
                                 Supprimer
                             </button>
                         </div>
