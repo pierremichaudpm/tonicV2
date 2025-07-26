@@ -117,21 +117,21 @@
         .category-tonic { --cat-color: #f97316; background: linear-gradient(135deg, var(--cat-color), rgba(249, 115, 22, 0.8)); }
 
         /* News card subtle orange overlay for better contrast */
-        .pr-card {
+        .pr-card, .job-card {
             position: relative;
         }
         
-        .pr-card::before {
+        .pr-card::before, .job-card::before {
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, rgba(249, 115, 22, 0.08), rgba(249, 115, 22, 0.05));
+            background: linear-gradient(135deg, rgba(249, 115, 22, 0.12), rgba(249, 115, 22, 0.08));
             border-radius: inherit;
             pointer-events: none;
             z-index: 1;
         }
         
-        .pr-card > * {
+        .pr-card > *, .job-card > * {
             position: relative;
             z-index: 2;
         }
