@@ -692,13 +692,33 @@
                 console.log('Items before delete:', items.length);
                 console.log('Looking for item with id:', id);
 
+                // Debug current items
+                items.forEach((item, index) => {
+                    console.log(`Item ${index}:`, {
+                        id: item.id,
+                        title: item.title,
+                        idType: typeof item.id,
+                        searchId: id,
+                        searchType: typeof id
+                    });
+                });
+
                 // Remove item by id or title - more explicit filtering
                 const initialCount = items.length;
                 items = items.filter(item => {
-                    const matches = (String(item.id) === String(id)) || (String(item.title) === String(id));
-                    if (matches) {
-                        console.log('Found item to delete:', item.title, 'ID:', item.id);
-                    }
+                    const idMatch = String(item.id) === String(id);
+                    const titleMatch = String(item.title) === String(id);
+                    const matches = idMatch || titleMatch;
+                    
+                    console.log(`Checking item "${item.title}":`, {
+                        itemId: item.id,
+                        searchId: id,
+                        idMatch,
+                        titleMatch,
+                        matches,
+                        keepItem: !matches
+                    });
+                    
                     return !matches; // Keep items that don't match
                 });
                 
