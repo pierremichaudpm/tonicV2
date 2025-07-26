@@ -429,6 +429,15 @@ The website is now fully operational and matches the original local/Netlify func
 - **Modal compatibility**: Ensured all Quill headings display in white color within modals
 - **Status**: ✅ PRODUCTION READY - All CMS heading formats now render correctly on web pages
 
+### Orange Accent Card Overlay Enhancement - January 26, 2025 ✅ COMPLETED
+- **Enhanced card visibility**: Added subtle orange overlay (#f97316) at 8-12% opacity to all job and news cards
+- **Applied to all four pages**: French/English jobs (.job-card) and news (.pr-card/.news-card) pages
+- **Improved contrast**: Cards now stand out better against black background while maintaining readability
+- **Fixed French news page**: Resolved overlay not showing by applying to both .pr-card and .job-card classes
+- **Consistent branding**: Used Tonic orange accent color for unified visual identity across platform
+- **Read more buttons standardized**: All "Lire la suite" and "Read more" buttons now use Tonic orange accent color
+- **Enhanced user experience**: Better visual hierarchy and card distinction for mobile and desktop users
+
 ### CMS Complete Functionality Fix - January 26, 2025 ✅ COMPLETED
 - **Fixed JavaScript errors**: Removed duplicate `categoryImages` declaration that was preventing CMS from loading
 - **Added full edit functionality**: Content can now be edited with pre-populated form fields and Quill editor
