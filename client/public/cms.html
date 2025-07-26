@@ -609,9 +609,9 @@
                     const itemId = item.id || item.title || Math.random().toString(36);
                     
                     return `
-                        <div class="card content-card p-6 rounded-lg" style="overflow: hidden;">
-                            <div class="flex flex-row gap-4">
-                                <div class="flex-1 min-w-0">
+                        <div class="card content-card p-6 rounded-lg" style="overflow: hidden; position: relative;">
+                            <div style="display: flex; flex-direction: row; gap: 1rem; align-items: flex-start;">
+                                <div style="flex: 1; min-width: 0;">
                                     <h3 class="text-xl font-semibold text-gray-900 mb-2" style="word-break: break-word;">${item.title || ''}</h3>
                                     ${item.subtitle ? `<p class="text-gray-600 mb-2" style="word-break: break-word;">${item.subtitle}</p>` : ''}
                                     <div class="flex flex-wrap items-center gap-3 text-sm text-gray-500 mb-3">
@@ -623,11 +623,11 @@
                                         ${item.content ? item.content.substring(0, 200).replace(/<[^>]*>/g, '') + '...' : ''}
                                     </div>
                                 </div>
-                                <div class="flex flex-col justify-start gap-2 flex-shrink-0">
-                                    <button data-action="edit" data-id="${String(itemId).replace(/'/g, "\\'")}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm whitespace-nowrap">
+                                <div style="display: flex; flex-direction: column; gap: 0.5rem; flex-shrink: 0;">
+                                    <button data-action="edit" data-id="${String(itemId).replace(/'/g, "\\'")}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm" style="white-space: nowrap;">
                                         ${currentLang === 'fr' ? 'Modifier' : 'Edit'}
                                     </button>
-                                    <button data-action="delete" data-id="${String(itemId).replace(/'/g, "\\'")}" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm whitespace-nowrap">
+                                    <button data-action="delete" data-id="${String(itemId).replace(/'/g, "\\'")}" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm" style="white-space: nowrap;">
                                         ${currentLang === 'fr' ? 'Supprimer' : 'Delete'}
                                     </button>
                                 </div>
