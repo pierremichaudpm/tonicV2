@@ -510,16 +510,36 @@
         // Content loading
         async function loadContent() {
             try {
+                console.log('Loading content for:', currentType, currentLang);
                 const response = await fetch(`/api/cms/content/${currentType}/${currentLang}`, {
                     headers: {
                         'x-admin-password': 'admin123'
                     }
                 });
 
+                console.log('Response status:', response.status);
+                
+                if (!response.ok) {
+                    throw new Error('Failed to load content');
+                }
+
                 const result = await response.json();
+                console.log('Loaded data:', result.data);
                 displayContent(result.data || []);
             } catch (error) {
                 console.error('Erreur de chargement:', error);
+                // Display empty state on error
+                const container = currentType === 'jobs' ? 
+                    document.getElementById('jobsList') : 
+                    document.getElementById('newsList');
+                    
+                if (container) {
+                    container.innerHTML = `
+                        <div class="text-center py-8 text-gray-500">
+                            <p>Erreur de chargement. Veuillez rafraîchir la page.</p>
+                        </div>
+                    `;
+                }
             }
         }
 

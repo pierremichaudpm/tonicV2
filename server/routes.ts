@@ -27,6 +27,8 @@ const readDataFile = (filename: string) => {
         const filePath = path.join(__dirname, '../client/public/js', filename);
         const content = fs.readFileSync(filePath, 'utf8');
         
+        console.log('Reading file:', filename);
+        
         // Extract the array from the JavaScript file based on variable names
         let match;
         if (filename.includes('emplois-data-en')) {
@@ -39,16 +41,23 @@ const readDataFile = (filename: string) => {
             match = content.match(/const\s+pressReleases\s*=\s*(\[[\s\S]*?\]);/);
         }
         
+        console.log('Match found:', !!match);
+        
         if (match) {
             try {
                 // First try JSON parsing for simple cases
                 return JSON.parse(match[1]);
             } catch (e) {
+                console.log('JSON parse failed, trying eval');
                 // If JSON fails, evaluate the JavaScript array (safe in controlled context)
                 try {
-                    return eval('(' + match[1] + ')');
+                    // Use Function constructor instead of eval for safety
+                    const fn = new Function('return ' + match[1]);
+                    const result = fn();
+                    console.log('Eval successful, items count:', result.length);
+                    return result;
                 } catch (evalError) {
-                    console.error('Both JSON and eval failed:', evalError);
+                    console.error('Both JSON and Function constructor failed:', evalError);
                     return [];
                 }
             }
