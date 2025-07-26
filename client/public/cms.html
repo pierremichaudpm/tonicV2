@@ -605,11 +605,11 @@
                                         ${item.content ? item.content.substring(0, 200) + '...' : ''}
                                     </div>
                                 </div>
-                                <div class="flex space-x-2 ml-4 flex-shrink-0">
-                                    <button data-action="edit" data-id="${String(itemId).replace(/'/g, "\\'")}" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition-all shadow-sm">
+                                <div class="flex gap-3 ml-4 flex-shrink-0">
+                                    <button data-action="edit" data-id="${String(itemId).replace(/'/g, "\\'")}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm whitespace-nowrap">
                                         Modifier
                                     </button>
-                                    <button data-action="delete" data-id="${String(itemId).replace(/'/g, "\\'")}" class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition-all shadow-sm">
+                                    <button data-action="delete" data-id="${String(itemId).replace(/'/g, "\\'")}" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm whitespace-nowrap">
                                         Supprimer
                                     </button>
                                 </div>
