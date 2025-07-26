@@ -495,6 +495,7 @@
         let currentType = 'jobs';
         let currentLang = 'fr';
         let currentEditId = null;
+        let originalEditData = null; // Store original data for translation
         let isAuthenticated = false;
         let quill = null;
 
@@ -735,6 +736,7 @@
         // Modal management
         window.openModal = function(type, itemId = null) {
             currentEditId = itemId;
+            originalEditData = null; // Clear original data
             
             // Show/hide salary field based on type
             document.getElementById('salaryField').style.display = type === 'job' || currentType === 'jobs' ? 'block' : 'none';
@@ -1049,13 +1051,36 @@
             submitBtn.textContent = 'Sauvegarde...';
             submitBtn.disabled = true;
             
-            // Get complete content from Quill
+            // Get complete content from Quill using the most reliable method
             let fullContent = '';
             if (quill) {
-                // Try multiple methods to get complete content
-                fullContent = quill.getSemanticHTML() || quill.container.firstChild.innerHTML || quill.root.innerHTML;
-                console.log('Full content length:', fullContent.length);
+                // Use getText to get plain text length for comparison
+                const textLength = quill.getLength();
+                console.log('Quill text length:', textLength);
+                
+                // Try different methods to get complete HTML
+                const methods = [
+                    () => quill.getSemanticHTML ? quill.getSemanticHTML() : null,
+                    () => quill.container.querySelector('.ql-editor').innerHTML,
+                    () => quill.root.innerHTML,
+                    () => quill.container.firstChild.innerHTML
+                ];
+                
+                for (let i = 0; i < methods.length; i++) {
+                    try {
+                        const content = methods[i]();
+                        if (content && content.length > fullContent.length) {
+                            fullContent = content;
+                            console.log(`Method ${i + 1} gave longer content:`, content.length);
+                        }
+                    } catch (e) {
+                        console.log(`Method ${i + 1} failed:`, e.message);
+                    }
+                }
+                
+                console.log('Final content length:', fullContent.length);
                 console.log('Content preview:', fullContent.substring(0, 200) + '...');
+                console.log('Content ending:', fullContent.substring(fullContent.length - 200));
             }
             
             const itemData = {
@@ -1129,7 +1154,17 @@
                     if (currentLang === 'fr' && autoTranslateCheckbox && autoTranslateCheckbox.checked) {
                         console.log('Starting auto-translation...');
                         submitBtn.textContent = 'Traduction...';
-                        await autoTranslateContent(itemData, currentLang);
+                        
+                        // Use original complete data for translation instead of potentially truncated Quill content
+                        const dataForTranslation = { ...itemData };
+                        if (originalEditData && originalEditData.content && originalEditData.content.length > itemData.content.length) {
+                            console.log('Using original complete content for translation');
+                            console.log('Original content length:', originalEditData.content.length);
+                            console.log('Quill content length:', itemData.content.length);
+                            dataForTranslation.content = originalEditData.content;
+                        }
+                        
+                        await autoTranslateContent(dataForTranslation, currentLang);
                     } else {
                         console.log('Auto-translation skipped');
                     }
@@ -1182,8 +1217,9 @@
                     return;
                 }
                 
-                // Set current edit ID
+                // Set current edit ID and store original data
                 currentEditId = item.id || id;
+                originalEditData = { ...item }; // Store complete original data
                 
                 // Show modal
                 document.getElementById('contentModal').classList.remove('hidden');
@@ -1213,8 +1249,20 @@
                 // Set Quill editor content with full HTML preservation
                 if (quill) {
                     if (item.content) {
-                        // Use pasteHTML for better content preservation
+                        // Clear and set content with full HTML preservation
+                        quill.setContents([]);
                         quill.clipboard.dangerouslyPasteHTML(item.content);
+                        
+                        // Force Quill to render all content by scrolling to end and back
+                        setTimeout(() => {
+                            const scrollContainer = quill.scrollingContainer || quill.container;
+                            const originalScrollTop = scrollContainer.scrollTop;
+                            scrollContainer.scrollTop = scrollContainer.scrollHeight;
+                            setTimeout(() => {
+                                scrollContainer.scrollTop = originalScrollTop;
+                            }, 100);
+                        }, 100);
+                        
                         console.log('Loaded content length:', item.content.length);
                     } else {
                         quill.setText('');
