@@ -525,7 +525,9 @@
 
                 const result = await response.json();
                 console.log('Loaded data:', result.data);
+                console.log('About to call displayContent');
                 displayContent(result.data || []);
+                console.log('displayContent returned');
             } catch (error) {
                 console.error('Erreur de chargement:', error);
                 // Display empty state on error
@@ -545,11 +547,20 @@
 
         // Also, update your displayContent function to properly escape the IDs:
         function displayContent(items) {
+            console.log('displayContent called with items:', items);
+            
             const container = currentType === 'jobs' ? 
                 document.getElementById('jobsList') : 
                 document.getElementById('newsList');
+                
+            console.log('Container found:', !!container, 'Container ID:', container?.id);
             
-            if (items.length === 0) {
+            if (!container) {
+                console.error('Container not found for type:', currentType);
+                return;
+            }
+            
+            if (!items || items.length === 0) {
                 container.innerHTML = `
                     <div class="text-center py-8 text-gray-500">
                         <p>Aucun ${currentType === 'jobs' ? 'emploi' : 'nouvelle'} trouvé.</p>
@@ -558,37 +569,48 @@
                 return;
             }
 
-            container.innerHTML = items.map(item => {
-                // Use the item's ID if it exists, otherwise use the title
-                const itemId = item.id || item.title || Math.random().toString(36);
-                
-                return `
-                    <div class="card content-card p-6 rounded-lg">
-                        <div class="flex justify-between items-start">
-                            <div class="flex-1">
-                                <h3 class="text-xl font-semibold text-gray-900 mb-2">${item.title}</h3>
-                                ${item.subtitle ? `<p class="text-gray-600 mb-2">${item.subtitle}</p>` : ''}
-                                <div class="flex items-center space-x-4 text-sm text-gray-500 mb-3">
-                                    <span class="px-3 py-1 rounded-full text-sm font-medium ${getCategoryClass(item.category)}">${item.category}</span>
-                                    <span>${new Date(item.date).toLocaleDateString('fr-CA')}</span>
-                                    ${item.salary ? `<span class="font-medium">${item.salary}</span>` : ''}
+            try {
+                container.innerHTML = items.map(item => {
+                    // Use the item's ID if it exists, otherwise use the title
+                    const itemId = item.id || item.title || Math.random().toString(36);
+                    
+                    return `
+                        <div class="card content-card p-6 rounded-lg">
+                            <div class="flex justify-between items-start">
+                                <div class="flex-1">
+                                    <h3 class="text-xl font-semibold text-gray-900 mb-2">${item.title || ''}</h3>
+                                    ${item.subtitle ? `<p class="text-gray-600 mb-2">${item.subtitle}</p>` : ''}
+                                    <div class="flex items-center space-x-4 text-sm text-gray-500 mb-3">
+                                        <span class="px-3 py-1 rounded-full text-sm font-medium ${getCategoryClass(item.category)}">${item.category || ''}</span>
+                                        <span>${item.date ? new Date(item.date).toLocaleDateString('fr-CA') : ''}</span>
+                                        ${item.salary ? `<span class="font-medium">${item.salary}</span>` : ''}
+                                    </div>
+                                    <div class="text-gray-700 prose prose-sm">
+                                        ${item.content ? item.content.substring(0, 200) + '...' : ''}
+                                    </div>
                                 </div>
-                                <div class="text-gray-700 prose prose-sm">
-                                    ${item.content ? item.content.substring(0, 200) + '...' : ''}
+                                <div class="flex space-x-2 ml-4 flex-shrink-0">
+                                    <button onclick="editItem('${String(itemId).replace(/'/g, "\\'")}')" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition-all shadow-sm">
+                                        Modifier
+                                    </button>
+                                    <button onclick="deleteItem('${String(itemId).replace(/'/g, "\\'")}')" class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition-all shadow-sm">
+                                        Supprimer
+                                    </button>
                                 </div>
-                            </div>
-                            <div class="flex space-x-2 ml-4 flex-shrink-0">
-                                <button onclick="editItem('${itemId.replace(/'/g, "\\'")}')" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition-all shadow-sm">
-                                    Modifier
-                                </button>
-                                <button onclick="deleteItem('${itemId.replace(/'/g, "\\'")}')" class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition-all shadow-sm">
-                                    Supprimer
-                                </button>
                             </div>
                         </div>
+                    `;
+                }).join('');
+                
+                console.log('Content displayed successfully');
+            } catch (error) {
+                console.error('Error displaying content:', error);
+                container.innerHTML = `
+                    <div class="text-center py-8 text-red-500">
+                        <p>Erreur d'affichage du contenu</p>
                     </div>
                 `;
-            }).join('');
+            }
         }
 
         // FIXED: New event handler using event delegation
