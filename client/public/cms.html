@@ -320,6 +320,22 @@
             </div>
         </div>
 
+        <!-- Delete Confirmation Modal -->
+        <div id="deleteModal" class="fixed inset-0 bg-black/50 modal z-50 hidden flex items-center justify-center">
+            <div class="bg-white rounded-xl p-6 w-full max-w-md mx-4 shadow-xl">
+                <h2 class="text-xl font-bold text-gray-900 mb-4">Confirmer la suppression</h2>
+                <p class="text-gray-700 mb-6">Êtes-vous sûr de vouloir supprimer cet élément?</p>
+                <div class="flex justify-end space-x-3">
+                    <button onclick="cancelDelete()" class="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-lg transition-all">
+                        Annuler
+                    </button>
+                    <button onclick="confirmDelete()" class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-all">
+                        Supprimer
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <!-- Content Modal -->
         <div id="contentModal" class="fixed inset-0 bg-black/50 modal z-50 hidden flex items-center justify-center">
             <div class="bg-white rounded-xl p-6 w-full max-w-4xl mx-4 shadow-xl max-h-[90vh] overflow-y-auto">
@@ -805,17 +821,27 @@
             }
         }
 
+        let deleteItemId = null;
+        
         // Replace your existing deleteItem function with this simpler version:
-        window.deleteItem = async function(id) {
+        window.deleteItem = function(id) {
             console.log('deleteItem called with ID:', id);
+            deleteItemId = id;
+            document.getElementById('deleteModal').classList.remove('hidden');
+        }
+        
+        window.cancelDelete = function() {
+            deleteItemId = null;
+            document.getElementById('deleteModal').classList.add('hidden');
+        }
+        
+        window.confirmDelete = async function() {
+            if (!deleteItemId) return;
             
-            if (!confirm('Êtes-vous sûr de vouloir supprimer cet élément?')) {
-                console.log('User cancelled delete');
-                return;
-            }
+            document.getElementById('deleteModal').classList.add('hidden');
 
             try {
-                console.log('Proceeding with delete for ID:', id);
+                console.log('Proceeding with delete for ID:', deleteItemId);
                 
                 // Get current data
                 const response = await fetch(`/api/cms/content/${currentType}/${currentLang}`, {
@@ -830,12 +856,12 @@
                 let items = result.data || [];
                 
                 console.log('Current items:', items);
-                console.log('Looking for ID:', id);
+                console.log('Looking for ID:', deleteItemId);
                 
                 // Find and remove the item - compare both as strings
                 const filteredItems = items.filter(item => {
                     // Check both id and title since your code uses both
-                    return String(item.id) !== String(id) && String(item.title) !== String(id);
+                    return String(item.id) !== String(deleteItemId) && String(item.title) !== String(deleteItemId);
                 });
                 
                 console.log('Filtered items:', filteredItems);
@@ -862,9 +888,9 @@
                 if (saveResponse.ok) {
                     // Reload content
                     loadContent();
-                    alert('Élément supprimé avec succès!');
+                    showToast('Élément supprimé avec succès!', 'success');
                 } else {
-                    alert('Erreur lors de la suppression');
+                    showToast('Erreur lors de la suppression', 'error');
                 }
             } catch (error) {
                 console.error('Delete error:', error);
