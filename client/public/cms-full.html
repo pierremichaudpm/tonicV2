@@ -120,6 +120,16 @@
         body.dark .text-gray-400 {
             color: #94a3b8 !important;
         }
+        
+        /* Category color schemes */
+        .category-beach { background: #ff0e9b; color: white; }
+        .category-cyclistes { background: #8b5cf6; color: white; }
+        .category-marathon { background: #ef4444; color: white; }
+        .category-uci { background: #3b82f6; color: white; }
+        .category-studio { background: #10b981; color: white; }
+        .category-dock { background: #6b7280; color: white; }
+        .category-21k { background: #f59e0b; color: white; }
+        .category-tonic { background: #1f2937; color: white; }
     </style>
 </head>
 <body class="min-h-screen text-gray-900">
@@ -388,6 +398,21 @@
             loadContent();
         }
 
+        // Category color mapping
+        function getCategoryClass(category) {
+            const categoryMap = {
+                'Beach Pro Tour': 'category-beach',
+                'Grands Prix Cyclistes': 'category-cyclistes', 
+                'Marathon Beneva 21K': 'category-marathon',
+                'UCI 2026': 'category-uci',
+                'Studio 76': 'category-studio',
+                'Dock 619': 'category-dock',
+                '21K de Montréal': 'category-21k',
+                'Groupe Tonic': 'category-tonic'
+            };
+            return categoryMap[category] || 'bg-gray-500 text-white';
+        }
+
         // Content loading
         async function loadContent() {
             try {
@@ -425,7 +450,7 @@
                             <h3 class="text-xl font-semibold text-gray-900 mb-2">${item.title}</h3>
                             ${item.subtitle ? `<p class="text-gray-600 mb-2">${item.subtitle}</p>` : ''}
                             <div class="flex items-center space-x-4 text-sm text-gray-500 mb-3">
-                                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded">${item.category}</span>
+                                <span class="px-3 py-1 rounded-full text-sm font-medium ${getCategoryClass(item.category)}">${item.category}</span>
                                 <span>${new Date(item.date).toLocaleDateString('fr-CA')}</span>
                                 ${item.salary ? `<span class="font-medium">${item.salary}</span>` : ''}
                             </div>
