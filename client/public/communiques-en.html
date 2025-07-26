@@ -11,8 +11,22 @@
     <link rel="stylesheet" href="css/shared.css">
     
     <style>
+        /* CSS Variables for Tonic accent colors */
+        :root {
+            --accent-primary: #f97316;
+            --accent-light: #fb923c;
+            --accent-hover: #ea580c;
+            --accent-20: rgba(249, 115, 22, 0.2);
+        }
 
-
+        /* Text accent colors */
+        .text-accent {
+            color: var(--accent-primary);
+        }
+        
+        .text-accent:hover {
+            color: var(--accent-hover);
+        }
 
         /* Mobile Menu */
         .mobile-menu {
@@ -412,7 +426,7 @@
                                 </div>
                                 <h3 class="font-bold text-xl mb-2">${item.title}</h3>
                                 <p class="text-gray-300 mb-4">${item.subtitle}</p>
-                                <button class="inline-flex items-center text-blue-400 hover:text-blue-300 font-medium">
+                                <button class="inline-flex items-center text-accent hover:text-accent font-medium">
                                     Read more
                                     <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
