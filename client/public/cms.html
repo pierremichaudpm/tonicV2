@@ -123,35 +123,35 @@
         
         /* Category color schemes - forced with !important */
         span.bg-pink-500 { 
-            background-color: #ff0e9b !important; /* Beach Pro Tour */
+            background-color: #ff0e9b !important; /* Beach Pro Tour - Pink */
             color: white !important;
         }
         span.bg-purple-500 { 
-            background-color: #b7d233 !important; /* Grands Prix Cyclistes */
+            background-color: #463092 !important; /* Marathon Beneva - Purple */
             color: white !important;
         }
         span.bg-red-500 { 
-            background-color: #463092 !important; /* Marathon Beneva */
+            background-color: #ef4444 !important; /* Not used - Red */
             color: white !important;
         }
         span.bg-blue-500 { 
-            background-color: #3b82f6 !important; /* UCI 2026 */
+            background-color: #3b82f6 !important; /* UCI 2026 - Blue */
             color: white !important;
         }
         span.bg-green-500 { 
-            background-color: #10b981 !important; /* Studio 76 */
+            background-color: #b7d233 !important; /* Grands Prix Cyclistes & Studio 76 - Lime Green */
             color: white !important;
         }
         span.bg-gray-600 { 
-            background-color: #4b5563 !important; /* Dock 619 */
+            background-color: #4b5563 !important; /* Dock 619 - Gray */
             color: white !important;
         }
         span.bg-yellow-500 { 
-            background-color: #eab308 !important; /* 21K de Montréal */
+            background-color: #eab308 !important; /* 21K de Montréal - Yellow */
             color: white !important;
         }
         span.bg-gray-900 { 
-            background-color: #111827 !important; /* Groupe Tonic */
+            background-color: #111827 !important; /* Groupe Tonic - Dark Gray */
             color: white !important;
         }
         
@@ -236,17 +236,10 @@
                     <h1 class="text-xl font-semibold text-gray-900">CMS</h1>
                 </div>
                 <div class="flex gap-3 items-center">
-                    <div class="relative">
-                        <select id="languageToggle" class="bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-700 appearance-none pr-8 font-medium shadow-sm hover:border-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all">
-                            <option value="fr">Français</option>
-                            <option value="en">English</option>
-                        </select>
-                        <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                            </svg>
-                        </div>
-                    </div>
+                    <div class="w-px h-4 bg-gray-300"></div>
+                    <button id="languageToggle" onclick="toggleLanguage()" class="px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg font-medium transition-all">
+                        <span id="langText">EN</span>
+                    </button>
                     <button onclick="logout()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-medium transition-all shadow-sm" id="logoutBtn">Sortie</button>
                 </div>
             </div>
@@ -376,7 +369,7 @@
                                 <option value="">Sélectionner...</option>
                                 <option value="Beach Pro Tour">Beach Pro Tour</option>
                                 <option value="Grands Prix Cyclistes">Grands Prix Cyclistes</option>
-                                <option value="Marathon Beneva 21K">Marathon Beneva 21K</option>
+                                <option value="Marathon Beneva">Marathon Beneva</option>
                                 <option value="UCI 2026">UCI 2026</option>
                                 <option value="Studio 76">Studio 76</option>
                                 <option value="Dock 619">Dock 619</option>
@@ -511,10 +504,10 @@
         // Category color mapping
         function getCategoryClass(category) {
             const categoryMap = {
-                'Beach Pro Tour': 'bg-pink-500 text-white', // Pink
-                'Grands Prix Cyclistes': 'bg-purple-500 text-white', // Purple
-                'Marathon Beneva 21K': 'bg-red-500 text-white', // Red
-                'UCI 2026': 'bg-blue-500 text-white', // Blue
+                'Beach Pro Tour': 'bg-pink-500 text-white', // Pink #ff0e9b
+                'Grands Prix Cyclistes': 'bg-green-500 text-white', // Lime Green #b7d233
+                'Marathon Beneva': 'bg-purple-500 text-white', // Purple #463092
+                'UCI 2026': 'bg-blue-500 text-white', // Blue #3b82f6
                 'Studio 76': 'bg-green-500 text-white', // Green
                 'Dock 619': 'bg-gray-600 text-white', // Gray
                 '21K de Montréal': 'bg-yellow-500 text-white', // Yellow
@@ -925,12 +918,8 @@
             // Content form
             document.getElementById('contentForm').addEventListener('submit', saveItem);
 
-            // Language toggle
-            document.getElementById('languageToggle').addEventListener('change', function(e) {
-                currentLang = e.target.value;
-                loadContent();
-                updateLanguageLabels();
-            });
+            // Initialize language text
+            updateLanguageToggleText();
             
             // Add event delegation for all content buttons at document level
             document.addEventListener('click', function(e) {
@@ -959,6 +948,22 @@
                 document.getElementById('loginModal').style.display = 'flex';
             }
         });
+
+        function toggleLanguage() {
+            // Toggle between fr and en
+            currentLang = currentLang === 'fr' ? 'en' : 'fr';
+            loadContent();
+            updateLanguageLabels();
+            updateLanguageToggleText();
+        }
+
+        function updateLanguageToggleText() {
+            // Update the language toggle button text
+            const langText = document.getElementById('langText');
+            if (langText) {
+                langText.textContent = currentLang === 'fr' ? 'EN' : 'FR';
+            }
+        }
 
         function updateLanguageLabels() {
             // Toggle visibility of French/English text elements

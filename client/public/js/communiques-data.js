@@ -2,9 +2,9 @@
 const pressReleases = [
     {
         "id": 2,
-        "title": "Marathon Beneva 21K - Inscriptions",
+        "title": "Marathon Beneva 21K -fake",
         "subtitle": "La course emblématique de Montréal",
-        "category": "Marathon Beneva 21K",
+        "category": "Marathon Beneva",
         "date": "2025-01-05",
         "content": "<p>Les inscriptions pour le Marathon Beneva 21K 2025 sont maintenant ouvertes!</p><p>Rejoignez des milliers de coureurs pour cette expérience unique dans les rues de Montréal.</p><h3>Informations pratiques</h3><ul><li>Distance : 21,1 km (demi-marathon)</li><li>Date : Automne 2025</li><li>Départ : Centre-ville de Montréal</li></ul>"
     },
