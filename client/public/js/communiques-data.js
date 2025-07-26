@@ -1,56 +1,61 @@
-const pressReleases = [
-  {
-    "id": 4,
-    "date": "2024-10-22",
-    "title": "Les Championnats du Monde Route UCI 2026 dévoilent leur parcours (fake)",
-    "category": "UCI 2026",
-    "summary": "Les tracés des épreuves sur route des Championnats du Monde UCI 2026 à Montréal ont été officiellement présentés, promettant des courses spectaculaires.",
-    "content": "<p>Montréal, le 22 octobre 2024 – Le comité organisateur des Championnats du Monde Route UCI Montréal 2026 a dévoilé aujourd'hui les parcours qui accueilleront l'élite mondiale du cyclisme du 19 au 27 septembre 2026.\n            \n            Les courses se dérouleront au cœur de la métropole, avec des départs et arrivées sur l'emblématique avenue du Parc, au pied du Mont-Royal.\n            \n            Parcours élite\n            Le parcours de la course sur route élite hommes totalisera 267 km avec 4 200 mètres de dénivelé positif, incluant 17 ascensions de la côte Camillien-Houde. L'épreuve élite femmes couvrira 162 km avec 2 600 mètres de dénivelé.\n            \n            \"Ce parcours exigeant mettra en valeur les paysages iconiques de Montréal tout en offrant un défi technique à la hauteur d'un championnat du monde\"\n            \n            Plus de 1 000 athlètes représentant 75 nations sont attendus pour ces championnats qui généreront des retombées économiques estimées à 80 millions de dollars.</p>",
-    "image": "images/montreal-2026-uci-hero.jpg"
-  },
-  {
-    "id": 1753474097681,
-    "title": "wrbnbwnywrytnh",
-    "date": "2025-07-25",
-    "category": "Dock 619",
-    "summary": "rbgrbrbw",
-    "content": "<p><strong>Montréal, </strong><strong>le 17 juin 2025</strong><strong> – Le plus haut niveau du volleyball de plage est de retour à Montréal!</p>\n<p>Du 13 au 17 août 2025, le </strong><a href=\"https://en.volleyballworld.com/beachvolleyball/competitions/beach-pro-tour/2025/elite16/montreal-can/\" target=\"_blank\"><strong>Beach Pro Tour – Elite</strong></a><strong> transformera le légendaire circuit Gilles-Villeneuve en une arène spectaculaire où s’affronteront les meilleures équipes féminines et masculines au monde.</strong><strong>Après une édition 2023 marquée par les victoires retentissantes des Canadiennes Melissa Humana-Paredes et Brandie Wilkerson, ainsi que des Norvégiens Anders Mol et Christian Sørum, le tournoi s’annonce encore plus électrisant cette année au </strong><a href=\"https://mtlbeachprotour.com/?fbclid=PAZXh0bgNhZW0CMTEAAafkDLZR1stfiPf6950xE1410fCRxci9GT_AlSfkQ9OYoBG79t2G7ZPJ1uXq5A_aem_RKuJRUobUTG3jTxdlugdRw\" target=\"_blank\"><strong>Montréal Beach Pro Tour</strong></a><strong>.</p>\n<p>​​Suite à une spectaculaire médaille d’argent aux Jeux de Paris 2024, Humana-Paredes et Wilkerson reviennent à Montréal en véritables héroïnes nationales du volleyball pour participer à la seule étape canadienne du circuit.</strong><strong>L’élite mondiale. L’énergie de Montréal.</strong><strong>Les 32 meilleures équipes au monde s'affrontent pendant 5 jours pour gravir le classement international et Montréal est la seule occasion de le faire en territoire nord-américain sur le calendrier mondial 2025.</p>\n<p>Les Montréalaises et Montréalais ont donc une chance unique d’assister à ces duels.</strong><strong>Plus qu’un simple tournoi, Montréal Beach Pro Tour promet une ambiance survoltée : DJ sur place, zone gourmande, animations et expériences immersives.</p>\n<p>Un événement festif qui marie sport de haut niveau, culture urbaine et plaisir estival.</strong><strong>Les billets sont en vente dès maintenant! Rendez-vous sur </strong><a href=\"https://mtlbeachprotour.com/?fbclid=PAZXh0bgNhZW0CMTEAAafkDLZR1stfiPf6950xE1410fCRxci9GT_AlSfkQ9OYoBG79t2G7ZPJ1uXq5A_aem_RKuJRUobUTG3jTxdlugdRw\" target=\"_blank\"><strong>mtlbeachprotour.com</strong></a><strong> pour accéder aux meilleurs sièges pour vivre l’événement au cœur de l’action.</strong><strong>Déclarations</strong><strong>« Montréal occupe une place bien spéciale dans nos cœurs, surtout depuis le succès retentissant du dernier tournoi organisé ici.</p>\n<p>Les fans m’ont complètement renversée avec leur passion et leur fierté! Je sais que plusieurs athlètes ont hâte de revenir, tout comme moi et Brandie en tant que championnes en titre. J’espère qu’on pourra vivre un autre grand moment à Montréal, devant une foule canadienne incroyable », a déclaré </strong><strong>Melissa Humana-Paredes, médaillée d’argent olympique canadienne</strong><strong>.</strong><strong>« Je sais déjà que le tournoi Élite de Montréal sera le point fort de ma saison, tout simplement parce qu’on va jouer chez nous, entourées des meilleurs partisanes et partisans qui soient.</p>\n<p>J’ai vraiment hâte de défendre notre médaille d’or et de laisser notre marque canadienne dans ce sport exceptionnel », a affirmé </strong><strong>Brandie Wilkerson, médaillée d’argent olympique canadienne</strong><strong>.</strong><strong>« Nous sommes ravis de prendre les rênes de cet événement majeur et d’offrir au public montréalais un spectacle sportif d’envergure internationale qui réunira l’élite mondiale de la discipline.</p>\n<p>Nous sommes honorés de la confiance que nous accorde Volleyball World, a affirmé M. </strong><strong>Joseph Limare, directeur général de Beach Volleyball Évènements. </strong><strong>En plus d’organiser les Grands Prix </strong></p>",
-    "image": "images/dock619-hero-new.jpg"
-  },
-  {
-    "id": 1753474743979,
-    "title": "5umj5jmuki,86,",
-    "date": "2025-07-25",
-    "category": "Beach Pro Tour",
-    "summary": "yn557mi5",
-    "content": "<p><strong>Montréal, </strong><strong>le 17 juin 2025</strong><strong> – Le plus haut niveau du volleyball de plage est de retour à Montréal!</p>\n<p>Du 13 au 17 août 2025, le </strong><a href=\"https://en.volleyballworld.com/beachvolleyball/competitions/beach-pro-tour/2025/elite16/montreal-can/\" target=\"_blank\"><strong>Beach Pro Tour – Elite</strong></a><strong> transformera le légendaire circuit Gilles-Villeneuve en une arène spectaculaire où s’affronteront les meilleures équipes féminines et masculines au monde.</strong><strong>Après une édition 2023 marquée par les victoires retentissantes des Canadiennes Melissa Humana-Paredes et Brandie Wilkerson, ainsi que des Norvégiens Anders Mol et Christian Sørum, le tournoi s’annonce encore plus électrisant cette année au </strong><a href=\"https://mtlbeachprotour.com/?fbclid=PAZXh0bgNhZW0CMTEAAafkDLZR1stfiPf6950xE1410fCRxci9GT_AlSfkQ9OYoBG79t2G7ZPJ1uXq5A_aem_RKuJRUobUTG3jTxdlugdRw\" target=\"_blank\"><strong>Montréal Beach Pro Tour</strong></a><strong>.</p>\n<p>​​Suite à une spectaculaire médaille d’argent aux Jeux de Paris 2024, Humana-Paredes et Wilkerson reviennent à Montréal en véritables héroïnes nationales du volleyball pour participer à la seule étape canadienne du circuit.</strong><strong>L’élite mondiale. L’énergie de Montréal.</strong><strong>Les 32 meilleures équipes au monde s'affrontent pendant 5 jours pour gravir le classement international et Montréal est la seule occasion de le faire en territoire nord-américain sur le calendrier mondial 2025.</p>\n<p>Les Montréalaises et Montréalais ont donc une chance unique d’assister à ces duels.</strong><strong>Plus qu’un simple tournoi, Montréal Beach Pro Tour promet une ambiance survoltée : DJ sur place, zone gourmande, animations et expériences immersives.</p>\n<p>Un événement festif qui marie sport de haut niveau, culture urbaine et plaisir estival.</strong><strong>Les billets sont en vente dès maintenant! Rendez-vous sur </strong><a href=\"https://mtlbeachprotour.com/?fbclid=PAZXh0bgNhZW0CMTEAAafkDLZR1stfiPf6950xE1410fCRxci9GT_AlSfkQ9OYoBG79t2G7ZPJ1uXq5A_aem_RKuJRUobUTG3jTxdlugdRw\" target=\"_blank\"><strong>mtlbeachprotour.com</strong></a><strong> pour accéder aux meilleurs sièges pour vivre l’événement au cœur de l’action.</strong><strong>Déclarations</strong><strong>« Montréal occupe une place bien spéciale dans nos cœurs, surtout depuis le succès retentissant du dernier tournoi organisé ici.</p>\n<p>Les fans m’ont complètement renversée avec leur passion et leur fierté! Je sais que plusieurs athlètes ont hâte de revenir, tout comme moi et Brandie en tant que championnes en titre. J’espère qu’on pourra vivre un autre grand moment à Montréal, devant une foule canadienne incroyable », a déclaré </strong><strong>Melissa Humana-Paredes, médaillée d’argent olympique canadienne</strong><strong>.</strong><strong>« Je sais déjà que le tournoi Élite de Montréal sera le point fort de ma saison, tout simplement parce qu’on va jouer chez nous, entourées des meilleurs partisanes et partisans qui soient.</p>\n<p>J’ai vraiment hâte de défendre notre médaille d’or et de laisser notre marque canadienne dans ce sport exceptionnel », a affirmé </strong><strong>Brandie Wilkerson, médaillée d’argent olympique canadienne</strong><strong>.</strong><strong>« Nous sommes ravis de prendre les rênes de cet événement majeur et d’offrir au public montréalais un spectacle sportif d’envergure internationale qui réunira l’élite mondiale de la discipline.</p>\n<p>Nous sommes honorés de la confiance que nous accorde Volleyball World, a affirmé M. </strong><strong>Joseph Limare, directeur général de Beach Volleyball Évènements. </strong><strong>En plus d’organiser les Grands Prix </strong></p>",
-    "image": "images/beach-pro-tour-hero.webp"
-  },
-  {
-    "id": 1753474965530,
-    "title": "Le Volleyball World Beach Pro Tour – Elite revient à Montréal!",
-    "date": "2025-07-25",
-    "category": "Beach Pro Tour",
-    "summary": "Le Volleyball World Beach Pro Tour – Elite revient à Montréal!\n",
-    "content": "dd",
-    "image": "images/beach-pro-tour-hero.webp"
-  },
-  {
-    "id": 1753475132586,
-    "title": "3yn35y3hh5yjh3jh",
-    "date": "2025-07-25",
-    "category": "Beach Pro Tour",
-    "summary": "etyhenhe3hy",
-    "content": "etnh",
-    "image": "images/beach-pro-tour-hero.webp"
-  },
-  {
-    "id": 1753477089690,
-    "title": "vrqeer",
-    "date": "2025-07-25",
-    "category": "Beach Pro Tour",
-    "summary": "veq",
-    "content": "f33vfqvffe",
-    "image": "images/beach-pro-tour-hero.webp"
-  }
+// French news data
+const communiquesData = [
+    {
+        id: 1,
+        title: "Beach Pro Tour 2025 - Événement majeur à Montréal",
+        subtitle: "Le volleyball de plage professionnel débarque au Québec",
+        category: "Beach Pro Tour",
+        date: "2025-01-15",
+        content: `
+            <p>Nous sommes fiers d'annoncer que Montréal accueillera un événement majeur du Beach Pro Tour en 2025.</p>
+            <p>Cet événement de volleyball de plage de calibre mondial rassemblera les meilleurs athlètes internationaux dans un cadre spectaculaire au cœur de la métropole.</p>
+            <h3>Détails de l'événement</h3>
+            <ul>
+                <li>Date : Été 2025</li>
+                <li>Lieu : Site à confirmer à Montréal</li>
+                <li>Participants : Équipes internationales de haut niveau</li>
+                <li>Public attendu : Plus de 10 000 spectateurs</li>
+            </ul>
+            <p>Cette première édition montréalaise marquera un tournant pour le volleyball de plage au Québec.</p>
+        `
+    },
+    {
+        id: 2,
+        title: "Grands Prix Cyclistes - Saison 2025 lancée",
+        subtitle: "Retour des courses cyclistes emblématiques du Québec",
+        category: "Grands Prix Cyclistes", 
+        date: "2025-01-10",
+        content: `
+            <p>La saison 2025 des Grands Prix Cyclistes du Québec est officiellement lancée avec un calendrier riche en émotions.</p>
+            <p>Nos courses emblématiques continuent de rassembler les meilleurs cyclistes du circuit international dans des parcours spectaculaires.</p>
+            <h3>Programme 2025</h3>
+            <ul>
+                <li>Grand Prix Cycliste de Québec - Septembre 2025</li>
+                <li>Grand Prix Cycliste de Montréal - Septembre 2025</li>
+                <li>Épreuves de qualification régionales</li>
+                <li>Événements jeunesse et amateur</li>
+            </ul>
+            <p>Restez à l'affût pour tous les détails concernant la billetterie et la programmation complète.</p>
+        `
+    },
+    {
+        id: 3,
+        title: "Marathon Beneva 21K - Inscriptions ouvertes",
+        subtitle: "La course emblématique de Montréal revient en force",
+        category: "Marathon Beneva 21K",
+        date: "2025-01-05",
+        content: `
+            <p>Les inscriptions pour le Marathon Beneva 21K 2025 sont maintenant ouvertes!</p>
+            <p>Rejoignez des milliers de coureurs pour cette expérience unique dans les rues de Montréal.</p>
+            <h3>Informations pratiques</h3>
+            <ul>
+                <li>Distance : 21,1 km (demi-marathon)</li>
+                <li>Date : Automne 2025</li>
+                <li>Départ : Centre-ville de Montréal</li>
+                <li>Parcours : À travers les quartiers emblématiques</li>
+            </ul>
+            <p>Inscription hâtive recommandée - places limitées!</p>
+            <p><strong>Inscrivez-vous dès maintenant sur notre site officiel.</strong></p>
+        `
+    }
 ];

@@ -3,314 +3,270 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nouvelles | Groupe Tonic</title>
-    <meta name="description" content="Découvrez les dernières nouvelles et communiqués de presse de Groupe Tonic, créateur d'expériences mémorables depuis plus de 40 ans.">
+    <title>Communiqués de presse | Groupe Tonic</title>
+    <meta name="description" content="Découvrez les dernières actualités et communiqués de presse de Groupe Tonic, organisateur d'événements sportifs au Québec depuis plus de 40 ans.">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    typography: {
-                        invert: {
-                            css: {
-                                '--tw-prose-body': 'white',
-                                '--tw-prose-headings': 'white',
-                                '--tw-prose-lead': 'white',
-                                '--tw-prose-links': '#60a5fa',
-                                '--tw-prose-bold': 'white',
-                                '--tw-prose-bullets': 'white',
-                                '--tw-prose-hr': 'white',
-                                '--tw-prose-quotes': 'white',
-                                '--tw-prose-quote-borders': 'white',
-                                '--tw-prose-captions': 'white',
-                                '--tw-prose-code': 'white',
-                                '--tw-prose-pre-code': 'white',
-                                '--tw-prose-pre-bg': 'rgb(0 0 0 / 50%)',
-                                '--tw-prose-th-borders': 'white',
-                                '--tw-prose-td-borders': 'white',
-                            }
-                        }
+                    colors: {
+                        accent: '#3b82f6'
                     }
                 }
             }
         }
     </script>
-    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .pr-card {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(147, 51, 234, 0.1) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .pr-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(147, 51, 234, 0.15) 100%);
+        }
+        
+        /* Category Colors */
+        .bg-pink-500 { background-color: #ff0e9b; }
+        .bg-lime-500 { background-color: #b7d233; }
+        .bg-purple-600 { background-color: #463092; }
+        .bg-red-600 { background-color: #da273b; }
+        .bg-cyan-500 { background-color: #06b6d4; }
+        .bg-gray-500 { background-color: #6b7280; }
+        .bg-amber-500 { background-color: #f59e0b; }
+        .bg-orange-500 { background-color: #f97316; }
+        
+        /* Mobile Menu Styles */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(10px);
+            z-index: 50;
+            opacity: 0;
+            transform: translateY(-100%);
+            transition: all 0.3s ease;
+        }
+        
+        .mobile-menu.active {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        @media (min-width: 768px) {
+            .mobile-menu { display: none !important; }
+        }
+        
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .modal.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        .modal-content {
+            background: #1e293b;
+            border-radius: 12px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            margin: auto;
+            animation: modalSlideIn 0.3s ease;
+        }
+        
+        @keyframes modalSlideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.6s ease forwards;
+            opacity: 0;
+        }
+        
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+    </style>
 </head>
-<body class="bg-gray-900 text-white">
-    <!-- Navigation -->
-    <nav class="py-6 sm:py-8 relative z-10">
-        <div class="container mx-auto px-4">
+<body class="bg-slate-900 text-white overflow-x-hidden">
+    <!-- Header -->
+    <header class="py-6 sm:py-8 px-4">
+        <div class="max-w-7xl mx-auto">
             <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-4">
-                    <a href="index.html">
-                        <img src="images/tonic-logo.png" alt="Groupe Tonic" style="height: clamp(1.875rem, 3.75vw, 2.625rem); width: auto;" />
-                    </a>
-                    <div class="hidden md:block text-white">
-                        <p style="font-size: clamp(0.7rem, 1.5vw, 0.9rem);">Créateur d'expériences mémorables</p>
+                <div class="flex items-center gap-4">
+                    <img src="images/tonic-logo.png" alt="Groupe Tonic" class="h-12 w-auto object-contain">
+                    <div class="hidden sm:block">
+                        <p class="text-sm text-white">Créateur d'expériences mémorables</p>
                     </div>
                 </div>
                 
                 <!-- Desktop Navigation -->
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="index.html" class="text-white hover:text-white transition-colors">Accueil</a>
-                    <a href="a-propos.html" class="text-white hover:text-white transition-colors">À propos</a>
-                    <a href="emplois.html" class="text-white hover:text-white transition-colors">Emplois</a>
-                    <a href="communiques.html" class="text-white hover:text-white transition-colors font-medium">Nouvelles</a>
-                    <a href="contact.html" class="text-white hover:text-white transition-colors">Contact</a>
-                    <a href="communiques-en.html" class="text-white hover:text-white transition-colors">EN</a>
-                </div>
+                <nav class="hidden md:flex items-center space-x-6">
+                    <a href="index.html" class="text-white hover:text-accent transition-colors">Accueil</a>
+                    <a href="a-propos.html" class="text-white hover:text-accent transition-colors">À propos</a>
+                    <a href="communiques.html" class="text-accent font-medium">Actualités</a>
+                    <a href="emplois.html" class="text-white hover:text-accent transition-colors">Emplois</a>
+                    <a href="contact.html" class="text-white hover:text-accent transition-colors">Contact</a>
+                    <a href="communiques-en.html" class="text-white hover:text-accent transition-colors text-sm">EN</a>
+                </nav>
                 
-                <!-- Mobile menu button -->
-                <div class="md:hidden">
-                    <button class="mobile-menu-toggle text-white focus:outline-none">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Mobile Navigation -->
-            <div class="mobile-menu">
-                <div class="pt-4 pb-3 space-y-1">
-                    <a href="index.html" class="block px-3 py-2 text-white hover:text-white transition-colors">Accueil</a>
-                    <a href="a-propos.html" class="block px-3 py-2 text-white hover:text-white transition-colors">À propos</a>
-                    <a href="emplois.html" class="block px-3 py-2 text-white hover:text-white transition-colors">Emplois</a>
-                    <a href="communiques.html" class="block px-3 py-2 text-white hover:text-white transition-colors font-medium">Nouvelles</a>
-                    <a href="contact.html" class="block px-3 py-2 text-white hover:text-white transition-colors">Contact</a>
-                    <a href="communiques-en.html" class="block px-3 py-2 text-white hover:text-white transition-colors">EN</a>
-                </div>
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuBtn" class="md:hidden text-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
             </div>
         </div>
-    </nav>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="mobile-menu">
+        <div class="flex flex-col items-center justify-center h-full space-y-8">
+            <button id="closeMobileMenu" class="absolute top-6 right-6 text-white">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+            <a href="index.html" class="text-white text-xl hover:text-accent transition-colors">Accueil</a>
+            <a href="a-propos.html" class="text-white text-xl hover:text-accent transition-colors">À propos</a>
+            <a href="communiques.html" class="text-accent text-xl font-medium">Actualités</a>
+            <a href="emplois.html" class="text-white text-xl hover:text-accent transition-colors">Emplois</a>
+            <a href="contact.html" class="text-white text-xl hover:text-accent transition-colors">Contact</a>
+            <a href="communiques-en.html" class="text-white text-xl hover:text-accent transition-colors">EN</a>
+        </div>
+    </div>
 
     <!-- Main Content -->
-    <main class="min-h-screen py-12">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-12">
-                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">Nouvelles</h1>
-                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
-                    Découvrez nos derniers communiqués de presse et nouvelles importantes.
-                </p>
-            </div>
+    <main class="max-w-7xl mx-auto px-4 pb-12">
+        <div class="text-center mb-12">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4">Actualités</h1>
+            <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                Restez informé des dernières nouvelles et développements de nos événements sportifs.
+            </p>
+        </div>
 
-            <!-- News Grid -->
-            <div id="prList" class="grid gap-6 lg:gap-8">
-                <!-- PDF news items will be loaded here -->
-            </div>
+        <!-- News List -->
+        <div id="prList" class="space-y-6">
+            <!-- Content will be loaded here -->
         </div>
     </main>
 
-    <!-- PDF Viewer Modal -->
-    <div id="pdfViewerModal" class="fixed inset-0 bg-black/95 backdrop-blur-sm hidden z-50">
-        <div class="h-full flex flex-col">
-            <!-- Modal Header -->
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-3 sm:p-4 bg-black border-b border-white/10">
-                <div class="mb-2 sm:mb-0 flex-1 min-w-0">
-                    <h3 id="pdfModalTitle" class="text-lg sm:text-xl font-semibold truncate"></h3>
-                    <p id="pdfModalSubtitle" class="text-gray-400 text-xs sm:text-sm truncate"></p>
+    <!-- News Modal -->
+    <div id="pressModal" class="modal">
+        <div class="modal-content">
+            <div class="bg-black p-4 flex justify-between items-center">
+                <div>
+                    <h2 id="modalTitle" class="text-xl font-bold"></h2>
+                    <p id="modalDate" class="text-gray-400 text-sm"></p>
                 </div>
-                <div class="flex gap-1 sm:gap-2 flex-shrink-0">
-                    <button onclick="downloadCurrentPDF()" class="px-2 py-1 sm:px-3 sm:py-1 bg-blue-600 hover:bg-blue-700 rounded text-xs sm:text-sm transition-colors">
-                        <span class="hidden sm:inline">Télécharger</span>
-                        <svg class="w-4 h-4 sm:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                        </svg>
-                    </button>
-                    <button onclick="openCurrentPDFInTab()" class="px-2 py-1 sm:px-3 sm:py-1 bg-green-600 hover:bg-green-700 rounded text-xs sm:text-sm transition-colors">
-                        <span class="hidden sm:inline">Nouvel onglet</span>
-                        <svg class="w-4 h-4 sm:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
-                        </svg>
-                    </button>
-                    <button onclick="closePDFViewer()" class="p-1 sm:p-2 hover:bg-white/10 rounded-lg transition-colors">
-                        <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                    </button>
-                </div>
+                <button onclick="closeModal()" class="text-white hover:text-gray-300">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
             </div>
-            
-            <!-- PDF Container -->
-            <div class="flex-1 overflow-hidden relative">
-                <!-- Loading Indicator -->
-                <div id="pdfLoading" class="absolute inset-0 flex items-center justify-center bg-gray-900 z-10">
-                    <div class="text-center">
-                        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
-                        <p class="text-gray-300 text-sm">Chargement du PDF...</p>
-                    </div>
-                </div>
-                
-                <!-- PDF Viewer -->
-                <div class="pdf-viewer h-full">
-                    <iframe id="pdfViewerFrame" 
-                            class="w-full h-full border-0" 
-                            style="min-height: 100%;"
-                            onload="hidePDFLoading()"
-                            onerror="showPDFFallback()">
-                    </iframe>
-                </div>
-                
-                <!-- Mobile Fallback -->
-                <div id="pdfFallback" class="hidden absolute inset-0 flex items-center justify-center bg-gray-900 p-4">
-                    <div class="text-center max-w-sm">
-                        <svg class="w-16 h-16 mx-auto mb-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"></path>
-                        </svg>
-                        <p class="text-lg font-semibold mb-2">PDF non pris en charge</p>
-                        <p class="text-sm text-gray-400 mb-6">Votre navigateur ne peut pas afficher ce PDF</p>
-                        <div class="space-y-3">
-                            <button onclick="openCurrentPDFInTab()" class="w-full px-4 py-2 bg-green-600 hover:bg-green-700 rounded-lg text-white font-medium transition-colors">
-                                Ouvrir dans un nouvel onglet
-                            </button>
-                            <button onclick="downloadCurrentPDF()" class="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-medium transition-colors">
-                                Télécharger le PDF
-                            </button>
-                        </div>
-                    </div>
-                </div>
+            <div id="modalContent" class="p-6">
+                <!-- Content will be loaded here -->
             </div>
         </div>
     </div>
-    
+
     <!-- Footer -->
-    <footer class="border-t border-white/10 py-12">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="mb-6 md:mb-0">
-                    <img src="images/tonic-logo.png" alt="Groupe Tonic" style="height: 1.5rem; width: auto;" class="mb-2" />
-                    <p class="text-white">© 2025 Groupe Tonic. Tous droits réservés.</p>
+    <footer class="bg-slate-800 mt-16 py-12">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div class="md:col-span-2">
+                    <img src="images/tonic-logo.png" alt="Groupe Tonic" class="h-8 w-auto mb-4">
+                    <p class="text-gray-400 mb-4">Créateur d'expériences mémorables depuis plus de 40 ans.</p>
+                    <p class="text-gray-400 text-sm">
+                        615 Rue le Breton<br>
+                        Longueuil, QC J4G 1R9<br>
+                        <a href="mailto:info@groupetonic.ca" class="text-accent hover:underline">info@groupetonic.ca</a>
+                    </p>
                 </div>
-                <div class="flex gap-6">
-                    <a href="politique-de-confidentialite.html" class="text-white hover:text-white transition-colors">Politique de confidentialité</a>
-                    <a href="conditions-utilisation.html" class="text-white hover:text-white transition-colors">Conditions d'utilisation</a>
+                
+                <div>
+                    <h3 class="text-white font-semibold mb-4">Navigation</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="index.html" class="hover:text-white transition-colors">Accueil</a></li>
+                        <li><a href="a-propos.html" class="hover:text-white transition-colors">À propos</a></li>
+                        <li><a href="communiques.html" class="hover:text-white transition-colors">Actualités</a></li>
+                        <li><a href="emplois.html" class="hover:text-white transition-colors">Emplois</a></li>
+                        <li><a href="contact.html" class="hover:text-white transition-colors">Contact</a></li>
+                    </ul>
                 </div>
+                
+                <div>
+                    <h3 class="text-white font-semibold mb-4">Informations légales</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="politique-de-confidentialite.html" class="hover:text-white transition-colors">Politique de confidentialité</a></li>
+                        <li><a href="conditions-utilisation.html" class="hover:text-white transition-colors">Conditions d'utilisation</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 Groupe Tonic. Tous droits réservés.</p>
             </div>
         </div>
     </footer>
 
-    <!-- Simple Content -->
+    <script src="js/communiques-data.js"></script>
     <script src="js/simple-content.js"></script>
-    
-    <!-- Shared JavaScript -->
-    <script src="js/shared.js"></script>
-    
-    <!-- Page JavaScript -->
     <script>
-        // Cache DOM elements
-        const DOM = {
-            prList: null
-        };
-        
-        // Category mapping
-        const categoryMap = {
-            'Beach Pro Tour': 'category-beach',
-            'Grands Prix Cyclistes': 'category-cycling',
-            'Marathon Beneva 21K': 'category-marathon',
-            'UCI 2026': 'category-uci',
-            'Studio 76': 'category-studio',
-            'Dock 619': 'category-dock',
-            '21K de Montréal': 'category-21k',
-            'Groupe Tonic': 'category-tonic'
-        };
-        
-        // Get category class
+        // DOM elements
+        let DOM = {};
+
+        // Get category class for styling
         function getCategoryClass(category) {
-            return categoryMap[category] || 'category-beach';
-        }
-        
-        // Format date to French
-        function formatDate(dateString) {
-            const options = { year: 'numeric', month: 'long', day: 'numeric' };
-            return new Date(dateString).toLocaleDateString('fr-FR', options);
-        }
-
-        // Open news modal with mobile-friendly content
-        function openNewsModal(id) {
-            const content = getNews().find(item => item.id === id);
-            if (!content) return;
-            
-            const modal = document.getElementById('pressModal');
-            const modalTitle = document.getElementById('modalTitle');
-            const modalDate = document.getElementById('modalDate');
-            const modalContent = document.getElementById('modalContent');
-            
-            modalTitle.textContent = content.title;
-            modalDate.textContent = formatDate(content.date);
-            modalContent.innerHTML = `<div class="text-white prose prose-invert max-w-none">${content.content}</div>`;
-            
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        // Close press release modal
-        function closePressModal() {
-            const modal = document.getElementById('pressModal');
-            modal.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        // PDF viewer functions
-        let currentPDFData = null;
-        
-        function viewPDF(id) {
-            const saved = getPDFData();
-            const pdf = saved.find(p => p.id === id);
-            
-            if (!pdf) return;
-            
-            currentPDFData = pdf;
-            document.getElementById('pdfModalTitle').textContent = pdf.title;
-            document.getElementById('pdfModalSubtitle').textContent = pdf.subtitle || '';
-            
-            // Show modal and loading
-            document.getElementById('pdfViewerModal').classList.remove('hidden');
-            document.getElementById('pdfLoading').classList.remove('hidden');
-            document.getElementById('pdfFallback').classList.add('hidden');
-            
-            // Load PDF
-            const pdfUrl = pdf.data + '#toolbar=1&navpanes=1&scrollbar=1&view=FitH&zoom=page-fit';
-            document.getElementById('pdfViewerFrame').src = pdfUrl;
-            
-            // Fallback timeout
-            setTimeout(() => {
-                if (!document.getElementById('pdfLoading').classList.contains('hidden')) {
-                    showPDFFallback();
-                }
-            }, 5000);
-        }
-
-        function closePDFViewer() {
-            document.getElementById('pdfViewerModal').classList.add('hidden');
-            document.getElementById('pdfViewerFrame').src = '';
-            currentPDFData = null;
-        }
-
-        function downloadCurrentPDF() {
-            if (!currentPDFData) return;
-            
-            const link = document.createElement('a');
-            link.href = currentPDFData.data;
-            link.download = currentPDFData.filename;
-            link.click();
-        }
-
-        function openCurrentPDFInTab() {
-            if (!currentPDFData) return;
-            
-            window.open(currentPDFData.data, '_blank');
-        }
-
-        function hidePDFLoading() {
-            setTimeout(() => {
-                document.getElementById('pdfLoading').classList.add('hidden');
-            }, 500);
-        }
-        
-        function showPDFFallback() {
-            document.getElementById('pdfLoading').classList.add('hidden');
-            document.getElementById('pdfFallback').classList.remove('hidden');
+            const categoryMap = {
+                'Beach Pro Tour': 'bg-pink-500',
+                'Grands Prix Cyclistes': 'bg-lime-500',
+                'Marathon Beneva 21K': 'bg-purple-600',
+                'UCI 2026': 'bg-red-600',
+                'Studio 76': 'bg-cyan-500',
+                'Dock 619': 'bg-gray-500',
+                '21K de Montréal': 'bg-amber-500',
+                'Groupe Tonic': 'bg-orange-500'
+            };
+            return categoryMap[category] || 'bg-gray-500';
         }
 
         // Render news content with colored cards
@@ -362,25 +318,76 @@
             }).join('');
         }
 
+        // Open news modal with mobile-friendly content
+        function openNewsModal(id) {
+            const content = getNews().find(item => item.id === id);
+            if (!content) return;
+            
+            const modal = document.getElementById('pressModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalDate = document.getElementById('modalDate');
+            const modalContent = document.getElementById('modalContent');
+            
+            modalTitle.textContent = content.title;
+            modalDate.textContent = formatDate(content.date);
+            modalContent.innerHTML = `<div class="text-white prose prose-invert max-w-none">${content.content}</div>`;
+            
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close modal
+        function closeModal() {
+            const modal = document.getElementById('pressModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Mobile menu functionality
+        function setupMobileMenu() {
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const closeMobileMenu = document.getElementById('closeMobileMenu');
+
+            mobileMenuBtn?.addEventListener('click', () => {
+                mobileMenu.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+
+            closeMobileMenu?.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+
+            // Close on background click
+            mobileMenu?.addEventListener('click', (e) => {
+                if (e.target === mobileMenu) {
+                    mobileMenu.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+        }
+
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             DOM.prList = document.getElementById('prList');
+            setupMobileMenu();
             renderNews();
             
-            // Refresh content every 3 seconds to show new entries
-            setInterval(renderNews, 3000);
+            // Refresh content every 5 seconds to show new entries
+            setInterval(renderNews, 5000);
             
-            // Close PDF modal when clicking outside
-            document.getElementById('pdfViewerModal').addEventListener('click', (e) => {
-                if (e.target === document.getElementById('pdfViewerModal')) {
-                    closePDFViewer();
+            // Close modal on background click
+            document.getElementById('pressModal')?.addEventListener('click', (e) => {
+                if (e.target.id === 'pressModal') {
+                    closeModal();
                 }
             });
             
-            // Keyboard events
-            document.addEventListener('keydown', function(e) {
+            // Close modal on escape key
+            document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') {
-                    closePDFViewer();
+                    closeModal();
                 }
             });
         });

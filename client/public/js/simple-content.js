@@ -1,62 +1,73 @@
-// Super Simple Content System - Just Works
-let allContent = [
-    {
-        id: 1,
-        title: "Beach Pro Tour Montréal 2025",
-        subtitle: "Le plus grand événement de volleyball de plage au Canada",
-        category: "Beach Pro Tour",
-        date: "2025-01-15",
-        type: "news",
-        content: "Le Beach Pro Tour revient à Montréal avec les meilleurs athlètes mondiaux. Trois jours de compétition intense du 25 au 27 juillet 2025."
-    },
-    {
-        id: 2,
-        title: "Développeur Web",
-        subtitle: "Rejoignez notre équipe technique",
-        category: "Groupe Tonic",
-        date: "2025-01-12",
-        type: "job",
-        salary: "70 000$ - 85 000$",
-        content: "Nous recherchons un développeur full-stack pour nos projets événementiels. Expérience en React/Node.js requise."
-    }
-];
+// Simple content management system for Groupe Tonic
 
-// Category images
-const images = {
+// Category images mapping
+const categoryImages = {
     'Beach Pro Tour': 'images/beach-pro-tour-hero.webp',
     'Grands Prix Cyclistes': 'images/grands-prix-cyclistes-hero.jpg',
     'Marathon Beneva 21K': 'images/marathon-beneva-hero.jpg',
     'UCI 2026': 'images/montreal-2026-uci-hero.jpg',
-    'Studio 76': 'images/studio-76-hero.jpg',
+    'Studio 76': 'images/studio76-logo.png',
     'Dock 619': 'images/dock619-hero-new.jpg',
     '21K de Montréal': 'images/21k-hero.jpg',
     'Groupe Tonic': 'images/tonic-logo.png'
 };
 
-// Simple functions
-function getNews() {
-    return allContent.filter(item => item.type === 'news');
-}
-
-function getJobs() {
-    return allContent.filter(item => item.type === 'job');
-}
-
+// Get image for category
 function getImage(category) {
-    return images[category] || 'images/tonic-logo.png';
+    return categoryImages[category] || 'images/tonic-logo.png';
 }
 
+// Format date
 function formatDate(dateString) {
-    return new Date(dateString).toLocaleDateString('fr-FR', { 
-        year: 'numeric', month: 'long', day: 'numeric' 
-    });
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString('fr-FR', options);
 }
 
+// Get news content
+function getNews() {
+    if (typeof communiquesData !== 'undefined') {
+        return communiquesData;
+    }
+    return [];
+}
+
+// Get jobs content
+function getJobs() {
+    if (typeof jobListings !== 'undefined') {
+        return jobListings;
+    }
+    return [];
+}
+
+// Add new content (basic implementation)
 function addNewContent(item) {
-    item.id = Date.now();
-    allContent.unshift(item);
+    if (item.type === 'news') {
+        item.id = Date.now();
+        if (typeof communiquesData !== 'undefined') {
+            communiquesData.unshift(item);
+        }
+    } else if (item.type === 'jobs') {
+        item.id = Date.now();
+        if (typeof jobListings !== 'undefined') {
+            jobListings.unshift(item);
+        }
+    }
 }
 
+// Delete content (basic implementation)
 function deleteContent(id) {
-    allContent = allContent.filter(item => item.id !== id);
+    if (typeof communiquesData !== 'undefined') {
+        const newsIndex = communiquesData.findIndex(item => item.id === id);
+        if (newsIndex > -1) {
+            communiquesData.splice(newsIndex, 1);
+            return;
+        }
+    }
+    
+    if (typeof jobListings !== 'undefined') {
+        const jobIndex = jobListings.findIndex(item => item.id === id);
+        if (jobIndex > -1) {
+            jobListings.splice(jobIndex, 1);
+        }
+    }
 }
