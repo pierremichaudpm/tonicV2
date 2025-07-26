@@ -114,30 +114,55 @@
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
         }
         
-        /* MODAL TEXT FIX - ULTIMATE OVERRIDE */
-        #addModal, 
-        #addModal *:not(.text-gray-400):not(option), 
-        #addModal label, 
+        /* NUCLEAR MODAL TEXT FIX - ABSOLUTE OVERRIDE */
+        #addModal {
+            color: white !important;
+        }
+        
+        #addModal * {
+            color: white !important;
+        }
+        
+        #addModal label {
+            color: white !important;
+        }
+        
         #addModal h1,
         #addModal h2, 
-        #addModal h3,
-        #addModal div, 
-        #addModal span,
-        #addModal p,
+        #addModal h3 {
+            color: white !important;
+        }
+        
+        #addModal div:not(.ql-editor) {
+            color: white !important;
+        }
+        
+        #addModal span:not(.ql-editor span) {
+            color: white !important;
+        }
+        
+        #addModal p {
+            color: white !important;
+        }
+        
+        /* Override ALL Tailwind text classes in modal */
         #addModal .text-sm,
         #addModal .font-medium,
         #addModal .block,
         #addModal .text-2xl,
-        #addModal .font-bold {
+        #addModal .font-bold,
+        #addModal .text-base,
+        #addModal .text-lg,
+        #addModal .text-xs {
             color: white !important;
         }
         
-        /* Keep gray hints */
+        /* Keep specific gray hints */
         #addModal .text-gray-400 {
             color: #9ca3af !important;
         }
         
-        /* Input fields white text */
+        /* Input fields */
         #addModal input, 
         #addModal select, 
         #addModal textarea {
@@ -145,15 +170,10 @@
             background-color: #374151 !important;
         }
         
-        /* Dropdown options black on white */
+        /* Dropdown options */
         #addModal option {
             color: black !important;
             background-color: white !important;
-        }
-        
-        /* JavaScript-applied styles - highest priority */
-        #addModal .force-white-text {
-            color: white !important;
         }
     </style>
 </head>
@@ -621,17 +641,30 @@
             document.querySelector('#addModal h2').textContent = currentLanguage === 'fr' ? 'Ajouter du contenu' : 'Add Content';
             document.getElementById('addModal').classList.remove('hidden');
             
-            // FORCE WHITE TEXT - JavaScript override to beat Tailwind
+            // NUCLEAR TEXT FIX - Override everything
             setTimeout(() => {
                 const modal = document.getElementById('addModal');
                 
-                // Force all text elements to white
-                modal.querySelectorAll('label, h1, h2, h3, span, p, div').forEach(el => {
-                    if (!el.classList.contains('text-gray-400')) {
+                // Nuclear approach - force every single element to white
+                const allElements = modal.querySelectorAll('*');
+                allElements.forEach(el => {
+                    if (!el.classList.contains('text-gray-400') && 
+                        !el.classList.contains('ql-editor') &&
+                        el.tagName !== 'OPTION') {
+                        el.style.color = 'white';
                         el.style.setProperty('color', 'white', 'important');
+                        // Remove any Tailwind text color classes
+                        el.classList.remove('text-black', 'text-gray-900', 'text-gray-800', 'text-gray-700');
                     }
                 });
-            }, 100);
+                
+                // Specifically target known problematic elements
+                modal.querySelectorAll('label, h1, h2, h3, span, p, div').forEach(el => {
+                    if (!el.classList.contains('text-gray-400')) {
+                        el.style.color = 'white !important';
+                    }
+                });
+            }, 10);
         }
 
         // Edit content function
