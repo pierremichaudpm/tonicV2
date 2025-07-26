@@ -133,6 +133,54 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
   });
   
+  // Delete content endpoint
+  app.delete('/api/cms/content/:type/:lang/:id', authenticate, (req, res) => {
+      const { type, lang, id } = req.params;
+      
+      let data;
+      let filename;
+      let variableName;
+      
+      if (type === 'news' && lang === 'fr') {
+          data = readDataFile('communiques-data.js');
+          filename = 'communiques-data.js';
+          variableName = 'pressReleases';
+      } else if (type === 'news' && lang === 'en') {
+          data = readDataFile('communiques-data-en.js');
+          filename = 'communiques-data-en.js';
+          variableName = 'communiquesData';
+      } else if (type === 'jobs' && lang === 'fr') {
+          data = readDataFile('emplois-data.js');
+          filename = 'emplois-data.js';
+          variableName = 'jobListings';
+      } else if (type === 'jobs' && lang === 'en') {
+          data = readDataFile('emplois-data-en.js');
+          filename = 'emplois-data-en.js';
+          variableName = 'jobsData';
+      } else {
+          return res.status(400).json({ error: 'Invalid type or language' });
+      }
+      
+      // Filter out the item with matching ID
+      const originalLength = data.length;
+      const filteredData = data.filter(item => {
+          return String(item.id) !== String(id) && String(item.title) !== String(id);
+      });
+      
+      if (filteredData.length === originalLength) {
+          return res.status(404).json({ error: 'Item not found' });
+      }
+      
+      // Save the filtered data
+      const success = writeDataFile(filename, filteredData, variableName);
+      
+      if (success) {
+          res.json({ success: true, message: 'Item deleted successfully' });
+      } else {
+          res.status(500).json({ error: 'Failed to delete item' });
+      }
+  });
+
   // Login endpoint for CMS
   app.post('/api/cms/login', (req, res) => {
     const { password } = req.body;

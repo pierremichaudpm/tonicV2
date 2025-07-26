@@ -532,7 +532,7 @@
                             <button onclick="editItem('${item.id || item.title}')" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition-all shadow-sm">
                                 Modifier
                             </button>
-                            <button onclick="deleteItem('${item.id || item.title}'); return false;" class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition-all shadow-sm">
+                            <button onclick="deleteItem('${item.id || item.title}')" class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition-all shadow-sm">
                                 Supprimer
                             </button>
                         </div>
@@ -675,76 +675,40 @@
             }
         }
 
-        function deleteItem(id) {
-            console.log('DELETE CALLED FOR:', id);
-            alert('DELETE FUNCTION STARTED - ID: ' + id);
-            
-            setTimeout(() => performDelete(id), 100);
-            return false;
-        }
-        
-        async function performDelete(id) {
-            console.log('PERFORM DELETE FOR:', id);
+        async function deleteItem(id) {
             if (!confirm('Êtes-vous sûr de vouloir supprimer cet élément?')) {
-                alert('DELETE CANCELLED');
                 return;
             }
-            
-            alert('DELETE CONFIRMED - PROCEEDING...');
 
             try {
-                alert('DEBUG: Fetching current data...');
-                const response = await fetch(`/api/cms/content/${currentType}/${currentLang}`, {
-                    headers: { 'x-admin-password': 'admin123' }
-                });
-                const result = await response.json();
-                let items = result.data || [];
-                
-                alert('DEBUG: Found ' + items.length + ' items before delete');
-
-                // Simple deletion logic
-                const originalLength = items.length;
-                items = items.filter(item => {
-                    // Convert both to strings for comparison
-                    const itemIdStr = String(item.id);
-                    const searchIdStr = String(id);
-                    const itemTitleStr = String(item.title);
-                    
-                    const shouldKeep = (itemIdStr !== searchIdStr) && (itemTitleStr !== searchIdStr);
-                    
-                    if (!shouldKeep) {
-                        alert('DEBUG: Deleting item: ' + item.title + ' (ID: ' + item.id + ')');
-                    }
-                    
-                    return shouldKeep;
-                });
-                
-                alert('DEBUG: After filter: ' + items.length + ' items remain');
-                
-                if (originalLength === items.length) {
-                    alert('ERROR: No matching item found to delete!');
-                    return;
-                }
-
-                // Save the updated data
-                alert('DEBUG: Saving updated data...');
-                const saveResponse = await fetch(`/api/cms/content/${currentType}/${currentLang}`, {
-                    method: 'POST',
+                // Use the DELETE endpoint that exists and works
+                const deleteResponse = await fetch(`/api/cms/content/${currentType}/${currentLang}/${id}`, {
+                    method: 'DELETE',
                     headers: {
-                        'Content-Type': 'application/json',
                         'x-admin-password': 'admin123'
-                    },
-                    body: JSON.stringify({ data: items })
+                    }
                 });
 
-                if (saveResponse.ok) {
-                    alert('SUCCESS: Item deleted successfully!');
+                if (deleteResponse.ok) {
+                    // Reload the content to reflect changes
                     loadContent();
+                    
+                    // Show success message briefly
+                    const successDiv = document.createElement('div');
+                    successDiv.innerHTML = `
+                        <div class="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50">
+                            Élément supprimé avec succès
+                        </div>
+                    `;
+                    document.body.appendChild(successDiv);
+                    setTimeout(() => {
+                        document.body.removeChild(successDiv);
+                    }, 2000);
                 } else {
-                    alert('ERROR: Failed to save changes');
+                    throw new Error('Erreur lors de la suppression');
                 }
             } catch (error) {
-                alert('ERROR: ' + error.message);
+                alert('Erreur lors de la suppression: ' + error.message);
             }
         }
 
