@@ -607,8 +607,8 @@
         }
         
         // Render job listings - Optimized with template literals
-        async function renderJobs() {
-            const jobs = await getAllJobs();
+        function renderJobs() {
+            const jobs = getJobsEn();
             
             if (jobs.length === 0) {
                 DOM.jobsList.innerHTML = '<p class="text-white text-center py-8">No positions available in this category.</p>';
