@@ -1,14 +1,6 @@
 // French news data  
 const pressReleases = [
     {
-        "id": "1753532209051",
-        "title": "Beach Pro Tour - Elite à Montréal",
-        "subtitle": "Le volleyball de plage professionnel débarque au Québec",
-        "category": "Beach Pro Tour",
-        "date": "2025-06-17",
-        "content": "<h3><strong>Montréal, le 17 juin 2025</strong> – Le plus haut niveau du volleyball de plage est de retour à Montréal! Du 13 au 17 août 2025, le Beach Pro Tour – Elite transformera le légendaire circuit Gilles-Villeneuve en une arène spectaculaire où s'affronteront les meilleures équipes féminines et masculines au monde.</h3><p>Après une édition 2023 marquée par les victoires retentissantes des Canadiennes Melissa Humana-Paredes et Brandie Wilkerson, ainsi que des Norvégiens Anders Mol et Christian Sørum, le tournoi s'annonce encore plus électrisant cette année au Montréal Beach Pro Tour.</p>"
-    },
-    {
         "id": 1,
         "title": "Grands Prix Cyclistes - Saison 2025",
         "subtitle": "Les courses cyclistes emblématiques du Québec",

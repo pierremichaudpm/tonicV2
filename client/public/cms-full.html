@@ -685,30 +685,34 @@
                 const deleteResponse = await fetch(`/api/cms/content/${currentType}/${currentLang}/${id}`, {
                     method: 'DELETE',
                     headers: {
-                        'x-admin-password': 'admin123'
+                        'x-admin-password': 'admin123',
+                        'Cache-Control': 'no-cache'
                     }
                 });
 
-                if (deleteResponse.ok) {
-                    // Reload the content to reflect changes
-                    loadContent();
+                const result = await deleteResponse.json();
+                
+                if (deleteResponse.ok && result.success) {
+                    // Force reload with cache bypass
+                    await fetch(`/api/cms/content/${currentType}/${currentLang}`, {
+                        headers: { 
+                            'x-admin-password': 'admin123',
+                            'Cache-Control': 'no-cache',
+                            'Pragma': 'no-cache'
+                        }
+                    }).then(response => response.json())
+                      .then(data => {
+                          displayContent(data.data || []);
+                      });
                     
-                    // Show success message briefly
-                    const successDiv = document.createElement('div');
-                    successDiv.innerHTML = `
-                        <div class="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50">
-                            Élément supprimé avec succès
-                        </div>
-                    `;
-                    document.body.appendChild(successDiv);
-                    setTimeout(() => {
-                        document.body.removeChild(successDiv);
-                    }, 2000);
+                    // Show success message
+                    alert('Élément supprimé avec succès!');
                 } else {
-                    throw new Error('Erreur lors de la suppression');
+                    throw new Error('Erreur lors de la suppression: ' + (result.error || 'Erreur inconnue'));
                 }
             } catch (error) {
                 alert('Erreur lors de la suppression: ' + error.message);
+                console.error('Delete error:', error);
             }
         }
 
