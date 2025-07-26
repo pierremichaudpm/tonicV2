@@ -19,20 +19,79 @@
         .header-logo{cursor:pointer;transition:transform .2s ease}
         .header-logo:hover{transform:scale(1.05)}
         .stat-card{background:linear-gradient(135deg,rgba(254,68,69,0.1),rgba(0,0,0,0.8));backdrop-filter:blur(10px);border:1px solid var(--accent-20);transition:all 0.3s ease;border-radius:1rem;padding:2rem;text-align:center;position:relative;overflow:hidden}
+        .stat-card::after{
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(ellipse 120% 80% at 20% 30%, rgba(255, 87, 51, 0.25) 0%, transparent 50%),
+                radial-gradient(ellipse 100% 70% at 80% 70%, rgba(255, 107, 107, 0.22) 0%, transparent 50%),
+                radial-gradient(ellipse 90% 60% at 50% 90%, rgba(249, 115, 22, 0.18) 0%, transparent 50%),
+                linear-gradient(135deg, rgba(220, 38, 38, 0.15), rgba(249, 115, 22, 0.12), rgba(255, 255, 255, 0.08));
+            border-radius: inherit;
+            pointer-events: none;
+            z-index: 1;
+            animation: subtleFlow 8s ease-in-out infinite;
+        }
         .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent-primary),var(--accent-hover));border-radius:1rem 1rem 0 0}
         .stat-card:hover{transform:translateY(-8px);box-shadow:0 20px 60px rgba(254,68,69,0.3);border-color:var(--accent-30);background:linear-gradient(135deg,rgba(254,68,69,0.15),rgba(0,0,0,0.9))}
         .stat-number{font-size:3.5rem;font-weight:900;background:linear-gradient(135deg,var(--accent-primary),var(--accent-hover));background-clip:text;-webkit-background-clip:text;color:transparent;line-height:1;margin-bottom:0.5rem}
         .stat-label{color:rgba(255,255,255,0.9);font-size:1.1rem;font-weight:600;text-transform:uppercase;letter-spacing:0.5px}
         .values-card{background:linear-gradient(135deg,rgba(255,255,255,0.08),rgba(254,68,69,0.05));backdrop-filter:blur(15px);border:1px solid rgba(255,255,255,0.1);border-radius:1.5rem;padding:2.5rem;transition:all 0.4s ease;position:relative;overflow:hidden}
+        .values-card::after{
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(ellipse 120% 80% at 20% 30%, rgba(255, 87, 51, 0.20) 0%, transparent 50%),
+                radial-gradient(ellipse 100% 70% at 80% 70%, rgba(255, 107, 107, 0.18) 0%, transparent 50%),
+                radial-gradient(ellipse 90% 60% at 50% 90%, rgba(249, 115, 22, 0.15) 0%, transparent 50%),
+                linear-gradient(135deg, rgba(220, 38, 38, 0.12), rgba(249, 115, 22, 0.10), rgba(255, 255, 255, 0.06));
+            border-radius: inherit;
+            pointer-events: none;
+            z-index: 1;
+            animation: subtleFlow 8s ease-in-out infinite;
+        }
         .values-card::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:conic-gradient(from 0deg,transparent,var(--accent-20),transparent);opacity:0;transition:opacity 0.4s ease;animation:rotate 10s linear infinite}
         .values-card:hover::before{opacity:1}
         .values-card:hover{transform:translateY(-4px) scale(1.02);border-color:var(--accent-30);box-shadow:0 15px 40px rgba(254,68,69,0.2);background:linear-gradient(135deg,rgba(255,255,255,0.12),rgba(254,68,69,0.08))}
         @keyframes rotate{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+        @keyframes subtleFlow {
+            0%, 100% { 
+                transform: translateX(0) translateY(0) scale(1);
+                opacity: 1;
+            }
+            25% { 
+                transform: translateX(1px) translateY(-1px) scale(1.01);
+                opacity: 0.9;
+            }
+            50% { 
+                transform: translateX(-1px) translateY(1px) scale(0.99);
+                opacity: 1.1;
+            }
+            75% { 
+                transform: translateX(1px) translateY(1px) scale(1.01);
+                opacity: 0.95;
+            }
+        }
         .timeline-container{position:relative;overflow:hidden;padding:4rem 0}
         .timeline-path{position:absolute;top:50%;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent-primary),transparent)}
         .timeline-section{position:relative;margin-bottom:4rem}
         .timeline-section::before{content:'';position:absolute;left:2rem;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--accent-primary),var(--accent-hover),var(--accent-primary));opacity:0.6}
         .timeline-item{position:relative;background:linear-gradient(135deg,rgba(0,0,0,0.9),rgba(254,68,69,0.05));border:1px solid var(--accent-20);border-radius:1rem;padding:2rem;margin-bottom:2rem;margin-left:4rem;backdrop-filter:blur(15px);transition:all 0.4s ease;box-shadow:0 8px 32px rgba(0,0,0,0.3)}
+        .timeline-item::after{
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(ellipse 110% 70% at 30% 20%, rgba(255, 87, 51, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse 90% 60% at 70% 80%, rgba(255, 107, 107, 0.12) 0%, transparent 50%),
+                linear-gradient(135deg, rgba(220, 38, 38, 0.08), rgba(249, 115, 22, 0.06), rgba(255, 255, 255, 0.04));
+            border-radius: inherit;
+            pointer-events: none;
+            z-index: 1;
+            animation: subtleFlow 10s ease-in-out infinite;
+        }
         .timeline-item::before{content:'';position:absolute;left:-2.5rem;top:1.5rem;width:1rem;height:1rem;background:var(--accent-primary);border-radius:50%;box-shadow:0 0 20px var(--accent-glow);border:3px solid #000}
         .timeline-item:hover{border-color:var(--accent-40);transform:translateX(10px) translateY(-4px);box-shadow:0 15px 50px rgba(254,68,69,0.4);background:linear-gradient(135deg,rgba(0,0,0,0.95),rgba(254,68,69,0.1))}
         .timeline-year{font-size:1.8rem;font-weight:900;background:linear-gradient(135deg,var(--accent-primary),var(--accent-hover));background-clip:text;-webkit-background-clip:text;color:transparent;margin-bottom:0.75rem;display:inline-block}
