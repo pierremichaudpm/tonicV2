@@ -607,7 +607,7 @@
                 const image = getCategoryImage(job.category);
                 
                 return `
-                    <div class="pr-card relative rounded-xl p-6 sm:p-8 cursor-pointer fade-in delay-${Math.min(index * 100, 500)}" 
+                    <div class="job-card relative rounded-xl p-6 sm:p-8 cursor-pointer fade-in delay-${Math.min(index * 100, 500)}" 
                          data-job-id="${job.id}"
                          onclick="openJobModal(${job.id})">
                         <div class="flex flex-col sm:flex-row gap-4">
