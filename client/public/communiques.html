@@ -6,6 +6,35 @@
     <title>Nouvelles | Groupe Tonic</title>
     <meta name="description" content="Découvrez les dernières nouvelles et communiqués de presse de Groupe Tonic, créateur d'expériences mémorables depuis plus de 40 ans.">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    typography: {
+                        invert: {
+                            css: {
+                                '--tw-prose-body': 'white',
+                                '--tw-prose-headings': 'white',
+                                '--tw-prose-lead': 'white',
+                                '--tw-prose-links': '#60a5fa',
+                                '--tw-prose-bold': 'white',
+                                '--tw-prose-bullets': 'white',
+                                '--tw-prose-hr': 'white',
+                                '--tw-prose-quotes': 'white',
+                                '--tw-prose-quote-borders': 'white',
+                                '--tw-prose-captions': 'white',
+                                '--tw-prose-code': 'white',
+                                '--tw-prose-pre-code': 'white',
+                                '--tw-prose-pre-bg': 'rgb(0 0 0 / 50%)',
+                                '--tw-prose-th-borders': 'white',
+                                '--tw-prose-td-borders': 'white',
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body class="bg-gray-900 text-white">
@@ -206,7 +235,7 @@
             
             modalTitle.textContent = title;
             modalDate.textContent = formatDate(date);
-            modalContent.innerHTML = `<p class="text-white">${content}</p>`;
+            modalContent.innerHTML = `<div class="text-white prose prose-invert max-w-none">${content}</div>`;
             
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';
