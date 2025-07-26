@@ -107,6 +107,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Serve static files from the public directory
   const publicPath = path.join(process.cwd(), "client", "public");
   
+  // Serve CMS directly before Vite middleware can catch it
+  app.get("/cms", (req, res) => {
+    res.sendFile(path.join(publicPath, "cms.html"));
+  });
+  
   // Serve CSS, JS, and images as static files
   app.use("/css", express.static(path.join(publicPath, "css")));
   app.use("/js", express.static(path.join(publicPath, "js")));
