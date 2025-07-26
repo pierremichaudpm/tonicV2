@@ -300,61 +300,92 @@
             return typeof jobsData !== 'undefined' ? jobsData : [];
         }
 
+        // Save data to server
+        async function saveToServer(type, lang, data) {
+            try {
+                const response = await fetch(`/api/cms/content/${type}/${lang}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Admin-Password': 'admin123'
+                    },
+                    body: JSON.stringify({ data })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                return await response.json();
+            } catch (error) {
+                console.error('Error saving to server:', error);
+                throw error;
+            }
+        }
+
         // Add new content functions
-        function addNewContent(item) {
+        async function addNewContent(item) {
             item.id = Date.now();
-            if (typeof pressReleases !== 'undefined') {
-                pressReleases.unshift(item);
-            }
+            const data = getNews();
+            data.unshift(item);
+            await saveToServer('news', 'fr', data);
         }
 
-        function addNewContentEn(item) {
+        async function addNewContentEn(item) {
             item.id = Date.now();
-            if (typeof communiquesData !== 'undefined') {
-                communiquesData.unshift(item);
-            }
+            const data = getNewsEn();
+            data.unshift(item);
+            await saveToServer('news', 'en', data);
         }
 
-        function addNewJob(item) {
+        async function addNewJob(item) {
             item.id = Date.now();
-            if (typeof jobListings !== 'undefined') {
-                jobListings.unshift(item);
-            }
+            const data = getJobs();
+            data.unshift(item);
+            await saveToServer('jobs', 'fr', data);
         }
 
-        function addNewJobEn(item) {
+        async function addNewJobEn(item) {
             item.id = Date.now();
-            if (typeof jobsData !== 'undefined') {
-                jobsData.unshift(item);
-            }
+            const data = getJobsEn();
+            data.unshift(item);
+            await saveToServer('jobs', 'en', data);
         }
 
         // Delete content functions
-        function deleteNewsItem(id) {
-            if (typeof pressReleases !== 'undefined') {
-                const index = pressReleases.findIndex(item => item.id === id);
-                if (index > -1) pressReleases.splice(index, 1);
+        async function deleteNewsItem(id) {
+            const data = getNews();
+            const index = data.findIndex(item => item.id === id);
+            if (index > -1) {
+                data.splice(index, 1);
+                await saveToServer('news', 'fr', data);
             }
         }
 
-        function deleteNewsItemEn(id) {
-            if (typeof communiquesData !== 'undefined') {
-                const index = communiquesData.findIndex(item => item.id === id);
-                if (index > -1) communiquesData.splice(index, 1);
+        async function deleteNewsItemEn(id) {
+            const data = getNewsEn();
+            const index = data.findIndex(item => item.id === id);
+            if (index > -1) {
+                data.splice(index, 1);
+                await saveToServer('news', 'en', data);
             }
         }
 
-        function deleteJobItem(id) {
-            if (typeof jobListings !== 'undefined') {
-                const index = jobListings.findIndex(item => item.id === id);
-                if (index > -1) jobListings.splice(index, 1);
+        async function deleteJobItem(id) {
+            const data = getJobs();
+            const index = data.findIndex(item => item.id === id);
+            if (index > -1) {
+                data.splice(index, 1);
+                await saveToServer('jobs', 'fr', data);
             }
         }
 
-        function deleteJobItemEn(id) {
-            if (typeof jobsData !== 'undefined') {
-                const index = jobsData.findIndex(item => item.id === id);
-                if (index > -1) jobsData.splice(index, 1);
+        async function deleteJobItemEn(id) {
+            const data = getJobsEn();
+            const index = data.findIndex(item => item.id === id);
+            if (index > -1) {
+                data.splice(index, 1);
+                await saveToServer('jobs', 'en', data);
             }
         }
 
@@ -577,7 +608,7 @@
         }
 
         // Handle form submission
-        document.getElementById('addForm').addEventListener('submit', function(e) {
+        document.getElementById('addForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const content = quill.root.innerHTML;
@@ -614,20 +645,27 @@
                     if (newItem.salary) {
                         editingItem.salary = newItem.salary;
                     }
+                    
+                    // Save updated data to server
+                    const items = currentContentType === 'news' ? 
+                        (currentLanguage === 'fr' ? getNews() : getNewsEn()) : 
+                        (currentLanguage === 'fr' ? getJobs() : getJobsEn());
+                    await saveToServer(currentContentType, currentLanguage, items);
+                    
                     alert('Contenu modifié avec succès!');
                 } else {
                     // Add new content
                     if (currentContentType === 'news') {
                         if (currentLanguage === 'fr') {
-                            addNewContent(newItem);
+                            await addNewContent(newItem);
                         } else {
-                            addNewContentEn(newItem);
+                            await addNewContentEn(newItem);
                         }
                     } else {
                         if (currentLanguage === 'fr') {
-                            addNewJob(newItem);
+                            await addNewJob(newItem);
                         } else {
-                            addNewJobEn(newItem);
+                            await addNewJobEn(newItem);
                         }
                     }
                     alert('Contenu ajouté avec succès! Il apparaîtra immédiatement sur le site.');
@@ -643,20 +681,20 @@
         });
 
         // Delete content with confirmation
-        function deleteContent(id) {
+        async function deleteContent(id) {
             if (confirm('Êtes-vous sûr de vouloir supprimer ce contenu ?')) {
                 try {
                     if (currentContentType === 'news') {
                         if (currentLanguage === 'fr') {
-                            deleteNewsItem(id);
+                            await deleteNewsItem(id);
                         } else {
-                            deleteNewsItemEn(id);
+                            await deleteNewsItemEn(id);
                         }
                     } else {
                         if (currentLanguage === 'fr') {
-                            deleteJobItem(id);
+                            await deleteJobItem(id);
                         } else {
-                            deleteJobItemEn(id);
+                            await deleteJobItemEn(id);
                         }
                     }
                     loadContent();
