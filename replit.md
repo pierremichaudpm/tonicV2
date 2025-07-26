@@ -160,6 +160,15 @@ The application is designed to serve both a public-facing bilingual website and 
 
 The website is now fully operational and matches the original local/Netlify functionality.
 
+### CMS User Interface Enhancements - January 26, 2025 ✅ COMPLETED
+- **Auto-translation notation badges**: Yellow badges showing "Auto-translated" appear on English content created via auto-translation
+- **Delete success notification**: Moved to center of CMS header showing "Élément supprimé avec succès" for 3 seconds
+- **Save success notification**: Added to center of CMS header showing "Sauvegardé avec succès" for 2 seconds
+- **Enhanced user feedback**: Clear, centered notifications replace scattered toast messages for better visibility
+- **Bilingual notification support**: All notifications display appropriate text based on current language selection
+- **Translation system confirmed**: Works for all content types (news and jobs) with complete Claude 4.0 integration
+- **Status**: ✅ PRODUCTION READY - Professional CMS interface with comprehensive user feedback system
+
 ### Performance & SEO Optimization - July 22, 2025
 - **Removed all production console logs** from shared.js for security and performance  
 - **Standardized 15+ title tags** to consistent "Page Name | Groupe Tonic" format across all pages
