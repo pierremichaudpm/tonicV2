@@ -459,10 +459,10 @@
                             </div>
                         </div>
                         <div class="flex space-x-2 ml-4">
-                            <button onclick="editItem(${item.id || Date.now()})" class="text-blue-600 hover:text-blue-800 px-3 py-1 rounded bg-blue-50">
+                            <button onclick="editItem('${item.id || item.title}')" class="text-blue-600 hover:text-blue-800 px-3 py-1 rounded bg-blue-50">
                                 Modifier
                             </button>
-                            <button onclick="deleteItem(${item.id || Date.now()})" class="text-red-600 hover:text-red-800 px-3 py-1 rounded bg-red-50">
+                            <button onclick="deleteItem('${item.id || item.title}')" class="text-red-600 hover:text-red-800 px-3 py-1 rounded bg-red-50">
                                 Supprimer
                             </button>
                         </div>
@@ -571,7 +571,7 @@
                 });
                 const result = await response.json();
                 const items = result.data || [];
-                const item = items.find(i => i.id == id);
+                const item = items.find(i => (i.id == id) || (i.title == id));
                 
                 if (item) {
                     // Populate form
@@ -606,8 +606,8 @@
                 const result = await response.json();
                 let items = result.data || [];
 
-                // Remove item
-                items = items.filter(item => item.id != id);
+                // Remove item by id or title
+                items = items.filter(item => (item.id != id) && (item.title != id));
 
                 // Save back
                 const saveResponse = await fetch(`/api/cms/content/${currentType}/${currentLang}`, {
