@@ -629,7 +629,7 @@
         }
 
         // Modal management
-        function openModal(type, itemId = null) {
+        window.openModal = function(type, itemId = null) {
             currentEditId = itemId;
             
             // Show/hide salary field based on type
@@ -656,7 +656,7 @@
             document.getElementById('contentModal').classList.remove('hidden');
         }
 
-        function closeModal() {
+        window.closeModal = function() {
             document.getElementById('contentModal').classList.add('hidden');
             currentEditId = null;
         }
@@ -735,7 +735,7 @@
             }
         }
 
-        async function editItem(id) {
+        window.editItem = async function(id) {
             try {
                 // Fetch fresh data
                 const response = await fetch(`/api/cms/content/${currentType}/${currentLang}`, {
@@ -806,7 +806,7 @@
         }
 
         // Replace your existing deleteItem function with this simpler version:
-        async function deleteItem(id) {
+        window.deleteItem = async function(id) {
             if (!confirm('Êtes-vous sûr de vouloir supprimer cet élément?')) {
                 return;
             }
