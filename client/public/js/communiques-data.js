@@ -18,7 +18,7 @@ const pressReleases = [
     },
     {
         "id": "1753557841426",
-        "title": "Un nouveau parcours et nouivelle expérience au Grand Prix cycliste de Québec en 2025",
+        "title": "Un nouveau parcours et nouvelle expérience au Grand Prix cycliste de Québec en 2025",
         "subtitle": "",
         "category": "Grands Prix Cyclistes",
         "date": "2025-06-03",
