@@ -454,8 +454,8 @@
         }
 
         // Open news modal with mobile-friendly content
-        function openNewsModal(id) {
-            const item = getNews().find(news => news.id === id);
+        window.openNewsModal = function(id) {
+            const item = getNews().find(news => String(news.id) === String(id));
             if (!item) return;
             
             DOM.modalTitle.textContent = item.title;
@@ -475,7 +475,7 @@
         }
 
         // Close modal
-        function closeModal() {
+        window.closeModal = function() {
             if (DOM.modal) {
                 DOM.modal.classList.remove('active');
                 document.body.style.overflow = '';
