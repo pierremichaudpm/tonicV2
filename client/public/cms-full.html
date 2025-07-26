@@ -676,6 +676,8 @@
         }
 
         async function deleteItem(id) {
+            console.log('Attempting to delete item with id:', id);
+            
             if (!confirm('Êtes-vous sûr de vouloir supprimer cet élément?')) {
                 return;
             }
@@ -686,9 +688,22 @@
                 });
                 const result = await response.json();
                 let items = result.data || [];
+                
+                console.log('Items before delete:', items.length);
+                console.log('Looking for item with id:', id);
 
-                // Remove item by id or title
-                items = items.filter(item => (item.id != id) && (item.title != id));
+                // Remove item by id or title - more explicit filtering
+                const initialCount = items.length;
+                items = items.filter(item => {
+                    const matches = (String(item.id) === String(id)) || (String(item.title) === String(id));
+                    if (matches) {
+                        console.log('Found item to delete:', item.title, 'ID:', item.id);
+                    }
+                    return !matches; // Keep items that don't match
+                });
+                
+                console.log('Items after filter:', items.length);
+                console.log('Deleted items:', initialCount - items.length);
 
                 // Save back
                 const saveResponse = await fetch(`/api/cms/content/${currentType}/${currentLang}`, {
@@ -701,8 +716,10 @@
                 });
 
                 if (saveResponse.ok) {
+                    console.log('Delete successful, reloading content');
                     loadContent();
                 } else {
+                    console.error('Delete failed with response:', saveResponse.status);
                     alert('Erreur lors de la suppression');
                 }
             } catch (error) {
