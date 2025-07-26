@@ -70,6 +70,23 @@
             color: white;
         }
         
+        /* CSS Variables for Tonic accent colors */
+        :root {
+            --accent-primary: #f97316;
+            --accent-light: #fb923c;
+            --accent-hover: #ea580c;
+            --accent-20: rgba(249, 115, 22, 0.2);
+        }
+
+        /* Text accent colors */
+        .text-accent {
+            color: var(--accent-primary);
+        }
+        
+        .text-accent:hover {
+            color: var(--accent-hover);
+        }
+        
         .lang-divider {
             width: 1px;
             height: 16px;
@@ -125,7 +142,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, rgba(249, 115, 22, 0.12), rgba(249, 115, 22, 0.08));
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.25), rgba(249, 115, 22, 0.20));
             border-radius: inherit;
             pointer-events: none;
             z-index: 1;
