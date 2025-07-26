@@ -523,6 +523,7 @@
             }
         }
 
+        // Also, update your displayContent function to properly escape the IDs:
         function displayContent(items) {
             const container = currentType === 'jobs' ? 
                 document.getElementById('jobsList') : 
@@ -537,34 +538,37 @@
                 return;
             }
 
-            // FIXED: Use data attributes instead of passing complex IDs in onclick
-            container.innerHTML = items.map((item, index) => `
-                <div class="card content-card p-6 rounded-lg" data-item-id="${item.id || index}" data-item-index="${index}">
-                    <div class="flex justify-between items-start">
-                        <div class="flex-1">
-                            <h3 class="text-xl font-semibold text-gray-900 mb-2">${item.title || ''}</h3>
-                            ${item.subtitle ? `<p class="text-gray-600 mb-2">${item.subtitle}</p>` : ''}
-                            <div class="flex items-center space-x-4 text-sm text-gray-500 mb-3">
-                                <span class="px-3 py-1 rounded-full text-sm font-medium ${getCategoryClass(item.category)}">${item.category || ''}</span>
-                                <span>${item.date ? new Date(item.date).toLocaleDateString('fr-CA') : ''}</span>
-                                ${item.salary ? `<span class="font-medium">${item.salary}</span>` : ''}
+            container.innerHTML = items.map(item => {
+                // Use the item's ID if it exists, otherwise use the title
+                const itemId = item.id || item.title || Math.random().toString(36);
+                
+                return `
+                    <div class="card content-card p-6 rounded-lg">
+                        <div class="flex justify-between items-start">
+                            <div class="flex-1">
+                                <h3 class="text-xl font-semibold text-gray-900 mb-2">${item.title}</h3>
+                                ${item.subtitle ? `<p class="text-gray-600 mb-2">${item.subtitle}</p>` : ''}
+                                <div class="flex items-center space-x-4 text-sm text-gray-500 mb-3">
+                                    <span class="px-3 py-1 rounded-full text-sm font-medium ${getCategoryClass(item.category)}">${item.category}</span>
+                                    <span>${new Date(item.date).toLocaleDateString('fr-CA')}</span>
+                                    ${item.salary ? `<span class="font-medium">${item.salary}</span>` : ''}
+                                </div>
+                                <div class="text-gray-700 prose prose-sm">
+                                    ${item.content ? item.content.substring(0, 200) + '...' : ''}
+                                </div>
                             </div>
-                            <div class="text-gray-700 prose prose-sm">
-                                ${item.content ? item.content.substring(0, 200) + '...' : ''}
+                            <div class="flex space-x-2 ml-4 flex-shrink-0">
+                                <button onclick="editItem('${itemId.replace(/'/g, "\\'")}')" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition-all shadow-sm">
+                                    Modifier
+                                </button>
+                                <button onclick="deleteItem('${itemId.replace(/'/g, "\\'")}')" class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition-all shadow-sm">
+                                    Supprimer
+                                </button>
                             </div>
-                        </div>
-                        <div class="flex space-x-2 ml-4 flex-shrink-0">
-                            <button data-action="edit" data-id="${item.id || index}" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition-all shadow-sm">
-                                Modifier
-                            </button>
-                            <button data-action="delete" data-id="${item.id || index}" class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition-all shadow-sm">
-                                Supprimer
-                            </button>
                         </div>
                     </div>
-                </div>
-            `).join('');
-
+                `;
+            }).join('');
         }
 
         // FIXED: New event handler using event delegation
@@ -743,71 +747,63 @@
             }
         }
 
-        // FIXED: Improved delete function
+        // Replace your existing deleteItem function with this simpler version:
         async function deleteItem(id) {
-            console.log('deleteItem function called with ID:', id);
             if (!confirm('Êtes-vous sûr de vouloir supprimer cet élément?')) {
-                console.log('User cancelled delete');
                 return;
             }
 
             try {
-                console.log('Starting delete process for ID:', id);
-                console.log('Current type:', currentType, 'Current lang:', currentLang);
+                console.log('Deleting item with ID:', id);
                 
-                // Get current data first
-                const fetchUrl = `/api/cms/content/${currentType}/${currentLang}`;
-                console.log('Fetching from:', fetchUrl);
-                
-                const response = await fetch(fetchUrl, {
+                // Get current data
+                const response = await fetch(`/api/cms/content/${currentType}/${currentLang}`, {
                     headers: { 'x-admin-password': 'admin123' }
                 });
                 
-                console.log('Fetch response status:', response.status);
-                const result = await response.json();
-                console.log('Current items:', result.data);
-                let items = result.data || [];
-                
-                // Filter out the item to delete
-                const originalLength = items.length;
-                console.log('Original length:', originalLength);
-                
-                items = items.filter((item, index) => {
-                    const keepItem = String(item.id) !== String(id) && String(index) !== String(id);
-                    console.log(`Item ${index} (id: ${item.id}) - keeping: ${keepItem}`);
-                    return keepItem;
-                });
-                
-                console.log('New length:', items.length);
-                
-                if (items.length === originalLength) {
-                    throw new Error('Item not found');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch data');
                 }
                 
-                // Save the updated list
-                console.log('Saving updated list...');
+                const result = await response.json();
+                let items = result.data || [];
+                
+                console.log('Current items:', items);
+                console.log('Looking for ID:', id);
+                
+                // Find and remove the item - compare both as strings
+                const filteredItems = items.filter(item => {
+                    // Check both id and title since your code uses both
+                    return String(item.id) !== String(id) && String(item.title) !== String(id);
+                });
+                
+                console.log('Filtered items:', filteredItems);
+                
+                // If nothing was filtered, the item wasn't found
+                if (filteredItems.length === items.length) {
+                    alert('Élément non trouvé');
+                    return;
+                }
+                
+                // Save the updated list using POST (not DELETE)
                 const saveResponse = await fetch(`/api/cms/content/${currentType}/${currentLang}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'x-admin-password': 'admin123'
                     },
-                    body: JSON.stringify({ data: items })
+                    body: JSON.stringify({ data: filteredItems })
                 });
 
-                console.log('Save response status:', saveResponse.status);
-                
+                const saveResult = await saveResponse.json();
+                console.log('Save result:', saveResult);
+
                 if (saveResponse.ok) {
-                    console.log('Delete successful, reloading content...');
-                    // Immediately reload content after successful delete
+                    // Reload content
                     loadContent();
-                    
-                    // Show success message
-                    showToast('Élément supprimé avec succès!', 'success');
+                    alert('Élément supprimé avec succès!');
                 } else {
-                    const errorText = await saveResponse.text();
-                    console.error('Save failed:', errorText);
-                    throw new Error('Failed to save changes');
+                    alert('Erreur lors de la suppression');
                 }
             } catch (error) {
                 console.error('Delete error:', error);
