@@ -191,33 +191,31 @@
                 </a>
                 
                 <!-- Desktop Navigation -->
-                <nav class="hidden md:flex" style="width: 500px; justify-content: flex-end;">
-                    <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); border-radius: 9999px; width: 460px; justify-content: center;">
-                        <a href="index.html" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.75rem; color: white; text-decoration: none; border-radius: 9999px; transition: all 0.3s ease; font-size: 0.875rem; font-weight: 500; white-space: nowrap; min-width: 70px; justify-content: center;" data-tooltip="Accueil">
-                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-                            <span>Accueil</span>
-                        </a>
-                        <a href="a-propos.html" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.75rem; color: white; text-decoration: none; border-radius: 9999px; transition: all 0.3s ease; font-size: 0.875rem; font-weight: 500; white-space: nowrap; min-width: 70px; justify-content: center;" data-tooltip="À propos">
-                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-                            <span>À propos</span>
-                        </a>
-                        <a href="communiques.html" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.75rem; color: white; text-decoration: none; border-radius: 9999px; transition: all 0.3s ease; font-size: 0.875rem; font-weight: 500; white-space: nowrap; min-width: 94px; justify-content: center; background: rgba(255,255,255,0.1);">
-                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M10 6h8"/><path d="M10 10h8"/><path d="M10 14h4"/></svg>
-                            <span>Communiqués</span>
-                        </a>
-                        <a href="emplois.html" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.75rem; color: white; text-decoration: none; border-radius: 9999px; transition: all 0.3s ease; font-size: 0.875rem; font-weight: 500; white-space: nowrap; min-width: 70px; justify-content: center;" data-tooltip="Emplois">
-                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-                            <span>Emplois</span>
-                        </a>
-                        <a href="nous-joindre.html" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.75rem; color: white; text-decoration: none; border-radius: 9999px; transition: all 0.3s ease; font-size: 0.875rem; font-weight: 500; white-space: nowrap; min-width: 94px; justify-content: center;" data-tooltip="Nous joindre">
-                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                            <span>Nous joindre</span>
-                        </a>
-                        <div style="width: 1px; height: 16px; background: rgba(255, 255, 255, 0.2); margin: 0 0.5rem; align-self: center;"></div>
-                        <a href="communiques-en.html" style="display: flex; align-items: center; gap: 0.25rem; padding: 0.25rem 0.5rem; border-radius: 0.5rem; color: rgba(255, 255, 255, 0.9); transition: all 0.2s ease; font-size: 0.75rem; font-weight: 500; text-decoration: none; cursor: pointer;">
-                            <span>EN</span>
-                        </a>
-                    </div>
+                <nav class="hidden md:flex nav-container">
+                    <a href="index.html" class="nav-item" data-tooltip="Accueil">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                        <span>Accueil</span>
+                    </a>
+                    <a href="a-propos.html" class="nav-item" data-tooltip="À propos">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                        <span>À propos</span>
+                    </a>
+                    <a href="communiques.html" class="nav-item active">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M10 6h8"/><path d="M10 10h8"/><path d="M10 14h4"/></svg>
+                        <span>Communiqués</span>
+                    </a>
+                    <a href="emplois.html" class="nav-item" data-tooltip="Emplois">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                        <span>Emplois</span>
+                    </a>
+                    <a href="nous-joindre.html" class="nav-item" data-tooltip="Nous joindre">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                        <span>Nous joindre</span>
+                    </a>
+                    <div class="lang-divider"></div>
+                    <a href="communiques-en.html" class="lang-switcher">
+                        <span>EN</span>
+                    </a>
                 </nav>
                 
                 <!-- Mobile Menu Button -->
