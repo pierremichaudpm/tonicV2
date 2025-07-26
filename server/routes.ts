@@ -220,7 +220,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         } as Record<string, string>,
         body: JSON.stringify({
           model: 'claude-sonnet-4-20250514',
-          max_tokens: 4000,
+          max_tokens: 8192,
           messages: [{
             role: 'user',
             content: `Translate the following ${fromLang === 'fr' ? 'French' : 'English'} text to ${toLang === 'en' ? 'English' : 'French'}. 
