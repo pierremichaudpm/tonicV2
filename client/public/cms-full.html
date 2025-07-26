@@ -745,12 +745,14 @@
 
         // FIXED: Improved delete function
         async function deleteItem(id) {
+            console.log('deleteItem function called with ID:', id);
             if (!confirm('Êtes-vous sûr de vouloir supprimer cet élément?')) {
+                console.log('User cancelled delete');
                 return;
             }
 
             try {
-                console.log('Deleting item with ID:', id);
+                console.log('Starting delete process for ID:', id);
                 
                 // Get current data first
                 const response = await fetch(`/api/cms/content/${currentType}/${currentLang}`, {
@@ -831,15 +833,22 @@
             
             // Add event delegation for all content buttons at document level
             document.addEventListener('click', function(e) {
+                console.log('Click event fired on:', e.target);
                 const button = e.target.closest('button[data-action]');
-                if (!button) return;
+                if (!button) {
+                    console.log('No button with data-action found');
+                    return;
+                }
                 
                 const action = button.getAttribute('data-action');
                 const id = button.getAttribute('data-id');
+                console.log('Button clicked - Action:', action, 'ID:', id);
                 
                 if (action === 'edit') {
+                    console.log('Calling editItem with ID:', id);
                     editItem(id);
                 } else if (action === 'delete') {
+                    console.log('Calling deleteItem with ID:', id);
                     deleteItem(id);
                 }
             });
