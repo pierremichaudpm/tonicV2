@@ -663,7 +663,10 @@
                     return `
                         <div class="card content-card p-6 rounded-lg" style="position: relative; min-height: 150px;">
                             <div style="padding-right: 140px;">
-                                <h3 class="text-xl font-semibold text-gray-900 mb-2">${escapeHtml(item.title || '')}</h3>
+                                <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                                    ${escapeHtml(item.title || '')}
+                                    ${item.isAutoTranslated ? `<span class="ml-2 text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded">${currentLang === 'fr' ? 'Auto-traduit' : 'Auto-translated'}</span>` : ''}
+                                </h3>
                                 ${item.subtitle ? `<p class="text-gray-600 mb-2">${escapeHtml(item.subtitle)}</p>` : ''}
                                 <div class="flex flex-wrap items-center gap-3 text-sm text-gray-500 mb-3">
                                     <span class="px-3 py-1 rounded-full text-sm font-medium ${getCategoryClass(item.category)}">${escapeHtml(item.category || '')}</span>
@@ -745,6 +748,98 @@
             currentEditId = null;
         }
 
+        // Simple translation function (placeholder - replace with real API)
+        async function translateText(text, fromLang = 'fr', toLang = 'en') {
+            // Placeholder translation - replace with real API call
+            const translations = {
+                // Basic translations for common terms
+                'Coordonnateur d\'événements': 'Event Coordinator',
+                'Coordonnatrice d\'événements': 'Event Coordinator',
+                'Rejoignez notre équipe': 'Join our team',
+                'Nous recherchons': 'We are looking for',
+                'Responsabilités principales': 'Main Responsibilities',
+                'Profil recherché': 'Required Profile',
+                'Expérience': 'Experience',
+                'Formation': 'Education',
+                'Compétences': 'Skills',
+                'Le Volleyball World Beach Pro Tour': 'The Volleyball World Beach Pro Tour',
+                'revient à Montréal': 'returns to Montreal',
+                'L\'élite mondiale du volleyball de plage': 'The world elite of beach volleyball',
+                'en action du': 'in action from',
+                'au parc Jean-Drapeau': 'at Jean-Drapeau Park'
+            };
+            
+            // Simple word-by-word replacement for demo
+            let translated = text;
+            for (const [french, english] of Object.entries(translations)) {
+                translated = translated.replace(new RegExp(french, 'gi'), english);
+            }
+            
+            return translated;
+        }
+
+        // Auto-translate content to other language
+        async function autoTranslateContent(itemData, sourceLang) {
+            const targetLang = sourceLang === 'fr' ? 'en' : 'fr';
+            
+            try {
+                // Create translated version
+                const translatedItem = {
+                    ...itemData,
+                    title: await translateText(itemData.title, sourceLang, targetLang),
+                    subtitle: itemData.subtitle ? await translateText(itemData.subtitle, sourceLang, targetLang) : '',
+                    content: await translateText(itemData.content, sourceLang, targetLang),
+                    isAutoTranslated: true
+                };
+                
+                // Get target language items
+                const response = await fetch(`/api/cms/content/${currentType}/${targetLang}`, {
+                    headers: { 'x-admin-password': 'admin123' }
+                });
+                
+                if (!response.ok) {
+                    console.log('Could not fetch target language data for translation');
+                    return;
+                }
+                
+                const result = await response.json();
+                let targetItems = result.data || [];
+                
+                // Check if item already exists and is manually edited
+                const existingIndex = targetItems.findIndex(item => String(item.id) === String(itemData.id));
+                if (existingIndex !== -1 && !targetItems[existingIndex].isAutoTranslated) {
+                    console.log('Not overriding manually edited content');
+                    return;
+                }
+                
+                // Update or add translated item
+                if (existingIndex !== -1) {
+                    targetItems[existingIndex] = translatedItem;
+                } else {
+                    targetItems.push(translatedItem);
+                }
+                
+                // Save translated version
+                const saveResponse = await fetch(`/api/cms/content/${currentType}/${targetLang}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-admin-password': 'admin123'
+                    },
+                    body: JSON.stringify({ data: targetItems })
+                });
+                
+                if (saveResponse.ok) {
+                    console.log(`Auto-translated content to ${targetLang}`);
+                } else {
+                    console.log('Failed to save translated content');
+                }
+                
+            } catch (error) {
+                console.error('Error auto-translating:', error);
+            }
+        }
+
         // CRUD operations
         async function saveItem(e) {
             e.preventDefault();
@@ -761,6 +856,11 @@
 
             if (currentType === 'jobs') {
                 itemData.salary = document.getElementById('salary').value;
+            }
+            
+            // If this is an edit of an auto-translated item, remove the flag
+            if (currentEditId) {
+                delete itemData.isAutoTranslated;
             }
 
             console.log('Item data to save:', itemData);
@@ -807,6 +907,11 @@
                 console.log('Save result:', saveResult);
 
                 if (saveResponse.ok) {
+                    // Auto-translate to other language if this is French content
+                    if (currentLang === 'fr') {
+                        await autoTranslateContent(itemData, currentLang);
+                    }
+                    
                     closeModal();
                     loadContent();
                     showToast('Élément enregistré avec succès!', 'success');
@@ -954,9 +1059,42 @@
                 console.log('Save result:', saveResult);
 
                 if (saveResponse.ok) {
+                    // Also delete from the other language version
+                    const otherLang = currentLang === 'fr' ? 'en' : 'fr';
+                    try {
+                        const otherResponse = await fetch(`/api/cms/content/${currentType}/${otherLang}`, {
+                            headers: { 'x-admin-password': 'admin123' }
+                        });
+                        
+                        if (otherResponse.ok) {
+                            const otherResult = await otherResponse.json();
+                            let otherItems = otherResult.data || [];
+                            
+                            // Remove item with same ID from other language
+                            const otherFilteredItems = otherItems.filter(item => 
+                                String(item.id) !== String(deleteItemId)
+                            );
+                            
+                            if (otherFilteredItems.length !== otherItems.length) {
+                                // Save the updated other language list
+                                await fetch(`/api/cms/content/${currentType}/${otherLang}`, {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'x-admin-password': 'admin123'
+                                    },
+                                    body: JSON.stringify({ data: otherFilteredItems })
+                                });
+                                console.log(`Also deleted from ${otherLang} version`);
+                            }
+                        }
+                    } catch (otherError) {
+                        console.log('Could not delete from other language:', otherError);
+                    }
+                    
                     // Reload content
                     loadContent();
-                    showToast('Élément supprimé avec succès!', 'success');
+                    showToast('Élément supprimé avec succès des deux langues!', 'success');
                 } else {
                     showToast('Erreur lors de la suppression', 'error');
                 }
