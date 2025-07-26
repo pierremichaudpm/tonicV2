@@ -15,7 +15,6 @@
     <script src="../js/communiques-data-en.js"></script>
     <script src="../js/emplois-data.js"></script>
     <script src="../js/emplois-data-en.js"></script>
-    <script src="../js/simple-content.js"></script>
     
     <style>
         /* Category Colors */
@@ -254,12 +253,110 @@
         </div>
     </div>
 
-    <script src="../js/simple-content.js"></script>
     <script>
         let currentContentType = 'news';
         let isAuthenticated = false;
         let quill;
         let currentLanguage = 'fr'; // 'fr' or 'en'
+        let editingItem = null; // For edit functionality
+
+        // Category images mapping
+        const categoryImages = {
+            'Beach Pro Tour': 'images/beach-pro-tour-hero.webp',
+            'Grands Prix Cyclistes': 'images/grands-prix-cyclistes-hero.jpg',
+            'Marathon Beneva 21K': 'images/marathon-beneva-hero.jpg',
+            'UCI 2026': 'images/montreal-2026-uci-hero.jpg',
+            'Studio 76': 'images/studio76-logo.png',
+            'Dock 619': 'images/dock619-hero-new.jpg',
+            '21K de Montréal': 'images/21k-hero.jpg',
+            'Groupe Tonic': 'images/tonic-logo.png'
+        };
+
+        // Get image for category
+        function getImage(category) {
+            return categoryImages[category] || 'images/tonic-logo.png';
+        }
+
+        // Format date
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString('fr-FR', options);
+        }
+
+        // Get content functions
+        function getNews() {
+            return typeof pressReleases !== 'undefined' ? pressReleases : [];
+        }
+
+        function getJobs() {
+            return typeof jobListings !== 'undefined' ? jobListings : [];
+        }
+
+        function getNewsEn() {
+            return typeof communiquesData !== 'undefined' ? communiquesData : [];
+        }
+
+        function getJobsEn() {
+            return typeof jobsData !== 'undefined' ? jobsData : [];
+        }
+
+        // Add new content functions
+        function addNewContent(item) {
+            item.id = Date.now();
+            if (typeof pressReleases !== 'undefined') {
+                pressReleases.unshift(item);
+            }
+        }
+
+        function addNewContentEn(item) {
+            item.id = Date.now();
+            if (typeof communiquesData !== 'undefined') {
+                communiquesData.unshift(item);
+            }
+        }
+
+        function addNewJob(item) {
+            item.id = Date.now();
+            if (typeof jobListings !== 'undefined') {
+                jobListings.unshift(item);
+            }
+        }
+
+        function addNewJobEn(item) {
+            item.id = Date.now();
+            if (typeof jobsData !== 'undefined') {
+                jobsData.unshift(item);
+            }
+        }
+
+        // Delete content functions
+        function deleteNewsItem(id) {
+            if (typeof pressReleases !== 'undefined') {
+                const index = pressReleases.findIndex(item => item.id === id);
+                if (index > -1) pressReleases.splice(index, 1);
+            }
+        }
+
+        function deleteNewsItemEn(id) {
+            if (typeof communiquesData !== 'undefined') {
+                const index = communiquesData.findIndex(item => item.id === id);
+                if (index > -1) communiquesData.splice(index, 1);
+            }
+        }
+
+        function deleteJobItem(id) {
+            if (typeof jobListings !== 'undefined') {
+                const index = jobListings.findIndex(item => item.id === id);
+                if (index > -1) jobListings.splice(index, 1);
+            }
+        }
+
+        function deleteJobItemEn(id) {
+            if (typeof jobsData !== 'undefined') {
+                const index = jobsData.findIndex(item => item.id === id);
+                if (index > -1) jobsData.splice(index, 1);
+            }
+        }
 
         // Login functionality
         document.getElementById('loginForm').addEventListener('submit', function(e) {
@@ -399,10 +496,16 @@
                                     <span class="inline-block px-3 py-1 rounded-full text-xs font-medium text-white ${categoryClass}">
                                         ${item.category}
                                     </span>
-                                    <button onclick="deleteContent(${item.id})" 
-                                            class="text-red-400 hover:text-red-300 text-sm px-3 py-1 hover:bg-red-900/20 rounded transition-colors">
-                                        Delete
-                                    </button>
+                                    <div class="flex gap-2">
+                                        <button onclick="editContent(${item.id})" 
+                                                class="text-blue-400 hover:text-blue-300 text-sm px-3 py-1 hover:bg-blue-900/20 rounded transition-colors">
+                                            Edit
+                                        </button>
+                                        <button onclick="deleteContent(${item.id})" 
+                                                class="text-red-400 hover:text-red-300 text-sm px-3 py-1 hover:bg-red-900/20 rounded transition-colors">
+                                            Delete
+                                        </button>
+                                    </div>
                                 </div>
                                 <h3 class="font-bold text-lg mb-2 text-white">${item.title}</h3>
                                 <p class="text-orange-200 text-sm mb-3">${item.subtitle}</p>
@@ -437,11 +540,43 @@
 
         // Show add form
         function showAddForm() {
+            editingItem = null;
             document.getElementById('addForm').reset();
             document.getElementById('date').value = new Date().toISOString().split('T')[0];
             if (quill) {
                 quill.setContents([]);
             }
+            document.querySelector('#addModal h2').textContent = currentLanguage === 'fr' ? 'Ajouter du contenu' : 'Add Content';
+            document.getElementById('addModal').classList.remove('hidden');
+        }
+
+        // Edit content function
+        function editContent(id) {
+            const items = currentContentType === 'news' ? 
+                (currentLanguage === 'fr' ? getNews() : getNewsEn()) : 
+                (currentLanguage === 'fr' ? getJobs() : getJobsEn());
+            
+            const item = items.find(i => i.id === id);
+            if (!item) return;
+
+            editingItem = item;
+            
+            // Fill form with existing data
+            document.getElementById('title').value = item.title || '';
+            document.getElementById('subtitle').value = item.subtitle || '';
+            document.getElementById('category').value = item.category || '';
+            document.getElementById('date').value = item.date || '';
+            
+            if (currentContentType === 'jobs' && item.salary) {
+                document.getElementById('salary').value = item.salary;
+            }
+            
+            // Set content in Quill editor
+            if (quill && item.content) {
+                quill.root.innerHTML = item.content;
+            }
+            
+            document.querySelector('#addModal h2').textContent = currentLanguage === 'fr' ? 'Modifier le contenu' : 'Edit Content';
             document.getElementById('addModal').classList.remove('hidden');
         }
 
@@ -475,27 +610,40 @@
                 }
             }
             
-            // Add the content using the correct function based on type and language
+            // Add or update content
             try {
-                if (currentContentType === 'news') {
-                    if (currentLanguage === 'fr') {
-                        addNewContent(newItem);
-                    } else {
-                        addNewContentEn(newItem);
+                if (editingItem) {
+                    // Update existing item
+                    editingItem.title = newItem.title;
+                    editingItem.subtitle = newItem.subtitle;
+                    editingItem.category = newItem.category;
+                    editingItem.date = newItem.date;
+                    editingItem.content = newItem.content;
+                    if (newItem.salary) {
+                        editingItem.salary = newItem.salary;
                     }
+                    alert('Contenu modifié avec succès!');
                 } else {
-                    if (currentLanguage === 'fr') {
-                        addNewJob(newItem);
+                    // Add new content
+                    if (currentContentType === 'news') {
+                        if (currentLanguage === 'fr') {
+                            addNewContent(newItem);
+                        } else {
+                            addNewContentEn(newItem);
+                        }
                     } else {
-                        addNewJobEn(newItem);
+                        if (currentLanguage === 'fr') {
+                            addNewJob(newItem);
+                        } else {
+                            addNewJobEn(newItem);
+                        }
                     }
+                    alert('Contenu ajouté avec succès! Il apparaîtra immédiatement sur le site.');
                 }
                 
                 // Close form and refresh
                 closeAddForm();
                 loadContent();
-                
-                alert('Contenu ajouté avec succès! Il apparaîtra immédiatement sur le site.');
             } catch (error) {
                 console.error('Error saving content:', error);
                 alert('Erreur lors de la sauvegarde du contenu. Veuillez réessayer.');
