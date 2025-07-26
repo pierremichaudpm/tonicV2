@@ -1121,42 +1121,9 @@
                 console.log('Save result:', saveResult);
 
                 if (saveResponse.ok) {
-                    // Also delete from the other language version
-                    const otherLang = currentLang === 'fr' ? 'en' : 'fr';
-                    try {
-                        const otherResponse = await fetch(`/api/cms/content/${currentType}/${otherLang}`, {
-                            headers: { 'x-admin-password': 'admin123' }
-                        });
-                        
-                        if (otherResponse.ok) {
-                            const otherResult = await otherResponse.json();
-                            let otherItems = otherResult.data || [];
-                            
-                            // Remove item with same ID from other language
-                            const otherFilteredItems = otherItems.filter(item => 
-                                String(item.id) !== String(deleteItemId)
-                            );
-                            
-                            if (otherFilteredItems.length !== otherItems.length) {
-                                // Save the updated other language list
-                                await fetch(`/api/cms/content/${currentType}/${otherLang}`, {
-                                    method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                        'x-admin-password': 'admin123'
-                                    },
-                                    body: JSON.stringify({ data: otherFilteredItems })
-                                });
-                                console.log(`Also deleted from ${otherLang} version`);
-                            }
-                        }
-                    } catch (otherError) {
-                        console.log('Could not delete from other language:', otherError);
-                    }
-                    
                     // Reload content
                     loadContent();
-                    showToast('Élément supprimé avec succès des deux langues!', 'success');
+                    showToast('Élément supprimé avec succès!', 'success');
                 } else {
                     showToast('Erreur lors de la suppression', 'error');
                 }
