@@ -121,15 +121,39 @@
             color: #94a3b8 !important;
         }
         
-        /* Category color schemes - using Tailwind colors with !important for dark mode */
-        .bg-pink-500 { background: #ec4899 !important; }
-        .bg-purple-500 { background: #a855f7 !important; }
-        .bg-red-500 { background: #ef4444 !important; }
-        .bg-blue-500 { background: #3b82f6 !important; }
-        .bg-green-500 { background: #10b981 !important; }
-        .bg-gray-600 { background: #4b5563 !important; }
-        .bg-yellow-500 { background: #eab308 !important; }
-        .bg-gray-900 { background: #111827 !important; }
+        /* Category color schemes - forced with !important */
+        span.bg-pink-500 { 
+            background-color: #ec4899 !important; 
+            color: white !important;
+        }
+        span.bg-purple-500 { 
+            background-color: #a855f7 !important; 
+            color: white !important;
+        }
+        span.bg-red-500 { 
+            background-color: #ef4444 !important; 
+            color: white !important;
+        }
+        span.bg-blue-500 { 
+            background-color: #3b82f6 !important; 
+            color: white !important;
+        }
+        span.bg-green-500 { 
+            background-color: #10b981 !important; 
+            color: white !important;
+        }
+        span.bg-gray-600 { 
+            background-color: #4b5563 !important; 
+            color: white !important;
+        }
+        span.bg-yellow-500 { 
+            background-color: #eab308 !important; 
+            color: white !important;
+        }
+        span.bg-gray-900 { 
+            background-color: #111827 !important; 
+            color: white !important;
+        }
         
         /* Quill editor toolbar styling for dark modal */
         .ql-toolbar {
@@ -529,10 +553,10 @@
                             </div>
                         </div>
                         <div class="flex space-x-2 ml-4 flex-shrink-0">
-                            <button onclick="editItem(${JSON.stringify(String(item.id || item.title))})" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition-all shadow-sm">
+                            <button onclick="editItem('${String(item.id || item.title).replace(/'/g, "\\'")}')" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition-all shadow-sm">
                                 Modifier
                             </button>
-                            <button onclick="deleteItem(${JSON.stringify(String(item.id || item.title))})" class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition-all shadow-sm">
+                            <button onclick="deleteItem('${String(item.id || item.title).replace(/'/g, "\\'")}')" class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition-all shadow-sm">
                                 Supprimer
                             </button>
                         </div>
