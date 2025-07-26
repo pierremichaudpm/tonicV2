@@ -634,44 +634,72 @@
 
         async function editItem(id) {
             try {
+                // Fetch fresh data
                 const response = await fetch(`/api/cms/content/${currentType}/${currentLang}`, {
-                    headers: { 'x-admin-password': 'admin123' }
+                    headers: {
+                        'x-admin-password': 'admin123',
+                        'Cache-Control': 'no-cache'
+                    }
                 });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch data');
+                }
+                
                 const result = await response.json();
                 const items = result.data || [];
-                const item = items.find(i => (i.id == id) || (i.title == id));
                 
-                if (item) {
-                    // Set current edit ID
-                    currentEditId = id;
-                    
-                    // Show modal first
-                    document.getElementById('contentModal').classList.remove('hidden');
-                    
-                    // Update modal title
-                    const title = currentLang === 'en' ? 'Edit Content' : 'Modifier le contenu';
-                    document.getElementById('modalTitle').textContent = title;
-                    
-                    // Show/hide salary field
-                    document.getElementById('salaryField').style.display = currentType === 'jobs' ? 'block' : 'none';
-                    
-                    // Populate form
-                    document.getElementById('title').value = item.title || '';
-                    document.getElementById('subtitle').value = item.subtitle || '';
-                    document.getElementById('category').value = item.category || '';
-                    document.getElementById('date').value = item.date || '';
-                    if (item.salary && document.getElementById('salary')) {
-                        document.getElementById('salary').value = item.salary;
-                    }
-                    
-                    // Set Quill content
-                    if (quill && item.content) {
+                // Find the item by ID or title
+                const item = items.find(item => 
+                    String(item.id) === String(id) || 
+                    String(item.title) === String(id)
+                );
+                
+                if (!item) {
+                    alert('Élément non trouvé');
+                    return;
+                }
+                
+                // Set current edit ID
+                currentEditId = id;
+                
+                // Show modal
+                document.getElementById('contentModal').classList.remove('hidden');
+                
+                // Update modal title
+                const title = currentLang === 'en' ? 'Edit Content' : 'Modifier le contenu';
+                document.getElementById('modalTitle').textContent = title;
+                
+                // Show/hide salary field based on content type
+                const salaryField = document.getElementById('salaryField');
+                if (salaryField) {
+                    salaryField.style.display = currentType === 'jobs' ? 'block' : 'none';
+                }
+                
+                // Populate all form fields
+                document.getElementById('title').value = item.title || '';
+                document.getElementById('subtitle').value = item.subtitle || '';
+                document.getElementById('category').value = item.category || '';
+                document.getElementById('date').value = item.date || '';
+                
+                // Set salary if it exists and field is available
+                const salaryInput = document.getElementById('salary');
+                if (salaryInput && item.salary) {
+                    salaryInput.value = item.salary;
+                }
+                
+                // Set Quill editor content
+                if (quill) {
+                    if (item.content) {
                         quill.root.innerHTML = item.content;
+                    } else {
+                        quill.setText('');
                     }
                 }
+                
             } catch (error) {
-                console.error('Erreur de chargement:', error);
-                alert('Erreur lors du chargement de l\'élément');
+                console.error('Edit error:', error);
+                alert('Erreur lors du chargement: ' + error.message);
             }
         }
 
@@ -681,38 +709,26 @@
             }
 
             try {
-                // Use the DELETE endpoint that exists and works
+                // Call the DELETE endpoint
                 const deleteResponse = await fetch(`/api/cms/content/${currentType}/${currentLang}/${id}`, {
                     method: 'DELETE',
                     headers: {
-                        'x-admin-password': 'admin123',
-                        'Cache-Control': 'no-cache'
+                        'x-admin-password': 'admin123'
                     }
                 });
 
                 const result = await deleteResponse.json();
                 
                 if (deleteResponse.ok && result.success) {
-                    // Force reload with cache bypass
-                    await fetch(`/api/cms/content/${currentType}/${currentLang}`, {
-                        headers: { 
-                            'x-admin-password': 'admin123',
-                            'Cache-Control': 'no-cache',
-                            'Pragma': 'no-cache'
-                        }
-                    }).then(response => response.json())
-                      .then(data => {
-                          displayContent(data.data || []);
-                      });
-                    
-                    // Show success message
+                    // Immediately reload content after successful delete
+                    loadContent();
                     alert('Élément supprimé avec succès!');
                 } else {
-                    throw new Error('Erreur lors de la suppression: ' + (result.error || 'Erreur inconnue'));
+                    throw new Error(result.error || 'Erreur lors de la suppression');
                 }
             } catch (error) {
-                alert('Erreur lors de la suppression: ' + error.message);
                 console.error('Delete error:', error);
+                alert('Erreur lors de la suppression: ' + error.message);
             }
         }
 
