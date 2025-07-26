@@ -587,7 +587,14 @@
 
         // Render jobs with colored cards
         function renderJobs() {
+            console.log('renderJobs called');
             const jobs = getJobs();
+            console.log('Jobs loaded:', jobs);
+            
+            if (!DOM.jobsList) {
+                console.error('jobsList element not found');
+                return;
+            }
             
             if (jobs.length === 0) {
                 DOM.jobsList.innerHTML = '<p class="text-white text-center py-8">Aucun emploi disponible.</p>';
@@ -957,8 +964,8 @@
                 }
             });
             
-            // Initial render
-            renderJobs().catch(console.error);
+            // Initial render (already called above on line 917)
+            // renderJobs();
         });
     </script>
 </body>
