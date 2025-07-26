@@ -78,7 +78,7 @@
             align-self: center;
         }
 
-        /* Navigation Container */
+        /* Navigation */
         .nav-container {
             display: flex;
             align-items: center;
@@ -88,7 +88,6 @@
             backdrop-filter: blur(10px);
             border: 1px solid var(--glass-border);
             border-radius: 9999px;
-            width: 440px;
         }
 
         .nav-item {
@@ -106,11 +105,37 @@
         }
 
         .nav-item:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255,255,255,0.2);
+            color: white;
         }
 
         .nav-item.active {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255,255,255,0.3);
+            color: white;
+        }
+
+        .lang-divider {
+            width: 1px;
+            height: 1.5rem;
+            background: rgba(255,255,255,0.3);
+            margin: 0 0.25rem;
+        }
+
+        .lang-switcher {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 0.75rem;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            border-radius: 9999px;
+            transition: all 0.3s ease;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .lang-switcher:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
         }
         
         /* Optimized styles with CSS custom properties */
@@ -226,7 +251,7 @@
                 </a>
                 
                 <!-- Desktop Navigation -->
-                <nav class="hidden md:flex nav-container" style="width: 440px !important;">
+                <nav class="hidden md:flex nav-container">
                     <a href="index.html" class="nav-item" data-tooltip="Accueil">
                         <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
                         <span>Accueil</span>
