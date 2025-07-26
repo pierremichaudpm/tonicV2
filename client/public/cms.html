@@ -1043,6 +1043,12 @@
             e.preventDefault();
             console.log('saveItem called');
             
+            // Show loading state
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Sauvegarde...';
+            submitBtn.disabled = true;
+            
             const itemData = {
                 id: currentEditId || Date.now().toString(),
                 title: document.getElementById('title').value,
@@ -1113,6 +1119,7 @@
                     
                     if (currentLang === 'fr' && autoTranslateCheckbox && autoTranslateCheckbox.checked) {
                         console.log('Starting auto-translation...');
+                        submitBtn.textContent = 'Traduction...';
                         await autoTranslateContent(itemData, currentLang);
                     } else {
                         console.log('Auto-translation skipped');
@@ -1123,6 +1130,15 @@
                     showToast('Élément enregistré avec succès!', 'success');
                 } else {
                     alert('Erreur lors de la sauvegarde: ' + (saveResult.error || 'Unknown error'));
+                }
+                
+            } catch (error) {
+                console.error('Error saving:', error);
+                alert('Erreur lors de la sauvegarde: ' + error.message);
+            } finally {
+                // Restore button state
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
                 }
             } catch (error) {
                 console.error('Erreur de sauvegarde:', error);

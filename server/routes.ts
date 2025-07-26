@@ -219,18 +219,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
           'anthropic-version': '2023-06-01'
         } as Record<string, string>,
         body: JSON.stringify({
-          model: 'claude-3-5-sonnet-20241022',
-          max_tokens: 2000,
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 4000,
           messages: [{
             role: 'user',
             content: `Translate the following ${fromLang === 'fr' ? 'French' : 'English'} text to ${toLang === 'en' ? 'English' : 'French'}. 
             
-            IMPORTANT RULES:
+            CRITICAL RULES:
             1. Preserve ALL HTML tags exactly as they are (including spans, links, etc.)
-            2. Keep proper names in their original form (Montréal Beach Pro Tour, Gilles-Villeneuve, etc.)
+            2. Keep proper names in their original form (Montréal, Gilles-Villeneuve, etc.)
             3. Maintain the same formatting and structure
             4. Only translate the actual text content, not HTML attributes
-            5. Return only the translated text with preserved HTML
+            5. Return the COMPLETE translated text with preserved HTML - do not truncate
+            6. Translate ALL content, even long passages
             
             Text to translate:
             ${text}`
