@@ -753,26 +753,39 @@
 
             try {
                 console.log('Starting delete process for ID:', id);
+                console.log('Current type:', currentType, 'Current lang:', currentLang);
                 
                 // Get current data first
-                const response = await fetch(`/api/cms/content/${currentType}/${currentLang}`, {
+                const fetchUrl = `/api/cms/content/${currentType}/${currentLang}`;
+                console.log('Fetching from:', fetchUrl);
+                
+                const response = await fetch(fetchUrl, {
                     headers: { 'x-admin-password': 'admin123' }
                 });
                 
+                console.log('Fetch response status:', response.status);
                 const result = await response.json();
+                console.log('Current items:', result.data);
                 let items = result.data || [];
                 
                 // Filter out the item to delete
                 const originalLength = items.length;
-                items = items.filter((item, index) => 
-                    String(item.id) !== String(id) && String(index) !== String(id)
-                );
+                console.log('Original length:', originalLength);
+                
+                items = items.filter((item, index) => {
+                    const keepItem = String(item.id) !== String(id) && String(index) !== String(id);
+                    console.log(`Item ${index} (id: ${item.id}) - keeping: ${keepItem}`);
+                    return keepItem;
+                });
+                
+                console.log('New length:', items.length);
                 
                 if (items.length === originalLength) {
                     throw new Error('Item not found');
                 }
                 
                 // Save the updated list
+                console.log('Saving updated list...');
                 const saveResponse = await fetch(`/api/cms/content/${currentType}/${currentLang}`, {
                     method: 'POST',
                     headers: {
@@ -782,13 +795,18 @@
                     body: JSON.stringify({ data: items })
                 });
 
+                console.log('Save response status:', saveResponse.status);
+                
                 if (saveResponse.ok) {
+                    console.log('Delete successful, reloading content...');
                     // Immediately reload content after successful delete
                     loadContent();
                     
                     // Show success message
                     showToast('Élément supprimé avec succès!', 'success');
                 } else {
+                    const errorText = await saveResponse.text();
+                    console.error('Save failed:', errorText);
                     throw new Error('Failed to save changes');
                 }
             } catch (error) {
