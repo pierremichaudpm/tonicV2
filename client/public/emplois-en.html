@@ -213,6 +213,14 @@
             background: rgba(255, 255, 255, 0.3);
         }
         
+        /* Accent color variables */
+        :root {
+            --accent-primary: #3b82f6;
+            --accent-hover: #2563eb;
+            --accent-light: #60a5fa;
+            --accent-20: rgba(59, 130, 246, 0.2);
+        }
+
         /* Icon backgrounds using CSS variables */
         .icon-bg-accent {
             background-color: var(--accent-20);
@@ -629,7 +637,7 @@
                                 <span class="inline-block px-3 py-1 rounded-full text-xs font-medium text-white ${getDepartmentClass(job.category)}">
                                     ${job.category}
                                 </span>
-                                <span class="text-sm text-white whitespace-nowrap">${getDaysSincePostingEn(job.datePosted)}</span>
+                                <span class="text-sm text-white whitespace-nowrap">${getDaysSincePostingEn(job.date)}</span>
                             </div>
                             <h3 class="text-xl sm:text-2xl font-bold mb-2 text-white hover:text-white transition-colors">${job.title}</h3>
                             <div class="flex flex-wrap gap-2 text-sm text-white mb-3">

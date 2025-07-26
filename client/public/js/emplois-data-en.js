@@ -18,11 +18,16 @@ const jobsData = [
     {
         "id": "1753565306260",
         "title": "Dishwasher",
-        "subtitle": "",
+        "subtitle": "$23/hour",
         "category": "Dock 619",
         "date": "2025-07-15",
+        "location": "Longueuil",
+        "department": "Kitchen",
+        "type": "Full time",
+        "datePosted": "2025-07-15",
+        "startDate": "Immediately",
         "content": "<p>At the heart of the action, the dishwasher plays a fundamental role in the proper functioning of the restaurant. Through their rigorous work, they ensure the impeccable cleanliness of dishes and equipment, thus allowing the kitchen to serve consistently flawless dishes. In addition to contributing to the efficiency of the culinary brigade, they also support the dining room team by ensuring that everyone has the necessary tools to provide exceptional service. </p><p><br></p><p>Located 20 minutes from downtown Montréal, on the South Shore, Dock619 is a place of all possibilities. Its modern and warm décor as well as its multiple configuration options have been specifically designed to bring memorable events to life. Under the leadership of chef Hugo St-Jacques, Canada's chef of the year in 2014 (Salut Bonjour, Les Chefs!, Station Potluck, Zeste channel), a modern and creative cuisine, rooted in terroir flavors is highlighted. Hugo places great importance on Quebec ingredients, emphasizing root vegetables, berries, maple, etc. </p><p><br></p><p>We are committed to the development and growth of our team members. If you enjoy working as part of a team with the public and want to exceed guests' expectations on a daily basis, the job you need is at Dock619. </p><p><br></p><ul><li>The profile of an excellent dishwasher They are a dynamic person, who keeps smiling even in the heat of action and who enjoys when things are busy. They build strong relationships with their colleagues, demonstrate reliability and know how to adapt to the team's needs. They communicate clearly, share their objectives and don't hesitate to raise their hand when there's a challenge to tackle. </li></ul><p><br></p><p>More specifically, your daily routine with us will look like: </p><p><br></p><ul><li>Ensure the maintenance of kitchen and equipment cleanliness according to hygiene and sanitation standards </li><li>Wash dishes after each meal and store them in appropriate places </li><li>Clean equipment used after each use (pots, pans, stove, etc.) ○ Assembly and disassembly of event room installations </li><li>All other related tasks </li></ul><p><br></p><p>Desired qualifications: </p><p><br></p><p>• Minimal knowledge of French </p><p>• Minimum one year experience in a similar position </p><p>• Good physical abilities and endurance </p><p><br></p><p>Conditions:</p><p><br></p><ul><li>Paid hourly at the hourly rate of $23. </li><li>2 weeks vacation </li><li>Group insurance </li><li>RRSP and employer contribution </li></ul><p><br></p><p>Schedule: </p><p>• Monday to Friday </p><p>• Weekends as needed </p><p>• Day and evening shifts Apply by writing to <a href=\"mailto:rh@gpcqm.ca\" target=\"_blank\">rh@gpcqm.ca</a>. Looking forward</p>",
-        "salary": ""
+        "salary": "$23/hour"
     },
     {
         "id": "1753565674032",
@@ -30,8 +35,13 @@ const jobsData = [
         "subtitle": "Full-time / permanent position",
         "category": "Groupe Tonic",
         "date": "2025-07-22",
+        "location": "Montreal",
+        "department": "Administration",
+        "type": "Full time",
+        "datePosted": "2025-07-22",
+        "startDate": "To be determined",
         "content": "<p><strong>About Us</strong></p><p><br></p><p>We are a rapidly expanding group, dedicated to creating and managing internationally renowned sporting events. As organizer of the Grand Prix Cyclistes de Québec and Montréal, the Marathon Beneva de Montréal, the 21K de Montréal, the VW Beach Pro Tour Montréal and the Championnats du Monde Route UCI Montréal 2026, we are committed to offering unique experiences for athletes, participants, our spectators and partners alike, while showcasing Québec and Canada on the world stage. We also manage an event reception hall, Dock 619, a high-end venue dedicated to unforgettable experiences.</p><p><br></p><p><strong>Job Description</strong></p><p><br></p><p>Reporting to the Executive Vice-President, the senior assistant acts as strategic and operational support to senior management. He or she ensures efficient coordination of priorities, facilitates information flow, prepares key documents and actively participates in cross-functional project management.</p><p><br></p><p><strong>Main Responsibilities</strong></p><p><br></p><ul><li>Assist the vice-presidency and general management in planning, monitoring and coordinating its activities.</li><li>Coordinate exchanges with team members, partners, decision-making bodies and stakeholders. Participate in preparing documents for grant applications and financial reports.</li><li>Participate in preparing management meetings, boards of directors and committees, and ensure associated logistics.</li><li>Manage the agenda, organize internal and external meetings, prepare agendas, minutes and follow-ups.</li><li>Write, revise and format documents, presentations, reports, letters and official communications.</li><li>Support the deployment and monitoring of special or strategic projects.</li></ul><p><br></p><p><strong>Desired Profile</strong></p><p><br></p><ul><li>University or college degree in administration, management, communication or related field.</li><li>Minimum of 5 to 7 years of relevant experience in a similar position, ideally in a complex or multi-project environment.</li><li>Excellent written and oral communication skills in French and English.</li><li>Strong organizational sense, rigor, discretion and ability to manage multiple priorities.</li><li>Proficiency in office tools (Google Suite, Microsoft 365, PowerPoint, Canva). ● Initiative, autonomy, diplomacy and ability to work under pressure.</li></ul><p><br></p><p><strong>Working Conditions</strong></p><p><br></p><ul><li>Salary: to be determined</li><li>Full-time position (37.5 hours/week)</li><li>Hybrid work mode with office presence required 4 to 5 days/week</li><li>Dynamic, stimulating and collaboration-focused environment</li><li>Group insurance and RRSP + employer contribution offered after probationary period</li></ul><p><br></p><p><strong>To Apply</strong></p><p>Send your CV and cover letter to <a href=\"mailto:rh@gpcqm.ca\" target=\"_blank\">rh@gpcqm.ca</a> by July 21, 2025.</p>",
-        "salary": "",
+        "salary": "To be determined",
         "isAutoTranslated": true
     }
 ];
