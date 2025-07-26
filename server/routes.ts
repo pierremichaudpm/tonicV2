@@ -247,6 +247,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const result = await response.json() as any;
       const translatedText = result.content?.[0]?.text || text;
       
+      // DEBUG: Log actual translation results
+      console.log('BACKEND TRANSLATION DEBUG:');
+      console.log('Original text length:', text.length);
+      console.log('Claude returned length:', translatedText.length);
+      console.log('Claude first 500 chars:', translatedText.substring(0, 500));
+      console.log('Claude last 500 chars:', translatedText.substring(translatedText.length - 500));
+      console.log('Truncation detected:', translatedText.length < text.length * 0.7);
+      
       res.json({ translatedText });
       
     } catch (error) {
