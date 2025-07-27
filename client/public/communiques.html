@@ -70,6 +70,14 @@
             color: white;
         }
         
+        .lang-divider {
+            width: 1px;
+            height: 16px;
+            background: rgba(255, 255, 255, 0.2);
+            margin: 0 0.5rem;
+            align-self: center;
+        }
+        
         /* CSS Variables for Tonic accent colors */
         :root {
             --accent-primary: #f97316;
@@ -312,8 +320,8 @@
                         <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                         <span>Nous joindre</span>
                     </a>
-                    <div class="w-px h-4 bg-white/20 mx-2"></div>
-                    <a href="communiques-en.html" class="nav-item" data-tooltip="English">
+                    <div class="lang-divider"></div>
+                    <a href="communiques-en.html" class="lang-switcher">
                         <span>EN</span>
                     </a>
                 </nav>
