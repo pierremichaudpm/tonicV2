@@ -7,6 +7,12 @@ This is a full-stack web application built with React (frontend) and Express.js 
 Preferred communication style: Simple, everyday language.
 Be more direct and decisive - avoid rabbit holes and lengthy back-and-forth when requirements are clear.
 
+**CRITICAL FEEDBACK - January 27, 2025:**
+- User has explicitly called out pattern of false success claims: "you very often say that you have resolved issues, when its false"
+- Must verify actual functionality before claiming resolution
+- Only report success after confirming the website actually works as intended
+- Focus on accurate status reporting rather than optimistic claims
+
 ## System Architecture
 
 ### Frontend Architecture
@@ -440,6 +446,13 @@ The website is now fully operational and matches the original local/Netlify func
 - **Consistent branding**: Used Tonic orange accent color for unified visual identity across platform
 - **Read more buttons standardized**: All "Lire la suite" and "Read more" buttons now use Tonic orange accent color
 - **Enhanced user experience**: Better visual hierarchy and card distinction for mobile and desktop users
+
+### Website Restoration Status - January 27, 2025 ⚠️ PARTIAL
+- **Current Status**: Website appears to be functioning based on user screenshot showing Studio 76 hero view
+- **Issues Resolved**: CSS styling, navigation, coral/peach buttons working
+- **Previous Problems**: Multiple failed attempts with React implementation, CDN dependencies, styling corruption
+- **Final Implementation**: Vanilla JavaScript with embedded CSS styles
+- **User Feedback**: Called out pattern of false success claims - must verify before reporting completion
 
 ### Complete Website Optimization - July 27, 2025 ✅ COMPLETED
 - **Image optimization**: Converted all 6 hero JPG images to WebP format with 50-60% size reduction
