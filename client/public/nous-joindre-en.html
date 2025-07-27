@@ -382,74 +382,11 @@
     <!-- Shared JavaScript -->
     <script src="js/shared.js"></script>
     
-    <!-- Page Specific JavaScript - Optimized -->
+    <!-- Page Specific JavaScript -->
     <script>
-        // Cache DOM elements
-        const DOM = {
-            form: null,
-            submitBtn: null
-        };
-        
-        // Handle form submit - Optimized
-        function handleFormSubmit(event) {
-            event.preventDefault();
-            
-            const formData = new FormData(DOM.form);
-            const data = Object.fromEntries(formData);
-            
-            // Basic validation
-            if (!data.name || !data.email || !data.subject || !data.message) {
-                alert('Please fill in all fields.');
-                return;
-            }
-            
-            // Email validation
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(data.email)) {
-                alert('Please enter a valid email address.');
-                return;
-            }
-            
-            // Get subject text
-            const subjectText = DOM.form.subject.options[DOM.form.subject.selectedIndex].text;
-            
-            // Create mailto link
-            const subject = encodeURIComponent(`Contact - ${subjectText}: ${data.name}`);
-            const body = encodeURIComponent(
-                `Name: ${data.name}\n` +
-                `Email: ${data.email}\n` +
-                `Subject: ${subjectText}\n\n` +
-                `Message:\n${data.message}`
-            );
-            
-            // Open email client
-            window.location.href = `mailto:info@groupetonic.ca?subject=${subject}&body=${body}`;
-            
-            // Show success message
-            DOM.submitBtn.innerHTML = '<span>Message sent!</span>';
-            DOM.submitBtn.disabled = true;
-            
-            // Reset form after delay
-            setTimeout(() => {
-                DOM.form.reset();
-                DOM.submitBtn.innerHTML = `
-                    <span>Send Message</span>
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-                    </svg>
-                `;
-                DOM.submitBtn.disabled = false;
-            }, 3000);
-        }
-        
-        // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            // Cache DOM elements
-            DOM.form = document.getElementById('contactForm');
-            DOM.submitBtn = DOM.form.querySelector('button[type="submit"]');
-            
-            // Add form submit handler
-            DOM.form.addEventListener('submit', handleFormSubmit);
+            // Contact page loaded successfully
+            console.log('Contact page loaded');
             
             // Add smooth scroll for anchor links
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
