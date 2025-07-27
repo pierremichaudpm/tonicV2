@@ -1,4 +1,3 @@
-// French jobs data  
 const jobListings = [
     {
         "id": "1753565034482",

@@ -1,4 +1,3 @@
-// English jobs data - matching French structure exactly
 const jobsData = [
     {
         "id": "1753565034482",
