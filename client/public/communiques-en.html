@@ -266,6 +266,61 @@
             100% { background-position: 100% 50%; }
         }
     </style>
+    <script>
+        // Simple inline tooltip system
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create tooltip element
+            const tooltip = document.createElement('div');
+            tooltip.style.cssText = `
+                position: fixed;
+                background: #333;
+                color: white;
+                padding: 8px 12px;
+                border-radius: 6px;
+                font-size: 14px;
+                font-weight: 500;
+                white-space: nowrap;
+                z-index: 999999;
+                pointer-events: none;
+                border: 2px solid #fff;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.8);
+                opacity: 0;
+                transition: opacity 0.2s ease;
+                display: none;
+            `;
+            document.body.appendChild(tooltip);
+            
+            // Find social media links
+            const socialLinks = document.querySelectorAll('a[data-tooltip="Instagram"], a[data-tooltip="LinkedIn"]');
+            
+            socialLinks.forEach(link => {
+                const tooltipText = link.getAttribute('data-tooltip');
+                
+                link.addEventListener('mouseenter', function(e) {
+                    tooltip.textContent = tooltipText;
+                    tooltip.style.display = 'block';
+                    
+                    if (tooltipText === 'Instagram') {
+                        tooltip.style.background = '#E4405F';
+                    } else if (tooltipText === 'LinkedIn') {
+                        tooltip.style.background = '#0077B5';
+                    }
+                    
+                    const rect = link.getBoundingClientRect();
+                    tooltip.style.left = (rect.left + rect.width/2 - 50) + 'px';
+                    tooltip.style.top = (rect.bottom + 10) + 'px';
+                    tooltip.style.opacity = '1';
+                });
+                
+                link.addEventListener('mouseleave', function() {
+                    tooltip.style.opacity = '0';
+                    setTimeout(() => {
+                        tooltip.style.display = 'none';
+                    }, 200);
+                });
+            });
+        });
+    </script>
 </head>
 <body class="bg-black text-white min-h-screen">
     
