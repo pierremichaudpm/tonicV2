@@ -183,7 +183,8 @@
             const root = document.getElementById('root');
             root.innerHTML = `
                 <div class="splash-container view-container active">
-                    <img src="images/tonic-logo.png" alt="Groupe Tonic" class="splash-logo">
+                    <img src="images/tonic-logo.png" alt="Groupe Tonic" class="splash-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <div style="display:none; font-size: clamp(2.5rem, 5vw, 3.5rem); font-weight: 900; color: white;">GROUPE TONIC</div>
                     <p class="splash-tagline">Créateur d'expériences mémorables</p>
                 </div>
             `;
