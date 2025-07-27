@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | Groupe Tonic</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Contact Groupe Tonic for questions about our events and services.">
+    
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.cbc.ca">
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    
+    <!-- Shared Styles -->
+    <link rel="stylesheet" href="css/shared.css">
+    
+    <!-- Page Specific Styles - Optimized -->
+    <style>
+        /* Language Switcher */
+        .lang-switcher {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            transition: all 0.2s ease;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        .lang-switcher:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        .lang-divider {
+            width: 1px;
+            height: 16px;
+            background: rgba(255, 255, 255, 0.2);
+            margin: 0 0.5rem;
+            align-self: center;
+        }
+        
+        /* CSS custom properties for optimization */
+        :root {
+            --select-bg: rgba(26, 26, 26, 0.95);
+            --option-bg: #1a1a1a;
+            --option-hover-bg: var(--accent-primary);
+        }
+        
+        /* Enhanced select dropdown for better visibility */
+        select.form-input {
+            background-color: var(--select-bg);
+        }
+        
+        /* For browsers that support it, style the dropdown list */
+        @supports (-webkit-appearance: none) {
+            select.form-input option {
+                background-color: var(--option-bg);
+                color: white;
+                padding: 0.75rem 1rem;
+                font-size: 0.95rem;
+            }
+            
+            select.form-input option:hover {
+                background-color: var(--option-hover-bg);
+                color: white;
+            }
+        }
+        
+        /* For better cross-browser compatibility */
+        select.form-input:focus option {
+            background-color: var(--option-bg);
+        }
+        
+        select.form-input option:checked {
+            background: linear-gradient(0deg, var(--accent-primary) 0%, var(--accent-primary) 100%);
+            color: white;
+        }
+        
+        /* All accent colors now use CSS variables */
+        .contact-card {
+            --accent-color: var(--accent-primary);
+        }
+        
+        /* Icon backgrounds using CSS variables */
+        .icon-bg-accent {
+            background-color: var(--accent-20);
+        }
+        
+        .icon-accent {
+            color: var(--accent-light);
+        }
+        
+        /* Text accent colors */
+        .text-accent {
+            color: var(--accent-primary);
+        }
+        
+        .text-accent:hover {
+            color: var(--accent-hover);
+        }
+        
+        /* Optimize map filter */
+        .grayscale {
+            filter: grayscale(100%);
+        }
+        
+        /* Hero title gradient styling */
+        .hero-title{
+            font-size: clamp(2rem,6vw,3.5rem) !important;
+            line-height: 0.9 !important;
+            font-weight: 900 !important;
+            background: linear-gradient(135deg,rgba(220, 38, 38, 0.8),rgba(255, 87, 51, 0.85),rgba(255, 127, 80, 0.9),rgba(255, 160, 122, 0.95),#fff,rgba(255, 160, 122, 0.95),rgba(255, 127, 80, 0.9),rgba(255, 87, 51, 0.85),rgba(220, 38, 38, 0.8)) !important;
+            background-clip: text !important;
+            -webkit-background-clip: text !important;
+            color: transparent !important;
+            text-shadow: 0 0 25px rgba(255, 87, 51, 0.3) !important;
+            background-size: 200% 100% !important;
+            animation: gradientShift 4s ease-in-out infinite alternate !important;
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            z-index: 999 !important;
+            position: relative !important;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+    </style>
+</head>
+<body class="bg-black text-white min-h-screen">
+    <!-- Header -->
+    <header class="header-main fixed top-0 left-0 right-0 z-40">
+        <div class="container mx-auto px-4 py-6 sm:py-8">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <a href="index-en.html" class="flex flex-col sm:flex-row items-start sm:items-center gap-0.5 sm:gap-4">
+                    <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-white" 
+                        style="text-shadow: 0 4px 20px rgba(0,0,0,0.9)">
+                        <img src="images/tonic-logo.png" alt="Groupe Tonic" style="height: clamp(1.875rem, 3.75vw, 2.625rem); width: auto;" />
+                    </h1>
+                    <span class="text-white text-xs sm:text-sm font-medium"
+                        style="text-shadow: 0 2px 10px rgba(0,0,0,0.9)">
+                        <span class="hidden sm:inline">| </span>Créateur d'expériences mémorables
+                    </span>
+                </a>
+                
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex nav-container">
+                    <a href="index-en.html" class="nav-item" data-tooltip="Home">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                        <span>Home</span>
+                    </a>
+                    <a href="about.html" class="nav-item" data-tooltip="About">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                        <span>About</span>
+                    </a>
+                    <a href="emplois-en.html" class="nav-item" data-tooltip="Jobs">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                        <span>Jobs</span>
+                    </a>
+                    <a href="communiques-en.html" class="nav-item" data-tooltip="News">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M10 6h8"/><path d="M10 10h8"/><path d="M10 14h4"/></svg>
+                        <span>News</span>
+                    </a>
+                    <a href="nous-joindre-en.html" class="nav-item active">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                        <span>Contact</span>
+                    </a>
+                    <div class="lang-divider"></div>
+                    <a href="nous-joindre.html" class="lang-switcher">
+                        <span>FR</span>
+                    </a>
+                </nav>
+                
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden p-2 hover:bg-white/10 rounded-lg transition-colors" onclick="toggleMobileMenu()" aria-label="Menu">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M3 12h18M3 6h18M3 18h18"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="mobile-menu">
+        <div class="container mx-auto px-4 py-4">
+            <button onclick="toggleMobileMenu()" class="absolute top-4 right-4 p-2 hover:bg-white/10 rounded-lg" aria-label="Close">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+            
+            <div class="space-y-2 mt-8">
+                <a href="index-en.html" class="nav-item w-full">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                    <span>Home</span>
+                </a>
+                <a href="about.html" class="nav-item w-full">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                    <span>About</span>
+                </a>
+                <a href="emplois-en.html" class="nav-item w-full">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                    <span>Jobs</span>
+                </a>
+                <a href="communiques-en.html" class="nav-item w-full">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M10 6h8"/><path d="M10 10h8"/><path d="M10 14h4"/></svg>
+                    <span>News</span>
+                </a>
+                <a href="nous-joindre-en.html" class="nav-item w-full active">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                    <span>Contact</span>
+                </a>
+                <a href="nous-joindre.html" class="nav-item w-full">
+                    <span>Français</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <main class="pt-24 sm:pt-28 pb-20">
+        <!-- Hero Section -->
+        <section class="container mx-auto px-4 py-12 sm:py-16 text-center">
+            <h1 class="hero-title text-5xl sm:text-6xl lg:text-7xl font-black mb-4 fade-in">Contact Us</h1>
+            <p class="text-lg sm:text-xl text-white max-w-2xl mx-auto fade-in delay-100">
+                Our team is available to answer all your questions about our events and services
+            </p>
+        </section>
+        
+        <!-- Contact Information -->
+        <section class="container mx-auto px-4 py-8">
+            <div class="max-w-2xl mx-auto">
+                <!-- General Inquiries -->
+                <div class="contact-card p-6 sm:p-8 rounded-xl fade-in delay-200">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-full icon-bg-accent flex items-center justify-center flex-shrink-0">
+                            <svg class="icon icon-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-2">General Information</h3>
+                            <p class="text-white mb-3">For any questions about our events</p>
+                            <!-- UPDATE THIS EMAIL -->
+                            <a href="mailto:info@groupetonic.ca" class="text-accent hover:text-accent transition-colors">info@groupetonic.ca</a>
+                            <!-- ADD PHONE NUMBER IF NEEDED -->
+                            <!-- <p class="text-white mt-2">Tel: (514) 555-0123</p> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+
+        
+        <!-- Office Location with Map -->
+        <section class="container mx-auto px-4 py-12">
+            <h2 class="text-3xl sm:text-4xl font-black mb-8 text-center fade-in">Our Office</h2>
+            
+            <div class="max-w-4xl mx-auto">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Office Info -->
+                    <div class="contact-card p-6 sm:p-8 rounded-xl fade-in delay-100">
+                        <h3 class="text-2xl font-bold mb-4">Groupe Tonic</h3>
+                        <div class="space-y-3 text-white">
+                            <!-- UPDATE THIS ADDRESS -->
+                            <p>615 Rue le Breton<br>Longueuil, QC J4G 1R9</p>
+                            <p class="mt-4">
+                                <!-- UPDATE THIS EMAIL -->
+                                <a href="mailto:info@groupetonic.ca" class="text-accent hover:text-accent transition-colors">
+                                    info@groupetonic.ca
+                                </a>
+                            </p>
+                            <!-- ADD PHONE NUMBER IF NEEDED -->
+                            <!-- <p class="mt-2">Tel: (514) 555-0123</p> -->
+                        </div>
+                        <!-- UPDATE THIS LINK -->
+                        <a href="https://maps.google.com/?q=615+Rue+le+Breton,+Longueuil,+QC+J4G+1R9" 
+                           target="_blank" 
+                           rel="noopener noreferrer"
+                           class="inline-flex items-center gap-2 mt-4 text-accent hover:text-accent transition-colors">
+                            <span>Get Directions</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                            </svg>
+                        </a>
+                    </div>
+                    
+                    <!-- Embedded Map -->
+                    <div class="fade-in delay-200 rounded-xl overflow-hidden h-[300px] md:h-[350px] bg-white/5">
+                        <!-- UPDATE THIS IFRAME WITH YOUR MAP -->
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2793.8897547485!2d-73.47258492363!3d45.56654897107398!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4cc91cd91203b070%3A0xc32a259d531b28e8!2s615%20Rue%20le%20Breton%2C%20Longueuil%2C%20QC%20J4G%201R9!5e0!3m2!1sen!2sca!4v1700000000000!5m2!1sen!2sca" 
+                            width="100%" 
+                            height="100%" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade"
+                            class="grayscale"
+                            title="Groupe Tonic Location">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Social Media -->
+        <section class="container mx-auto px-4 py-8 text-center">
+            <h3 class="text-xl font-bold mb-4 fade-in">Follow Us</h3>
+            <div class="flex justify-center gap-4 fade-in delay-100">
+                <!-- UPDATE THESE LINKS -->
+                <a href="https://facebook.com/groupetonic" class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                    </svg>
+                </a>
+                <a href="https://twitter.com/groupetonic" class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors" aria-label="Twitter" target="_blank" rel="noopener noreferrer">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                    </svg>
+                </a>
+                <a href="https://instagram.com/groupetonic" class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zM5.838 12a6.162 6.162 0 1112.324 0 6.162 6.162 0 01-12.324 0zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+                    </svg>
+                </a>
+                <a href="https://linkedin.com/company/groupetonic" class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                    </svg>
+                </a>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="border-t border-white/10 py-12">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <img src="images/tonic-logo.png" alt="Groupe Tonic" style="height: 1.5rem; width: auto;" class="mb-2" />
+                    <p class="text-white">© 2025 Groupe Tonic. All rights reserved.</p>
+                </div>
+                <div class="flex gap-6">
+                    <a href="privacy-policy.html" class="text-white hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="terms-of-use.html" class="text-white hover:text-white transition-colors">Terms of Use</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Shared JavaScript -->
+    <script src="js/shared.js"></script>
+    
+    <!-- Page Specific JavaScript - Optimized -->
+    <script>
+        // Cache DOM elements
+        const DOM = {
+            form: null,
+            submitBtn: null
+        };
+        
+        // Handle form submit - Optimized
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(DOM.form);
+            const data = Object.fromEntries(formData);
+            
+            // Basic validation
+            if (!data.name || !data.email || !data.subject || !data.message) {
+                alert('Please fill in all fields.');
+                return;
+            }
+            
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(data.email)) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+            
+            // Get subject text
+            const subjectText = DOM.form.subject.options[DOM.form.subject.selectedIndex].text;
+            
+            // Create mailto link
+            const subject = encodeURIComponent(`Contact - ${subjectText}: ${data.name}`);
+            const body = encodeURIComponent(
+                `Name: ${data.name}\n` +
+                `Email: ${data.email}\n` +
+                `Subject: ${subjectText}\n\n` +
+                `Message:\n${data.message}`
+            );
+            
+            // Open email client
+            window.location.href = `mailto:info@groupetonic.ca?subject=${subject}&body=${body}`;
+            
+            // Show success message
+            DOM.submitBtn.innerHTML = '<span>Message sent!</span>';
+            DOM.submitBtn.disabled = true;
+            
+            // Reset form after delay
+            setTimeout(() => {
+                DOM.form.reset();
+                DOM.submitBtn.innerHTML = `
+                    <span>Send Message</span>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                    </svg>
+                `;
+                DOM.submitBtn.disabled = false;
+            }, 3000);
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Cache DOM elements
+            DOM.form = document.getElementById('contactForm');
+            DOM.submitBtn = DOM.form.querySelector('button[type="submit"]');
+            
+            // Add form submit handler
+            DOM.form.addEventListener('submit', handleFormSubmit);
+            
+            // Add smooth scroll for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
