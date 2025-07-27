@@ -386,70 +386,55 @@ header {
     border-color: var(--accent-hover) !important;
 }
 
-/* Tooltip functionality */
-[data-tooltip] {
-    position: relative;
-}
-
-[data-tooltip]:hover::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    bottom: -2.5rem;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.95);
-    color: white;
-    padding: 0.375rem 0.75rem;
-    border-radius: 0.375rem;
-    font-size: 0.75rem;
-    font-weight: 500;
-    white-space: nowrap;
-    z-index: 9999;
-    pointer-events: none;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    opacity: 0;
-    animation: tooltipFadeIn 0.2s ease-out 0.3s forwards;
-}
-
-[data-tooltip]:hover::before {
-    content: '';
-    position: absolute;
-    bottom: -0.75rem;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 0;
-    border-left: 6px solid transparent;
-    border-right: 6px solid transparent;
-    border-bottom: 6px solid rgba(0, 0, 0, 0.95);
-    z-index: 9999;
-    pointer-events: none;
-    opacity: 0;
-    animation: tooltipFadeIn 0.2s ease-out 0.3s forwards;
-}
-
-@keyframes tooltipFadeIn {
-    from {
-        opacity: 0;
-        transform: translateX(-50%) translateY(4px);
+/* Tooltip functionality - Desktop only */
+@media (min-width: 1024px) {
+    [data-tooltip] {
+        position: relative;
     }
-    to {
+
+    [data-tooltip]:hover::after {
+        content: attr(data-tooltip);
+        position: absolute;
+        bottom: -2.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.95);
+        color: white;
+        padding: 0.375rem 0.75rem;
+        border-radius: 0.375rem;
+        font-size: 0.75rem;
+        font-weight: 500;
+        white-space: nowrap;
+        z-index: 9999;
+        pointer-events: none;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.1);
         opacity: 1;
-        transform: translateX(-50%) translateY(0);
+        display: block;
+    }
+
+    [data-tooltip]:hover::before {
+        content: '';
+        position: absolute;
+        bottom: -0.75rem;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 0;
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-bottom: 6px solid rgba(0, 0, 0, 0.95);
+        z-index: 9999;
+        pointer-events: none;
+        opacity: 1;
+        display: block;
     }
 }
 
-/* Mobile menu tooltips - disabled for mobile */
+/* Remove animation keyframes since we're using instant display */
+
+/* Mobile menu tooltips - disabled */
 .mobile-menu [data-tooltip]:hover::after,
 .mobile-menu [data-tooltip]:hover::before {
-    display: none;
-}
-
-/* Hide tooltips on mobile screens */
-@media (max-width: 768px) {
-    [data-tooltip]:hover::after,
-    [data-tooltip]:hover::before {
-        display: none;
-    }
+    display: none !important;
 }
