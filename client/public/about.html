@@ -74,6 +74,20 @@
                 opacity: 0.95;
             }
         }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+        @keyframes pulse {
+            0%, 100% { 
+                box-shadow: 0 0 20px rgba(255, 87, 51, 0.4);
+                transform: scale(1);
+            }
+            50% { 
+                box-shadow: 0 0 30px rgba(255, 87, 51, 0.6);
+                transform: scale(1.05);
+            }
+        }
         .timeline-container{position:relative;overflow:hidden;padding:4rem 0}
         .timeline-path{position:absolute;top:50%;left:0;right:0;height:2px;background:rgba(255,255,255,0.2)}
         .timeline-curve{position:absolute;stroke:rgba(255,255,255,0.3);stroke-width:2;fill:none;width:100%;height:200px;top:50%;transform:translateY(-50%)}
@@ -82,7 +96,7 @@
         .timeline-year{font-size:1.5rem;font-weight:900;color:#fff;margin-bottom:0.5rem}
         .timeline-title{font-weight:700;color:#fff;margin-bottom:0.5rem;font-size:1.1rem}
         .timeline-desc{color:rgba(255,255,255,0.8);line-height:1.5}
-        .hero-title{font-size:clamp(2rem,6vw,3.5rem);line-height:0.9;background:linear-gradient(135deg,var(--accent-primary),#fff,var(--accent-hover));background-clip:text;-webkit-background-clip:text;color:transparent;text-shadow:0 4px 20px var(--accent-glow)} /* Reduced by ~50% from original */
+        .hero-title{font-size:clamp(2rem,6vw,3.5rem);line-height:0.9;background:linear-gradient(135deg,rgb(220, 38, 38),rgb(255, 87, 51),rgb(255, 127, 80),rgb(255, 160, 122),#fff,rgb(255, 218, 185),rgb(255, 160, 122),rgb(255, 127, 80),rgb(255, 87, 51));background-clip:text;-webkit-background-clip:text;color:transparent;text-shadow:0 4px 20px rgba(255, 87, 51, 0.4);background-size:200% 100%;animation:gradientShift 5s ease-in-out infinite alternate}
         .hero-bg{background:linear-gradient(135deg,#1a1a1a 0%,#0a0a0a 100%);position:relative}
         .hero-bg::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(254,68,69,0.1) 0%,transparent 70%);pointer-events:none}
         .cta-section{background:linear-gradient(135deg,rgba(254,68,69,0.05),rgba(0,0,0,0.9));border-top:1px solid var(--accent-20);position:relative}
@@ -111,9 +125,9 @@
         .timeline-desc{color:rgba(255,255,255,0.85);line-height:1.6;font-size:1rem}
         
         .section-header{text-align:center;margin-bottom:4rem;position:relative}
-        .section-title{font-size:3.5rem;font-weight:900;background:linear-gradient(135deg,var(--accent-primary),#fff,var(--accent-primary));background-clip:text;-webkit-background-clip:text;color:transparent;margin-bottom:1rem;text-shadow:0 0 30px var(--accent-glow)}
+        .section-title{font-size:3.5rem;font-weight:900;background:linear-gradient(135deg,rgb(220, 38, 38),rgb(255, 87, 51),rgb(255, 127, 80),rgb(255, 160, 122),#fff,rgb(255, 160, 122),rgb(255, 127, 80),rgb(255, 87, 51),rgb(220, 38, 38));background-clip:text;-webkit-background-clip:text;color:transparent;margin-bottom:1rem;text-shadow:0 0 30px rgba(255, 87, 51, 0.5);background-size:200% 100%;animation:gradientShift 4s ease-in-out infinite alternate}
         .section-subtitle{font-size:1.3rem;color:rgba(255,255,255,0.7);max-width:600px;margin:0 auto}
-        .accent-line{width:80px;height:4px;background:linear-gradient(90deg,var(--accent-primary),var(--accent-hover));border-radius:2px;margin:2rem auto}
+        .accent-line{width:120px;height:6px;background:linear-gradient(90deg,rgb(220, 38, 38),rgb(255, 87, 51),rgb(255, 127, 80),rgb(255, 160, 122),rgb(255, 218, 185));border-radius:3px;margin:2rem auto;box-shadow:0 0 20px rgba(255, 87, 51, 0.4);animation:pulse 3s ease-in-out infinite}
         
         /* Timeline responsive layout */
         @media(min-width:768px){
