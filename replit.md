@@ -364,13 +364,14 @@ The website is now fully operational and matches the original local/Netlify func
 - **English category fix**: Removed translation logic that incorrectly showed "Administration" instead of proper category names
 - **Status**: ✅ COMPLETED - Job pages now visually match news pages with proper colors and layout
 
-### Navigation Menu Fixes - January 26, 2025 ✅ COMPLETED
+### Navigation Menu Fixes - January 27, 2025 ✅ COMPLETED
 - **Fixed CSS class mismatch**: Changed "pr-card" to "job-card" in French jobs page for proper rendering
 - **Added Marathon Beneva mapping**: Added both "Marathon Beneva" and "Marathon Beneva 21K" image mappings for English pages
 - **Fixed English menu size**: Updated navigation classes in English news page from generic divider to proper "lang-divider" and "lang-switcher"
 - **Resolved renderJobs error**: Removed `.catch()` from renderJobs call in English jobs page as function doesn't return a promise
+- **French news language toggle fix**: Added `!important` to lang-switcher font-size to override tablet media query conflicts in shared.css
 - **Jobs now display properly**: Both French and English job pages render content correctly
-- **Menu alignment achieved**: All pages now have consistent menu sizing and styling
+- **Menu alignment achieved**: All pages now have consistent menu sizing and styling with 0.75rem font size
 - **Status**: ✅ COMPLETED - All navigation menus aligned and jobs rendering properly in both languages
 
 ### 4K Display Grid Layout - July 23, 2025 ✅ RESOLVED
