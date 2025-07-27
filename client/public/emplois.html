@@ -13,7 +13,37 @@
     <link rel="preconnect" href="https://cdn.tailwindcss.com">
     
     <!-- Tailwind CSS -->
-    <link rel="stylesheet" href="css/tailwind-local.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    typography: {
+                        invert: {
+                            css: {
+                                '--tw-prose-body': 'white',
+                                '--tw-prose-headings': 'white',
+                                '--tw-prose-lead': 'white',
+                                '--tw-prose-links': '#60a5fa',
+                                '--tw-prose-bold': 'white',
+                                '--tw-prose-bullets': 'white',
+                                '--tw-prose-hr': 'white',
+                                '--tw-prose-quotes': 'white',
+                                '--tw-prose-quote-borders': 'white',
+                                '--tw-prose-captions': 'white',
+                                '--tw-prose-code': 'white',
+                                '--tw-prose-pre-code': 'white',
+                                '--tw-prose-pre-bg': 'rgb(0 0 0 / 50%)',
+                                '--tw-prose-th-borders': 'white',
+                                '--tw-prose-td-borders': 'white',
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
     
     <!-- Shared Styles -->
     <link rel="stylesheet" href="css/shared.css">
@@ -511,7 +541,8 @@
                     <iframe id="pdfViewerFrame" 
                             class="w-full h-full border-0" 
                             style="min-height: 100%;"
-
+                            onload="hidePDFLoading()"
+                            onerror="showPDFFallback()">
                     </iframe>
                 </div>
                 
@@ -563,5 +594,377 @@
     <script src="js/shared.js"></script>
     
     <!-- Page specific JavaScript - Optimized -->
+    <script>
+        // Cache DOM elements
+        const DOM = {
+            jobsList: null,
+            modal: null,
+            modalTitle: null,
+            modalContent: null
+        };
+        
+        // State management
+        const state = {
+            isModalOpen: false
+        };
+
+        // Category image mapping (matching CMS system)
+        const categoryImageMap = {
+            'Beach Pro Tour': 'images/beach-pro-tour-hero.webp',
+            'Grands Prix Cyclistes': 'images/grands-prix-cyclistes-hero.webp',
+            'Marathon Beneva': 'images/marathon-beneva-hero.webp',
+            'Marathon Beneva 21K': 'images/marathon-beneva-hero.webp',
+            'UCI 2026': 'images/montreal-2026-uci-hero.webp',
+            'Studio 76': 'images/studio76-logo.png',
+            'Dock 619': 'images/dock619-hero-new.webp',
+            '21K de Montréal': 'images/21k-hero.webp',
+            'Groupe Tonic': 'images/tonic-logo.png'
+        };
+
+        // Get category image
+        function getCategoryImage(department) {
+            return categoryImageMap[department] || 'images/tonic-logo.png';
+        }
+
+        // Get category overlay class
+        function getCategoryOverlayClass(department) {
+            const categoryMap = {
+                'Beach Pro Tour': 'beach',
+                'Grands Prix Cyclistes': 'cycling',
+                'Marathon Beneva 21K': 'marathon',
+                'UCI 2026': 'uci',
+                'Studio 76': 'studio',
+                'Dock 619': 'dock',
+                '21K de Montréal': 'k21',
+                'Groupe Tonic': 'tonic'
+            };
+            return categoryMap[department] || 'tonic';
+        }
+        
+        // Get department class for styling based on category colors
+        const getDepartmentClass = (department) => {
+            const classMap = {
+                'Beach Pro Tour': 'category-beach',
+                'Grands Prix Cyclistes': 'category-cycling',
+                'Marathon Beneva 21K': 'category-marathon',
+                'UCI 2026': 'category-uci',
+                'Studio 76': 'category-studio',
+                'Dock 619': 'category-dock',
+                '21K de Montréal': 'category-21k',
+                'Groupe Tonic': 'category-tonic'
+            };
+            return classMap[department] || 'category-tonic';
+        };
+
+        // Render jobs with colored cards
+        function renderJobs() {
+            const jobs = getJobs();
+            
+            if (!DOM.jobsList) {
+                return;
+            }
+            
+            if (jobs.length === 0) {
+                DOM.jobsList.innerHTML = '<p class="text-white text-center py-8">Aucun emploi disponible.</p>';
+                return;
+            }
+            
+            // Sort by date (newest first)
+            jobs.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            DOM.jobsList.innerHTML = jobs.map((job, index) => {
+                const categoryClass = getDepartmentClass(job.category);
+                const image = getCategoryImage(job.category);
+                
+                return `
+                    <div class="job-card relative rounded-xl p-6 sm:p-8 cursor-pointer fade-in delay-${Math.min(index * 100, 500)}" 
+                         data-job-id="${job.id}"
+                         onclick="openJobModal(${job.id})">
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <div class="sm:w-48 h-32 sm:h-32 flex-shrink-0 relative">
+                                <img src="${image}" alt="${job.category}" class="w-full h-full object-cover rounded-lg" loading="lazy">
+                                ${job.category !== 'Groupe Tonic' ? `<div class="absolute inset-0 rounded-lg ${categoryClass} opacity-40"></div>` : ''}
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex items-start justify-between gap-4 mb-2">
+                                    <span class="inline-block px-3 py-1 rounded-full text-xs font-medium text-white ${categoryClass}">
+                                        ${job.category}
+                                    </span>
+                                    <span class="text-sm text-white whitespace-nowrap">${formatDate(job.date)}</span>
+                                </div>
+                                <h2 class="text-xl sm:text-2xl font-bold mb-2 text-white hover:text-white transition-colors">
+                                    ${job.title}
+                                </h2>
+                                <p class="text-white line-clamp-2 mb-2">${job.subtitle}</p>
+                                ${job.salary ? `<span class="inline-block px-3 py-1 bg-green-600 text-white text-xs rounded-full">${job.salary}</span>` : ''}
+                                <div class="mt-4 text-accent font-medium text-sm flex items-center gap-1">
+                                    <span>Voir l'offre</span>
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Open job modal with mobile-friendly content
+        function openJobModal(id) {
+            const job = getJobs().find(item => item.id === id);
+            if (!job) return;
+            
+            DOM.modalTitle.textContent = job.title;
+            DOM.modalContent.innerHTML = `
+                <div class="text-white">
+                    <div class="mb-4">
+                        <span class="px-3 py-1 ${getDepartmentClass(job.category)} text-white text-sm rounded-full">${job.category}</span>
+                        ${job.salary ? `<span class="px-3 py-1 bg-green-600 text-white text-sm rounded-full ml-2">${job.salary}</span>` : ''}
+                    </div>
+                    <div class="prose prose-invert max-w-none">${job.content}</div>
+                    <div class="mt-6 p-4 bg-blue-900/30 rounded-lg">
+                        <p class="text-blue-200 text-sm mb-2"><strong>Pour postuler :</strong></p>
+                        <p>Envoyez votre CV à <a href="mailto:rh@groupetonic.ca" class="text-blue-400 hover:text-blue-300 underline">rh@groupetonic.ca</a></p>
+                    </div>
+                </div>
+            `;
+            DOM.modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            state.isModalOpen = true;
+        }
+
+        // Get days since posting
+        function getDaysSincePosting(dateString) {
+            const postDate = new Date(dateString);
+            const today = new Date();
+            const diffTime = Math.abs(today - postDate);
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            
+            if (diffDays === 0) return 'Aujourd\'hui';
+            if (diffDays === 1) return 'Hier';
+            return `Il y a ${diffDays} jours`;
+        }
+
+        // Format job date
+        function formatJobDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('fr-CA', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+        
+        // Open job modal - Simplified for CMS data structure
+        function openJobModal(jobId) {
+            const jobs = getJobs();
+            const job = jobs.find(j => String(j.id) === String(jobId));
+            if (!job) return;
+            
+            state.isModalOpen = true;
+            DOM.modalTitle.textContent = job.title;
+            
+            DOM.modalContent.innerHTML = `
+                <div class="mb-6">
+                    <div class="flex flex-wrap items-center gap-4 mb-4">
+                        <span class="inline-block px-3 py-1 rounded-full text-sm font-medium text-white ${getDepartmentClass(job.category)}">
+                            ${job.category}
+                        </span>
+                        <span class="text-white">${formatDate(job.date)}</span>
+                    </div>
+                    
+                    ${job.salary ? `
+                    <div class="bg-white/5 rounded-lg p-4 mb-4">
+                        <p class="text-white mb-1">Salaire</p>
+                        <p class="font-medium text-lg">${job.salary}</p>
+                    </div>
+                    ` : ''}
+                </div>
+                
+                <div class="prose prose-invert max-w-none mb-8">
+                    ${job.content}
+                </div>
+                
+                <div class="bg-gradient-to-r from-white/10 to-white/5 rounded-xl p-6">
+                    <h3 class="font-bold mb-3 text-lg">Ce poste vous intéresse?</h3>
+                    <p class="text-white mb-4">Envoyez votre CV et lettre de motivation à :</p>
+                    <a href="mailto:rh@gpcqm.ca?subject=${encodeURIComponent('Candidature - ' + job.title)}" 
+                       class="inline-flex items-center gap-2 text-accent hover:text-accent transition-colors mb-4">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                        rh@gpcqm.ca
+                    </a>
+                    <div class="flex gap-3">
+                        <button onclick="applyForJob('Candidature - ${job.title}')" class="cta-button">
+                            <span>Postuler maintenant</span>
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            // Show modal
+            DOM.modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // Close modal
+        function closeModal(event) {
+            if (event && event.target !== event.currentTarget) return;
+            
+            state.isModalOpen = false;
+            DOM.modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        // Apply for job
+        function applyForJob(emailSubject) {
+            window.location.href = `mailto:emplois@groupetonic.ca?subject=${encodeURIComponent(emailSubject)}`;
+        }
+        
+        // PDF viewer functions
+        let currentPDFData = null;
+        
+        function viewPDF(id) {
+            const saved = getPDFData();
+            const pdf = saved.find(p => p.id === id);
+            
+            if (!pdf) return;
+            
+            currentPDFData = pdf;
+            document.getElementById('pdfModalTitle').textContent = pdf.title;
+            document.getElementById('pdfModalSubtitle').textContent = pdf.subtitle || '';
+            
+            // Show modal and loading
+            document.getElementById('pdfViewerModal').classList.remove('hidden');
+            document.getElementById('pdfLoading').classList.remove('hidden');
+            document.getElementById('pdfFallback').classList.add('hidden');
+            
+            // Load PDF
+            const pdfUrl = pdf.data + '#toolbar=1&navpanes=1&scrollbar=1&view=FitH&zoom=page-fit';
+            document.getElementById('pdfViewerFrame').src = pdfUrl;
+            
+            // Fallback timeout
+            setTimeout(() => {
+                if (!document.getElementById('pdfLoading').classList.contains('hidden')) {
+                    showPDFFallback();
+                }
+            }, 5000);
+        }
+
+        function closePDFViewer() {
+            document.getElementById('pdfViewerModal').classList.add('hidden');
+            document.getElementById('pdfViewerFrame').src = '';
+            currentPDFData = null;
+        }
+
+        function downloadCurrentPDF() {
+            if (!currentPDFData) return;
+            
+            const link = document.createElement('a');
+            link.href = currentPDFData.data;
+            link.download = currentPDFData.filename;
+            link.click();
+        }
+
+        function openCurrentPDFInTab() {
+            if (!currentPDFData) return;
+            
+            window.open(currentPDFData.data, '_blank');
+        }
+
+        function hidePDFLoading() {
+            setTimeout(() => {
+                document.getElementById('pdfLoading').classList.add('hidden');
+            }, 500);
+        }
+        
+        function showPDFFallback() {
+            document.getElementById('pdfLoading').classList.add('hidden');
+            document.getElementById('pdfFallback').classList.remove('hidden');
+        }
+        
+        // French date functions
+        function formatJobDate(dateString) {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString('fr-FR', options);
+        }
+        
+        function getDaysSincePosting(dateString) {
+            const posted = new Date(dateString);
+            const today = new Date();
+            const diffTime = Math.abs(today - posted);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            if (diffDays === 0) return "Aujourd'hui";
+            if (diffDays === 1) return "Hier";
+            if (diffDays < 7) return `Il y a ${diffDays} jours`;
+            if (diffDays < 30) return `Il y a ${Math.floor(diffDays / 7)} semaine${Math.floor(diffDays / 7) > 1 ? 's' : ''}`;
+            return `Il y a ${Math.floor(diffDays / 30)} mois`;
+        }
+        
+        // Initialize - Optimized with event delegation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Cache DOM elements
+            DOM.jobsList = document.getElementById('jobsList');
+            DOM.modal = document.getElementById('jobModal');
+            DOM.modalTitle = document.getElementById('modalTitle');
+            DOM.modalContent = document.getElementById('modalContent');
+            
+            // Render jobs
+            try {
+                renderJobs();
+            } catch (error) {
+                console.error('Error rendering jobs:', error);
+            }
+            
+            // Content refresh removed to prevent flickering
+            
+            // Event delegation for job cards (PDF and regular)
+            DOM.jobsList.addEventListener('click', function(e) {
+                const jobCard = e.target.closest('.job-card');
+                if (jobCard) {
+                    const jobId = jobCard.dataset.jobId;
+                    const isPDF = jobCard.dataset.isPdf === 'true';
+                    
+                    if (isPDF) {
+                        // Open PDF viewer
+                        const pdfId = parseInt(jobId.replace('pdf-', ''));
+                        viewPDF(pdfId);
+                    } else {
+                        // Open regular modal
+                        openJobModal(jobId);
+                    }
+                }
+            });
+            
+            // Modal backdrop click
+            DOM.modal.addEventListener('click', closeModal);
+            
+            // Keyboard events
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    if (state.isModalOpen) {
+                        closeModal();
+                    }
+                    closePDFViewer();
+                }
+            });
+            
+            // Close PDF modal when clicking outside
+            document.getElementById('pdfViewerModal').addEventListener('click', (e) => {
+                if (e.target === document.getElementById('pdfViewerModal')) {
+                    closePDFViewer();
+                }
+            });
+            
+            // Initial render (already called above on line 917)
+            // renderJobs();
+        });
+    </script>
 </body>
 </html>

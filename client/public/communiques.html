@@ -13,7 +13,37 @@
     <link rel="preconnect" href="https://cdn.tailwindcss.com">
     
     <!-- Tailwind CSS -->
-    <link rel="stylesheet" href="css/tailwind-local.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    typography: {
+                        invert: {
+                            css: {
+                                '--tw-prose-body': 'white',
+                                '--tw-prose-headings': 'white',
+                                '--tw-prose-lead': 'white',
+                                '--tw-prose-links': '#60a5fa',
+                                '--tw-prose-bold': 'white',
+                                '--tw-prose-bullets': 'white',
+                                '--tw-prose-hr': 'white',
+                                '--tw-prose-quotes': 'white',
+                                '--tw-prose-quote-borders': 'white',
+                                '--tw-prose-captions': 'white',
+                                '--tw-prose-code': 'white',
+                                '--tw-prose-pre-code': 'white',
+                                '--tw-prose-pre-bg': 'rgb(0 0 0 / 50%)',
+                                '--tw-prose-th-borders': 'white',
+                                '--tw-prose-td-borders': 'white',
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
     
     <!-- Shared Styles -->
     <link rel="stylesheet" href="css/shared.css">
@@ -437,5 +467,170 @@
     <script src="js/shared.js"></script>
     
     <!-- Page specific JavaScript - Matching jobs page structure -->
+    <script>
+        // Cache DOM elements
+        const DOM = {
+            prList: null,
+            modal: null,
+            modalTitle: null,
+            modalContent: null
+        };
+        
+        // State management
+        const state = {
+            isModalOpen: false
+        };
+
+        // Category image mapping (matching CMS system)
+        const categoryImageMap = {
+            'Beach Pro Tour': 'images/beach-pro-tour-hero.webp',
+            'Grands Prix Cyclistes': 'images/grands-prix-cyclistes-hero.webp',
+            'Marathon Beneva': 'images/marathon-beneva-hero.webp',
+            'Marathon Beneva 21K': 'images/marathon-beneva-hero.webp',
+            'UCI 2026': 'images/montreal-2026-uci-hero.webp',
+            'Studio 76': 'images/studio76-logo.png',
+            'Dock 619': 'images/dock619-hero-new.webp',
+            '21K de Montréal': 'images/21k-hero.webp',
+            'Groupe Tonic': 'images/tonic-logo.png'
+        };
+
+        // Get category image
+        function getCategoryImage(category) {
+            return categoryImageMap[category] || 'images/tonic-logo.png';
+        }
+        
+        // Get category class for styling based on category colors
+        const getCategoryClass = (category) => {
+            const classMap = {
+                'Beach Pro Tour': 'category-beach',
+                'Grands Prix Cyclistes': 'category-cycling',
+                'Marathon Beneva': 'category-marathon',
+                'Marathon Beneva 21K': 'category-marathon',
+                'UCI 2026': 'category-uci',
+                'Studio 76': 'category-studio',
+                'Dock 619': 'category-dock',
+                '21K de Montréal': 'category-21k',
+                'Groupe Tonic': 'category-tonic'
+            };
+            return classMap[category] || 'category-tonic';
+        };
+
+        // Render news with colored cards - matching jobs structure
+        function renderNews() {
+            const news = getNews();
+            
+            if (news.length === 0) {
+                DOM.prList.innerHTML = '<p class="text-white text-center py-8">Aucun communiqué disponible.</p>';
+                return;
+            }
+            
+            // Sort by date (newest first)
+            news.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            DOM.prList.innerHTML = news.map((item, index) => {
+                const categoryClass = getCategoryClass(item.category);
+                const image = getCategoryImage(item.category);
+                
+                return `
+                    <div class="job-card relative rounded-xl p-6 sm:p-8 cursor-pointer fade-in delay-${Math.min(index * 100, 500)}" 
+                         data-news-id="${item.id}"
+                         onclick="openNewsModal(${item.id})">
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <div class="sm:w-48 h-32 sm:h-32 flex-shrink-0 relative">
+                                <img src="${image}" alt="${item.category}" class="w-full h-full object-cover rounded-lg" loading="lazy">
+                                ${item.category !== 'Groupe Tonic' ? `<div class="absolute inset-0 rounded-lg ${categoryClass} opacity-40"></div>` : ''}
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex items-start justify-between gap-4 mb-2">
+                                    <span class="inline-block px-3 py-1 rounded-full text-xs font-medium text-white ${categoryClass}">
+                                        ${item.category}
+                                    </span>
+                                    <span class="text-sm text-white whitespace-nowrap">${formatDate(item.date)}</span>
+                                </div>
+                                <h2 class="text-xl sm:text-2xl font-bold mb-2 text-white hover:text-white transition-colors">
+                                    ${item.title}
+                                </h2>
+                                <p class="text-white line-clamp-2 mb-2">${item.subtitle}</p>
+                                <div class="mt-4 text-accent font-medium text-sm flex items-center gap-1">
+                                    <span>Lire la suite</span>
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Open news modal with mobile-friendly content
+        window.openNewsModal = function(id) {
+            const item = getNews().find(news => String(news.id) === String(id));
+            if (!item) return;
+            
+            DOM.modalTitle.textContent = item.title;
+            DOM.modalContent.innerHTML = `
+                <div class="text-white">
+                    <div class="mb-4">
+                        <span class="px-3 py-1 ${getCategoryClass(item.category)} text-white text-sm rounded-full">${item.category}</span>
+                    </div>
+                    <div class="prose prose-invert max-w-none text-white" style="color: white; line-height: 1.6;">
+                        ${item.content}
+                    </div>
+                </div>
+            `;
+            DOM.modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            state.isModalOpen = true;
+        }
+
+        // Close modal
+        window.closeModal = function() {
+            if (DOM.modal) {
+                DOM.modal.classList.remove('active');
+                document.body.style.overflow = '';
+                state.isModalOpen = false;
+            }
+        }
+
+        // Mobile menu functionality from shared.js
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            if (mobileMenu.classList.contains('active')) {
+                mobileMenu.classList.remove('active');
+                document.body.style.overflow = '';
+            } else {
+                mobileMenu.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            DOM.prList = document.getElementById('prList');
+            DOM.modal = document.getElementById('newsModal');
+            DOM.modalTitle = document.getElementById('modalTitle');
+            DOM.modalContent = document.getElementById('modalContent');
+            
+            // Render news
+            renderNews();
+            
+            // Content refresh removed to prevent flickering
+            
+            // Modal close handlers
+            DOM.modal?.addEventListener('click', (e) => {
+                if (e.target === DOM.modal) {
+                    closeModal();
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && state.isModalOpen) {
+                    closeModal();
+                }
+            });
+        });
+    </script>
 </body>
 </html>
