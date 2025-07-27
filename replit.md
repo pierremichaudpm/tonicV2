@@ -447,6 +447,14 @@ The website is now fully operational and matches the original local/Netlify func
 - **Read more buttons standardized**: All "Lire la suite" and "Read more" buttons now use Tonic orange accent color
 - **Enhanced user experience**: Better visual hierarchy and card distinction for mobile and desktop users
 
+### Tooltip Implementation Challenge - January 27, 2025 🔄 IN PROGRESS
+- **User requirement**: Instagram/LinkedIn social icons must show "Instagram"/"LinkedIn" tooltips on hover
+- **Challenge**: CSS tooltips work in isolated test page but fail on actual website pages
+- **Root cause**: Complex CSS specificity conflicts with existing nav styles preventing hover effects
+- **Multiple attempts**: Tried various CSS selector combinations, !important declarations, z-index adjustments
+- **Current approach**: Simplified direct attribute targeting with specific color coding (red for Instagram, blue for LinkedIn)
+- **Status**: Testing simplified CSS approach with maximum specificity override
+
 ### Website Restoration Status - January 27, 2025 ✅ COMPLETED
 - **Logo Display Fix**: Resolved "CA +ONIC" text issue by removing unreachable CBC Sans font-face declarations
 - **Server Path Fix**: Corrected static file serving from 'public' to 'client/public' directory
