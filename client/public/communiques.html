@@ -78,6 +78,15 @@
             align-self: center;
         }
         
+        /* Force consistent sizing across all screen sizes */
+        @media (min-width: 1px) {
+            .lang-switcher {
+                font-size: 0.75rem !important;
+                font-weight: 500 !important;
+                padding: 0.25rem 0.5rem !important;
+            }
+        }
+        
         /* CSS Variables for Tonic accent colors */
         :root {
             --accent-primary: #f97316;
