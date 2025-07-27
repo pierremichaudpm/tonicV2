@@ -22,8 +22,10 @@ if (process.env.NODE_ENV === "development") {
         // CSS/JS: 1 month cache
         res.setHeader('Cache-Control', 'public, max-age=2592000');
       } else if (path.endsWith('.html')) {
-        // HTML: 1 hour cache
-        res.setHeader('Cache-Control', 'public, max-age=3600');
+        // HTML: No cache during development for immediate updates
+        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+        res.setHeader('Pragma', 'no-cache');
+        res.setHeader('Expires', '0');
       }
     }
   }));

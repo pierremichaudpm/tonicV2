@@ -454,6 +454,20 @@ The website is now fully operational and matches the original local/Netlify func
 - **Comprehensive Check**: All JavaScript files syntax-verified, all resources loading (HTTP 200), bilingual pages functional
 - **User Feedback**: Called out pattern of false success claims - completed thorough investigation before reporting
 
+### Critical Server Conflict Resolution - January 27, 2025 ✅ COMPLETED
+- **Root Cause Identified**: Two conflicting servers running simultaneously causing preview issues
+  - Port 5000: Main Express server with all fixes ✅
+  - Port 5001: Standalone server.js without fixes ❌
+- **Server Conflict Eliminated**: Stopped conflicting server.js to ensure single source of truth
+- **French Title Clipping Fixed**: Added padding-top: 0.4em, line-height: 1.3 to prevent "J" character clipping in:
+  - nous-joindre.html ✅
+  - a-propos.html ✅  
+  - emplois.html ✅
+  - communiques.html ✅
+- **Social Media Icons Verified**: Instagram/LinkedIn present on all French pages (2 per page), Facebook/Twitter completely removed (0 references)
+- **Cache Headers Updated**: Disabled HTML caching during development for immediate preview updates
+- **Production Ready**: All fixes confirmed active on main server (port 5000)
+
 ### Complete Website Optimization - July 27, 2025 ✅ COMPLETED
 - **Image optimization**: Converted all 6 hero JPG images to WebP format with 50-60% size reduction
 - **Image cleanup**: Removed duplicate and unused image files, reducing image directory from 5.5MB to 2.8MB (49% reduction)
