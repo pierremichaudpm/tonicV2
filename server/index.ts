@@ -22,9 +22,11 @@ app.use(express.static(publicPath, {
       res.setHeader('Cache-Control', 'public, max-age=2592000');
     } else if (path.endsWith('.html')) {
       // HTML: No cache during development for immediate updates
-      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate, proxy-revalidate');
       res.setHeader('Pragma', 'no-cache');
       res.setHeader('Expires', '0');
+      res.setHeader('Surrogate-Control', 'no-store');
+      res.setHeader('Vary', '*');
     }
   }
 }));
