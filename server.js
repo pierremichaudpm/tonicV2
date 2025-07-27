@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 5001;
 
 // Middleware
 app.use(express.json());
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'client/public')));
 
 // Simple authentication
 const ADMIN_PASSWORD = 'admin123'; // Change this to your desired password
