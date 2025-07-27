@@ -3,15 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Accueil | Groupe Tonic</title>
-    <meta name="description" content="Groupe Tonic, créateur d'expériences mémorables depuis plus de 40 ans. Beach Pro Tour, Grands Prix Cyclistes, Marathon Beneva et événements majeurs au Québec.">
-    <meta property="og:title" content="Tonic - Créateur d'expériences mémorables">
-    <meta property="og:description" content="Découvrez nos événements sportifs majeurs et espaces événementiels">
-    <meta property="og:image" content="images/beach-pro-tour-hero.webp">
+    <title>Groupe Tonic | Créateur d'expériences mémorables - Événements sportifs Québec</title>
+    <meta name="description" content="Groupe Tonic organise les plus grands événements sportifs au Québec : Beach Pro Tour, Marathon Beneva, Grands Prix Cyclistes. Plus de 40 ans d'expérience.">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://website-migrator-pmicho.replit.app/">
+    
+    <!-- Hreflang tags -->
+    <link rel="alternate" hreflang="fr" href="https://website-migrator-pmicho.replit.app/">
+    <link rel="alternate" hreflang="en" href="https://website-migrator-pmicho.replit.app/index-en.html">
+    <link rel="alternate" hreflang="x-default" href="https://website-migrator-pmicho.replit.app/">
+    
+    <!-- Open Graph tags -->
+    <meta property="og:site_name" content="Groupe Tonic">
+    <meta property="og:title" content="Groupe Tonic | Créateur d'expériences mémorables">
+    <meta property="og:description" content="Groupe Tonic organise les plus grands événements sportifs au Québec : Beach Pro Tour, Marathon Beneva, Grands Prix Cyclistes. Plus de 40 ans d'expérience.">
+    <meta property="og:image" content="https://website-migrator-pmicho.replit.app/images/groupe-tonic-og.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:url" content="https://website-migrator-pmicho.replit.app/">
     <meta property="og:type" content="website">
+    <meta property="og:locale" content="fr_CA">
+    
+    <!-- Twitter Card tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Groupe Tonic | Créateur d'expériences mémorables">
+    <meta name="twitter:description" content="Groupe Tonic organise les plus grands événements sportifs au Québec : Beach Pro Tour, Marathon Beneva, Grands Prix Cyclistes.">
+    <meta name="twitter:image" content="https://website-migrator-pmicho.replit.app/images/groupe-tonic-og.jpg">
+    
+    <!-- Additional SEO tags -->
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Groupe Tonic">
+    <meta name="keywords" content="événements sportifs Québec, Beach Pro Tour, Marathon Beneva, Grands Prix Cyclistes, UCI, Montréal, organisation événementielle">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="css/shared.css" as="style">
+    <link rel="preload" href="css/4k-presentation.css" as="style">
     <link rel="stylesheet" href="css/shared.css">
     <link rel="stylesheet" href="css/4k-presentation.css">
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Groupe Tonic",
+        "alternateName": "Tonic",
+        "description": "Créateur d'expériences mémorables depuis plus de 40 ans. Organisation d'événements sportifs majeurs au Québec.",
+        "url": "https://website-migrator-pmicho.replit.app/",
+        "logo": "https://website-migrator-pmicho.replit.app/images/tonic-logo.png",
+        "image": "https://website-migrator-pmicho.replit.app/images/groupe-tonic-og.jpg",
+        "sameAs": [
+            "https://www.instagram.com/groupetonic/",
+            "https://www.linkedin.com/company/groupe-tonic/"
+        ],
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Longueuil",
+            "addressRegion": "QC",
+            "addressCountry": "CA"
+        },
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "email": "info@groupetonic.ca",
+            "contactType": "customer service"
+        },
+        "foundingDate": "1983",
+        "keywords": "événements sportifs, Beach Pro Tour, Marathon Beneva, Grands Prix Cyclistes, UCI, organisation événementielle",
+        "knowsAbout": [
+            "Organisation d'événements sportifs",
+            "Beach Pro Tour",
+            "Marathon Beneva de Montréal",
+            "Grands Prix Cyclistes",
+            "Championnats du Monde Route UCI",
+            "Production vidéo",
+            "Espaces événementiels"
+        ]
+    }
+    </script>
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "name": "Groupe Tonic",
+        "description": "Organisation d'événements sportifs majeurs au Québec depuis plus de 40 ans",
+        "url": "https://website-migrator-pmicho.replit.app/",
+        "telephone": "+1-514-XXX-XXXX",
+        "email": "info@groupetonic.ca",
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Longueuil",
+            "addressRegion": "Quebec",
+            "addressCountry": "Canada"
+        },
+        "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": "45.5301",
+            "longitude": "-73.4684"
+        },
+        "openingHours": "Mo-Fr 09:00-17:00",
+        "paymentAccepted": "Credit Card, Cash",
+        "priceRange": "$$"
+    }
+    </script>
 
     <style>
         *{box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
@@ -533,7 +629,7 @@
                                 <h1 className="header-logo text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white leading-none" 
                                     style={{textShadow:'0 4px 20px rgba(0,0,0,0.9), 0 2px 10px rgba(0,0,0,0.8)'}}
                                     onClick={goToGrid}>
-                                    <img src="images/tonic-logo.png" alt="Groupe Tonic" style={{width:'clamp(180px,35vw,250px)',height:'auto'}} />
+                                    <img src="images/tonic-logo.png" alt="Logo Groupe Tonic - Créateur d'expériences mémorables depuis plus de 40 ans" style={{width:'clamp(180px,35vw,250px)',height:'auto'}} />
                                 </h1>
                                 <span className="text-white text-xs md:text-sm font-medium leading-tight"
                                     style={{textShadow:'0 2px 10px rgba(0,0,0,0.9)'}}>
@@ -905,7 +1001,7 @@
                     {/* Splash */}
                     <div className={`view-container ${state.currentView==='splash'?'active':''}`}>
                         <div className="splash-container">
-                            <img src="images/tonic-logo.png" alt="Groupe Tonic" className="splash-logo" />
+                            <img src="images/tonic-logo.png" alt="Logo Groupe Tonic - Organisation d'événements sportifs au Québec" className="splash-logo" />
                             <p className="splash-tagline">Créateur d'expériences mémorables</p>
                         </div>
                     </div>
