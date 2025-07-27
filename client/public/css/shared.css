@@ -437,24 +437,45 @@ header {
     display: none !important;
 }
 
-/* Make sure tooltips override any conflicting styles */
-.nav-item[data-tooltip]:hover::after {
+/* Force tooltips to show with maximum specificity */
+nav .nav-item[data-tooltip]:hover::after,
+.nav-container .nav-item[data-tooltip]:hover::after {
     content: attr(data-tooltip) !important;
     position: absolute !important;
     bottom: -2.5rem !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
-    background: rgba(0, 0, 0, 0.95) !important;
+    background: rgba(255, 0, 0, 0.95) !important;
     color: white !important;
-    padding: 0.375rem 0.75rem !important;
-    border-radius: 0.375rem !important;
-    font-size: 0.75rem !important;
-    font-weight: 500 !important;
+    padding: 0.5rem 1rem !important;
+    border-radius: 0.5rem !important;
+    font-size: 0.875rem !important;
+    font-weight: 700 !important;
     white-space: nowrap !important;
-    z-index: 99999 !important;
+    z-index: 999999 !important;
     pointer-events: none !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8) !important;
+    border: 2px solid white !important;
     opacity: 1 !important;
     display: block !important;
+    visibility: visible !important;
+}
+
+nav .nav-item[data-tooltip]:hover::before,
+.nav-container .nav-item[data-tooltip]:hover::before {
+    content: '' !important;
+    position: absolute !important;
+    bottom: -0.75rem !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 0 !important;
+    height: 0 !important;
+    border-left: 8px solid transparent !important;
+    border-right: 8px solid transparent !important;
+    border-bottom: 8px solid rgba(255, 0, 0, 0.95) !important;
+    z-index: 999999 !important;
+    pointer-events: none !important;
+    opacity: 1 !important;
+    display: block !important;
+    visibility: visible !important;
 }
