@@ -465,19 +465,18 @@ The website is now fully operational and matches the original local/Netlify func
 - **Comprehensive Check**: All JavaScript files syntax-verified, all resources loading (HTTP 200), bilingual pages functional
 - **User Feedback**: Called out pattern of false success claims - completed thorough investigation before reporting
 
-### Server Routing Fix - January 27, 2025 ✅ COMPLETED
-- **Problem Identified**: Catch-all route `app.get('*', ...)` was serving index.html for every request, breaking access to CMS and other pages
-- **Solution Implemented**: Replaced overly aggressive catch-all with specific route handlers for each page:
-  - `/cms`, `/cms.html`, `/admin` → serves cms.html
-  - `/about`, `/a-propos` → serves respective pages
-  - `/emplois`, `/emplois-en` → serves job pages
-  - `/communiques`, `/communiques-en` → serves news pages
-  - `/nous-joindre`, `/nous-joindre-en` → serves contact pages
-  - `/`, `/index.html`, `/index-en.html` → serves homepage variations
-- **Routing Verified**: All endpoints return HTTP 200 status codes via curl testing
-- **CMS Access Restored**: CMS is now accessible at `/cms` route without index.html interference
-- **SPA Behavior Preserved**: Homepage maintains single-page app functionality while other pages route correctly
-- **Status**: ✅ COMPLETED - Proper routing implemented, all pages accessible
+### CMS Connection & Translation API Fix - January 27, 2025 ✅ COMPLETED
+- **Problem Identified**: CMS showing "Erreur de connexion" due to missing API endpoints for authentication and translation
+- **Server Routing Fixed**: Replaced catch-all route with specific route handlers for all pages (/cms, /about, /emplois, etc.)
+- **CMS Authentication Added**: Implemented `/api/cms/login` endpoint with admin123 password authentication
+- **Content API Added**: Created `/api/cms/content/:type/:lang` endpoint to serve jobs and news data
+- **Claude Translation API Implemented**: Added `/api/translate` endpoint using ANTHROPIC_API_KEY secret
+  - Uses Claude Sonnet 4.0 model for professional French-English translation
+  - Preserves HTML formatting, brand names, and business terminology
+  - Fallback system for API failures
+- **File Reading System**: Added readDataFile() function to extract data from JavaScript files
+- **Express Middleware**: Added JSON parsing and authentication middleware
+- **Status**: ✅ COMPLETED - CMS fully functional with authentication and AI translation capabilities
 
 ### Complete Website Optimization - July 27, 2025 ✅ COMPLETED
 - **Image optimization**: Converted all 6 hero JPG images to WebP format with 50-60% size reduction

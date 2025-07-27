@@ -3,6 +3,7 @@ import path from 'path';
 import compression from 'compression';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
+import fetch from 'node-fetch';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -106,8 +107,8 @@ app.get('/api/cms/content/:type/:lang', authenticate, (req, res) => {
   res.json({ data });
 });
 
-// Translation API endpoint (simplified fallback)
-app.post('/api/translate', authenticate, (req, res) => {
+// Translation API endpoint using Claude API
+app.post('/api/translate', authenticate, async (req, res) => {
   const { text, fromLang, toLang } = req.body;
   console.log(`Translation request: ${fromLang} -> ${toLang}`);
   
@@ -115,12 +116,55 @@ app.post('/api/translate', authenticate, (req, res) => {
     return res.json({ translatedText: text });
   }
   
-  // Simple fallback translation (the CMS has its own fallback system)
-  // This prevents the connection error - the CMS will handle actual translation
-  res.json({ 
-    translatedText: text,
-    message: 'Using fallback translation system'
-  });
+  try {
+    // Use Claude API for translation
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': process.env.ANTHROPIC_API_KEY,
+        'anthropic-version': '2023-06-01'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 8192,
+        system: `You are a professional French-English translator specializing in business content for Groupe Tonic, a Quebec-based event production company. Translate text while preserving:
+- HTML formatting (spans, links, bold, etc.)
+- Professional tone and business terminology
+- Brand names (keep French: "Groupe Tonic", "Beach Pro Tour", etc.)
+- Quebec French cultural context when translating to English
+- All technical formatting and structure
+
+Return ONLY the translated text, no explanations.`,
+        messages: [{
+          role: 'user',
+          content: `Translate this ${fromLang === 'fr' ? 'French' : 'English'} text to ${toLang === 'en' ? 'English' : 'French'}:\n\n${text}`
+        }]
+      })
+    });
+
+    if (!response.ok) {
+      console.error('Claude API error:', response.status);
+      throw new Error(`Claude API error: ${response.status}`);
+    }
+
+    const result = await response.json();
+    const translatedText = result.content[0].text;
+
+    res.json({ 
+      translatedText: translatedText,
+      message: 'Translated using Claude API'
+    });
+
+  } catch (error) {
+    console.error('Translation failed:', error);
+    
+    // Fallback to simple response if Claude fails
+    res.json({ 
+      translatedText: text,
+      message: 'Translation service unavailable, using original text'
+    });
+  }
 });
 
 // Specific routes for important pages
