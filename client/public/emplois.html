@@ -368,11 +368,9 @@
                     tooltip.textContent = tooltipText;
                     tooltip.style.display = 'block';
                     
-                    if (tooltipText === 'Instagram') {
-                        tooltip.style.background = '#E4405F';
-                    } else if (tooltipText === 'LinkedIn') {
-                        tooltip.style.background = '#0077B5';
-                    }
+                    // Plain white tooltips
+                    tooltip.style.background = '#333';
+                    tooltip.style.color = 'white';
                     
                     const rect = link.getBoundingClientRect();
                     tooltip.style.left = (rect.left + rect.width/2 - 50) + 'px';

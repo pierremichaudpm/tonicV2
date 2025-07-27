@@ -448,13 +448,15 @@ The website is now fully operational and matches the original local/Netlify func
 - **Enhanced user experience**: Better visual hierarchy and card distinction for mobile and desktop users
 
 ### Tooltip System Implementation - January 27, 2025 ✅ COMPLETED
-- **User requirement**: Instagram/LinkedIn social icons must show "Instagram"/"LinkedIn" tooltips on hover
+- **User requirement**: Instagram/LinkedIn social icons must show "Instagram"/"LinkedIn" tooltips on hover across ALL pages
 - **Solution found**: Inline JavaScript tooltips work perfectly where CSS failed
-- **Implementation**: Added tooltip system to all 8 website pages (4 French + 4 English)
-- **Features**: Instagram tooltips show in pink (#E4405F), LinkedIn tooltips show in blue (#0077B5)
-- **Functionality**: Tooltips appear below icons with smooth fade transitions and white borders
-- **Coverage**: All static HTML pages now have working tooltips for social media icons
-- **Status**: ✅ COMPLETED - Tooltips working consistently across entire website
+- **Complete implementation**: Added tooltip system to all 10 website pages including React homepage components
+- **Static pages**: All 8 static HTML pages (French and English versions of About, Jobs, News, Contact)
+- **React homepage**: Both French and English React homepage components (grid and hero views)
+- **Styling**: Plain white tooltips (#333 background, white text) as requested by user
+- **Technical approach**: MutationObserver for React re-renders, event listener cleanup to prevent duplicates
+- **Coverage**: Universal tooltip coverage across entire website - static pages and dynamic React components
+- **Status**: ✅ COMPLETED - Complete tooltip system working on all pages including React components
 
 ### Website Restoration Status - January 27, 2025 ✅ COMPLETED
 - **Logo Display Fix**: Resolved "CA +ONIC" text issue by removing unreachable CBC Sans font-face declarations

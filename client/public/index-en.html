@@ -344,6 +344,89 @@
         .emergency-show{display:block!important;opacity:1!important;visibility:visible!important}
         .category-tonic{background:linear-gradient(135deg,var(--accent-primary),var(--accent-50))}
     </style>
+    <script>
+        // Tooltip system for React homepage
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create tooltip element
+            const tooltip = document.createElement('div');
+            tooltip.style.cssText = `
+                position: fixed;
+                background: #333;
+                color: white;
+                padding: 8px 12px;
+                border-radius: 6px;
+                font-size: 14px;
+                font-weight: 500;
+                white-space: nowrap;
+                z-index: 999999;
+                pointer-events: none;
+                border: 2px solid #fff;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.8);
+                opacity: 0;
+                transition: opacity 0.2s ease;
+                display: none;
+            `;
+            document.body.appendChild(tooltip);
+            
+            // Function to add tooltips to social links
+            function addTooltips() {
+                const socialLinks = document.querySelectorAll('a[href*="instagram"], a[href*="linkedin"]');
+                
+                socialLinks.forEach(link => {
+                    // Determine tooltip text based on URL
+                    let tooltipText = '';
+                    if (link.href.includes('instagram')) tooltipText = 'Instagram';
+                    if (link.href.includes('linkedin')) tooltipText = 'LinkedIn';
+                    
+                    if (tooltipText) {
+                        // Remove existing listeners to prevent duplicates
+                        link.removeEventListener('mouseenter', link._tooltipEnter);
+                        link.removeEventListener('mouseleave', link._tooltipLeave);
+                        
+                        // Create new listeners
+                        link._tooltipEnter = function(e) {
+                            tooltip.textContent = tooltipText;
+                            tooltip.style.display = 'block';
+                            tooltip.style.background = '#333';
+                            tooltip.style.color = 'white';
+                            
+                            const rect = link.getBoundingClientRect();
+                            tooltip.style.left = (rect.left + rect.width/2 - 50) + 'px';
+                            tooltip.style.top = (rect.bottom + 10) + 'px';
+                            tooltip.style.opacity = '1';
+                        };
+                        
+                        link._tooltipLeave = function() {
+                            tooltip.style.opacity = '0';
+                            setTimeout(() => {
+                                tooltip.style.display = 'none';
+                            }, 200);
+                        };
+                        
+                        link.addEventListener('mouseenter', link._tooltipEnter);
+                        link.addEventListener('mouseleave', link._tooltipLeave);
+                    }
+                });
+            }
+            
+            // Initial call
+            setTimeout(addTooltips, 1000);
+            
+            // Re-add tooltips when DOM changes (for React re-renders)
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.type === 'childList') {
+                        setTimeout(addTooltips, 100);
+                    }
+                });
+            });
+            
+            observer.observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+        });
+    </script>
 </head>
 <body>
     <noscript>
