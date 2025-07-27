@@ -134,6 +134,14 @@
             color: #1e3a8a !important; /* Even darker blue text for better contrast */
         }
         
+        /* More specific selector for auto-translate label */
+        label[for="autoTranslate"].text-blue-900,
+        label[for="autoTranslate"] .text-blue-900,
+        #autoTranslate + label.text-blue-900,
+        #autoTranslate + label .text-blue-900 {
+            color: #1e3a8a !important;
+        }
+        
         /* Category color schemes - forced with !important */
         span.bg-pink-500 { 
             background-color: #ff0e9b !important; /* Beach Pro Tour - Pink */
@@ -554,11 +562,11 @@
                             class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
                             checked
                         >
-                        <label for="autoTranslate" class="text-sm font-medium text-blue-900">
-                            <span class="fr-text">Traduction automatique</span><span class="en-text hidden">Automatic Translation</span>
-                            <span class="block text-xs text-blue-900 mt-1">
-                                <span class="fr-text">Créer automatiquement une version anglaise de ce contenu</span>
-                                <span class="en-text hidden">Automatically create an English version of this content</span>
+                        <label for="autoTranslate" class="text-sm font-medium" style="color: #1e3a8a !important;">
+                            <span class="fr-text" style="color: #1e3a8a !important;">Traduction automatique</span><span class="en-text hidden" style="color: #1e3a8a !important;">Automatic Translation</span>
+                            <span class="block text-xs mt-1" style="color: #1e3a8a !important;">
+                                <span class="fr-text" style="color: #1e3a8a !important;">Créer automatiquement une version anglaise de ce contenu</span>
+                                <span class="en-text hidden" style="color: #1e3a8a !important;">Automatically create an English version of this content</span>
                             </span>
                         </label>
                     </div>
