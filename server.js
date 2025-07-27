@@ -50,24 +50,45 @@ const readDataFile = (filename) => {
     const filePath = path.join(__dirname, 'client/public/js', filename);
     const content = fs.readFileSync(filePath, 'utf8');
     
-    // Extract the data from the JavaScript file
-    if (filename.includes('communiques-data.js')) {
-      const match = content.match(/const pressReleases = (\[[\s\S]*?\]);/);
-      return match ? JSON.parse(match[1]) : [];
-    } else if (filename.includes('communiques-data-en.js')) {
-      const match = content.match(/const communiquesData = (\[[\s\S]*?\]);/);
-      return match ? JSON.parse(match[1]) : [];
-    } else if (filename.includes('emplois-data.js')) {
-      const match = content.match(/const jobListings = (\[[\s\S]*?\]);/);
-      return match ? JSON.parse(match[1]) : [];
-    } else if (filename.includes('emplois-data-en.js')) {
-      const match = content.match(/const jobsData = (\[[\s\S]*?\]);/);
-      return match ? JSON.parse(match[1]) : [];
+    // Extract the data from the JavaScript file using Function constructor for safety
+    let match;
+    if (filename.includes('emplois-data-en')) {
+      match = content.match(/const\s+jobsData\s*=\s*(\[[\s\S]*?\]);/);
+    } else if (filename.includes('emplois-data')) {
+      match = content.match(/const\s+jobListings\s*=\s*(\[[\s\S]*?\]);/);
+    } else if (filename.includes('communiques-data-en')) {
+      match = content.match(/const\s+communiquesData\s*=\s*(\[[\s\S]*?\]);/);
+    } else if (filename.includes('communiques-data')) {
+      match = content.match(/const\s+pressReleases\s*=\s*(\[[\s\S]*?\]);/);
+    }
+    
+    if (match) {
+      try {
+        return JSON.parse(match[1]);
+      } catch (e) {
+        // Use Function constructor for JavaScript array evaluation
+        const fn = new Function('return ' + match[1]);
+        return fn();
+      }
     }
     return [];
   } catch (error) {
     console.error('Error reading data file:', error);
     return [];
+  }
+};
+
+// Helper function to write data files
+const writeDataFile = (filename, data, variableName) => {
+  try {
+    const filePath = path.join(__dirname, 'client/public/js', filename);
+    const content = `const ${variableName} = ${JSON.stringify(data, null, 4)};`;
+    
+    fs.writeFileSync(filePath, content, 'utf8');
+    return true;
+  } catch (error) {
+    console.error('Error writing data file:', error);
+    return false;
   }
 };
 
@@ -164,6 +185,80 @@ Return ONLY the translated text, no explanations.`,
       translatedText: text,
       message: 'Translation service unavailable, using original text'
     });
+  }
+});
+
+// Save/Update content endpoint
+app.post('/api/cms/content/:type/:lang', authenticate, (req, res) => {
+  const { type, lang } = req.params;
+  const { data } = req.body;
+  
+  console.log(`Saving ${type} content for ${lang}`);
+  
+  let filename, variableName;
+  
+  if (type === 'news' && lang === 'fr') {
+    filename = 'communiques-data.js';
+    variableName = 'pressReleases';
+  } else if (type === 'news' && lang === 'en') {
+    filename = 'communiques-data-en.js';
+    variableName = 'communiquesData';
+  } else if (type === 'jobs' && lang === 'fr') {
+    filename = 'emplois-data.js';
+    variableName = 'jobListings';
+  } else if (type === 'jobs' && lang === 'en') {
+    filename = 'emplois-data-en.js';
+    variableName = 'jobsData';
+  } else {
+    return res.status(400).json({ error: 'Invalid type or language' });
+  }
+  
+  const success = writeDataFile(filename, data, variableName);
+  
+  if (success) {
+    res.json({ success: true, message: 'Content saved successfully' });
+  } else {
+    res.status(500).json({ error: 'Failed to save content' });
+  }
+});
+
+// Delete content endpoint
+app.delete('/api/cms/content/:type/:lang/:id', authenticate, (req, res) => {
+  const { type, lang, id } = req.params;
+  
+  console.log(`Deleting ${type} item ${id} for ${lang}`);
+  
+  let filename, variableName;
+  
+  if (type === 'news' && lang === 'fr') {
+    filename = 'communiques-data.js';
+    variableName = 'pressReleases';
+  } else if (type === 'news' && lang === 'en') {
+    filename = 'communiques-data-en.js';
+    variableName = 'communiquesData';
+  } else if (type === 'jobs' && lang === 'fr') {
+    filename = 'emplois-data.js';
+    variableName = 'jobListings';
+  } else if (type === 'jobs' && lang === 'en') {
+    filename = 'emplois-data-en.js';
+    variableName = 'jobsData';
+  } else {
+    return res.status(400).json({ error: 'Invalid type or language' });
+  }
+  
+  // Read current data
+  const currentData = readDataFile(filename);
+  
+  // Filter out the item to delete
+  const filteredData = currentData.filter(item => String(item.id) !== String(id));
+  
+  // Write back the filtered data
+  const success = writeDataFile(filename, filteredData, variableName);
+  
+  if (success) {
+    res.json({ success: true, message: 'Content deleted successfully' });
+  } else {
+    res.status(500).json({ error: 'Failed to delete content' });
   }
 });
 
