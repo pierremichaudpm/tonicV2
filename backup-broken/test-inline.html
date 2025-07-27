@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Inline JS</title>
+    <style>
+        body { background: black; color: white; padding: 20px; }
+        .test { border: 2px solid green; padding: 10px; margin: 10px; }
+        #root { border: 2px solid red; padding: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Testing JavaScript Execution</h1>
+    <div id="root">Initial content - if you see this, JS didn't run</div>
+    
+    <script>
+        console.log('Script starting...');
+        
+        // Test immediate execution
+        document.getElementById('root').innerHTML = '<div class="test">✓ JavaScript executed immediately</div>';
+        
+        // Test DOM ready
+        function init() {
+            console.log('Init function called');
+            document.getElementById('root').innerHTML += '<div class="test">✓ Init function executed</div>';
+            
+            // Test showSplashScreen
+            try {
+                const testDiv = document.createElement('div');
+                testDiv.innerHTML = `
+                    <div class="splash-container view-container active">
+                        <img src="images/tonic-logo.png" alt="Test" style="width:100px;">
+                        <p>Splash screen content</p>
+                    </div>
+                `;
+                document.getElementById('root').appendChild(testDiv);
+                console.log('Splash content added');
+            } catch (e) {
+                console.error('Error:', e);
+            }
+        }
+        
+        // Test DOM ready detection
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+            document.getElementById('root').innerHTML += '<div class="test">⏳ Waiting for DOMContentLoaded</div>';
+        } else {
+            init();
+        }
+    </script>
+</body>
+</html>

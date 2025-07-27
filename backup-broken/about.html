@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>About | Groupe Tonic</title>
+    <meta name="description" content="Discover Groupe Tonic, creator of memorable experiences and leader in organizing major sporting and cultural events in Quebec for over 40 years.">
+    <link rel="stylesheet" href="css/shared.css">
+    <link rel="preload" href="https://fonts.cbc.ca/fonts/CBCSans-Bold.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="css/tailwind-local.css">
+    <link rel="preconnect" href="https://fonts.cbc.ca">
+
+    <style>
+        @font-face{font-family:'CBC Sans';font-weight:400;font-display:swap;src:url('https://fonts.cbc.ca/fonts/CBCSans-Regular.woff2') format('woff2')}
+        @font-face{font-family:'CBC Sans';font-weight:700;font-display:swap;src:url('https://fonts.cbc.ca/fonts/CBCSans-Bold.woff2') format('woff2')}
+        @font-face{font-family:'CBC Sans';font-weight:900;font-display:swap;src:url('https://fonts.cbc.ca/fonts/CBCSans-Black.woff2') format('woff2')}
+        *{font-family:'CBC Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+        body{margin:0;background:#000;overflow-x:hidden;min-height:100vh;min-height:100dvh}
+        .header-logo{cursor:pointer;transition:transform .2s ease}
+        .header-logo:hover{transform:scale(1.05)}
+        .stat-card{background:linear-gradient(135deg,rgba(254,68,69,0.1),rgba(0,0,0,0.8));backdrop-filter:blur(10px);border:1px solid var(--accent-20);transition:all 0.3s ease;border-radius:1rem;padding:2rem;text-align:center;position:relative;overflow:hidden}
+        .stat-card::after{
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(ellipse 120% 80% at 20% 30%, rgba(255, 87, 51, 0.25) 0%, transparent 50%),
+                radial-gradient(ellipse 100% 70% at 80% 70%, rgba(255, 107, 107, 0.22) 0%, transparent 50%),
+                radial-gradient(ellipse 90% 60% at 50% 90%, rgba(249, 115, 22, 0.18) 0%, transparent 50%),
+                linear-gradient(135deg, rgba(220, 38, 38, 0.15), rgba(249, 115, 22, 0.12), rgba(255, 255, 255, 0.08));
+            border-radius: inherit;
+            pointer-events: none;
+            z-index: 1;
+            animation: subtleFlow 8s ease-in-out infinite;
+        }
+        .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent-primary),var(--accent-hover));border-radius:1rem 1rem 0 0}
+        .stat-card:hover{transform:translateY(-8px);box-shadow:0 20px 60px rgba(254,68,69,0.3);border-color:var(--accent-30);background:linear-gradient(135deg,rgba(254,68,69,0.15),rgba(0,0,0,0.9))}
+        .stat-number{font-size:3.5rem;font-weight:900;background:linear-gradient(135deg,var(--accent-primary),var(--accent-hover));background-clip:text;-webkit-background-clip:text;color:transparent;line-height:1;margin-bottom:0.5rem}
+        .stat-label{color:rgba(255,255,255,0.9);font-size:1.1rem;font-weight:600;text-transform:uppercase;letter-spacing:0.5px}
+        .values-card{background:linear-gradient(135deg,rgba(255,255,255,0.08),rgba(254,68,69,0.05));backdrop-filter:blur(15px);border:1px solid rgba(255,255,255,0.1);border-radius:1.5rem;padding:2.5rem;transition:all 0.4s ease;position:relative;overflow:hidden}
+        .values-card::after{
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(ellipse 120% 80% at 20% 30%, rgba(255, 87, 51, 0.20) 0%, transparent 50%),
+                radial-gradient(ellipse 100% 70% at 80% 70%, rgba(255, 107, 107, 0.18) 0%, transparent 50%),
+                radial-gradient(ellipse 90% 60% at 50% 90%, rgba(249, 115, 22, 0.15) 0%, transparent 50%),
+                linear-gradient(135deg, rgba(220, 38, 38, 0.12), rgba(249, 115, 22, 0.10), rgba(255, 255, 255, 0.06));
+            border-radius: inherit;
+            pointer-events: none;
+            z-index: 1;
+            animation: subtleFlow 8s ease-in-out infinite;
+        }
+        .values-card::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:conic-gradient(from 0deg,transparent,var(--accent-20),transparent);opacity:0;transition:opacity 0.4s ease;animation:rotate 10s linear infinite}
+        .values-card:hover::before{opacity:1}
+        .values-card:hover{transform:translateY(-4px) scale(1.02);border-color:var(--accent-30);box-shadow:0 15px 40px rgba(254,68,69,0.2);background:linear-gradient(135deg,rgba(255,255,255,0.12),rgba(254,68,69,0.08))}
+        @keyframes rotate{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+        @keyframes subtleFlow {
+            0%, 100% { 
+                transform: translateX(0) translateY(0) scale(1);
+                opacity: 1;
+            }
+            25% { 
+                transform: translateX(1px) translateY(-1px) scale(1.01);
+                opacity: 0.9;
+            }
+            50% { 
+                transform: translateX(-1px) translateY(1px) scale(0.99);
+                opacity: 1.1;
+            }
+            75% { 
+                transform: translateX(1px) translateY(1px) scale(1.01);
+                opacity: 0.95;
+            }
+        }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+        @keyframes pulse {
+            0%, 100% { 
+                box-shadow: 0 0 20px rgba(255, 87, 51, 0.4);
+                transform: scale(1);
+            }
+            50% { 
+                box-shadow: 0 0 30px rgba(255, 87, 51, 0.6);
+                transform: scale(1.05);
+            }
+        }
+        .timeline-container{position:relative;overflow:hidden;padding:4rem 0}
+        .timeline-path{position:absolute;top:50%;left:0;right:0;height:2px;background:rgba(255,255,255,0.2)}
+        .timeline-curve{position:absolute;stroke:rgba(255,255,255,0.3);stroke-width:2;fill:none;width:100%;height:200px;top:50%;transform:translateY(-50%)}
+        .timeline-item{position:relative;background:rgba(0,0,0,0.8);border:1px solid rgba(255,255,255,0.1);border-radius:0.75rem;padding:1.5rem;margin-bottom:2rem;backdrop-filter:blur(10px);transition:all 0.3s ease}
+        .timeline-item:hover{border-color:rgba(255,255,255,0.3);transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,0,0,0.5)}
+        .timeline-year{font-size:1.5rem;font-weight:900;color:#fff;margin-bottom:0.5rem}
+        .timeline-title{font-weight:700;color:#fff;margin-bottom:0.5rem;font-size:1.1rem}
+        .timeline-desc{color:rgba(255,255,255,0.8);line-height:1.5}
+        .hero-title{
+            font-size: clamp(2rem,6vw,3.5rem) !important;
+            line-height: 0.9 !important;
+            font-weight: 900 !important;
+            background: linear-gradient(135deg,rgba(220, 38, 38, 0.8),rgba(255, 87, 51, 0.85),rgba(255, 127, 80, 0.9),rgba(255, 160, 122, 0.95),#fff,rgba(255, 160, 122, 0.95),rgba(255, 127, 80, 0.9),rgba(255, 87, 51, 0.85),rgba(220, 38, 38, 0.8)) !important;
+            background-clip: text !important;
+            -webkit-background-clip: text !important;
+            color: transparent !important;
+            text-shadow: 0 0 25px rgba(255, 87, 51, 0.3) !important;
+            background-size: 200% 100% !important;
+            animation: gradientShift 4s ease-in-out infinite alternate !important;
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            z-index: 999 !important;
+            position: relative !important;
+        }
+        .hero-bg{background:linear-gradient(135deg,#1a1a1a 0%,#0a0a0a 100%);position:relative}
+        .hero-bg::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(254,68,69,0.1) 0%,transparent 70%);pointer-events:none}
+        .cta-section{background:linear-gradient(135deg,rgba(254,68,69,0.05),rgba(0,0,0,0.9));border-top:1px solid var(--accent-20);position:relative}
+        .cta-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(254,68,69,0.1),transparent 70%);pointer-events:none}
+        
+        .timeline-section{position:relative;margin-bottom:4rem}
+        .timeline-section::before{content:'';position:absolute;left:2rem;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--accent-primary),var(--accent-hover),var(--accent-primary));opacity:0.6}
+        .timeline-item{position:relative;background:linear-gradient(135deg,rgba(0,0,0,0.9),rgba(254,68,69,0.05));border:1px solid var(--accent-20);border-radius:1rem;padding:2rem;margin-bottom:2rem;margin-left:4rem;backdrop-filter:blur(15px);transition:all 0.4s ease;box-shadow:0 8px 32px rgba(0,0,0,0.3)}
+        .timeline-item::after{
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(ellipse 110% 70% at 30% 20%, rgba(255, 87, 51, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse 90% 60% at 70% 80%, rgba(255, 107, 107, 0.12) 0%, transparent 50%),
+                linear-gradient(135deg, rgba(220, 38, 38, 0.08), rgba(249, 115, 22, 0.06), rgba(255, 255, 255, 0.04));
+            border-radius: inherit;
+            pointer-events: none;
+            z-index: 1;
+            animation: subtleFlow 10s ease-in-out infinite;
+        }
+        .timeline-item::before{content:'';position:absolute;left:-2.5rem;top:1.5rem;width:1rem;height:1rem;background:var(--accent-primary);border-radius:50%;box-shadow:0 0 20px var(--accent-glow);border:3px solid #000}
+        .timeline-item:hover{border-color:var(--accent-40);transform:translateX(10px) translateY(-4px);box-shadow:0 15px 50px rgba(254,68,69,0.4);background:linear-gradient(135deg,rgba(0,0,0,0.95),rgba(254,68,69,0.1))}
+        .timeline-year{font-size:1.8rem;font-weight:900;background:linear-gradient(135deg,var(--accent-primary),var(--accent-hover));background-clip:text;-webkit-background-clip:text;color:transparent;margin-bottom:0.75rem;display:inline-block}
+        .timeline-title{font-weight:700;color:#fff;margin-bottom:0.75rem;font-size:1.2rem;text-shadow:0 2px 10px rgba(0,0,0,0.5)}
+        .timeline-desc{color:rgba(255,255,255,0.85);line-height:1.6;font-size:1rem}
+        
+        .section-header{text-align:center;margin-bottom:4rem;position:relative}
+        .section-title{font-size:3.5rem;font-weight:900;background:linear-gradient(135deg,rgb(220, 38, 38),rgb(255, 87, 51),rgb(255, 127, 80),rgb(255, 160, 122),#fff,rgb(255, 160, 122),rgb(255, 127, 80),rgb(255, 87, 51),rgb(220, 38, 38));background-clip:text;-webkit-background-clip:text;color:transparent;margin-bottom:1rem;text-shadow:0 0 30px rgba(255, 87, 51, 0.5);background-size:200% 100%;animation:gradientShift 4s ease-in-out infinite alternate}
+        .section-subtitle{font-size:1.3rem;color:rgba(255,255,255,0.7);max-width:600px;margin:0 auto}
+        .accent-line{width:120px;height:6px;background:linear-gradient(90deg,rgb(220, 38, 38),rgb(255, 87, 51),rgb(255, 127, 80),rgb(255, 160, 122),rgb(255, 218, 185));border-radius:3px;margin:2rem auto;box-shadow:0 0 20px rgba(255, 87, 51, 0.4);animation:pulse 3s ease-in-out infinite}
+        
+        /* Timeline responsive layout */
+        @media(min-width:768px){
+            .timeline-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start}
+            .timeline-item:nth-child(even){margin-top:3rem}
+        }
+        @media(max-width:767px){
+            .timeline-item{margin-bottom:1.5rem}
+        }
+    </style>
+</head>
+<body class="bg-black text-white">
+    <!-- Header -->
+    <header class="header-main fixed top-0 left-0 right-0 z-50">
+        <div class="container mx-auto px-4 py-6 sm:py-8">
+            <div class="flex items-center justify-between">
+                <a href="index-en.html" class="flex flex-col sm:flex-row items-start sm:items-center gap-0.5 sm:gap-4 header-logo">
+                    <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-white" 
+                        style="text-shadow: 0 4px 20px rgba(0,0,0,0.9)">
+                        <img src="images/tonic-logo.png" alt="Groupe Tonic" style="height: clamp(1.875rem, 3.75vw, 2.625rem); width: auto;" />
+                    </h1>
+                    <span class="text-white text-xs sm:text-sm font-medium"
+                        style="text-shadow: 0 2px 10px rgba(0,0,0,0.9)">
+                        <span class="hidden sm:inline">| </span>Créateur d'expériences mémorables
+                    </span>
+                </a>
+                <nav class="hidden md:flex items-center nav-container">
+                    <a href="index-en.html" class="nav-item" data-tooltip="Home">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                        <span>Home</span>
+                    </a>
+                    <a href="about.html" class="nav-item active">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                        <span>About</span>
+                    </a>
+                    <a href="emplois-en.html" class="nav-item" data-tooltip="Jobs">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                        <span>Jobs</span>
+                    </a>
+                    <a href="communiques-en.html" class="nav-item" data-tooltip="News">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M10 6h8"/><path d="M10 10h8"/><path d="M10 14h4"/></svg>
+                        <span>News</span>
+                    </a>
+                    <a href="nous-joindre-en.html" class="nav-item" data-tooltip="Contact">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                        <span>Contact</span>
+                    </a>
+                    <div class="w-px h-4 bg-white/20 mx-2"></div>
+                    <a href="a-propos.html" class="nav-item" data-tooltip="Français">
+                        <span>FR</span>
+                    </a>
+                </nav>
+                <button id="mobileMenuBtn" class="md:hidden p-2 hover:bg-white/10 rounded-lg transition-colors" onclick="toggleMobileMenu()">
+                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" style="color: white; stroke: white;"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="mobile-menu">
+        <div class="container mx-auto px-4 py-4">
+            <div class="space-y-2">
+                <a href="index-en.html" class="nav-item w-full">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" style="color: white; stroke: white;"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                    <span>Home</span>
+                </a>
+                <a href="about.html" class="nav-item active w-full">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="white" style="color: white; fill: white;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                    <span>About</span>
+                </a>
+                <a href="emplois-en.html" class="nav-item w-full">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" style="color: white; stroke: white;"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                    <span>Jobs</span>
+                </a>
+                <a href="communiques-en.html" class="nav-item w-full">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" style="color: white; stroke: white;"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M10 6h8"/><path d="M10 10h8"/><path d="M10 14h4"/></svg>
+                    <span>News</span>
+                </a>
+                <a href="nous-joindre-en.html" class="nav-item w-full">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" style="color: white; stroke: white;"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                    <span>Contact</span>
+                </a>
+                <div class="h-px bg-white/10 my-4"></div>
+                <a href="a-propos.html" class="nav-item w-full">
+                    <span>Français</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-bg relative pt-32 pb-20 overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-black/50 to-transparent"></div>
+        <div class="container mx-auto px-4 relative z-10">
+            <h1 class="hero-title font-black mb-6 fade-in">About Groupe Tonic</h1>
+            <p class="text-xl md:text-2xl text-white max-w-3xl fade-in delay-100">
+                For over 40 years, we create unique events or content that bring people together, unite passions and strengthen bonds between communities.
+            </p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="py-20">
+        <!-- Mission Section -->
+        <section class="container mx-auto px-4 mb-20">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold mb-8 fade-in">Our Mission</h2>
+                <div class="space-y-6 text-lg text-white fade-in delay-100">
+                    <p>
+                        We organize and produce major sporting and cultural events that bring communities together and celebrate excellence. Our expertise extends from conception to execution, including promotion and complete management of large-scale events.
+                    </p>
+                    <p>
+                        With a passionate team and strong partnerships, we transform every project into a unique experience that leaves a lasting impression and creates enduring memories for participants, spectators, and communities.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Statistics Section -->
+        <section class="container mx-auto px-4 mb-24">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-5xl mx-auto">
+                <div class="stat-card fade-in delay-200">
+                    <div class="stat-number">40+</div>
+                    <div class="stat-label">Years of Experience</div>
+                </div>
+                <div class="stat-card fade-in delay-300">
+                    <div class="stat-number">100+</div>
+                    <div class="stat-label">Projects Delivered</div>
+                </div>
+                <div class="stat-card fade-in delay-400">
+                    <div class="stat-number">5</div>
+                    <div class="stat-label">Major Annual Events</div>
+                </div>
+                <div class="stat-card fade-in delay-500">
+                    <div class="stat-number">350K</div>
+                    <div class="stat-label">Annual Participants</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Values Section -->
+        <section class="container mx-auto px-4 mb-24">
+            <div class="max-w-6xl mx-auto">
+                <div class="section-header">
+                    <h2 class="section-title">Our Values</h2>
+                    <div class="accent-line"></div>
+                    <p class="section-subtitle">The principles that have guided our excellence for over 40 years</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="values-card fade-in delay-200">
+                        <h3 class="text-xl font-bold mb-3 text-white">Excellence</h3>
+                        <p class="text-white">With 40 years of experience, we deliver high-level events combining rigor and creativity.</p>
+                    </div>
+                    <div class="values-card fade-in delay-300">
+                        <h3 class="text-xl font-bold mb-3 text-white">Audacity</h3>
+                        <p class="text-white">We push boundaries with unique formats and ambitious productions.</p>
+                    </div>
+                    <div class="values-card fade-in delay-400">
+                        <h3 class="text-xl font-bold mb-3 text-white">Community</h3>
+                        <p class="text-white">We believe in the unifying power of sport and culture to bring communities together.</p>
+                    </div>
+                    <div class="values-card fade-in delay-500">
+                        <h3 class="text-xl font-bold mb-3 text-white">Collaboration</h3>
+                        <p class="text-white">Our ecosystem unites diverse expertise to build exceptional experiences.</p>
+                    </div>
+                    <div class="values-card fade-in delay-600 md:col-span-2 lg:col-span-1">
+                        <h3 class="text-xl font-bold mb-3 text-white">Lasting Impact</h3>
+                        <p class="text-white">Our projects transform society positively with a beneficial, human, and healthy footprint.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- History Timeline Section -->
+        <section class="container mx-auto px-4 mb-24">
+            <div class="max-w-6xl mx-auto">
+                <div class="section-header">
+                    <h2 class="section-title">Our History</h2>
+                    <div class="accent-line"></div>
+                </div>
+                
+                <div class="timeline-section">
+                    <div class="timeline-container">
+                        <div class="timeline-item fade-in delay-200">
+                            <div class="timeline-year">1978</div>
+                            <div class="timeline-title">Creation of Serdy Vidéo</div>
+                            <div class="timeline-desc">The beginning of our adventure in the world of audiovisual production.</div>
+                        </div>
+                        <div class="timeline-item fade-in delay-300">
+                            <div class="timeline-year">1979</div>
+                            <div class="timeline-title">The 1st Marathon de Montréal</div>
+                            <div class="timeline-desc">A family story begins with the organization of the first Marathon de Montréal.</div>
+                        </div>
+                        <div class="timeline-item fade-in delay-400">
+                            <div class="timeline-year">1988 to 1992</div>
+                            <div class="timeline-title">Grand Prix des Amériques</div>
+                            <div class="timeline-desc">Organization of the prestigious Grand Prix des Amériques.</div>
+                        </div>
+                        <div class="timeline-item fade-in delay-500">
+                            <div class="timeline-year">1992 & 1994</div>
+                            <div class="timeline-title">Olympic Games</div>
+                            <div class="timeline-desc">Production of the Barcelona 1992 and Lillehammer 1994 Olympic Games for TVA.</div>
+                        </div>
+                        <div class="timeline-item fade-in delay-600">
+                            <div class="timeline-year">1999</div>
+                            <div class="timeline-title">Tour Trans-Canada</div>
+                            <div class="timeline-desc">Organization of the Tour Trans-Canada.</div>
+                        </div>
+                        <div class="timeline-item fade-in delay-700">
+                            <div class="timeline-year">2000</div>
+                            <div class="timeline-title">Évasion</div>
+                            <div class="timeline-desc">Launch of Évasion (Tour de France broadcasting rights).</div>
+                        </div>
+                        <div class="timeline-item fade-in delay-800">
+                            <div class="timeline-year">2010</div>
+                            <div class="timeline-title">Launch of Zeste and IDHD</div>
+                            <div class="timeline-desc">Creation of the GPCQM under the Serdy group.</div>
+                        </div>
+                        <div class="timeline-item fade-in delay-900">
+                            <div class="timeline-year">2013</div>
+                            <div class="timeline-title">Zeste and Espaces Magazines</div>
+                            <div class="timeline-desc">Launch of Zeste and Espaces magazines.</div>
+                        </div>
+                        <div class="timeline-item fade-in delay-1000">
+                            <div class="timeline-year">2017</div>
+                            <div class="timeline-title">Launch of DOCK 619</div>
+                            <div class="timeline-desc">Opening of our unique event venue.</div>
+                        </div>
+                        <div class="timeline-item fade-in delay-1100">
+                            <div class="timeline-year">2019</div>
+                            <div class="timeline-title">Sale to TVA</div>
+                            <div class="timeline-desc">Sale of Serdy to TVA. The GPCQM remain the property of Sébastien Arsenault.</div>
+                        </div>
+                        <div class="timeline-item fade-in delay-1200">
+                            <div class="timeline-year">2022</div>
+                            <div class="timeline-title">Marathon Beneva de Montréal</div>
+                            <div class="timeline-desc">First edition of Marathon Beneva de Montréal under the Courons Montréal banner.</div>
+                        </div>
+                        <div class="timeline-item fade-in delay-1300">
+                            <div class="timeline-year">2022</div>
+                            <div class="timeline-title">UCI Road World Championships 2026</div>
+                            <div class="timeline-desc">Obtaining the organization of the UCI Road World Championships 2026 in Montréal.</div>
+                        </div>
+                        <div class="timeline-item fade-in delay-1400">
+                            <div class="timeline-year">2024</div>
+                            <div class="timeline-title">21K de Montréal</div>
+                            <div class="timeline-desc">Acquisition of 21K de Montréal which joins the MBM under the Courons Montréal banner.</div>
+                        </div>
+                        <div class="timeline-item fade-in delay-1500">
+                            <div class="timeline-year">2025</div>
+                            <div class="timeline-title">Volleyball World Beach Pro Tour</div>
+                            <div class="timeline-desc">Acquisition of Volleyball World Beach Pro Tour Élite 16 Montréal.</div>
+                        </div>
+                        <div class="timeline-item fade-in delay-1600">
+                            <div class="timeline-year">2025</div>
+                            <div class="timeline-title">DOCK 619</div>
+                            <div class="timeline-desc">Resumption of operations of the high-end event hall for corporate and private events.</div>
+                        </div>
+                        <div class="timeline-item fade-in delay-1700">
+                            <div class="timeline-year">2025</div>
+                            <div class="timeline-title">Studio 76</div>
+                            <div class="timeline-desc">With the creation of a new video production company, the adventure continues.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-section py-20 relative z-10">
+            <div class="container mx-auto px-4 text-center">
+                <div class="max-w-3xl mx-auto">
+                    <h2 class="text-4xl font-bold mb-6 fade-in bg-gradient-to-r from-white to-white/90 bg-clip-text text-transparent">Let's create a memorable event together</h2>
+                    <p class="text-xl text-white mb-8 fade-in delay-100">
+                        Discover how our expertise can transform your vision into reality.
+                    </p>
+                    <a href="nous-joindre-en.html" class="inline-flex items-center gap-3 bg-gradient-to-r from-orange-500/90 to-red-500/90 hover:from-orange-400 hover:to-red-400 border border-orange-400/30 hover:border-orange-300/50 px-8 py-4 rounded-full text-white font-bold transition-all duration-300 fade-in delay-200 shadow-lg hover:shadow-xl hover:shadow-orange-500/25 transform hover:scale-105">
+                        Contact Us
+                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                            <polyline points="12 5 19 12 12 19"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 py-12">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <img src="images/tonic-logo.png" alt="Groupe Tonic" style="height: 1.5rem; width: auto;" class="mb-2" />
+                    <p class="text-white">© 2025 Groupe Tonic. All rights reserved.</p>
+                </div>
+                <div class="flex gap-6">
+                    <a href="privacy-policy.html" class="text-white hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="terms-of-use.html" class="text-white hover:text-white transition-colors">Terms of Use</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/shared.js"></script>
+</body>
+</html>

@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualités | Groupe Tonic</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Découvrez les dernières actualités et communiqués de presse de Groupe Tonic, organisateur d'événements sportifs au Québec depuis plus de 40 ans.">
+    
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.cbc.ca">
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    
+    <!-- Tailwind CSS -->
+    <link rel="stylesheet" href="css/tailwind-local.css">
+    
+    <!-- Shared Styles -->
+    <link rel="stylesheet" href="css/shared.css">
+    
+    <!-- Page Specific Styles -->
+    <style>
+        /* Language Switcher */
+        .lang-switcher {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            transition: all 0.2s ease;
+            font-size: 0.75rem !important;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        .lang-switcher:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        .lang-divider {
+            width: 1px;
+            height: 16px;
+            background: rgba(255, 255, 255, 0.2);
+            margin: 0 0.5rem;
+            align-self: center;
+        }
+        
+        /* Force consistent sizing across all screen sizes */
+        @media (min-width: 1px) {
+            .lang-switcher {
+                font-size: 0.75rem !important;
+                font-weight: 500 !important;
+                padding: 0.25rem 0.5rem !important;
+            }
+        }
+        
+        /* CSS Variables for Tonic accent colors */
+        :root {
+            --accent-primary: #f97316;
+            --accent-light: #fb923c;
+            --accent-hover: #ea580c;
+            --accent-20: rgba(249, 115, 22, 0.2);
+        }
+
+        /* Text accent colors */
+        .text-accent {
+            color: var(--accent-primary);
+        }
+        
+        .text-accent:hover {
+            color: var(--accent-hover);
+        }
+        
+        .lang-divider {
+            width: 1px;
+            height: 16px;
+            background: rgba(255, 255, 255, 0.2);
+            margin: 0 0.5rem;
+            align-self: center;
+        }
+
+
+        
+        /* Optimized styles with CSS custom properties */
+        :root {
+            --glass-bg: rgba(255,255,255,0.05);
+            --glass-bg-hover: rgba(255,255,255,0.02);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-border-hover: rgba(255, 255, 255, 0.2);
+            --transition-default: all 0.3s ease;
+        }
+        
+        /* Job Card Styles */
+        .job-card {
+            background: linear-gradient(135deg, var(--glass-bg), var(--glass-bg-hover));
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            transition: var(--transition-default);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .job-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            border-color: var(--glass-border-hover);
+        }
+
+        /* Category Badge Colors - Using CSS custom properties */
+        .category-beach { --cat-color: #ff0e9b; background: linear-gradient(135deg, var(--cat-color), rgba(255, 14, 155, 0.8)); }
+        .category-marathon { --cat-color: #463092; background: linear-gradient(135deg, var(--cat-color), rgba(70, 48, 146, 0.8)); }
+        .category-cycling { --cat-color: #b7d233; background: linear-gradient(135deg, var(--cat-color), rgba(183, 210, 51, 0.8)); }
+        .category-uci { --cat-color: #ef4444; background: linear-gradient(135deg, var(--cat-color), rgba(239, 68, 68, 0.8)); }
+        .category-studio { --cat-color: #b7d233; background: linear-gradient(135deg, var(--cat-color), rgba(183, 210, 51, 0.8)); }
+        .category-dock { --cat-color: #6b7280; background: linear-gradient(135deg, var(--cat-color), rgba(107, 114, 128, 0.8)); }
+        .category-21k { --cat-color: #f59e0b; background: linear-gradient(135deg, var(--cat-color), rgba(245, 158, 11, 0.8)); }
+        .category-tonic { --cat-color: #f97316; background: linear-gradient(135deg, var(--cat-color), rgba(249, 115, 22, 0.8)); }
+
+        /* News card subtle orange overlay for better contrast */
+        .pr-card, .job-card {
+            position: relative;
+        }
+        
+        .pr-card::before, .job-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(ellipse 130% 90% at 20% 30%, rgba(220, 38, 38, 0.12) 0%, transparent 60%),
+                radial-gradient(ellipse 110% 80% at 80% 70%, rgba(255, 87, 51, 0.15) 0%, transparent 55%),
+                radial-gradient(ellipse 120% 100% at 30% 85%, rgba(255, 127, 80, 0.10) 0%, transparent 50%),
+                radial-gradient(ellipse 100% 70% at 70% 20%, rgba(255, 160, 122, 0.08) 0%, transparent 45%),
+                radial-gradient(ellipse 85% 75% at 85% 40%, rgba(255, 218, 185, 0.12) 0%, transparent 50%),
+                radial-gradient(ellipse 95% 65% at 45% 15%, rgba(255, 69, 0, 0.10) 0%, transparent 45%),
+                linear-gradient(135deg, rgba(220, 38, 38, 0.08), rgba(255, 87, 51, 0.06), rgba(255, 127, 80, 0.05), rgba(255, 218, 185, 0.04));
+            border-radius: inherit;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        @keyframes subtleFlow {
+            0%, 100% { 
+                transform: translateX(0) translateY(0) scale(1);
+                opacity: 1;
+            }
+            25% { 
+                transform: translateX(1px) translateY(-1px) scale(1.01);
+                opacity: 0.9;
+            }
+            50% { 
+                transform: translateX(-1px) translateY(1px) scale(0.99);
+                opacity: 1.1;
+            }
+            75% { 
+                transform: translateX(1px) translateY(1px) scale(1.01);
+                opacity: 0.95;
+            }
+        }
+        
+        .pr-card > *, .job-card > * {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Special styling for Tonic logo images in job cards */
+        .job-card img[src*="tonic-logo.png"] {
+            width: 180px !important;
+            height: 120px !important;
+            object-fit: contain !important;
+            background: #000 !important;
+            padding: 15px !important;
+            border-radius: 8px !important;
+        }
+        
+        /* Modal styles - Optimized with single backdrop */
+        .modal-backdrop {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            position: fixed;
+            inset: 0;
+            z-index: 50;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 1rem;
+            padding-top: 10rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition-default);
+        }
+        
+        /* Center on larger screens */
+        @media (min-height: 600px) {
+            .modal-backdrop {
+                align-items: center;
+                padding-top: 10rem;
+            }
+        }
+        
+        .modal-backdrop.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-content {
+            background: linear-gradient(135deg, rgba(20,20,20,0.95), rgba(10,10,10,0.95));
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 1rem;
+            max-width: 60rem;
+            width: 100%;
+            max-height: 95vh;
+            overflow-y: auto;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+        
+        .modal-backdrop.active .modal-content {
+            transform: scale(1);
+        }
+        
+        /* FORCE WHITE TEXT IN MODAL CONTENT */
+        #modalContent,
+        #modalContent *,
+        #modalContent p,
+        #modalContent div,
+        #modalContent span,
+        #modalContent h1,
+        #modalContent h2,
+        #modalContent h3,
+        #modalContent h4,
+        #modalContent h5,
+        #modalContent h6,
+        #modalContent strong,
+        #modalContent b,
+        #modalContent em,
+        #modalContent i,
+        #modalContent li,
+        #modalContent ul,
+        #modalContent ol {
+            color: white !important;
+            background-color: transparent !important;
+        }
+        
+        /* Ensure links are visible with bold underline */
+        #modalContent a {
+            color: #60a5fa !important;
+            text-decoration: underline !important;
+            text-decoration-thickness: 2px !important;
+            text-underline-offset: 3px !important;
+            background-color: transparent !important;
+        }
+        
+        #modalContent a:hover {
+            color: #3b82f6 !important;
+            text-decoration-thickness: 3px !important;
+        }
+        
+        /* Hero title gradient styling */
+        .hero-title{
+            font-size: clamp(2rem,6vw,3.5rem) !important;
+            line-height: 0.9 !important;
+            font-weight: 900 !important;
+            background: linear-gradient(135deg,rgba(220, 38, 38, 0.8),rgba(255, 87, 51, 0.85),rgba(255, 127, 80, 0.9),rgba(255, 160, 122, 0.95),#fff,rgba(255, 160, 122, 0.95),rgba(255, 127, 80, 0.9),rgba(255, 87, 51, 0.85),rgba(220, 38, 38, 0.8)) !important;
+            background-clip: text !important;
+            -webkit-background-clip: text !important;
+            color: transparent !important;
+            text-shadow: 0 0 25px rgba(255, 87, 51, 0.3) !important;
+            background-size: 200% 100% !important;
+            animation: gradientShift 4s ease-in-out infinite alternate !important;
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            z-index: 999 !important;
+            position: relative !important;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+    </style>
+</head>
+<body class="bg-black text-white min-h-screen">
+    
+    <!-- Header -->
+    <header class="header-main fixed top-0 left-0 right-0 z-40">
+        <div class="container mx-auto px-4 py-6 sm:py-8">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <a href="index.html" class="flex flex-col sm:flex-row items-start sm:items-center gap-0.5 sm:gap-4">
+                    <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-white" 
+                        style="text-shadow: 0 4px 20px rgba(0,0,0,0.9)">
+                        <img src="images/tonic-logo.png" alt="Groupe Tonic" style="height: clamp(1.875rem, 3.75vw, 2.625rem); width: auto;" />
+                    </h1>
+                    <span class="text-white text-xs sm:text-sm font-medium"
+                        style="text-shadow: 0 2px 10px rgba(0,0,0,0.9)">
+                        <span class="hidden sm:inline">| </span>Créateur d'expériences mémorables
+                    </span>
+                </a>
+                
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex items-center nav-container">
+                    <a href="index.html" class="nav-item" data-tooltip="Accueil">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                        <span>Accueil</span>
+                    </a>
+                    <a href="a-propos.html" class="nav-item" data-tooltip="À propos">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                        <span>À propos</span>
+                    </a>
+                    <a href="emplois.html" class="nav-item" data-tooltip="Emplois">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                        <span>Emplois</span>
+                    </a>
+                    <a href="communiques.html" class="nav-item active">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M10 6h8"/><path d="M10 10h8"/><path d="M10 14h4"/></svg>
+                        <span>Communiqués</span>
+                    </a>
+                    <a href="nous-joindre.html" class="nav-item" data-tooltip="Nous joindre">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                        <span>Nous joindre</span>
+                    </a>
+                    <div class="lang-divider"></div>
+                    <a href="communiques-en.html" class="lang-switcher">
+                        <span>EN</span>
+                    </a>
+                </nav>
+                
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden p-2 hover:bg-white/10 rounded-lg transition-colors" onclick="toggleMobileMenu()" aria-label="Menu">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M3 12h18M3 6h18M3 18h18"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="mobile-menu">
+        <div class="container mx-auto px-4 py-4">
+            <div class="space-y-2">
+                <a href="index.html" class="nav-item w-full">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                    <span>Accueil</span>
+                </a>
+                <a href="a-propos.html" class="nav-item w-full">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                    <span>À propos</span>
+                </a>
+                <a href="emplois.html" class="nav-item w-full">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                    <span>Emplois</span>
+                </a>
+                <a href="communiques.html" class="nav-item w-full active">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M10 6h8"/><path d="M10 10h8"/><path d="M10 14h4"/></svg>
+                    <span>Communiqués</span>
+                </a>
+                <a href="nous-joindre.html" class="nav-item w-full">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                    <span>Nous joindre</span>
+                </a>
+            </div>
+            <div class="border-t border-white/10 mt-4 pt-4">
+                <a href="communiques-en.html" class="nav-item w-full">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.5 21l5.5-11 5.5 11M12 18h7m-9.5 0L7 10.5 4.5 18m0 0H1m3.5 0h5"/></svg>
+                    <span>English</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="pt-24 sm:pt-28 pb-20">
+        <!-- Hero Section -->
+        <section class="container mx-auto px-4 py-12 sm:py-16 text-center">
+            <h1 class="hero-title text-5xl sm:text-6xl lg:text-7xl font-black mb-4 fade-in">Communiqués</h1>
+
+        </section>
+        
+        <!-- News Listings -->
+        <section class="container mx-auto px-4 py-8">
+            <div class="max-w-4xl mx-auto">
+
+                <div id="prList" class="space-y-4">
+                    <!-- News will be inserted here by JavaScript -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- News Modal -->
+    <div id="newsModal" class="modal-backdrop">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="sticky top-4 bg-black backdrop-blur-lg border-b border-white/10 p-6 flex justify-between items-start">
+                <h2 id="modalTitle" class="text-2xl font-bold pr-4"></h2>
+                <button onclick="closeModal()" class="p-2 hover:bg-white/10 rounded-lg transition-colors" aria-label="Fermer">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <div id="modalContent" class="p-6">
+                <!-- News details will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-black mt-16 py-8">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <img src="images/tonic-logo.png" alt="Groupe Tonic" style="height: 1.5rem; width: auto;" class="mb-2" />
+                    <p class="text-white">© 2025 Groupe Tonic. Tous droits réservés.</p>
+                </div>
+                <div class="flex gap-6">
+                    <a href="politique-de-confidentialite.html" class="text-white hover:text-white transition-colors">Politique de confidentialité</a>
+                    <a href="conditions-utilisation.html" class="text-white hover:text-white transition-colors">Conditions d'utilisation</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Load news data -->
+    <script src="js/communiques-data.js"></script>
+    
+    <!-- Simple Content -->
+    <script src="js/simple-content.js"></script>
+    
+    <!-- Shared JavaScript -->
+    <script src="js/shared.js"></script>
+    
+    <!-- Page specific JavaScript - Matching jobs page structure -->
+</body>
+</html>

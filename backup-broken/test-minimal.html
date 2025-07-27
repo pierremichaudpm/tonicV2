@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Page - Debug</title>
+    <link rel="stylesheet" href="css/shared.css">
+    <link rel="stylesheet" href="css/4k-presentation.css">
+    <link rel="stylesheet" href="css/tailwind-local.css">
+    <style>
+        body {
+            background: black;
+            color: white;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        .test-box {
+            border: 2px solid red;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .success { color: green; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <h1>Debug Test Page</h1>
+    
+    <div class="test-box">
+        <h2>CSS Loading Test:</h2>
+        <div id="css-test"></div>
+    </div>
+    
+    <div class="test-box">
+        <h2>Image Test:</h2>
+        <img src="images/tonic-logo.png" alt="Logo Test" style="width: 200px;" 
+             onerror="this.parentElement.innerHTML += '<p class=error>ERROR: Logo image not found!</p>'"
+             onload="this.parentElement.innerHTML += '<p class=success>SUCCESS: Logo loaded!</p>'">
+    </div>
+    
+    <div class="test-box">
+        <h2>Tailwind Test:</h2>
+        <div class="bg-gradient-to-br from-pink-600 to-pink-500 p-4 rounded">
+            If this has a pink gradient background, Tailwind is working
+        </div>
+    </div>
+    
+    <div class="test-box">
+        <h2>JavaScript Test:</h2>
+        <div id="js-test">If you see this, JavaScript is NOT working</div>
+    </div>
+    
+    <div class="test-box">
+        <h2>Path Test:</h2>
+        <div id="path-test"></div>
+    </div>
+
+    <script>
+        // Test if JavaScript works
+        document.getElementById('js-test').innerHTML = '<p class="success">SUCCESS: JavaScript is working!</p>';
+        
+        // Test CSS loading
+        const cssTest = document.getElementById('css-test');
+        const styleSheets = Array.from(document.styleSheets);
+        styleSheets.forEach(sheet => {
+            try {
+                if (sheet.href) {
+                    cssTest.innerHTML += `<p class="success">Loaded: ${sheet.href}</p>`;
+                }
+            } catch (e) {
+                cssTest.innerHTML += `<p class="error">Error checking: ${sheet.href || 'inline styles'}</p>`;
+            }
+        });
+        
+        // Show current path
+        document.getElementById('path-test').innerHTML = `
+            <p>Current URL: ${window.location.href}</p>
+            <p>Path: ${window.location.pathname}</p>
+            <p>Expected image path: ${window.location.origin}/images/tonic-logo.png</p>
+            <p>Expected CSS path: ${window.location.origin}/css/shared.css</p>
+        `;
+        
+        // Test if essential functions exist
+        console.log('Test complete. Check the page for results.');
+    </script>
+</body>
+</html>

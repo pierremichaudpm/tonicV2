@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Accueil | Groupe Tonic</title>
+    <meta name="description" content="Groupe Tonic, créateur d'expériences mémorables depuis plus de 40 ans. Beach Pro Tour, Grands Prix Cyclistes, Marathon Beneva et événements majeurs au Québec.">
+    <link rel="stylesheet" href="css/shared.css">
+    <link rel="stylesheet" href="css/4k-presentation.css">
+    <link rel="stylesheet" href="css/tailwind-local.css">
+    <link rel="preload" href="https://fonts.cbc.ca/fonts/CBCSans-Bold.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preconnect" href="https://fonts.cbc.ca">
+</head>
+<body>
+    <noscript>
+        <div style="min-height:100vh;background:#000;color:#fff;display:flex;align-items:center;justify-content:center;padding:2rem;text-align:center">
+            <div>
+                <img src="images/tonic-logo.png" alt="Groupe Tonic" style="width:clamp(200px,40vw,300px);height:auto;margin-bottom:1rem;" />
+                <p style="margin-bottom:2rem;opacity:.8">Ce site nécessite JavaScript pour fonctionner correctement. Veuillez l'activer dans votre navigateur.</p>
+            </div>
+        </div>
+    </noscript>
+    <div id="root"></div>
+    
+    <script>
+        // Properties data
+        const PROPERTIES = [
+            {id:2,name:"BEACH PRO TOUR",tagline:"L'élite mondiale du volleyball de plage",category:"VOLLEYBALL",date:"13-17 août 2025",location:"Montréal, QC",color:"#ff0e9b",image:"images/beach-pro-tour-hero.webp",logo:"images/beach-pro-tour-logo.png",url:"https://mtlbeachprotour.com/",countdown:new Date('2025-08-13'),theme:{primary:"from-pink-600 to-pink-500",secondary:"from-pink-900 to-pink-700"}},
+            {id:4,name:"GRANDS PRIX CYCLISTES DE QUÉBEC ET DE MONTRÉAL",tagline:"Les seules épreuves UCI WorldTour en Amérique",category:"CYCLISME",date:"12 & 14 septembre 2025",location:"Québec & Montréal",color:"#8434d9",image:"images/grands-prix-cyclistes-hero.webp",logo:"images/GPCQM-logo.png",url:"https://gpcqm.ca/",countdown:new Date('2025-09-12'),theme:{primary:"from-lime-600 to-lime-500",secondary:"from-lime-900 to-lime-700"}},
+            {id:1,name:"MARATHON BENEVA DE MONTRÉAL",tagline:"Vivez-le!",category:"COURSE À PIED",date:"19-21 septembre 2025",location:"Montréal, QC",color:"#463092",menuColor:"#957ab7",image:"images/marathon-beneva-hero.webp",logo:"images/marathon-beneva-logo.png",url:"https://couronsmtl.com/marathon-beneva/accueil/",countdown:new Date('2025-09-19'),theme:{primary:"from-indigo-700 to-indigo-600",secondary:"from-indigo-900 to-indigo-800"}},
+            {id:5,name:"21K DE MONTRÉAL",tagline:"Démarrez en grand votre saison de course",category:"COURSE À PIED",date:"Avril 2026",location:"Montréal",color:"#e2493c",image:"images/21k-hero.webp",logo:"images/21k-logo.png",url:"https://couronsmtl.com/21k/accueil/",countdown:new Date('2026-04-01'),theme:{primary:"from-red-500 to-red-400",secondary:"from-red-800 to-red-700"}},
+            {id:3,name:"CHAMPIONNATS DU MONDE ROUTE UCI MONTRÉAL 2026",tagline:"Montréal, capitale mondiale du vélo",category:"MONDIAUX",date:"19-27 septembre 2026",location:"Montréal, QC",color:"#da273b",image:"images/montreal-2026-uci-hero.webp",logo:"images/montreal-2026-uci-logo.png",url:"https://www.montreal2026.org/",countdown:new Date('2026-09-19'),theme:{primary:"from-red-700 to-red-600",secondary:"from-red-900 to-red-800"}},
+            {id:6,name:"STUDIO 76",tagline:"Services intégrés en production vidéo, télévisuelle et création de contenus de marque, pour donner vie à des projets percutants et sur mesure",category:"PRODUCTION",date:"",location:"Longueuil, QC",color:"#03b0f9",image:"images/studio76-hero.webp",logo:"images/studio76-logo.png",url:"https://studio-76.replit.app/",theme:{primary:"from-blue-500 to-blue-400",secondary:"from-blue-900 to-blue-700"}},
+            {id:7,name:"DOCK 619",tagline:"Une équipe chevronnée au service d'expériences inoubliables, dans un lieu haut de gamme pouvant accueillir jusqu'à 400 invités. Mariages, événements corporatifs, lancements ou soirées festives, du plus intime au plus grandiose.",category:"LIEU ÉVÉNEMENTIEL",date:"",location:"Longueuil, QC",color:"#ffffff",image:"images/dock619-hero-new.webp",logo:"images/dock619-logo.png",url:"https://dock619.ca/",theme:{primary:"from-gray-600 to-gray-400",secondary:"from-gray-900 to-gray-700"}}
+        ];
+
+        // State
+        let currentView = 'splash';
+        let currentPropertyIndex = 0;
+        let autoPlayInterval = null;
+        let isAutoPlaying = false;
+
+        // Constants
+        const SPLASH_DURATION = 4500;
+        const AUTO_PLAY_INTERVAL = 7000;
+
+        // Initialize
+        function init() {
+            showSplashScreen();
+            setTimeout(() => {
+                showGridView();
+                setTimeout(startAutoPlay, 1000);
+            }, SPLASH_DURATION);
+        }
+
+        // Show splash screen
+        function showSplashScreen() {
+            const root = document.getElementById('root');
+            root.innerHTML = `
+                <div class="splash-container view-container active">
+                    <img src="images/tonic-logo.png" alt="Groupe Tonic" class="splash-logo">
+                    <p class="splash-tagline">Créateur d'expériences mémorables</p>
+                </div>
+            `;
+        }
+
+        // Show grid view
+        function showGridView() {
+            const root = document.getElementById('root');
+            root.innerHTML = `
+                <div class="grid-selection-container view-container active">
+                    <header class="header-gradient">
+                        <div class="header-content">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <img src="images/tonic-logo.png" alt="Groupe Tonic" class="header-logo">
+                                    <span class="header-tagline-grid">Créateur d'expériences mémorables</span>
+                                </div>
+                                <nav class="navigation-menu">
+                                    <a href="a-propos.html" class="nav-item">À propos</a>
+                                    <a href="emplois.html" class="nav-item">Emplois</a>
+                                    <a href="communiques.html" class="nav-item">Actualités</a>
+                                    <a href="nous-joindre.html" class="nav-item">Contact</a>
+                                    <div class="lang-divider"></div>
+                                    <a href="index-en.html" class="lang-switcher">EN</a>
+                                </nav>
+                            </div>
+                        </div>
+                    </header>
+                    <div class="grid-wrapper">
+                        <div class="selection-grid">
+                            ${PROPERTIES.map((property, index) => `
+                                <div class="selection-tile" style="--index: ${index}" onclick="selectProperty(${index})">
+                                    <div class="selection-tile-bg" style="background-image: url('${property.image}')"></div>
+                                    <div class="selection-tile-overlay bg-gradient-to-br ${property.theme.primary}">
+                                        <div class="selection-tile-logo-container">
+                                            <img src="${property.logo}" alt="${property.name}" class="selection-tile-logo">
+                                        </div>
+                                        <div class="selection-tile-content">
+                                            <h3 class="selection-tile-title">${property.name}</h3>
+                                            ${property.date ? `<p class="selection-tile-date">${property.date}</p>` : ''}
+                                            <p class="selection-tile-tagline">${property.category}</p>
+                                        </div>
+                                    </div>
+                                    <div class="progress-bar ${isAutoPlaying ? '' : 'paused'}"></div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Select property and show hero view
+        function selectProperty(index) {
+            currentPropertyIndex = index;
+            showHeroView();
+            stopAutoPlay();
+        }
+
+        // Show hero view
+        function showHeroView() {
+            const property = PROPERTIES[currentPropertyIndex];
+            const root = document.getElementById('root');
+            
+            root.innerHTML = `
+                <div class="hero-view-container view-container active">
+                    <div class="hero-background" style="background-image: url('${property.image}')"></div>
+                    <div class="hero-overlay bg-gradient-to-br ${property.theme.secondary}"></div>
+                    
+                    <header class="header-gradient">
+                        <div class="header-content">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <img src="images/tonic-logo.png" alt="Groupe Tonic" class="header-logo">
+                                    <span class="header-tagline-hero">Créateur d'expériences mémorables</span>
+                                </div>
+                                <nav class="navigation-menu">
+                                    <button onclick="showGridView(); startAutoPlay();" class="nav-item">Retour</button>
+                                    <a href="a-propos.html" class="nav-item">À propos</a>
+                                    <a href="emplois.html" class="nav-item">Emplois</a>
+                                    <a href="communiques.html" class="nav-item">Actualités</a>
+                                    <a href="nous-joindre.html" class="nav-item">Contact</a>
+                                    <div class="lang-divider"></div>
+                                    <a href="index-en.html" class="lang-switcher">EN</a>
+                                </nav>
+                            </div>
+                        </div>
+                    </header>
+
+                    <main class="hero-main-content">
+                        <div class="hero-content">
+                            <div class="hero-logo-container">
+                                <img src="${property.logo}" alt="${property.name}" class="hero-logo">
+                            </div>
+                            <h2 class="hero-title">${property.name}</h2>
+                            <div class="hero-tagline-container">
+                                <p class="hero-tagline">${property.tagline}</p>
+                            </div>
+                            
+                            ${(property.date || property.location) ? `
+                                <div class="hero-details">
+                                    ${property.date ? `
+                                        <div class="detail-badge">
+                                            <span>📅</span>
+                                            <span>${property.date}</span>
+                                        </div>
+                                    ` : ''}
+                                    ${property.location ? `
+                                        <div class="detail-badge">
+                                            <span>📍</span>
+                                            <span>${property.location}</span>
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            ` : ''}
+
+                            ${property.url !== '#' ? `
+                                <a href="${property.url}" target="_blank" rel="noopener noreferrer" class="cta-button">
+                                    <span>${property.id === 7 ? "Découvrez notre espace" : property.id === 6 ? "Découvrez nos services" : "Découvrez l'événement"}</span>
+                                    <span>→</span>
+                                </a>
+                            ` : ''}
+                        </div>
+                    </main>
+                </div>
+            `;
+        }
+
+        // Auto play functionality
+        function startAutoPlay() {
+            if (autoPlayInterval) clearInterval(autoPlayInterval);
+            isAutoPlaying = true;
+            
+            autoPlayInterval = setInterval(() => {
+                currentPropertyIndex = (currentPropertyIndex + 1) % PROPERTIES.length;
+                showHeroView();
+            }, AUTO_PLAY_INTERVAL);
+        }
+
+        function stopAutoPlay() {
+            if (autoPlayInterval) {
+                clearInterval(autoPlayInterval);
+                autoPlayInterval = null;
+            }
+            isAutoPlaying = false;
+        }
+
+        // Initialize when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    </script>
+</body>
+</html>
