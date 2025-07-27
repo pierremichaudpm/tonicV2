@@ -1,0 +1,62 @@
+You're right to question this! Let's verify if `index-working.html` actually works. Here's a systematic debugging approach:
+
+**DEBUGGING STEPS TO TEST RIGHT NOW:**
+
+1. **Test index-working.html directly:**
+   ```bash
+   # In Replit, open the preview and navigate to:
+   https://[your-replit-url]/index-working.html
+   ```
+   Does this work? If not, then the "working" file is also broken.
+
+2. **Check if CSS files exist:**
+   ```bash
+   ls -la client/public/css/
+   # Should show:
+   # - shared.css
+   # - 4k-presentation.css
+   # - tailwind-local.css
+   ```
+
+3. **Check if images exist:**
+   ```bash
+   ls -la client/public/images/
+   # Should show all the logo and hero images
+   ```
+
+4. **Open Browser DevTools (F12) and check:**
+   - **Console tab**: What errors do you see?
+   - **Network tab**: Any 404s (red lines)?
+   - **Elements tab**: Is the HTML structure there but invisible?
+
+**COMMON ISSUES:**
+
+1. **Wrong serving directory** - Maybe Replit is serving from `/client/public/` but the HTML expects to be in root
+2. **Missing CSS files** - The optimization might have deleted or moved CSS files
+3. **Tailwind purged too aggressively** - Classes like `from-pink-600` might have been removed
+
+**QUICK TEST - Create a minimal test file:**Save this `test-minimal.html` file in the same directory as your `index.html` and open it. This will tell us:
+
+1. ✅ **If CSS files are loading** (you'll see green "Loaded:" messages)
+2. ✅ **If images are found** (logo will show or error)
+3. ✅ **If Tailwind is working** (pink gradient box)
+4. ✅ **If JavaScript runs** (success message)
+5. ✅ **What paths are being used** (helps identify path issues)
+
+**Share with me:**
+1. Screenshot of what this test page shows
+2. Browser console errors (F12 → Console)
+3. The URL you're accessing (is it `localhost`, `replit.app`, etc?)
+
+**Also check your file structure:**
+```bash
+# Run this in Replit console:
+find client/public -name "*.css" -o -name "*.html" | sort
+```
+
+This will show us if files are in the expected locations. The issue might be:
+- Files were moved during optimization
+- Server is looking in wrong directory
+- Tailwind CSS was rebuilt without the required classes
+
+Let's see what the test page reveals!
