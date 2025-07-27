@@ -1540,10 +1540,10 @@
             const notification = document.getElementById('headerNotification');
             notification.classList.remove('hidden');
             
-            // Hide after 3 seconds
+            // Hide after 2 seconds (reduced from 3 to prevent flickering)
             setTimeout(() => {
                 notification.classList.add('hidden');
-            }, 3000);
+            }, 2000);
         }
 
         // Helper function to show save notification in header
@@ -1566,7 +1566,7 @@
             
             setTimeout(() => {
                 toast.remove();
-            }, 3000);
+            }, 2000);
         }
 
         // Initialize app
