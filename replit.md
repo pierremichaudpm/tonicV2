@@ -367,12 +367,14 @@ The website is now fully operational and matches the original local/Netlify func
 ### Navigation Menu Fixes - January 27, 2025 ✅ COMPLETED
 - **Fixed CSS class mismatch**: Changed "pr-card" to "job-card" in French jobs page for proper rendering
 - **Added Marathon Beneva mapping**: Added both "Marathon Beneva" and "Marathon Beneva 21K" image mappings for English pages
-- **Fixed English menu size**: Updated navigation classes in English news page from generic divider to proper "lang-divider" and "lang-switcher"
+- **Fixed English news page language toggle**: Added missing CSS definitions for .lang-switcher and .lang-divider classes
+- **Applied proper font sizing**: Used 0.75rem font size with !important override and @media (min-width: 1px) for consistency
+- **Separator line restored**: Fixed missing separator line between "Contact" and language toggle in English news page
 - **Resolved renderJobs error**: Removed `.catch()` from renderJobs call in English jobs page as function doesn't return a promise
-- **French news language toggle fix**: Added `!important` to lang-switcher font-size to override tablet media query conflicts in shared.css
+- **CMS badge visibility fix**: Changed auto-translation badge from white-on-white to blue-on-white (bg-blue-100 text-blue-800)
 - **Jobs now display properly**: Both French and English job pages render content correctly
 - **Menu alignment achieved**: All pages now have consistent menu sizing and styling with 0.75rem font size
-- **Status**: ✅ COMPLETED - All navigation menus aligned and jobs rendering properly in both languages
+- **Status**: ✅ COMPLETED - All navigation menus aligned, language toggles consistent, and CMS badges visible
 
 ### 4K Display Grid Layout - July 23, 2025 ✅ RESOLVED
 - **Initial issue**: Grid showing all 7 tiles in single row on 4K screens
