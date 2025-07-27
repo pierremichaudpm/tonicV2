@@ -96,7 +96,24 @@
         .timeline-year{font-size:1.5rem;font-weight:900;color:#fff;margin-bottom:0.5rem}
         .timeline-title{font-weight:700;color:#fff;margin-bottom:0.5rem;font-size:1.1rem}
         .timeline-desc{color:rgba(255,255,255,0.8);line-height:1.5}
-        .hero-title{font-size:clamp(2rem,6vw,3.5rem);line-height:0.9;background:linear-gradient(135deg,rgb(220, 38, 38),rgb(255, 87, 51),rgb(255, 127, 80),rgb(255, 160, 122),#fff,rgb(255, 218, 185),rgb(255, 160, 122),rgb(255, 127, 80),rgb(255, 87, 51));background-clip:text;-webkit-background-clip:text;color:transparent;text-shadow:0 4px 20px rgba(255, 87, 51, 0.4);background-size:200% 100%;animation:gradientShift 5s ease-in-out infinite alternate}
+        .hero-title{
+            font-size:clamp(2rem,6vw,3.5rem);
+            line-height:0.9;
+            color:#fff;
+            background:linear-gradient(135deg,rgb(220, 38, 38),rgb(255, 87, 51),rgb(255, 127, 80),rgb(255, 160, 122),#fff,rgb(255, 218, 185),rgb(255, 160, 122),rgb(255, 127, 80),rgb(255, 87, 51));
+            background-size:200% 100%;
+            -webkit-background-clip:text;
+            background-clip:text;
+            -webkit-text-fill-color:transparent;
+            animation:gradientShift 5s ease-in-out infinite alternate;
+        }
+        /* Fallback for browsers that don't support gradient text */
+        @supports not (-webkit-background-clip: text) {
+            .hero-title {
+                color: #fff !important;
+                text-shadow: 0 0 30px rgba(255, 87, 51, 0.8);
+            }
+        }
         .hero-bg{background:linear-gradient(135deg,#1a1a1a 0%,#0a0a0a 100%);position:relative}
         .hero-bg::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(254,68,69,0.1) 0%,transparent 70%);pointer-events:none}
         .cta-section{background:linear-gradient(135deg,rgba(254,68,69,0.05),rgba(0,0,0,0.9));border-top:1px solid var(--accent-20);position:relative}
