@@ -54,12 +54,12 @@
     src: url('https://fonts.cbc.ca/fonts/CBCSans-Black.woff2') format('woff2');
 }
 
-/* Base Styles */
+/* Global Base Styles */
 * {
     font-family: 'CBC Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
-/* Animations */
+/* Animation Classes */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -71,7 +71,6 @@
     }
 }
 
-/* Utility Classes */
 .fade-in {
     opacity: 0;
     animation: fadeIn 0.8s ease-out forwards;
@@ -83,7 +82,7 @@
 .delay-400 { animation-delay: 0.4s; }
 .delay-500 { animation-delay: 0.5s; }
 
-/* Glass Effect */
+/* Glass effects */
 .glass {
     background: rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(10px);
@@ -93,18 +92,18 @@
 /* Header Styles */
 .header-main {
     background: linear-gradient(to bottom, 
-        rgba(0,0,0,0.95) 0%,      /* Nearly opaque at top */
-        rgba(0,0,0,0.9) 40%,       /* Still very opaque in middle */
-        rgba(0,0,0,0.7) 70%,       /* Starting to fade */
-        rgba(0,0,0,0.3) 90%,       /* More transparent near bottom */
-        transparent 100%           /* Fully transparent at very bottom */
+        rgba(0,0,0,0.95) 0%, 
+        rgba(0,0,0,0.9) 40%, 
+        rgba(0,0,0,0.7) 70%, 
+        rgba(0,0,0,0.3) 90%, 
+        transparent 100% 
     );
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
     box-shadow: 0 2px 20px rgba(0,0,0,0.3);
 }
 
-/* Navigation container */
+/* Navigation Styles */
 .nav-container {
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
@@ -113,7 +112,6 @@
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Navigation Items */
 .nav-item {
     display: flex;
     align-items: center;
@@ -128,7 +126,7 @@
     position: relative;
 }
 
-/* Tooltip for tablet icon-only navigation */
+/* Tablet Navigation Optimizations */
 @media (min-width: 768px) and (max-width: 1023px) {
     .nav-item:hover::after {
         content: attr(data-tooltip);
@@ -145,10 +143,7 @@
         z-index: 50;
         pointer-events: none;
     }
-}
-
-/* Tablet-specific navigation adjustments - Ultra compact */
-@media (min-width: 768px) and (max-width: 1023px) {
+    
     .nav-item {
         padding: 0.125rem 0.25rem;
         font-size: 0.625rem;
@@ -156,7 +151,7 @@
     }
     
     .nav-item span {
-        display: none; /* Hide text labels on tablet, show icons only */
+        display: none; 
     }
     
     .nav-item svg {
@@ -175,7 +170,7 @@
     }
     
     .lang-switcher span {
-        display: block !important; /* Keep language switcher text */
+        display: block !important; 
     }
     
     .lang-divider {
@@ -183,7 +178,6 @@
         height: 12px;
     }
     
-    /* React navigation specific adjustments */
     nav[class*="hidden"] a[class*="px-2"] {
         padding: 0.125rem 0.25rem !important;
         gap: 0.125rem !important;
@@ -199,7 +193,7 @@
     }
 }
 
-/* Tablet optimization */
+/* Tablet Layout Optimizations */
 @media (min-width: 768px) and (max-width: 1023px) {
     .nav-item span { display: none !important; }
     .container { padding: 0.75rem !important; }
@@ -207,7 +201,7 @@
     .selection-tile { height: 100px !important; padding: 0.5rem !important; font-size: 0.8rem !important; }
 }
 
-/* Clean header styles */
+/* Header Positioning */
 header {
     position: fixed !important;
     top: 0 !important;
@@ -216,7 +210,7 @@ header {
     z-index: 9999 !important;
 }
 
-/* Mobile menu styles */
+/* Mobile Menu */
 .mobile-menu {
     display: none;
     position: fixed;
@@ -227,7 +221,7 @@ header {
     background: rgba(0, 0, 0, 0.95);
     backdrop-filter: blur(10px);
     z-index: 9998;
-    padding-top: 100px; /* Account for header height */
+    padding-top: 100px; 
 }
 
 .mobile-menu.active {
@@ -266,7 +260,7 @@ header {
     stroke: white;
 }
 
-/* Quill Editor Heading Styles for Web Display */
+/* Quill Editor Heading Styles */
 .ql-size-huge {
     font-size: 2.5em !important;
     font-weight: bold !important;
@@ -283,7 +277,6 @@ header {
     margin-bottom: 0.4em !important;
 }
 
-/* Quill header levels */
 .ql-header-1, h1.ql-header-1 {
     font-size: 2em !important;
     font-weight: bold !important;
@@ -305,7 +298,7 @@ header {
     margin-bottom: 0.3em !important;
 }
 
-/* Ensure Quill content in modals displays properly */
+/* Modal Content Headings - White color for modals */
 #modalContent .ql-size-huge,
 #modalContent .ql-size-large,
 #modalContent .ql-header-1,
@@ -314,7 +307,6 @@ header {
     color: white !important;
 }
 
-/* Regular HTML heading styles in modal content */
 #modalContent h1 {
     font-size: 2.5em !important;
     font-weight: bold !important;
@@ -364,4 +356,32 @@ header {
     margin-top: 0.3em !important;
     margin-bottom: 0.15em !important;
     color: white !important;
+}
+
+/* Category Color Classes */
+.cat-beach { color: #ff0e9b; }
+.cat-gpc { color: #8b5cf6; }
+.cat-marathon { color: #ff4444; }
+.cat-21k { color: #ffc107; }
+.cat-uci { color: #007bff; }
+.cat-studio76 { color: #10b981; }
+.cat-dock { color: #6b7280; }
+.cat-tonic { color: #374151; }
+
+/* Job and News Card Styles */
+.job-card, .pr-card, .news-card {
+    background: rgba(249, 115, 22, 0.1) !important;
+    border: 1px solid rgba(249, 115, 22, 0.15) !important;
+}
+
+/* Accent colors for CTAs */
+.btn-accent, .accent-button {
+    background-color: var(--accent-primary) !important;
+    border-color: var(--accent-primary) !important;
+    color: white !important;
+}
+
+.btn-accent:hover, .accent-button:hover {
+    background-color: var(--accent-hover) !important;
+    border-color: var(--accent-hover) !important;
 }

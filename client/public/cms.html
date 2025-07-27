@@ -694,24 +694,19 @@
         // Content loading
         async function loadContent() {
             try {
-                console.log('Loading content for:', currentType, currentLang);
                 const response = await fetch(`/api/cms/content/${currentType}/${currentLang}`, {
                     headers: {
                         'x-admin-password': 'admin123'
                     }
                 });
 
-                console.log('Response status:', response.status);
                 
                 if (!response.ok) {
                     throw new Error('Failed to load content');
                 }
 
                 const result = await response.json();
-                console.log('Loaded data:', result.data);
-                console.log('About to call displayContent');
                 displayContent(result.data || []);
-                console.log('displayContent returned');
             } catch (error) {
                 console.error('Erreur de chargement:', error);
                 // Display empty state on error
@@ -731,13 +726,11 @@
 
         // Also, update your displayContent function to properly escape the IDs:
         function displayContent(items) {
-            console.log('displayContent called with items:', items);
             
             const container = currentType === 'jobs' ? 
                 document.getElementById('jobsList') : 
                 document.getElementById('newsList');
                 
-            console.log('Container found:', !!container, 'Container ID:', container?.id);
             
             if (!container) {
                 console.error('Container not found for type:', currentType);
@@ -806,7 +799,6 @@
                     `;
                 }).join('');
                 
-                console.log('Content displayed successfully');
             } catch (error) {
                 console.error('Error displaying content:', error);
                 container.innerHTML = `
@@ -885,7 +877,6 @@
             if (fromLang === toLang) return text;
             
             try {
-                console.log('Starting AI translation:', text.substring(0, 100) + '...');
                 
                 // Call backend translation API
                 const response = await fetch('/api/translate', {
@@ -907,12 +898,6 @@
                 }
                 
                 const result = await response.json();
-                console.log('AI translation successful');
-                console.log('INVESTIGATION - AI returned content length:', result.translatedText?.length || 0);
-                console.log('INVESTIGATION - AI returned content (first 500 chars):');
-                console.log(result.translatedText?.substring(0, 500));
-                console.log('INVESTIGATION - AI returned content (last 500 chars):');
-                console.log(result.translatedText?.substring(result.translatedText?.length - 500));
                 return result.translatedText || text;
                 
             } catch (error) {
@@ -1083,14 +1068,11 @@
         // Auto-translate content to other language - ENHANCED for complete content
         async function autoTranslateContent(itemData, sourceLang) {
             const targetLang = sourceLang === 'fr' ? 'en' : 'fr';
-            console.log('autoTranslateContent called:', sourceLang, '->', targetLang);
-            console.log('Item data received length:', itemData.content?.length);
             
             try {
                 // CRITICAL FIX: Get complete original content directly from data files
                 let completeItemData = { ...itemData };
                 
-                console.log('Fetching complete source data to avoid truncation...');
                 const completeSourceResponse = await fetch(`/api/cms/content/${currentType}/${sourceLang}`, {
                     headers: { 
                         'x-admin-password': 'admin123',
@@ -1104,23 +1086,14 @@
                     const completeSourceItem = completeItems.find(item => String(item.id) === String(itemData.id));
                     
                     if (completeSourceItem) {
-                        console.log('Found complete source content');
-                        console.log('Original truncated length:', itemData.content?.length || 0);
-                        console.log('Complete content length:', completeSourceItem.content?.length || 0);
                         
                         if (completeSourceItem.content && completeSourceItem.content.length > (itemData.content?.length || 0)) {
-                            console.log('Using complete content from data file for translation');
                             completeItemData = { ...completeSourceItem };
                         }
                     }
                 }
                 
                 // Create translated version using complete data
-                console.log('Translating complete content of length:', completeItemData.content?.length || 0);
-                console.log('INVESTIGATION - Content being sent to AI translator (first 500 chars):');
-                console.log(completeItemData.content?.substring(0, 500));
-                console.log('INVESTIGATION - Content being sent to AI translator (last 500 chars):');
-                console.log(completeItemData.content?.substring(completeItemData.content.length - 500));
                 
                 const translatedItem = {
                     ...completeItemData,
@@ -1130,7 +1103,6 @@
                     isAutoTranslated: true
                 };
                 
-                console.log('Final translated content length:', translatedItem.content?.length || 0);
                 
                 // Get target language items
                 const response = await fetch(`/api/cms/content/${currentType}/${targetLang}`, {
@@ -1138,7 +1110,6 @@
                 });
                 
                 if (!response.ok) {
-                    console.log('Could not fetch target language data for translation');
                     return;
                 }
                 
@@ -1148,7 +1119,6 @@
                 // Check if item already exists and is manually edited
                 const existingIndex = targetItems.findIndex(item => String(item.id) === String(completeItemData.id));
                 if (existingIndex !== -1 && !targetItems[existingIndex].isAutoTranslated) {
-                    console.log('Not overriding manually edited content');
                     return;
                 }
                 
@@ -1170,9 +1140,7 @@
                 });
                 
                 if (saveResponse.ok) {
-                    console.log(`Complete auto-translation saved to ${targetLang} with ${translatedItem.content?.length || 0} characters`);
                 } else {
-                    console.log('Failed to save translated content');
                 }
                 
             } catch (error) {
@@ -1183,7 +1151,6 @@
         // CRUD operations
         async function saveItem(e) {
             e.preventDefault();
-            console.log('saveItem called');
             
             // Show loading state
             const submitBtn = e.target.querySelector('button[type="submit"]');
@@ -1196,7 +1163,6 @@
             if (quill) {
                 // Use getText to get plain text length for comparison
                 const textLength = quill.getLength();
-                console.log('Quill text length:', textLength);
                 
                 // Try different methods to get complete HTML
                 const methods = [
@@ -1211,16 +1177,11 @@
                         const content = methods[i]();
                         if (content && content.length > fullContent.length) {
                             fullContent = content;
-                            console.log(`Method ${i + 1} gave longer content:`, content.length);
                         }
                     } catch (e) {
-                        console.log(`Method ${i + 1} failed:`, e.message);
                     }
                 }
                 
-                console.log('Final content length:', fullContent.length);
-                console.log('Content preview:', fullContent.substring(0, 200) + '...');
-                console.log('Content ending:', fullContent.substring(fullContent.length - 200));
             }
             
             const itemData = {
@@ -1241,8 +1202,6 @@
                 delete itemData.isAutoTranslated;
             }
 
-            console.log('Item data to save:', itemData);
-            console.log('Current type:', currentType, 'Current lang:', currentLang);
 
             try {
                 // Get current data
@@ -1250,27 +1209,22 @@
                     headers: { 'x-admin-password': 'admin123' }
                 });
                 
-                console.log('Fetch response status:', response.status);
                 
                 const result = await response.json();
                 let items = result.data || [];
                 
-                console.log('Current items count:', items.length);
 
                 // Add or update item
                 if (currentEditId) {
                     const index = items.findIndex(item => String(item.id) === String(currentEditId));
                     if (index !== -1) {
                         items[index] = itemData;
-                        console.log('Updated item at index:', index);
                     }
                 } else {
                     items.push(itemData);
-                    console.log('Added new item, total count:', items.length);
                 }
 
                 // Save back
-                console.log('Saving data...');
                 const saveResponse = await fetch(`/api/cms/content/${currentType}/${currentLang}`, {
                     method: 'POST',
                     headers: {
@@ -1280,23 +1234,16 @@
                     body: JSON.stringify({ data: items })
                 });
 
-                console.log('Save response status:', saveResponse.status);
                 const saveResult = await saveResponse.json();
-                console.log('Save result:', saveResult);
 
                 if (saveResponse.ok) {
                     // Auto-translate to other language if this is French content and toggle is enabled
                     const autoTranslateCheckbox = document.getElementById('autoTranslate');
-                    console.log('Auto-translate checkbox:', autoTranslateCheckbox);
-                    console.log('Checkbox checked:', autoTranslateCheckbox ? autoTranslateCheckbox.checked : 'N/A');
-                    console.log('Current language:', currentLang);
                     
                     if (currentLang === 'fr' && autoTranslateCheckbox && autoTranslateCheckbox.checked) {
-                        console.log('Starting auto-translation...');
                         submitBtn.textContent = 'Traduction...';
                         
                         // CRITICAL FIX: Bypass Quill completely and use saved data directly for translation
-                        console.log('Bypassing Quill editor - using freshly saved data for translation');
                         
                         // Get the complete data that was just saved to ensure we have the full content
                         const freshDataResponse = await fetch(`/api/cms/content/${currentType}/${currentLang}`, {
@@ -1312,26 +1259,16 @@
                             const completeItemForTranslation = freshItems.find(item => String(item.id) === String(itemData.id));
                             
                             if (completeItemForTranslation) {
-                                console.log('Found complete saved item for translation');
-                                console.log('Complete saved content length:', completeItemForTranslation.content?.length || 0);
-                                console.log('Quill content length (for comparison):', itemData.content?.length || 0);
-                                console.log('INVESTIGATION - First 500 chars of complete content:');
-                                console.log(completeItemForTranslation.content?.substring(0, 500));
-                                console.log('INVESTIGATION - Last 500 chars of complete content:');
-                                console.log(completeItemForTranslation.content?.substring(completeItemForTranslation.content.length - 500));
                                 
                                 // Use the complete saved data for translation
                                 await autoTranslateContent(completeItemForTranslation, currentLang);
                             } else {
-                                console.log('Could not find saved item, falling back to Quill data');
                                 await autoTranslateContent(itemData, currentLang);
                             }
                         } else {
-                            console.log('Could not fetch fresh data, falling back to Quill data');
                             await autoTranslateContent(itemData, currentLang);
                         }
                     } else {
-                        console.log('Auto-translation skipped');
                     }
                     
                     closeModal();
@@ -1410,9 +1347,6 @@
                 // Set Quill editor content with full HTML preservation
                 if (quill) {
                     if (item.content) {
-                        console.log('SETTING QUILL CONTENT - Original length:', item.content.length);
-                        console.log('SETTING QUILL CONTENT - First 500 chars:', item.content.substring(0, 500));
-                        console.log('SETTING QUILL CONTENT - Last 500 chars:', item.content.substring(item.content.length - 500));
                         
                         // Clear editor first
                         quill.setContents([]);
@@ -1426,26 +1360,20 @@
                             setTimeout(() => {
                                 // Get current HTML and verify it's complete
                                 const loadedHTML = editorElement.innerHTML;
-                                console.log('LOADED IN QUILL - Final length:', loadedHTML.length);
-                                console.log('LOADED IN QUILL - Content matches:', loadedHTML.length === item.content.length);
-                                console.log('LOADED IN QUILL - Truncation detected:', loadedHTML.length < item.content.length);
                                 
                                 // If truncation detected, try alternative method
                                 if (loadedHTML.length < item.content.length) {
-                                    console.log('QUILL TRUNCATED - Trying alternative method');
                                     // Force complete content by chunks
                                     editorElement.innerHTML = '';
                                     editorElement.insertAdjacentHTML('afterbegin', item.content);
                                     
                                     setTimeout(() => {
                                         const finalHTML = editorElement.innerHTML;
-                                        console.log('ALTERNATIVE METHOD - Final length:', finalHTML.length);
                                     }, 100);
                                 }
                             }, 200);
                         }
                         
-                        console.log('Loaded content length:', item.content.length);
                     } else {
                         quill.setText('');
                     }
@@ -1461,7 +1389,6 @@
         
         // Replace your existing deleteItem function with this simpler version:
         window.deleteItem = function(id) {
-            console.log('deleteItem called with ID:', id);
             deleteItemId = id;
             document.getElementById('deleteModal').classList.remove('hidden');
         }
@@ -1477,7 +1404,6 @@
             document.getElementById('deleteModal').classList.add('hidden');
 
             try {
-                console.log('Proceeding with delete for ID:', deleteItemId);
                 
                 // Get current data
                 const response = await fetch(`/api/cms/content/${currentType}/${currentLang}`, {
@@ -1491,8 +1417,6 @@
                 const result = await response.json();
                 let items = result.data || [];
                 
-                console.log('Current items:', items);
-                console.log('Looking for ID:', deleteItemId);
                 
                 // Find and remove the item - compare both as strings
                 const filteredItems = items.filter(item => {
@@ -1500,7 +1424,6 @@
                     return String(item.id) !== String(deleteItemId) && String(item.title) !== String(deleteItemId);
                 });
                 
-                console.log('Filtered items:', filteredItems);
                 
                 // If nothing was filtered, the item wasn't found
                 if (filteredItems.length === items.length) {
@@ -1519,7 +1442,6 @@
                 });
 
                 const saveResult = await saveResponse.json();
-                console.log('Save result:', saveResult);
 
                 if (saveResponse.ok) {
                     // Show header notification instead of toast
@@ -1589,22 +1511,17 @@
             
             // Add event delegation for all content buttons at document level
             document.addEventListener('click', function(e) {
-                console.log('Click event fired on:', e.target);
                 const button = e.target.closest('button[data-action]');
                 if (!button) {
-                    console.log('No button with data-action found');
                     return;
                 }
                 
                 const action = button.getAttribute('data-action');
                 const id = button.getAttribute('data-id');
-                console.log('Button clicked - Action:', action, 'ID:', id);
                 
                 if (action === 'edit') {
-                    console.log('Calling editItem with ID:', id);
                     editItem(id);
                 } else if (action === 'delete') {
-                    console.log('Calling deleteItem with ID:', id);
                     deleteItem(id);
                 }
             });

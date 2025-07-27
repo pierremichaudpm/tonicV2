@@ -1,8 +1,0 @@
-<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
-  <!-- Black background box -->
-  <rect width="400" height="300" fill="#000000"/>
-  
-  <!-- White text for Groupe Tonic -->
-  <text x="200" y="130" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="32" font-weight="bold">GROUPE</text>
-  <text x="200" y="180" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="42" font-weight="bold">TONIC</text>
-</svg>
