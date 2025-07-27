@@ -29,30 +29,7 @@
     --coral-600: var(--accent-dark);
 }
 
-/* Font Face Definitions */
-@font-face {
-    font-family: 'CBC Sans';
-    font-style: normal;
-    font-weight: 400;
-    font-display: swap;
-    src: url('https://fonts.cbc.ca/fonts/CBCSans-Regular.woff2') format('woff2');
-}
-
-@font-face {
-    font-family: 'CBC Sans';
-    font-style: normal;
-    font-weight: 700;
-    font-display: swap;
-    src: url('https://fonts.cbc.ca/fonts/CBCSans-Bold.woff2') format('woff2');
-}
-
-@font-face {
-    font-family: 'CBC Sans';
-    font-style: normal;
-    font-weight: 900;
-    font-display: swap;
-    src: url('https://fonts.cbc.ca/fonts/CBCSans-Black.woff2') format('woff2');
-}
+/* Font Face Definitions - Removed CBC Sans due to unreachable domain */
 
 /* Base Styles */
 body, div, p, h1, h2, h3, h4, h5, h6, span, a, button, input, textarea, select {

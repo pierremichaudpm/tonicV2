@@ -1,0 +1,102 @@
+Perfect! Looking at your file structure, I can see several potential issues that the optimization likely caused. Here's an updated, more targeted prompt for Replit based on your specific setup:
+
+---
+
+**URGENT: Fix Broken Website After Optimization - Complex Vite/Build Setup**
+
+The optimization process broke my production site. Based on the file structure, here are the specific areas to investigate:
+
+**FILE STRUCTURE ISSUES TO CHECK:**
+
+1. **Path Confusion - Multiple index.html files:**
+   - `/client/public/index.html` 
+   - `/client/public/index-working.html` (BACKUP VERSION!)
+   - `/client/src/index.html`
+   - Which one is being served? The optimization may have confused these.
+
+2. **Build Process Broken:**
+   - Check `vite.config.ts` - was it modified?
+   - Check `tailwind.config.js` - Tailwind classes might be purged incorrectly
+   - Check `postcss.config.js` - PostCSS processing might be broken
+   - Is the build outputting to the correct directory?
+
+3. **Asset Path Issues:**
+   - CSS files in `/client/public/css/` - are paths correct?
+   - JS files in `/client/public/js/` - especially data files like `communiques-data.js`, `emplois-data.js`
+   - Images in `/client/public/images/` - check all image references
+
+4. **Critical Files to Compare:**
+   - Compare `/client/public/index.html` with `/client/public/index-working.html`
+   - What are the differences? Use index-working.html as reference!
+
+5. **Bilingual Site Issues:**
+   - Check if language switching is broken
+   - Verify both versions load: `index.html` and `index-en.html`
+   - Same for all page pairs (emplois.html/emplois-en.html, etc.)
+
+**IMMEDIATE ACTIONS:**
+
+1. **First, try this:**
+   ```bash
+   # Check if it's a build issue
+   npm run build
+   # or
+   npm run dev
+   ```
+
+2. **Compare working vs broken:**
+   - Open `index-working.html` in browser - does it work?
+   - Compare its script/link tags with current `index.html`
+
+3. **Check server.js:**
+   - Is it serving files from the correct directory?
+   - Did optimization change the static file serving path?
+
+4. **Verify file references in index.html:**
+   - Are CSS files loading? Check paths like `./css/shared.css` vs `/css/shared.css` vs `css/shared.css`
+   - Are JS files loading? Especially `homepage.js` and data files
+   - Are Tailwind styles being applied?
+
+5. **Check for these specific breaks:**
+   - Tailwind purging too aggressively (removing used classes)
+   - JavaScript minification breaking syntax
+   - Data files (`*-data.js`) being corrupted or paths changed
+   - Build output directory changed
+
+**DEBUG COMMANDS TO RUN:**
+```bash
+# Check build output
+ls -la dist/
+ls -la client/dist/
+ls -la client/public/
+
+# Test the working backup
+open client/public/index-working.html
+
+# Check for syntax errors in JS files
+node -c client/public/js/*.js
+
+# See what server.js is serving
+grep -n "static" server.js
+```
+
+**PRIORITY FIX ORDER:**
+1. Use `index-working.html` as reference to fix `index.html`
+2. Fix any build/serve configuration issues
+3. Restore correct asset paths
+4. Test each of the 12 HTML pages
+
+Please start by showing me:
+1. Differences between index.html and index-working.html
+2. Any errors in browser console
+3. What `npm run dev` or `npm run build` outputs
+
+---
+
+Also, **for us to help debug**, please share:
+1. `/client/public/index.html` (the broken one)
+2. `/client/public/index-working.html` (the working backup!)
+3. Browser console errors
+4. `vite.config.ts` or `server.js`
+
+The fact that you have `index-working.html` is fantastic - that's your reference point to see exactly what the optimization changed!
