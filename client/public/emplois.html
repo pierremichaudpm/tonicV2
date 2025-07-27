@@ -898,14 +898,7 @@
                 console.error('Error rendering jobs:', error);
             }
             
-            // Refresh content every 3 seconds to show new entries
-            setInterval(() => {
-                try {
-                    renderJobs();
-                } catch (error) {
-                    console.error('Error rendering jobs:', error);
-                }
-            }, 3000);
+            // Content refresh removed to prevent flickering
             
             // Event delegation for job cards (PDF and regular)
             DOM.jobsList.addEventListener('click', function(e) {

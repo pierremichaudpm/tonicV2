@@ -592,8 +592,7 @@
             // Render news
             renderNews();
             
-            // Refresh content every 5 seconds to show new entries
-            setInterval(renderNews, 5000);
+            // Content refresh removed to prevent flickering
             
             // Modal close handlers
             DOM.modal?.addEventListener('click', (e) => {
