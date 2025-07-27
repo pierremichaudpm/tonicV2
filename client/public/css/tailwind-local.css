@@ -1,0 +1,431 @@
+/* shared.css - Shared styles across all pages */
+
+/* ===================================
+   COLOR SYSTEM - SINGLE SOURCE OF TRUTH
+   =================================== */
+
+:root {
+  /* Primary Accent Color - CHANGE THIS ONE VALUE TO UPDATE EVERYWHERE */
+  --accent-primary: #fe4445;
+  /* Accent Color Variations - Automatically calculated or manually set */
+  --accent-hover: #ff6667;
+  /* Lighter version for hover states */
+  --accent-dark: #d53536;
+  /* Darker version */
+  --accent-light: #ff9091;
+  /* Light version */
+  /* Accent with opacity */
+  --accent-10: rgba(254, 68, 69, 0.1);
+  --accent-20: rgba(254, 68, 69, 0.2);
+  --accent-30: rgba(254, 68, 69, 0.3);
+  --accent-40: rgba(254, 68, 69, 0.4);
+  --accent-50: rgba(254, 68, 69, 0.5);
+  /* Accent glow/shadow */
+  --accent-glow: rgba(254, 68, 69, 0.27);
+  --accent-shadow: rgba(254, 68, 69, 0.3);
+  /* Legacy color mappings for easy migration */
+  --coral-400: var(--accent-light);
+  --coral-500: var(--accent-primary);
+  --coral-600: var(--accent-dark);
+}
+
+/* Font Face Definitions */
+
+@font-face {
+  font-family: 'CBC Sans';
+
+  font-style: normal;
+
+  font-weight: 400;
+
+  font-display: swap;
+
+  src: url('https://fonts.cbc.ca/fonts/CBCSans-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'CBC Sans';
+
+  font-style: normal;
+
+  font-weight: 700;
+
+  font-display: swap;
+
+  src: url('https://fonts.cbc.ca/fonts/CBCSans-Bold.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'CBC Sans';
+
+  font-style: normal;
+
+  font-weight: 900;
+
+  font-display: swap;
+
+  src: url('https://fonts.cbc.ca/fonts/CBCSans-Black.woff2') format('woff2');
+}
+
+/* Base Styles */
+
+* {
+  font-family: 'CBC Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Animations */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Utility Classes */
+
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+.delay-100 {
+  animation-delay: 0.1s;
+}
+
+.delay-200 {
+  animation-delay: 0.2s;
+}
+
+.delay-300 {
+  animation-delay: 0.3s;
+}
+
+.delay-400 {
+  animation-delay: 0.4s;
+}
+
+.delay-500 {
+  animation-delay: 0.5s;
+}
+
+/* Glass Effect */
+
+.glass {
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Header Styles */
+
+.header-main {
+  background: linear-gradient(to bottom, 
+        rgba(0,0,0,0.95) 0%,      /* Nearly opaque at top */
+        rgba(0,0,0,0.9) 40%,       /* Still very opaque in middle */
+        rgba(0,0,0,0.7) 70%,       /* Starting to fade */
+        rgba(0,0,0,0.3) 90%,       /* More transparent near bottom */
+        transparent 100%           /* Fully transparent at very bottom */
+    );
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+}
+
+/* Navigation container */
+
+.nav-container {
+  background: rgba(255, 255, 255, 0.1);
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+  border-radius: 9999px;
+  padding: 0.125rem 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Navigation Items */
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+  color: rgba(255, 255, 255, 0.9);
+  transition: all 0.2s ease;
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+  position: relative;
+}
+
+/* Tooltip for tablet icon-only navigation */
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .nav-item:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: -2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.625rem;
+    white-space: nowrap;
+    z-index: 50;
+    pointer-events: none;
+  }
+}
+
+/* Tablet-specific navigation adjustments - Ultra compact */
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .nav-item {
+    padding: 0.125rem 0.25rem;
+    font-size: 0.625rem;
+    gap: 0.125rem;
+  }
+
+  .nav-item span {
+    display: none;
+    /* Hide text labels on tablet, show icons only */
+  }
+
+  .nav-item svg {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .nav-container {
+    padding: 0.125rem 0.25rem;
+    gap: 0.125rem;
+  }
+
+  .lang-switcher {
+    font-size: 0.625rem !important;
+    padding: 0.125rem 0.25rem !important;
+  }
+
+  .lang-switcher span {
+    display: block !important;
+    /* Keep language switcher text */
+  }
+
+  .lang-divider {
+    margin: 0 0.25rem;
+    height: 12px;
+  }
+
+  /* React navigation specific adjustments */
+
+  nav[class*="hidden"] a[class*="px-2"] {
+    padding: 0.125rem 0.25rem !important;
+    gap: 0.125rem !important;
+  }
+
+  nav[class*="hidden"] a[class*="px-2"] span.text-xs {
+    display: none !important;
+  }
+
+  nav[class*="hidden"] a[class*="px-2"] svg {
+    width: 1rem !important;
+    height: 1rem !important;
+  }
+}
+
+/* Tablet optimization */
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .nav-item span {
+    display: none !important;
+  }
+
+  .container {
+    padding: 0.75rem !important;
+  }
+
+  .selection-grid {
+    gap: 0.75rem !important;
+    padding: 0.75rem !important;
+  }
+
+  .selection-tile {
+    height: 100px !important;
+    padding: 0.5rem !important;
+    font-size: 0.8rem !important;
+  }
+}
+
+/* Clean header styles */
+
+header {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 9999 !important;
+}
+
+/* Mobile menu styles */
+
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.95);
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+  z-index: 9998;
+  padding-top: 100px;
+  /* Account for header height */
+}
+
+.mobile-menu.active {
+  display: block;
+}
+
+.mobile-menu .nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  color: white;
+  text-decoration: none;
+  border-radius: 0.5rem;
+  transition: background-color 0.2s ease;
+}
+
+.mobile-menu .nav-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.mobile-menu .nav-item.active {
+  background: rgba(254, 68, 69, 0.2);
+  border: 1px solid rgba(254, 68, 69, 0.3);
+}
+
+.mobile-menu .nav-item svg {
+  width: 1rem;
+  height: 1rem;
+  stroke: white;
+  fill: none;
+}
+
+.mobile-menu .nav-item.active svg {
+  fill: white;
+  stroke: white;
+}
+
+/* Quill Editor Heading Styles for Web Display */
+
+.ql-size-huge {
+  font-size: 2.5em !important;
+  font-weight: bold !important;
+  line-height: 1.2 !important;
+  margin-top: 1em !important;
+  margin-bottom: 0.5em !important;
+}
+
+.ql-size-large {
+  font-size: 1.75em !important;
+  font-weight: bold !important;
+  line-height: 1.3 !important;
+  margin-top: 0.8em !important;
+  margin-bottom: 0.4em !important;
+}
+
+/* Quill header levels */
+
+.ql-header-1, h1.ql-header-1 {
+  font-size: 2em !important;
+  font-weight: bold !important;
+  margin-top: 1em !important;
+  margin-bottom: 0.5em !important;
+}
+
+.ql-header-2, h2.ql-header-2 {
+  font-size: 1.5em !important;
+  font-weight: bold !important;
+  margin-top: 0.8em !important;
+  margin-bottom: 0.4em !important;
+}
+
+.ql-header-3, h3.ql-header-3 {
+  font-size: 1.25em !important;
+  font-weight: bold !important;
+  margin-top: 0.6em !important;
+  margin-bottom: 0.3em !important;
+}
+
+/* Ensure Quill content in modals displays properly */
+
+#modalContent .ql-size-huge,
+#modalContent .ql-size-large,
+#modalContent .ql-header-1,
+#modalContent .ql-header-2,
+#modalContent .ql-header-3 {
+  color: white !important;
+}
+
+/* Regular HTML heading styles in modal content */
+
+#modalContent h1 {
+  font-size: 2.5em !important;
+  font-weight: bold !important;
+  line-height: 1.2 !important;
+  margin-top: 1em !important;
+  margin-bottom: 0.5em !important;
+  color: white !important;
+}
+
+#modalContent h2 {
+  font-size: 2em !important;
+  font-weight: bold !important;
+  line-height: 1.3 !important;
+  margin-top: 0.8em !important;
+  margin-bottom: 0.4em !important;
+  color: white !important;
+}
+
+#modalContent h3 {
+  font-size: 1.5em !important;
+  font-weight: bold !important;
+  line-height: 1.4 !important;
+  margin-top: 0.6em !important;
+  margin-bottom: 0.3em !important;
+  color: white !important;
+}
+
+#modalContent h4 {
+  font-size: 1.25em !important;
+  font-weight: bold !important;
+  margin-top: 0.5em !important;
+  margin-bottom: 0.25em !important;
+  color: white !important;
+}
+
+#modalContent h5 {
+  font-size: 1.1em !important;
+  font-weight: bold !important;
+  margin-top: 0.4em !important;
+  margin-bottom: 0.2em !important;
+  color: white !important;
+}
+
+#modalContent h6 {
+  font-size: 1em !important;
+  font-weight: bold !important;
+  margin-top: 0.3em !important;
+  margin-bottom: 0.15em !important;
+  color: white !important;
+}
