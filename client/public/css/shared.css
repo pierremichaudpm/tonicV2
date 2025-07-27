@@ -385,3 +385,41 @@ header {
     background-color: var(--accent-hover) !important;
     border-color: var(--accent-hover) !important;
 }
+
+/* Tooltip functionality */
+[data-tooltip] {
+    position: relative;
+}
+
+[data-tooltip]:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: -2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.625rem;
+    white-space: nowrap;
+    z-index: 50;
+    pointer-events: none;
+}
+
+/* Mobile menu tooltips */
+.mobile-menu [data-tooltip]:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    right: -6rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.625rem;
+    white-space: nowrap;
+    z-index: 50;
+    pointer-events: none;
+}
