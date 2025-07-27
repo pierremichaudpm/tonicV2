@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Accueil | Groupe Tonic</title>
+    <meta name="description" content="Groupe Tonic, créateur d'expériences mémorables depuis plus de 40 ans. Beach Pro Tour, Grands Prix Cyclistes, Marathon Beneva et événements majeurs au Québec.">
+    <link rel="stylesheet" href="css/shared.css">
+    <link rel="stylesheet" href="css/4k-presentation.css">
+    <link rel="stylesheet" href="css/tailwind-local.css">
+    <style>
+        body { margin: 0; background: #000; overflow-x: hidden; min-height: 100vh; font-family: 'CBC Sans', sans-serif; }
+        .simple-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; padding: 2rem; max-width: 1200px; margin: 0 auto; }
+        .simple-card { background: #1a1a1a; border-radius: 12px; overflow: hidden; transition: transform 0.3s ease; cursor: pointer; }
+        .simple-card:hover { transform: scale(1.02); }
+        .simple-card img { width: 100%; height: 200px; object-fit: cover; }
+        .simple-card-content { padding: 1.5rem; }
+        .simple-card h3 { color: white; font-size: 1.25rem; font-weight: bold; margin-bottom: 0.5rem; }
+        .simple-card p { color: rgba(255,255,255,0.8); font-size: 0.9rem; line-height: 1.4; }
+        .simple-header { background: rgba(0,0,0,0.9); padding: 1rem 2rem; color: white; text-align: center; }
+        .simple-logo { height: 60px; width: auto; }
+    </style>
+</head>
+<body>
+    <header class="simple-header">
+        <img src="images/tonic-logo.png" alt="Groupe Tonic" class="simple-logo">
+        <p style="margin-top: 1rem; opacity: 0.8;">Créateur d'expériences mémorables</p>
+    </header>
+    
+    <div class="simple-grid">
+        <div class="simple-card" onclick="window.open('https://mtlbeachprotour.com/', '_blank')">
+            <img src="images/beach-pro-tour-hero.webp" alt="Beach Pro Tour">
+            <div class="simple-card-content">
+                <h3>BEACH PRO TOUR</h3>
+                <p>L'élite mondiale du volleyball de plage<br>13-17 août 2025 • Montréal</p>
+            </div>
+        </div>
+        
+        <div class="simple-card" onclick="window.open('https://gpcqm.ca/', '_blank')">
+            <img src="images/grands-prix-cyclistes-hero.webp" alt="Grands Prix Cyclistes">
+            <div class="simple-card-content">
+                <h3>GRANDS PRIX CYCLISTES</h3>
+                <p>Les seules épreuves UCI WorldTour en Amérique<br>12 & 14 septembre 2025</p>
+            </div>
+        </div>
+        
+        <div class="simple-card" onclick="window.open('https://couronsmtl.com/marathon-beneva/accueil/', '_blank')">
+            <img src="images/marathon-beneva-hero.webp" alt="Marathon Beneva">
+            <div class="simple-card-content">
+                <h3>MARATHON BENEVA DE MONTRÉAL</h3>
+                <p>Vivez-le!<br>19-21 septembre 2025 • Montréal</p>
+            </div>
+        </div>
+        
+        <div class="simple-card" onclick="window.open('https://couronsmtl.com/21k/accueil/', '_blank')">
+            <img src="images/21k-hero.webp" alt="21K de Montréal">
+            <div class="simple-card-content">
+                <h3>21K DE MONTRÉAL</h3>
+                <p>Démarrez en grand votre saison de course<br>Avril 2026 • Montréal</p>
+            </div>
+        </div>
+        
+        <div class="simple-card" onclick="window.open('https://www.montreal2026.org/', '_blank')">
+            <img src="images/montreal-2026-uci-hero.webp" alt="UCI 2026">
+            <div class="simple-card-content">
+                <h3>CHAMPIONNATS DU MONDE UCI 2026</h3>
+                <p>Montréal, capitale mondiale du vélo<br>19-27 septembre 2026</p>
+            </div>
+        </div>
+        
+        <div class="simple-card" onclick="window.open('https://studio-76.replit.app/', '_blank')">
+            <img src="images/studio76-hero.webp" alt="Studio 76">
+            <div class="simple-card-content">
+                <h3>STUDIO 76</h3>
+                <p>Services intégrés en production vidéo et télévisuelle<br>Longueuil, QC</p>
+            </div>
+        </div>
+        
+        <div class="simple-card" onclick="window.open('https://dock619.ca/', '_blank')">
+            <img src="images/dock619-hero-new.webp" alt="Dock 619">
+            <div class="simple-card-content">
+                <h3>DOCK 619</h3>
+                <p>Lieu événementiel haut de gamme<br>Longueuil, QC</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
