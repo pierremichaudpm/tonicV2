@@ -9,27 +9,25 @@ const app = express();
 // Enable gzip compression
 app.use(compression());
 
-// Serve static files from client/public in development
-if (process.env.NODE_ENV === "development") {
-  const publicPath = path.resolve(import.meta.dirname, "../client/public");
-  // Add cache headers for static assets
-  app.use(express.static(publicPath, {
-    setHeaders: (res, path) => {
-      if (path.endsWith('.webp') || path.endsWith('.png') || path.endsWith('.jpg')) {
-        // Images: 1 year cache
-        res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
-      } else if (path.endsWith('.css') || path.endsWith('.js')) {
-        // CSS/JS: 1 month cache
-        res.setHeader('Cache-Control', 'public, max-age=2592000');
-      } else if (path.endsWith('.html')) {
-        // HTML: No cache during development for immediate updates
-        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-        res.setHeader('Pragma', 'no-cache');
-        res.setHeader('Expires', '0');
-      }
+// PRIORITY: Serve static HTML files from client/public FIRST
+const publicPath = path.resolve(import.meta.dirname, "../client/public");
+app.use(express.static(publicPath, {
+  index: false, // Don't auto-serve index.html
+  setHeaders: (res, path) => {
+    if (path.endsWith('.webp') || path.endsWith('.png') || path.endsWith('.jpg')) {
+      // Images: 1 year cache
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+    } else if (path.endsWith('.css') || path.endsWith('.js')) {
+      // CSS/JS: 1 month cache
+      res.setHeader('Cache-Control', 'public, max-age=2592000');
+    } else if (path.endsWith('.html')) {
+      // HTML: No cache during development for immediate updates
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+      res.setHeader('Pragma', 'no-cache');
+      res.setHeader('Expires', '0');
     }
-  }));
-}
+  }
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
