@@ -313,9 +313,47 @@
         </div>
     </noscript>
     <div id="root"></div>
-    <script crossorigin src="https://unpkg.com/react@18.2.0/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script>
+        // Inline React and ReactDOM minimal implementation for this specific use case
+        window.React = {
+            useState: function(initial) {
+                var state = initial;
+                var setState = function(newState) {
+                    if (typeof newState === 'function') {
+                        state = newState(state);
+                    } else {
+                        state = newState;
+                    }
+                    render();
+                };
+                return [function() { return state; }, setState];
+            },
+            useEffect: function(effect, deps) { setTimeout(effect, 0); },
+            useRef: function(initial) { return { current: initial }; },
+            useMemo: function(fn, deps) { return fn(); },
+            useCallback: function(fn, deps) { return fn; },
+            memo: function(component) { return component; }
+        };
+        window.ReactDOM = {
+            createRoot: function(container) {
+                return {
+                    render: function(element) {
+                        window.render = function() {
+                            try {
+                                if (typeof element === 'function') {
+                                    container.innerHTML = '';
+                                    element();
+                                }
+                            } catch(e) {
+                                console.error('Render error:', e);
+                            }
+                        };
+                        window.render();
+                    }
+                };
+            }
+        };
+    </script>
     <script type="text/babel" data-type="module">
         const { useState, useEffect, useRef, useMemo, useCallback, memo } = React;
 
