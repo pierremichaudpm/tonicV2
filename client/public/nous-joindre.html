@@ -105,6 +105,17 @@
             color: var(--accent-primary);
         }
         
+        /* Fix for hero title text clipping */
+        .hero-title {
+            line-height: 1.1 !important;
+            padding-top: 0.15em !important;
+            padding-bottom: 0.1em !important;
+            background: linear-gradient(135deg, var(--accent-primary) 0%, #ff8a8b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
         .text-accent:hover {
             color: var(--accent-hover);
         }
