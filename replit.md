@@ -449,11 +449,12 @@ The website is now fully operational and matches the original local/Netlify func
 
 ### Tooltip Implementation Challenge - January 27, 2025 🔄 IN PROGRESS
 - **User requirement**: Instagram/LinkedIn social icons must show "Instagram"/"LinkedIn" tooltips on hover
-- **Challenge**: CSS tooltips work in isolated test page but fail on actual website pages
-- **Root cause**: Complex CSS specificity conflicts with existing nav styles preventing hover effects
-- **Multiple attempts**: Tried various CSS selector combinations, !important declarations, z-index adjustments
-- **Current approach**: Simplified direct attribute targeting with specific color coding (red for Instagram, blue for LinkedIn)
-- **Status**: Testing simplified CSS approach with maximum specificity override
+- **Challenge**: Both CSS and external JavaScript tooltips failing on website pages
+- **Root cause**: Unknown - hover events may be blocked by existing navigation styles or Tailwind conflicts
+- **Attempts made**: CSS hover pseudoelements, external JS file, direct attribute targeting, maximum specificity
+- **Current approach**: Inline JavaScript with console logging to debug event handling
+- **Debug strategy**: Added detailed console logging to verify script loading and event attachment
+- **Status**: Testing inline JavaScript approach with debugging output
 
 ### Website Restoration Status - January 27, 2025 ✅ COMPLETED
 - **Logo Display Fix**: Resolved "CA +ONIC" text issue by removing unreachable CBC Sans font-face declarations
