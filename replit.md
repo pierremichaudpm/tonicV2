@@ -465,21 +465,19 @@ The website is now fully operational and matches the original local/Netlify func
 - **Comprehensive Check**: All JavaScript files syntax-verified, all resources loading (HTTP 200), bilingual pages functional
 - **User Feedback**: Called out pattern of false success claims - completed thorough investigation before reporting
 
-### Critical Server Conflict Resolution - January 27, 2025 ✅ COMPLETED
-- **Root Cause Identified**: Two conflicting servers running simultaneously causing preview issues
-  - Port 5000: Main Express server with all fixes ✅
-  - Port 5001: Standalone server.js without fixes ❌
-- **Server Conflict Eliminated**: Stopped conflicting server.js to ensure single source of truth
-- **French Title Clipping Fixed**: Added padding-top: 0.4em, line-height: 1.3 to prevent "J" character clipping in:
-  - nous-joindre.html ✅
-  - a-propos.html ✅  
-  - emplois.html ✅
-  - communiques.html ✅
-- **Social Media Icons Verified**: Instagram/LinkedIn present on all French pages (2 per page), Facebook/Twitter completely removed (0 references)
-- **Cache Headers Updated**: Disabled HTML caching during development for immediate preview updates
-- **Vite Routing Conflict Resolved**: Fixed Vite catch-all route intercepting static HTML files by creating missing client/index.html and setting Express static middleware priority
-- **Preview Caching Issue Identified**: Server serves all fixes correctly (confirmed via curl), but Replit preview environment shows cached content despite aggressive cache-busting headers
-- **Production Ready**: All fixes confirmed active on main server (port 5000)
+### Server Routing Fix - January 27, 2025 ✅ COMPLETED
+- **Problem Identified**: Catch-all route `app.get('*', ...)` was serving index.html for every request, breaking access to CMS and other pages
+- **Solution Implemented**: Replaced overly aggressive catch-all with specific route handlers for each page:
+  - `/cms`, `/cms.html`, `/admin` → serves cms.html
+  - `/about`, `/a-propos` → serves respective pages
+  - `/emplois`, `/emplois-en` → serves job pages
+  - `/communiques`, `/communiques-en` → serves news pages
+  - `/nous-joindre`, `/nous-joindre-en` → serves contact pages
+  - `/`, `/index.html`, `/index-en.html` → serves homepage variations
+- **Routing Verified**: All endpoints return HTTP 200 status codes via curl testing
+- **CMS Access Restored**: CMS is now accessible at `/cms` route without index.html interference
+- **SPA Behavior Preserved**: Homepage maintains single-page app functionality while other pages route correctly
+- **Status**: ✅ COMPLETED - Proper routing implemented, all pages accessible
 
 ### Complete Website Optimization - July 27, 2025 ✅ COMPLETED
 - **Image optimization**: Converted all 6 hero JPG images to WebP format with 50-60% size reduction

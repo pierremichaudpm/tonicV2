@@ -26,9 +26,67 @@ app.use(express.static(path.join(__dirname, 'client/public'), {
   }
 }));
 
-// Catch all routes - serve index.html
-app.get('*', (req, res) => {
+// Specific routes for important pages
+app.get('/cms', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/public/cms.html'));
+});
+
+app.get('/cms.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/public/cms.html'));
+});
+
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/public/cms.html'));
+});
+
+app.get('/about', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/public/about.html'));
+});
+
+app.get('/a-propos', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/public/a-propos.html'));
+});
+
+app.get('/emplois', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/public/emplois.html'));
+});
+
+app.get('/emplois-en', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/public/emplois-en.html'));
+});
+
+app.get('/communiques', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/public/communiques.html'));
+});
+
+app.get('/communiques-en', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/public/communiques-en.html'));
+});
+
+app.get('/nous-joindre', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/public/nous-joindre.html'));
+});
+
+app.get('/nous-joindre-en', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/public/nous-joindre-en.html'));
+});
+
+// Catch-all route for homepage variations only
+app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'client/public/index.html'));
+});
+
+app.get('/index.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/public/index.html'));
+});
+
+app.get('/index-en.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/public/index-en.html'));
+});
+
+// 404 for any other route
+app.get('*', (req, res) => {
+  res.status(404).sendFile(path.join(__dirname, 'client/public/index.html'));
 });
 
 app.listen(PORT, () => {
