@@ -328,6 +328,39 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/index-en.html", (req, res) => {
     res.sendFile(path.join(publicPath, "index-en.html"));
   });
+  
+  // Explicit .html routes for all pages
+  app.get("/emplois.html", (req, res) => {
+    res.sendFile(path.join(publicPath, "emplois.html"));
+  });
+  
+  app.get("/emplois-en.html", (req, res) => {
+    res.sendFile(path.join(publicPath, "emplois-en.html"));
+  });
+  
+  app.get("/communiques.html", (req, res) => {
+    res.sendFile(path.join(publicPath, "communiques.html"));
+  });
+  
+  app.get("/communiques-en.html", (req, res) => {
+    res.sendFile(path.join(publicPath, "communiques-en.html"));
+  });
+  
+  app.get("/nous-joindre.html", (req, res) => {
+    res.sendFile(path.join(publicPath, "nous-joindre.html"));
+  });
+  
+  app.get("/nous-joindre-en.html", (req, res) => {
+    res.sendFile(path.join(publicPath, "nous-joindre-en.html"));
+  });
+  
+  app.get("/a-propos.html", (req, res) => {
+    res.sendFile(path.join(publicPath, "a-propos.html"));
+  });
+  
+  app.get("/about.html", (req, res) => {
+    res.sendFile(path.join(publicPath, "about.html"));
+  });
 
 
 

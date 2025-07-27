@@ -294,6 +294,30 @@
         .category-dock { background-color: #6b7280; }
         .category-21k { background-color: #f59e0b; }
         .category-tonic { background-color: #3b82f6; }
+        
+        /* Hero title gradient styling */
+        .hero-title{
+            font-size: clamp(2rem,6vw,3.5rem) !important;
+            line-height: 0.9 !important;
+            font-weight: 900 !important;
+            background: linear-gradient(135deg,rgba(220, 38, 38, 0.8),rgba(255, 87, 51, 0.85),rgba(255, 127, 80, 0.9),rgba(255, 160, 122, 0.95),#fff,rgba(255, 160, 122, 0.95),rgba(255, 127, 80, 0.9),rgba(255, 87, 51, 0.85),rgba(220, 38, 38, 0.8)) !important;
+            background-clip: text !important;
+            -webkit-background-clip: text !important;
+            color: transparent !important;
+            text-shadow: 0 0 25px rgba(255, 87, 51, 0.3) !important;
+            background-size: 200% 100% !important;
+            animation: gradientShift 4s ease-in-out infinite alternate !important;
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            z-index: 999 !important;
+            position: relative !important;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
     </style>
 </head>
 <body class="bg-black text-white min-h-screen">
@@ -393,7 +417,7 @@
     <main class="pt-24 sm:pt-28 pb-20">
         <!-- Hero Section -->
         <section class="container mx-auto px-4 py-12 sm:py-16 text-center">
-            <h1 class="text-5xl sm:text-6xl lg:text-7xl font-black mb-4 fade-in">Jobs</h1>
+            <h1 class="hero-title text-5xl sm:text-6xl lg:text-7xl font-black mb-4 fade-in">Jobs</h1>
             <p class="text-lg sm:text-xl text-white max-w-2xl mx-auto fade-in delay-100">
                 Join a passionate team that creates memorable experiences
             </p>
