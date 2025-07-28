@@ -727,9 +727,10 @@
                 const image = getCategoryImage(item.category);
 
                 return `
-                    <div class="job-card relative rounded-xl p-6 sm:p-8 cursor-pointer fade-in delay-${Math.min(index * 100, 500)}" 
+                    <div class="job-card relative rounded-xl p-6 sm:p-8 cursor-pointer" 
                          data-news-id="${item.id}"
-                         onclick="openNewsModal('${item.id}')">
+                         onclick="openNewsModal('${item.id}')"
+                         style="opacity: 1; visibility: visible; display: block;">
                         <div class="flex flex-col sm:flex-row gap-4">
                             <div class="sm:w-48 h-32 sm:h-32 flex-shrink-0 relative">
                                 <img src="${image}" alt="${item.category}" class="w-full h-full object-cover rounded-lg" loading="lazy">
@@ -758,9 +759,16 @@
                 `;
             }).join('');
             
-            console.log('Generated HTML length:', html.length);
+            console.log('Generated HTML length:', html.length);            
             DOM.prList.innerHTML = html;
-            console.log('Content inserted into DOM');
+            
+            // Force visibility for debugging
+            DOM.prList.style.display = 'block';
+            DOM.prList.style.visibility = 'visible';
+            DOM.prList.style.opacity = '1';
+            
+            console.log('Content inserted and forced visible');
+            console.log('First card element:', DOM.prList.querySelector('.job-card'));
         }
 
         // Open news modal with mobile-friendly content
