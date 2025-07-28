@@ -1549,6 +1549,15 @@
                 autoTranslateContainer.style.display = 'none';
             }
             
+            // Update tab text based on language
+            if (currentLang === 'en') {
+                document.getElementById('jobsTab').textContent = 'Jobs';
+                document.getElementById('newsTab').textContent = 'News';
+            } else {
+                document.getElementById('jobsTab').textContent = 'Emplois';
+                document.getElementById('newsTab').textContent = 'Nouvelles';
+            }
+            
             loadContent();
             updateLanguageLabels();
             updateLanguageToggleText();
