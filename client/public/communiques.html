@@ -475,7 +475,7 @@
     <div id="newsModal" class="modal-backdrop">
         <div class="modal-content" onclick="event.stopPropagation()">
             <div class="sticky top-4 bg-black backdrop-blur-lg border-b border-white/10 p-6 flex justify-between items-start">
-                <h2 id="modalTitle" class="text-2xl font-bold pr-4"></h2>
+                <h2 id="modalTitle" class="text-2xl font-bold pr-4 text-white"></h2>
                 <button onclick="closeModal()" class="p-2 hover:bg-white/10 rounded-lg transition-colors" aria-label="Fermer">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -511,7 +511,7 @@
     <script src="js/simple-content.js?v=1753723200&cache=false"></script>
 
     <!-- Shared JavaScript -->
-    <script src="js/shared.js?v=1753723400&cache=false&fix=largescreens"></script>
+    <script src="js/shared.js?v=1753723500&cache=false&fix=modaltitle"></script>
 
     <!-- Initialize standardized navigation -->
     <script>
@@ -628,9 +628,14 @@
         // Open news modal with mobile-friendly content
         window.openNewsModal = function(id) {
             const item = getNews().find(news => String(news.id) === String(id));
-            if (!item) return;
+            if (!item) {
+                console.error('News item not found:', id);
+                return;
+            }
 
+            console.log('Opening modal for item:', item.title);
             DOM.modalTitle.textContent = item.title;
+            console.log('Modal title set to:', DOM.modalTitle.textContent);
             DOM.modalContent.innerHTML = `
                 <div class="text-white">
                     <div class="mb-4">
