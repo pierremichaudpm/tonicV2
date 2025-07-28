@@ -265,7 +265,12 @@
         #mobileMenu {
             display: none !important;
             position: fixed !important;
-            inset: 0 !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
             background: rgba(0,0,0,0.95) !important;
             backdrop-filter: blur(20px) !important;
             z-index: 2000000 !important;
@@ -277,6 +282,13 @@
         #mobileMenu.active {
             display: block !important;
             z-index: 2000000 !important;
+        }
+        
+        /* Ensure mobile menu content is visible */
+        .mobile-menu *,
+        #mobileMenu * {
+            z-index: 2000001 !important;
+            position: relative !important;
         }
 
         /* Hero title gradient styling */
@@ -532,7 +544,7 @@
     <script src="js/simple-content.js?v=1753723200&cache=false"></script>
 
     <!-- Shared JavaScript -->
-    <script src="js/shared.js?v=1753724300&cache=false&fix=headerfixed"></script>
+    <script src="js/shared.js?v=1753724400&cache=false&fix=mobilemenuvisible"></script>
 
     <!-- Initialize standardized navigation -->
     <script>
