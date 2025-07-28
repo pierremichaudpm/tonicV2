@@ -429,9 +429,8 @@
 </head>
 <body class="bg-black text-white min-h-screen">
 
-    <!-- Header -->
-    <!-- Header -->
-    <header class="fixed top-0 left-0 right-0 z-50" style="background: linear-gradient(to bottom, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.9) 40%, rgba(0,0,0,0.7) 70%, rgba(0,0,0,0.3) 90%, transparent 100%); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); box-shadow: 0 2px 20px rgba(0,0,0,0.3);" data-protected="true">
+    <!-- Header with Clear Background -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-black/95 backdrop-blur-md border-b border-white/10">
         <div class="container mx-auto px-2 py-2 sm:px-4 sm:py-5">
             <div class="flex items-center justify-between">
                 <!-- Logo -->
@@ -482,9 +481,9 @@
                         <a href="communiques-en.html" class="lang-switcher"><span>EN</span></a>
                     </nav>
 
-                    <!-- Mobile Menu Button -->
-                    <button onclick="toggleMobileMenu()" class="md:hidden p-2 hover:bg-white/10 rounded-lg transition-colors text-white" style="background: rgba(0,0,0,0.2); backdrop-filter: blur(10px); color: white;">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <!-- Mobile Menu Button - Always Visible on Mobile -->
+                    <button onclick="toggleMobileMenu()" class="md:hidden p-3 bg-white/20 hover:bg-white/30 rounded-lg transition-colors border border-white/30" style="min-width: 48px; min-height: 48px;">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path d="M3 12h18M3 6h18M3 18h18"></path>
                         </svg>
                     </button>
