@@ -278,3 +278,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+// Export functions to window object for use in other pages
+window.generateDesktopNav = generateDesktopNav;
+window.generateMobileMenu = generateMobileMenu;
+window.generateMobileMenuButton = generateMobileMenuButton;
+window.toggleMobileMenu = toggleMobileMenu;

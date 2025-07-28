@@ -715,7 +715,6 @@
             });
 
             const currentProperty = useMemo(() => PROPERTIES[state.activeIndex], [state.activeIndex]);
-            const navItems = useMemo(() => createNavItems(() => setState(prev => ({...prev, showGridProgress: false, currentView: VIEWS.GRID, isMobileMenuOpen: false}))), []);
 
             // Logo scale function
             const getLogoScale = useCallback((property, isMobile) => {
@@ -958,6 +957,13 @@
                 }
                 setState(prev => ({...prev, isProgressPaused: false}));
             }, [state.touchStart, state.touchEnd, state.currentView, state.activeIndex, state.isTransitioning, handlePropertyChange, startHeroSequence]);
+
+            const goToGrid = useCallback(() => {
+                if(timers.current.grid) clearTimeout(timers.current.grid);
+                setState(prev => ({...prev, showGridProgress: false, currentView: VIEWS.GRID, isMobileMenuOpen: false}));
+            }, []);
+
+            const navItems = useMemo(() => createNavItems(goToGrid), [goToGrid]);
 
             if (!state.isInitialized) {
                 return (

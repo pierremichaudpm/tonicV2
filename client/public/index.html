@@ -398,6 +398,7 @@
     <script>
         // Tooltip system for React homepage
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('Tooltip script loaded');
             // Create tooltip element
             const tooltip = document.createElement('div');
             tooltip.style.cssText = `
@@ -422,6 +423,7 @@
             // Function to add tooltips to social links
             function addTooltips() {
                 const socialLinks = document.querySelectorAll('a[href*="instagram"], a[href*="linkedin"]');
+                console.log('Found social links:', socialLinks.length);
                 
                 socialLinks.forEach(link => {
                     // Determine tooltip text based on URL
@@ -430,6 +432,7 @@
                     if (link.href.includes('linkedin')) tooltipText = 'LinkedIn';
                     
                     if (tooltipText) {
+                        console.log('Adding tooltip to:', tooltipText);
                         // Remove existing listeners to prevent duplicates
                         link.removeEventListener('mouseenter', link._tooltipEnter);
                         link.removeEventListener('mouseleave', link._tooltipLeave);
@@ -761,7 +764,6 @@
             });
 
             const currentProperty = useMemo(() => PROPERTIES[state.activeIndex], [state.activeIndex]);
-            const navItems = useMemo(() => createNavItems(goToGrid), []);
 
             // Cleanup all timers
             useEffect(() => {
@@ -978,6 +980,8 @@
                 if(timers.current.gridTimer) clearTimeout(timers.current.gridTimer);
                 setState(prev => ({...prev, showGridProgress: false, currentView: 'grid', isMobileMenuOpen: false}));
             }, []);
+
+            const navItems = useMemo(() => createNavItems(goToGrid), [goToGrid]);
 
             const getLogoScale = useCallback((property, isMobile) => {
                 const scales = LOGO_SCALES[property.id] || { mobile: 1.0824, desktop: .82 };
@@ -1269,11 +1273,15 @@
         // Initialize
         function init() {
             try {
+                console.log('Initializing React app...');
                 const root = document.getElementById('root');
                 if(!root) throw new Error('Root element not found');
                 if(!window.React||!window.ReactDOM) throw new Error('React not loaded');
+                console.log('React and ReactDOM loaded, rendering app...');
                 ReactDOM.createRoot(root).render(<App />);
+                console.log('App rendered successfully');
             } catch(e) {
+                console.error('Error initializing app:', e);
                 document.getElementById('root').innerHTML = `
                     <div style="min-height:100vh;background:#000;color:white;display:flex;align-items:center;justify-content:center;padding:2rem;text-align:center">
                         <div>
