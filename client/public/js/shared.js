@@ -95,20 +95,29 @@ function createNavItemsEnglish() {
 
 // Toggle Mobile Menu with icon change - Robust implementation
 function toggleMobileMenu() {
+    console.log('toggleMobileMenu called');
     const mobileMenu = document.getElementById('mobileMenu');
-    if (!mobileMenu) return;
+    if (!mobileMenu) {
+        console.log('Mobile menu element not found');
+        return;
+    }
 
     // Use only the 'active' class to determine state (CSS handles display)
     const isCurrentlyOpen = mobileMenu.classList.contains('active');
+    console.log('Menu currently open:', isCurrentlyOpen);
 
     if (isCurrentlyOpen) {
         // Close menu
         mobileMenu.classList.remove('active');
+        mobileMenu.style.display = 'none';
         document.body.style.overflow = '';
+        console.log('Menu closed');
     } else {
         // Open menu
         mobileMenu.classList.add('active');
+        mobileMenu.style.display = 'flex';
         document.body.style.overflow = 'hidden';
+        console.log('Menu opened');
     }
 
     // Update button icon - simple and reliable
