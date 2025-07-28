@@ -41,5 +41,14 @@ const communiquesData = [
         "date": "2025-07-28",
         "content": "<p>this is a test</p>",
         "isAutoTranslated": true
+    },
+    {
+        "id": "1753722321358",
+        "title": "I notice you've provided \"h54236\" which appears to be a code, reference number, or identifier rather than French text that needs translation. This doesn't contain any translatable content.\n\nCould you please provide the actual French text you'd like me to translate?",
+        "subtitle": "g24g2",
+        "category": "UCI 2026",
+        "date": "2025-07-28",
+        "content": "<p>2g44g4</p>",
+        "isAutoTranslated": true
     }
 ];

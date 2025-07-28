@@ -365,6 +365,44 @@ header {
     margin-bottom: 0.3em !important;
 }
 
+/* Modal Content Spacing Fixes */
+#modalContent p {
+    margin-top: 0.5rem !important;
+    margin-bottom: 0.5rem !important;
+    line-height: 1.6 !important;
+}
+
+#modalContent .ql-editor p {
+    margin-top: 0.5rem !important;
+    margin-bottom: 0.5rem !important;
+}
+
+/* Remove excessive spacing from Quill paragraphs in modals */
+#modalContent p + p {
+    margin-top: 0.5rem !important;
+}
+
+/* Target all Quill paragraph classes specifically */
+#modalContent p[class*="ql-align"] {
+    margin-top: 0.5rem !important;
+    margin-bottom: 0.5rem !important;
+}
+
+/* Override any default Quill spacing */
+#modalContent .ql-align-justify,
+#modalContent .ql-align-center,
+#modalContent .ql-align-left,
+#modalContent .ql-align-right {
+    margin-top: 0.5rem !important;
+    margin-bottom: 0.5rem !important;
+}
+
+/* Reduce spacing for spans inside paragraphs */
+#modalContent p span {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
 /* Modal Content Headings - White color for modals */
 #modalContent .ql-size-huge,
 #modalContent .ql-size-large,
