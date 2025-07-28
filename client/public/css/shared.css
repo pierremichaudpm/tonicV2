@@ -126,56 +126,71 @@
     position: relative;
 }
 
-/* Navigation Consistency - Match Homepage Styling */
+/* Navigation consistency across all pages */
 .nav-container {
-    background: rgba(0,0,0,0.2);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    background: rgba(0,0,0,0.2) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    padding: 0.125rem 0.5rem !important;
+    border-radius: 9999px !important;
+    gap: 0.125rem !important;
 }
 
 .nav-item {
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    padding: 0.25rem 0.5rem;
-    border-radius: 0.5rem;
-    color: white;
-    text-decoration: none;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-size: 0.75rem;
-    font-weight: 500;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.25rem !important;
+    padding: 0.25rem 0.5rem !important;
+    border-radius: 0.5rem !important;
+    color: white !important;
+    text-decoration: none !important;
+    transition: all 0.2s ease !important;
+    cursor: pointer !important;
+    font-size: 0.75rem !important;
+    font-weight: 500 !important;
 }
 
 .nav-item:hover {
-    background: rgba(255,255,255,0.1);
-    color: white;
+    background: rgba(255,255,255,0.1) !important;
+    color: white !important;
+}
+
+.nav-item svg {
+    width: 1rem !important;
+    height: 1rem !important;
+    flex-shrink: 0 !important;
+}
+
+.nav-item span {
+    font-size: 0.75rem !important;
+    font-weight: 500 !important;
+    color: white !important;
 }
 
 .lang-switcher {
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    padding: 0.25rem 0.5rem;
-    border-radius: 0.5rem;
-    color: rgba(255,255,255,0.9);
-    transition: all 0.2s ease;
-    font-size: 0.75rem;
-    font-weight: 500;
-    text-decoration: none;
-    cursor: pointer;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.25rem !important;
+    padding: 0.25rem 0.5rem !important;
+    border-radius: 0.5rem !important;
+    color: rgba(255,255,255,.9) !important;
+    transition: all 0.2s ease !important;
+    font-size: 0.75rem !important;
+    font-weight: 500 !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
 }
 
 .lang-switcher:hover {
-    background: rgba(255,255,255,0.1);
-    color: #fff;
+    background: rgba(255,255,255,.1) !important;
+    color: #fff !important;
 }
 
 .lang-divider {
-    width: 1px;
-    height: 16px;
-    background: rgba(255,255,255,0.2);
-    margin: 0 0.5rem;
+    width: 1px !important;
+    height: 16px !important;
+    background: rgba(255,255,255,.2) !important;
+    margin: 0 0.5rem !important;
 }
 
 /* Tablet Navigation Optimizations */
