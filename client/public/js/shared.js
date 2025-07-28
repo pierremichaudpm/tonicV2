@@ -291,29 +291,43 @@ function generateMobileMenu(isEnglish = false, currentPage = '') {
     const normalizedCurrentPage = currentPage.toLowerCase().replace(/^\//, '');
     
     return `
-        <div id="mobileMenu" class="md:hidden fixed inset-0 z-40 bg-black/95 backdrop-blur-md" style="display: none;">
-            <div class="h-full pt-20 pb-6">
-                <div class="container mx-auto px-4 py-4">
-                    <div class="space-y-2">
-                        ${navItems.map(item => {
-                            // Check if this is the active page
-                            const isActive = item.href && normalizedCurrentPage && 
-                                (item.href.toLowerCase() === normalizedCurrentPage || 
-                                 item.href.toLowerCase().endsWith('/' + normalizedCurrentPage));
-                            
-                            return `
-                                <a href="${item.href}" ${item.target ? `target="${item.target}"` : ''} class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/10 transition-all cursor-pointer text-white${isActive ? ' bg-white/10' : ''}">
-                                    <div style="color:white">${item.icon}</div>
-                                    ${item.label ? `<span class="font-medium text-white">${item.label}</span>` : ''}
-                                    ${!item.label && item.tooltip ? `<span class="font-medium text-white">${item.tooltip}</span>` : ''}
-                                </a>
-                            `;
-                        }).join('')}
-                        <a href="${langLink}" class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/10 transition-all cursor-pointer text-white">
-                            <div style="color:white">${langIcon}</div>
-                            <span class="font-medium text-white">${langText}</span>
-                        </a>
+        <div id="mobileMenu" class="mobile-menu" style="padding-top: 0 !important;">
+            <!-- Mobile Menu Header - Fixed at top -->
+            <div class="bg-black/95 backdrop-blur-md border-b border-white/10 px-4 py-4" style="position: absolute; top: 0; left: 0; right: 0; z-index: 1000;">
+                <div class="flex items-center justify-between">
+                    <div class="flex flex-col items-start">
+                        <img src="images/tonic-logo.png" alt="Groupe Tonic Logo" style="width: 120px; height: auto;" />
+                        <span class="text-white text-xs font-medium mt-1">Créateur d'expériences mémorables</span>
                     </div>
+                    <button onclick="toggleMobileMenu()" class="p-2 hover:bg-white/10 rounded-lg" aria-label="Close">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Menu Content -->
+            <div class="container mx-auto px-4" style="padding-top: 100px; padding-bottom: 2rem;">
+                <div class="space-y-2">
+                    ${navItems.map(item => {
+                        // Check if this is the active page
+                        const isActive = item.href && normalizedCurrentPage && 
+                            (item.href.toLowerCase() === normalizedCurrentPage || 
+                             item.href.toLowerCase().endsWith('/' + normalizedCurrentPage));
+                        
+                        return `
+                            <a href="${item.href}" ${item.target ? `target="${item.target}"` : ''} class="nav-item w-full${isActive ? ' active' : ''}">
+                                <div style="color: white; stroke: white;">${item.icon}</div>
+                                ${item.label ? `<span>${item.label}</span>` : ''}
+                                ${!item.label && item.tooltip ? `<span>${item.tooltip}</span>` : ''}
+                            </a>
+                        `;
+                    }).join('')}
+                    <a href="${langLink}" class="nav-item w-full">
+                        <div style="color: white; stroke: white;">${langIcon}</div>
+                        <span>${langText}</span>
+                    </a>
                 </div>
             </div>
         </div>
