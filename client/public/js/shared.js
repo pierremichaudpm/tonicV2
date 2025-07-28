@@ -127,30 +127,54 @@ function toggleMobileMenu() {
     }
 }
 
-// Initialize mobile menu functionality with event listeners
+// CSS-first mobile menu with JavaScript fallback
 function initializeMobileMenu() {
-    // Remove any existing onclick handlers and use event listeners instead
-    const headerButton = document.getElementById('mobileMenuButton');
-    if (headerButton) {
-        headerButton.removeAttribute('onclick');
-        headerButton.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            toggleMobileMenu();
-        });
-    }
-    
-    // Handle all close buttons in mobile menu
+    const checkbox = document.getElementById('mobile-menu-toggle');
     const mobileMenu = document.getElementById('mobileMenu');
-    if (mobileMenu) {
-        const closeButtons = mobileMenu.querySelectorAll('button[onclick*="toggleMobileMenu"]');
-        closeButtons.forEach(button => {
-            button.removeAttribute('onclick');
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                toggleMobileMenu();
+    
+    // Check if CSS :has() selector is supported
+    const supportsHas = CSS.supports('selector(:has(*))');
+    
+    if (!supportsHas && checkbox && mobileMenu) {
+        // Fallback: use JavaScript to manually handle checkbox changes
+        checkbox.addEventListener('change', function() {
+            if (this.checked) {
+                mobileMenu.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            } else {
+                mobileMenu.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+        });
+        
+        // Close menu when clicking on navigation links
+        const navLinks = mobileMenu.querySelectorAll('a.nav-item:not([target="_blank"])');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                checkbox.checked = false;
+                mobileMenu.style.display = 'none';
+                document.body.style.overflow = '';
             });
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            if (checkbox.checked && mobileMenu && !mobileMenu.contains(event.target) && event.target !== checkbox) {
+                // Find the label that controls the checkbox
+                const labels = document.querySelectorAll('label[for="mobile-menu-toggle"]');
+                let clickedLabel = false;
+                labels.forEach(label => {
+                    if (label.contains(event.target)) {
+                        clickedLabel = true;
+                    }
+                });
+                
+                if (!clickedLabel) {
+                    checkbox.checked = false;
+                    mobileMenu.style.display = 'none';
+                    document.body.style.overflow = '';
+                }
+            }
         });
     }
 }
