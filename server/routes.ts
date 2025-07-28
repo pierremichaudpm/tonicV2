@@ -4,7 +4,6 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import express from "express";
-import fetch from 'node-fetch';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -28,8 +27,6 @@ const readDataFile = (filename: string) => {
         const filePath = path.join(__dirname, '../client/public/js', filename);
         const content = fs.readFileSync(filePath, 'utf8');
         
-        console.log('Reading file:', filename);
-        
         // Extract the array from the JavaScript file based on variable names
         let match;
         if (filename.includes('emplois-data-en')) {
@@ -42,30 +39,23 @@ const readDataFile = (filename: string) => {
             match = content.match(/const\s+pressReleases\s*=\s*(\[[\s\S]*?\]);/);
         }
         
-        console.log('Match found:', !!match);
-        
         if (match) {
             try {
                 // First try JSON parsing for simple cases
                 return JSON.parse(match[1]);
             } catch (e) {
-                console.log('JSON parse failed, trying eval');
                 // If JSON fails, evaluate the JavaScript array (safe in controlled context)
                 try {
                     // Use Function constructor instead of eval for safety
                     const fn = new Function('return ' + match[1]);
-                    const result = fn();
-                    console.log('Eval successful, items count:', result.length);
-                    return result;
+                    return fn();
                 } catch (evalError) {
-                    console.error('Both JSON and Function constructor failed:', evalError);
                     return [];
                 }
             }
         }
         return [];
     } catch (error) {
-        console.error('Error reading data file:', error);
         return [];
     }
 };
@@ -80,7 +70,6 @@ const ${variableName} = ${JSON.stringify(data, null, 4)};`;
         fs.writeFileSync(filePath, content, 'utf8');
         return true;
     } catch (error) {
-        console.error('Error writing data file:', error);
         return false;
     }
 };
@@ -201,59 +190,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // AI Translation endpoint (password protected)
-  app.post('/api/translate', authenticate, async (req, res) => {
-    try {
-      const { text, fromLang, toLang } = req.body;
-      
-      if (!text || !fromLang || !toLang) {
-        return res.status(400).json({ error: 'Missing required parameters' });
-      }
-      
-      // Use Anthropic API for translation
-      const response = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': process.env.ANTHROPIC_API_KEY || '',
-          'anthropic-version': '2023-06-01'
-        } as Record<string, string>,
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 8192,
-          messages: [{
-            role: 'user',
-            content: `Translate the following ${fromLang === 'fr' ? 'French' : 'English'} text to ${toLang === 'en' ? 'English' : 'French'}. 
-            
-            CRITICAL RULES:
-            1. Preserve ALL HTML tags exactly as they are (including spans, links, etc.)
-            2. Keep proper names in their original form (Montréal, Gilles-Villeneuve, etc.)
-            3. Maintain the same formatting and structure
-            4. Only translate the actual text content, not HTML attributes
-            5. Return the COMPLETE translated text with preserved HTML - do not truncate
-            6. Translate ALL content, even long passages
-            
-            Text to translate:
-            ${text}`
-          }]
-        })
-      });
-      
-      if (!response.ok) {
-        console.error('Anthropic API error:', response.status);
-        return res.status(500).json({ error: 'Translation service unavailable' });
-      }
-      
-      const result = await response.json() as any;
-      const translatedText = result.content?.[0]?.text || text;
-      
-      res.json({ translatedText });
-      
-    } catch (error) {
-      console.error('Translation error:', error);
-      res.status(500).json({ error: 'Translation failed' });
-    }
-  });
+  // Translation endpoint removed - not currently in use
   
   // Serve CSS, JS, and images as static files
   app.use("/css", express.static(path.join(publicPath, "css")));

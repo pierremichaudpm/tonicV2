@@ -56,7 +56,9 @@ app.use((req, res, next) => {
         logLine = logLine.slice(0, 79) + "…";
       }
 
-      log(logLine);
+      if (res.statusCode >= 400) {
+        log(logLine);
+      }
     }
   });
 

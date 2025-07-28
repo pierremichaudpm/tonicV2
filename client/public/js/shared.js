@@ -7,7 +7,7 @@
     if (typeof window.Icons !== 'undefined') {
         return;
     }
-    
+
     window.Icons = {
     grid: () => '<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>',
 
@@ -97,10 +97,10 @@ function createNavItemsEnglish() {
 function toggleMobileMenu() {
     const mobileMenu = document.getElementById('mobileMenu');
     if (!mobileMenu) return;
-    
+
     // Use only the 'active' class to determine state (CSS handles display)
     const isCurrentlyOpen = mobileMenu.classList.contains('active');
-    
+
     if (isCurrentlyOpen) {
         // Close menu
         mobileMenu.classList.remove('active');
@@ -110,7 +110,7 @@ function toggleMobileMenu() {
         mobileMenu.classList.add('active');
         document.body.style.overflow = 'hidden';
     }
-    
+
     // Update button icon - simple and reliable
     const headerButton = document.getElementById('mobileMenuButton');
     if (headerButton) {
@@ -131,7 +131,7 @@ function toggleMobileMenu() {
 function initializeMobileMenu() {
     const hamburgerButton = document.getElementById('mobileMenuButton');
     const mobileMenu = document.getElementById('mobileMenu');
-    
+
     if (hamburgerButton && mobileMenu) {
         // Hamburger button - open menu
         hamburgerButton.addEventListener('click', function(e) {
@@ -139,7 +139,7 @@ function initializeMobileMenu() {
             e.stopPropagation();
             toggleMobileMenu();
         });
-        
+
         // Close button - close menu
         const closeButtons = mobileMenu.querySelectorAll('.mobile-close-btn');
         closeButtons.forEach(button => {
@@ -149,7 +149,7 @@ function initializeMobileMenu() {
                 toggleMobileMenu();
             });
         });
-        
+
         // Close menu when clicking on navigation links (not social links)
         const navLinks = mobileMenu.querySelectorAll('a.nav-item:not([target="_blank"])');
         navLinks.forEach(link => {
@@ -161,7 +161,7 @@ function initializeMobileMenu() {
                 }, 100);
             });
         });
-        
+
         // Close menu when clicking outside
         document.addEventListener('click', function(event) {
             if (mobileMenu.classList.contains('active') && 
@@ -255,10 +255,10 @@ function generateDesktopNav(isEnglish = false, currentPage = '') {
     const navItems = isEnglish ? createNavItemsEnglish() : createNavItemsFrench();
     const langLink = isEnglish ? 'index.html' : 'index-en.html';
     const langText = isEnglish ? 'FR' : 'EN';
-    
+
     // Normalize current page for comparison
     const normalizedCurrentPage = currentPage.toLowerCase().replace(/^\//, '');
-    
+
     return `
         <nav class="hidden md:flex lg:flex items-center gap-0.5 px-2 py-0.5 rounded-full nav-container" style="background:rgba(0,0,0,0.2);backdrop-filter:blur(10px)">
             ${navItems.map(item => {
@@ -266,7 +266,7 @@ function generateDesktopNav(isEnglish = false, currentPage = '') {
                 const isActive = item.href && normalizedCurrentPage && 
                     (item.href.toLowerCase() === normalizedCurrentPage || 
                      item.href.toLowerCase().endsWith('/' + normalizedCurrentPage));
-                
+
                 return `
                     <a href="${item.href}" ${item.target ? `target="${item.target}"` : ''} class="nav-item flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-white/10 transition-all text-white hover:text-white cursor-pointer${isActive ? ' bg-white/10' : ''}" data-tooltip="${item.tooltip || item.label}">
                         <div style="color:white">${item.icon}</div>
@@ -286,10 +286,10 @@ function generateMobileMenu(isEnglish = false, currentPage = '') {
     const langLink = isEnglish ? 'index.html' : 'index-en.html';
     const langText = isEnglish ? 'Français' : 'English';
     const langIcon = window.Icons.lang();
-    
+
     // Normalize current page for comparison
     const normalizedCurrentPage = currentPage.toLowerCase().replace(/^\//, '');
-    
+
     return `
         <div id="mobileMenu" class="mobile-menu" style="padding-top: 0 !important;">
             <!-- Mobile Menu Header - Fixed at top -->
@@ -315,7 +315,7 @@ function generateMobileMenu(isEnglish = false, currentPage = '') {
                         const isActive = item.href && normalizedCurrentPage && 
                             (item.href.toLowerCase() === normalizedCurrentPage || 
                              item.href.toLowerCase().endsWith('/' + normalizedCurrentPage));
-                        
+
                         return `
                             <a href="${item.href}" ${item.target ? `target="${item.target}"` : ''} class="nav-item w-full${isActive ? ' active' : ''}">
                                 <div style="color: white; stroke: white;">${item.icon}</div>
@@ -349,7 +349,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (typeof window.toggleMobileMenu === 'undefined') {
         window.toggleMobileMenu = toggleMobileMenu;
     }
-    
+
     // Make updateMenuButtonIcons available globally too
     if (typeof window.updateMenuButtonIcons === 'undefined') {
         window.updateMenuButtonIcons = updateMenuButtonIcons;
@@ -367,7 +367,7 @@ document.addEventListener('DOMContentLoaded', function() {
             mobileMenu.classList.contains('active') && 
             !mobileMenu.contains(event.target) && 
             !menuButton) {
-            
+
             mobileMenu.style.display = 'none';
             mobileMenu.classList.remove('active');
             document.body.style.overflow = '';
@@ -396,15 +396,15 @@ function generateStandardHeader(isEnglish = false, currentPage = '') {
     const logoAlt = isEnglish 
         ? "Groupe Tonic Logo - Creator of memorable experiences for over 40 years"
         : "Logo Groupe Tonic - Créateur d'expériences mémorables depuis plus de 40 ans";
-    
+
     const taglineDesktop = isEnglish 
         ? "| Creator of memorable experiences"
         : "| Créateur d'expériences mémorables";
-    
+
     const taglineMobile = isEnglish 
         ? "Creator of memorable experiences"
         : "Créateur d'expériences mémorables";
-    
+
     return `
         <header class="fixed top-0 left-0 right-0 z-50" style="background: linear-gradient(180deg, rgba(0,0,0,0.98) 0%, rgba(0,0,0,0.95) 50%, rgba(0,0,0,0.85) 100%); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); box-shadow: 0 4px 30px rgba(0,0,0,0.5);">
             <div class="container mx-auto px-2 py-2 sm:px-4 sm:py-5">
@@ -441,7 +441,7 @@ function initializeNavigation(isEnglish = false, currentPage = '') {
         });
         return;
     }
-    
+
     // Find header element - looking for main-header id
     const headerElement = document.getElementById('main-header') || document.querySelector('header');
     if (headerElement) {
@@ -487,12 +487,12 @@ if (typeof window !== 'undefined') {
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize mobile menu functionality
     initializeMobileMenu();
-    
+
     // Close menu when clicking outside
     document.addEventListener('click', function(event) {
         const mobileMenu = document.getElementById('mobileMenu');
         const mobileMenuButton = document.getElementById('mobileMenuButton');
-        
+
         if (mobileMenu && mobileMenu.classList.contains('active')) {
             // Check if click is outside menu and not the button
             if (!mobileMenu.contains(event.target) && !mobileMenuButton.contains(event.target)) {
@@ -500,7 +500,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
-    
+
     // Close menu when clicking on navigation links (not social links)
     const mobileMenu = document.getElementById('mobileMenu');
     if (mobileMenu) {
@@ -523,4 +523,3 @@ if (document.readyState === 'loading') {
     // DOM is already ready
     initializeMobileMenu();
 }
-

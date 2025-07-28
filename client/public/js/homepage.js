@@ -206,13 +206,13 @@ function showHeroView(index) {
     stopAutoPlay();
     currentPropertyIndex = index;
     const event = events[index];
-    
+
     const root = document.getElementById('root');
     root.innerHTML = `
         <div class="hero-view-container">
             <div class="hero-background" style="background-image: url('${event.background}')"></div>
             <div class="hero-overlay" style="background: linear-gradient(135deg, ${event.gradient})"></div>
-            
+
             <!-- Header -->
             <header class="header-gradient">
                 <div class="header-content">
