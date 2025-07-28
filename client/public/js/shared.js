@@ -131,8 +131,7 @@ function formatDate(dateString) {
 
 // Initialize shared components
 document.addEventListener('DOMContentLoaded', function() {
-    // Track page load time for performance (production ready)
-    const loadTime = performance.now();
+    // Production-ready initialization
     
     // Close mobile menu when clicking outside
     document.addEventListener('click', function(event) {
