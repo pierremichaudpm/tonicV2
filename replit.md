@@ -623,3 +623,10 @@ The website is now fully operational and matches the original local/Netlify func
 - **Development files cleanup**: Removed Python files, migration scripts, and temporary documentation
 - **Clean architecture**: Website now runs purely on simple file-based CMS with password authentication
 - **Status**: ✅ PRODUCTION READY - Eliminated all unnecessary dependencies and complexity
+
+### CMS Password Update - January 28, 2025 ✅ COMPLETED
+- **Password changed**: Updated CMS authentication password from 'admin123' to 'Axelle20' as requested
+- **File updated**: Modified ADMIN_PASSWORD constant in server.js
+- **Authentication preserved**: Simple password-based authentication system continues to work
+- **All CMS interfaces affected**: Password change applies to all admin routes (/admin/*)
+- **Status**: ✅ COMPLETED - New password 'Axelle20' is now active for CMS access

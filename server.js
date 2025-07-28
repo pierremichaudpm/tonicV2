@@ -12,7 +12,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Admin password for CMS
-const ADMIN_PASSWORD = 'admin123';
+const ADMIN_PASSWORD = 'Axelle20';
 
 // Enable gzip compression
 app.use(compression());
