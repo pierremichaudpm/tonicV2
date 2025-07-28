@@ -584,6 +584,7 @@
         <!-- Hero Section -->
         <section class="container mx-auto px-4 py-12 sm:py-16 text-center">
             <h1 class="hero-title text-5xl sm:text-6xl lg:text-7xl font-black mb-4 fade-in">Communiqués</h1>
+            <p class="text-xl text-white leading-tight">Découvrez nos dernières actualités et annonces importantes</p>
 
         </section>
 
@@ -688,23 +689,18 @@
 
         // Get news data function
         function getNews() {
-            console.log('Getting news data, pressReleases available:', typeof pressReleases !== 'undefined');
             return typeof pressReleases !== 'undefined' ? pressReleases : [];
         }
 
         // Render news with colored cards - matching jobs structure
         function renderNews() {
-            console.log('Rendering news...');
             const news = getNews();
-            console.log('News data length:', news.length, 'DOM.prList:', DOM.prList);
 
             if (!DOM.prList) {
-                console.error('DOM.prList element not found!');
                 return;
             }
 
             if (news.length === 0) {
-                console.log('No news found, showing empty message');
                 DOM.prList.innerHTML = '<p class="text-white text-center py-8">Aucun communiqué disponible.</p>';
                 return;
             }
@@ -753,13 +749,10 @@
         window.openNewsModal = function(id) {
             const item = getNews().find(news => String(news.id) === String(id));
             if (!item) {
-                console.error('News item not found:', id);
                 return;
             }
 
-            console.log('Opening modal for item:', item.title);
             DOM.modalTitle.textContent = item.title;
-            console.log('Modal title set to:', DOM.modalTitle.textContent);
             DOM.modalContent.innerHTML = `
                 <div class="text-white">
                     <div class="mb-4">
@@ -786,22 +779,12 @@
 
 
 
-        // Initialize with data loading check
+        // Initialize application
         function initializeApp() {
-            console.log('Initializing app...');
             DOM.prList = document.getElementById('prList');
             DOM.modal = document.getElementById('newsModal');
             DOM.modalTitle = document.getElementById('modalTitle');
             DOM.modalContent = document.getElementById('modalContent');
-
-            console.log('DOM elements found:', {
-                prList: DOM.prList,
-                modal: DOM.modal,
-                modalTitle: DOM.modalTitle,
-                modalContent: DOM.modalContent
-            });
-
-            console.log('pressReleases available:', typeof pressReleases !== 'undefined', typeof pressReleases !== 'undefined' ? pressReleases.length : 0);
 
             // Render news
             renderNews();
@@ -820,14 +803,10 @@
             });
         }
 
-        // Simple initialization - let's try without timing complexity
+        // Initialize application when DOM is ready
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM Content Loaded');
-            
-            // Add a small delay to ensure scripts have loaded
+            // Small delay to ensure scripts have loaded
             setTimeout(() => {
-                console.log('Checking for data after timeout...');
-                console.log('pressReleases:', typeof pressReleases !== 'undefined' ? pressReleases : 'undefined');
                 initializeApp();
             }, 200);
         });

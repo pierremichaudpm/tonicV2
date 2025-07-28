@@ -1,4 +1,3 @@
-console.log('communiques-data.js file loaded');
 const pressReleases = [
     {
         "id": "1753537078749",

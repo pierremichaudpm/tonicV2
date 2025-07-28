@@ -500,6 +500,16 @@ The website is now fully operational and matches the original local/Netlify func
 - **File System**: Enhanced JavaScript file reading/writing with Function constructor for array parsing
 - **Status**: ✅ FULLY OPERATIONAL - Complete CMS with authentication, translation, and data persistence
 
+### French Communiques Page Data Loading Fix - January 28, 2025 ✅ COMPLETED
+- **Fixed broken French communiques page**: Resolved empty content display issue where pressReleases data wasn't loading
+- **Root cause identified**: French page used `window.pressReleases` check while working English version used `typeof communiquesData !== 'undefined'`
+- **Solution applied**: Updated French page data access pattern to match working English implementation
+- **Added French subtitle**: Added "Découvrez nos dernières actualités et annonces importantes" under main title
+- **Code cleanup completed**: Removed all debugging console logs for production readiness
+- **Consistent functionality**: Both French and English communiques pages now work identically
+- **Animation timing preserved**: Maintained optimized 3.5s splash and 7s grid animations from previous work
+- **Status**: ✅ PRODUCTION READY - Complete parity between French and English news pages achieved
+
 ### Complete Website Optimization - July 27, 2025 ✅ COMPLETED
 - **Image optimization**: Converted all 6 hero JPG images to WebP format with 50-60% size reduction
 - **Image cleanup**: Removed duplicate and unused image files, reducing image directory from 5.5MB to 2.8MB (49% reduction)
