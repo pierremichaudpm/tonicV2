@@ -409,10 +409,58 @@ header {
     margin-bottom: 0.25rem !important;
 }
 
-/* Force tight spacing for all content in modals */
-#modalContent * {
+/* Force tight spacing for all content in modals - MOST AGGRESSIVE */
+#modalContent *,
+#modalContent .prose *,
+#modalContent .prose-invert * {
     margin-top: 0.25rem !important;
     margin-bottom: 0.25rem !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+/* Override Tailwind prose classes - NUCLEAR OPTION */
+#modalContent .prose p,
+#modalContent .prose-invert p,
+#modalContent .prose p:first-child,
+#modalContent .prose p:last-child,
+#modalContent .prose-invert p:first-child,
+#modalContent .prose-invert p:last-child {
+    margin-top: 0.1rem !important;
+    margin-bottom: 0.1rem !important;
+    margin-block-start: 0.1rem !important;
+    margin-block-end: 0.1rem !important;
+}
+
+#modalContent .prose h1,
+#modalContent .prose h2,
+#modalContent .prose h3,
+#modalContent .prose h4,
+#modalContent .prose h5,
+#modalContent .prose h6,
+#modalContent .prose-invert h1,
+#modalContent .prose-invert h2,
+#modalContent .prose-invert h3,
+#modalContent .prose-invert h4,
+#modalContent .prose-invert h5,
+#modalContent .prose-invert h6 {
+    margin-top: 0.1rem !important;
+    margin-bottom: 0.1rem !important;
+    margin-block-start: 0.1rem !important;
+    margin-block-end: 0.1rem !important;
+}
+
+/* Ultra-aggressive spacing reset */
+#modalContent .prose > *,
+#modalContent .prose-invert > * {
+    margin-top: 0.1rem !important;
+    margin-bottom: 0.1rem !important;
+}
+
+/* Reset browser default paragraph margins */
+#modalContent p {
+    margin-block-start: 0.1rem !important;
+    margin-block-end: 0.1rem !important;
 }
 
 /* Modal Content Headings - White color for modals */
@@ -428,8 +476,8 @@ header {
     font-size: 2.5em !important;
     font-weight: bold !important;
     line-height: 1.2 !important;
-    margin-top: 1em !important;
-    margin-bottom: 0.5em !important;
+    margin-top: 0.25rem !important;
+    margin-bottom: 0.25rem !important;
     color: white !important;
 }
 
@@ -437,8 +485,8 @@ header {
     font-size: 2em !important;
     font-weight: bold !important;
     line-height: 1.3 !important;
-    margin-top: 0.8em !important;
-    margin-bottom: 0.4em !important;
+    margin-top: 0.25rem !important;
+    margin-bottom: 0.25rem !important;
     color: white !important;
 }
 
@@ -446,32 +494,32 @@ header {
     font-size: 1.5em !important;
     font-weight: bold !important;
     line-height: 1.4 !important;
-    margin-top: 0.6em !important;
-    margin-bottom: 0.3em !important;
+    margin-top: 0.25rem !important;
+    margin-bottom: 0.25rem !important;
     color: white !important;
 }
 
 #modalContent h4 {
     font-size: 1.25em !important;
     font-weight: bold !important;
-    margin-top: 0.5em !important;
-    margin-bottom: 0.25em !important;
+    margin-top: 0.25rem !important;
+    margin-bottom: 0.25rem !important;
     color: white !important;
 }
 
 #modalContent h5 {
     font-size: 1.1em !important;
     font-weight: bold !important;
-    margin-top: 0.4em !important;
-    margin-bottom: 0.2em !important;
+    margin-top: 0.25rem !important;
+    margin-bottom: 0.25rem !important;
     color: white !important;
 }
 
 #modalContent h6 {
     font-size: 1em !important;
     font-weight: bold !important;
-    margin-top: 0.3em !important;
-    margin-bottom: 0.15em !important;
+    margin-top: 0.25rem !important;
+    margin-bottom: 0.25rem !important;
     color: white !important;
 }
 
