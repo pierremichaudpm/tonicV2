@@ -497,7 +497,7 @@
                     <img src="images/tonic-logo.png" alt="Groupe Tonic Logo" style="width: clamp(180px,35vw,250px); height: auto;" />
                     <span class="text-white text-xs md:text-sm font-medium leading-tight" style="text-shadow: 0 2px 10px rgba(0,0,0,0.9);">Créateur d'expériences mémorables</span>
                 </div>
-                <button onclick="console.log('Button clicked'); if(window.toggleMobileMenu) { window.toggleMobileMenu(); } else { document.getElementById('mobileMenu').classList.remove('active'); document.getElementById('mobileMenu').style.display='none'; }" 
+                <button onclick="document.getElementById('mobileMenu').classList.remove('active'); document.getElementById('mobileMenu').style.display='none'; document.body.style.overflow='';" 
                         class="p-2 hover:bg-white/10 rounded-lg" 
                         aria-label="Close">
                     <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -603,7 +603,22 @@
     <script src="js/communiques-data.js?v=1753739263"></script>
 
     <!-- Load shared JavaScript -->
+    <!-- Load shared JavaScript -->
     <script src="js/shared.js?v=1753739263"></script>
+
+    <!-- Ensure toggleMobileMenu is available -->
+    <script>
+    // Wait for shared.js to load, then ensure the function is globally available
+    document.addEventListener('DOMContentLoaded', function() {
+        // If toggleMobileMenu exists but isn't global, make it global
+        if (typeof toggleMobileMenu === 'function') {
+            window.toggleMobileMenu = toggleMobileMenu;
+        }
+        
+        // Debug: Check if function is available
+        console.log('toggleMobileMenu available:', typeof window.toggleMobileMenu);
+    });
+    </script>
     
 
 
