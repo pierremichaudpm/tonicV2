@@ -263,25 +263,40 @@
         /* Mobile Menu Override - Complete Fix */
         .mobile-menu,
         #mobileMenu {
-            display: none !important;
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            right: 0 !important;
-            bottom: 0 !important;
-            width: 100vw !important;
-            height: 100vh !important;
-            background: rgba(0,0,0,0.95) !important;
-            backdrop-filter: blur(20px) !important;
-            z-index: 2000000 !important;
-            padding-top: 5rem !important;
-            overflow-y: auto !important;
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.95);
+            backdrop-filter: blur(20px);
+            z-index: 2000000;
+            padding-top: 2rem;
+            overflow-y: auto;
         }
         
         .mobile-menu.active,
         #mobileMenu.active {
-            display: block !important;
-            z-index: 2000000 !important;
+            display: block;
+        }
+        
+        .mobile-close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            z-index: 2000001;
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         /* Ensure mobile menu content is visible */
@@ -474,16 +489,13 @@
 
     <!-- Mobile Menu -->
     <div id="mobileMenu" class="mobile-menu">
-        <!-- Close Button - FORCE VISIBLE -->
-        <div style="position: absolute; top: 1rem; right: 1rem; z-index: 2000010; width: 48px; height: 48px;">
-            <button onclick="toggleMobileMenu()" class="mobile-close-btn" style="position: absolute !important; top: 0 !important; right: 0 !important; z-index: 2000010 !important; color: white !important; background: rgba(255,255,255,0.3) !important; border: 2px solid white !important; border-radius: 8px !important; padding: 8px !important; cursor: pointer !important; display: block !important; width: 48px !important; height: 48px !important; visibility: visible !important; opacity: 1 !important;">
-                <svg style="width: 24px !important; height: 24px !important; color: white !important; stroke: white !important; fill: none !important;" stroke="white" stroke-width="2" viewBox="0 0 24 24">
-                    <path d="M6 18L18 6M6 6l12 12" stroke="white"></path>
+        <div class="container mx-auto px-4 py-4">
+            <!-- Close Button -->
+            <button onclick="toggleMobileMenu()" class="mobile-close-btn absolute top-4 right-4 p-2 hover:bg-white/10 rounded-lg text-white bg-white/20 border border-white/30" aria-label="Fermer">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
             </button>
-        </div>
-        
-        <div class="container mx-auto px-4 py-4">
 
             <div class="space-y-2 mt-8">
                 <a href="index.html" class="nav-item w-full">
@@ -744,24 +756,13 @@
             if (mobileMenu.classList.contains('active')) {
                 console.log('Closing mobile menu');
                 mobileMenu.classList.remove('active');
+                mobileMenu.style.display = 'none';
                 document.body.style.overflow = '';
             } else {
                 console.log('Opening mobile menu');
+                mobileMenu.style.display = 'block';
                 mobileMenu.classList.add('active');
                 document.body.style.overflow = 'hidden';
-                
-                // Ensure close button is visible after opening
-                setTimeout(() => {
-                    const closeButton = mobileMenu.querySelector('.mobile-close-btn');
-                    if (closeButton) {
-                        console.log('Close button found:', closeButton);
-                        closeButton.style.display = 'block';
-                        closeButton.style.visibility = 'visible';
-                        closeButton.style.opacity = '1';
-                    } else {
-                        console.error('Close button not found in mobile menu');
-                    }
-                }, 50);
             }
         }
 
