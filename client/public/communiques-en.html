@@ -442,61 +442,18 @@
         right: 0 !important;
         bottom: 0 !important;
     }
-
-    /* Fix 3: Ensure mobile menu header is fixed at top with high z-index */
-    #mobileMenu .container:first-child {
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        right: 0 !important;
-        z-index: 1000000 !important;
-        background: rgba(0,0,0,0.95) !important;
-        backdrop-filter: blur(20px) !important;
-    }
-
-    /* Fix 4: Ensure close button has proper positioning and hover states */
-    #mobileMenu .mobile-close-btn,
-    #mobileMenu button[onclick="toggleMobileMenu()"] {
-        position: absolute !important;
-        top: 1rem !important;
-        right: 1rem !important;
-        z-index: 1000001 !important;
-        background: rgba(255,255,255,0.2) !important;
-        border: none !important;
-        color: white !important;
-        padding: 0.5rem !important;
-        border-radius: 0.5rem !important;
-        cursor: pointer !important;
-        width: 40px !important;
-        height: 40px !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-    }
-
-    #mobileMenu .mobile-close-btn:hover,
-    #mobileMenu button[onclick="toggleMobileMenu()"]:hover {
-        background: rgba(255,255,255,0.3) !important;
-    }
     </style>
 
     <script>
-    /* Add toggleMobileMenu function */
+    /* Fix 3: Define toggleMobileMenu function */
     function toggleMobileMenu() {
         var menu = document.getElementById('mobileMenu');
-        var button = document.getElementById('mobileMenuButton');
-        var hamburgerIcon = button.querySelector('svg');
-        
         if (menu.classList.contains('active')) {
             menu.classList.remove('active');
             document.body.style.overflow = '';
-            // Switch back to hamburger icon
-            hamburgerIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M3 12h18M3 6h18M3 18h18"></path>';
         } else {
             menu.classList.add('active');
             document.body.style.overflow = 'hidden';
-            // Switch to X icon
-            hamburgerIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>';
         }
     }
     </script>
@@ -568,7 +525,7 @@
     </header>
 
     <!-- Mobile Menu -->
-    <div id="mobileMenu" class="mobile-menu" style="padding-top: 0 !important; display: none !important;">
+    <div id="mobileMenu" class="mobile-menu" style="padding-top: 0 !important;">
         <!-- Mobile Menu Header - Fixed at top -->
         <div class="bg-black/95 backdrop-blur-md border-b border-white/10 px-2 py-2 sm:px-4 sm:py-5" style="position: absolute; top: 0; left: 0; right: 0; z-index: 1000;">
             <div class="flex items-center justify-between">
@@ -576,7 +533,7 @@
                     <img src="images/tonic-logo.png" alt="Groupe Tonic Logo" style="width: clamp(180px,35vw,250px); height: auto;" />
                     <span class="text-white text-xs md:text-sm font-medium leading-tight" style="text-shadow: 0 2px 10px rgba(0,0,0,0.9);">Créateur d'expériences mémorables</span>
                 </div>
-                <button class="mobile-close-btn p-2 hover:bg-white/10 rounded-lg" aria-label="Close">
+                <button onclick="toggleMobileMenu()" class="p-2 hover:bg-white/10 rounded-lg" aria-label="Close">
                     <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path d="M6 18L18 6M6 6l12 12"></path>
                     </svg>
@@ -684,13 +641,7 @@
     <!-- Load shared JavaScript -->
     <script src="js/shared.js?v=1753739263"></script>
     
-    <!-- Mobile menu initialization - Simplified -->
-    <script>
-        // Simple initialization for any remaining elements that need it
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('Mobile menu using toggleMobileMenu() function');
-        });
-    </script>
+
 
     <!-- Page specific JavaScript - Matching jobs page structure -->
     <script>
