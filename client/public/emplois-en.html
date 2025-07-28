@@ -427,12 +427,15 @@
                     <!-- Mobile Menu Button -->
                     <button id="mobileMenuButton" onclick="
                         const menu = document.getElementById('mobileMenu');
-                        menu.classList.toggle('active');
                         const svg = this.querySelector('svg');
-                        if (menu.classList.contains('active')) {
-                            svg.innerHTML = '<path d=\&quot;M6 18L18 6M6 6l12 12\&quot;></path>';
-                        } else {
+                        const isCurrentlyActive = menu.classList.contains('active');
+                        
+                        if (isCurrentlyActive) {
+                            menu.classList.remove('active');
                             svg.innerHTML = '<path d=\&quot;M3 12h18M3 6h18M3 18h18\&quot;></path>';
+                        } else {
+                            menu.classList.add('active');
+                            svg.innerHTML = '<path d=\&quot;M6 18L18 6M6 6l12 12\&quot;></path>';
                         }
                     " class="md:hidden p-2 hover:bg-white/10 rounded-lg transition-colors text-white" style="background: rgba(0,0,0,0.2); backdrop-filter: blur(10px); color: white;">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
