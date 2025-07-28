@@ -481,9 +481,9 @@
                         <a href="communiques-en.html" class="lang-switcher"><span>EN</span></a>
                     </nav>
 
-                    <!-- Mobile Menu Button - Always Visible on Mobile -->
-                    <button onclick="toggleMobileMenu()" class="md:hidden p-3 bg-white/20 hover:bg-white/30 rounded-lg transition-colors border border-white/30" style="min-width: 48px; min-height: 48px;">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <!-- Mobile Menu Button -->
+                    <button onclick="toggleMobileMenu()" class="md:hidden p-2 hover:bg-white/10 rounded-lg transition-colors text-white">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path d="M3 12h18M3 6h18M3 18h18"></path>
                         </svg>
                     </button>
@@ -495,13 +495,20 @@
     <!-- Mobile Menu -->
     <div id="mobileMenu" class="mobile-menu">
         <div class="container mx-auto px-4 py-4">
-            <button onclick="toggleMobileMenu()" class="absolute top-4 right-4 p-2 hover:bg-white/10 rounded-lg" aria-label="Close">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-            </button>
+            <!-- Mobile Menu Header -->
+            <div class="flex items-center justify-between mb-8 pt-4">
+                <div class="flex items-center gap-4">
+                    <img src="images/tonic-logo.png" alt="Groupe Tonic Logo" style="width: 120px; height: auto;" />
+                    <span class="text-white text-xs font-medium">Créateur d'expériences mémorables</span>
+                </div>
+                <button onclick="toggleMobileMenu()" class="p-2 hover:bg-white/10 rounded-lg" aria-label="Close">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
 
-            <div class="space-y-2 mt-8">
+            <div class="space-y-2">
                 <a href="index.html" class="nav-item w-full">
                     <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" style="color: white; stroke: white;"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
                     <span>Accueil</span>
