@@ -350,11 +350,13 @@ function initializeNavigation(isEnglish = false, currentPage = '') {
         return;
     }
     
-    // Find header element
-    const headerElement = document.querySelector('header');
+    // Find header element - looking for main-header id
+    const headerElement = document.getElementById('main-header') || document.querySelector('header');
     if (headerElement) {
         // Replace the entire header with standardized version
         headerElement.outerHTML = generateStandardHeader(isEnglish, currentPage);
+    } else {
+        console.error('Header element not found');
     }
 }
 
