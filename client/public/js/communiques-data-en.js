@@ -59,5 +59,14 @@ const communiquesData = [
         "date": "2025-07-28",
         "content": "<p>rmyrymyrm</p>",
         "isAutoTranslated": true
+    },
+    {
+        "id": "1753722685490",
+        "title": "tresrt",
+        "subtitle": "job test",
+        "category": "Groupe Tonic",
+        "date": "2025-07-28",
+        "content": "<p>test</p>",
+        "isAutoTranslated": true
     }
 ];
