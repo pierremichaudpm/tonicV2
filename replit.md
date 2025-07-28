@@ -242,6 +242,13 @@ The website is now fully operational and matches the original local/Netlify func
 - **Responsive breakpoints**: Changed mobile menu from lg: (1024px) to md: (768px) for tablet compatibility
 - **Ultra-compact hero view**: Hero content with minimal spacing for optimal tablet landscape viewing
 
+### Mobile Menu News Pages Fix - January 28, 2025 🔄 IN PROGRESS
+- **English news page mobile menu**: ✅ FULLY FUNCTIONAL - Perfect spacing and close button working
+- **French news page mobile menu**: ⚠️ PARTIAL - Good spacing achieved but close button still non-functional
+- **Applied fixes**: Corrected excessive spacing (space-y-4, 1rem padding), added proper header positioning
+- **Remaining issue**: JavaScript state detection problem preventing French mobile menu close functionality
+- **Next step**: Debug why computed style detection works on English but not French page
+
 ### Mobile Menu Complete Fix - January 28, 2025 ✅ COMPLETED
 - **Universal fix applied**: Applied working solution (Z-index 999999, toggleMobileMenu() function) to ALL website pages
 - **Pages fixed**: All 10+ secondary pages including French/English versions of jobs, news, contact, about, and legal pages (privacy-policy.html, terms-of-use.html, politique-de-confidentialite.html, conditions-utilisation.html)
