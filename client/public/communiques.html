@@ -444,19 +444,7 @@
     }
     </style>
 
-    <script>
-    /* Fix 3: Define toggleMobileMenu function */
-    function toggleMobileMenu() {
-        var menu = document.getElementById('mobileMenu');
-        if (menu.classList.contains('active')) {
-            menu.classList.remove('active');
-            document.body.style.overflow = '';
-        } else {
-            menu.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-    }
-    </script>
+
 </head>
 <body class="bg-black text-white min-h-screen">
 
@@ -637,6 +625,16 @@
 
     <!-- Load shared JavaScript -->
     <script src="js/shared.js?v=1753739263"></script>
+    
+    <!-- Initialize mobile menu after shared.js loads -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Ensure mobile menu is properly initialized
+            if (typeof window.initializeMobileMenu === 'function') {
+                window.initializeMobileMenu();
+            }
+        });
+    </script>
 
     <!-- Page specific JavaScript - Matching jobs page structure -->
     <script>
