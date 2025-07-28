@@ -503,28 +503,55 @@
     <script src="js/shared.js"></script>
     <script>
         // Initialize navigation components using shared.js
+        function initializeNavigation() {
+            console.log('Initializing navigation...');
+            
+            // Check if shared.js functions are available
+            if (typeof generateDesktopNav !== 'function' || 
+                typeof generateMobileMenuButton !== 'function' || 
+                typeof generateMobileMenu !== 'function') {
+                console.log('Shared.js functions not ready, retrying...');
+                setTimeout(initializeNavigation, 50);
+                return;
+            }
+
+            // Generate desktop navigation
+            const desktopNav = document.getElementById('desktopNav');
+            if (desktopNav) {
+                console.log('Generating desktop nav...');
+                desktopNav.innerHTML = generateDesktopNav(false); // false for French
+            }
+
+            // Generate mobile menu button
+            const mobileMenuButton = document.getElementById('mobileMenuButton');
+            if (mobileMenuButton) {
+                console.log('Generating mobile menu button...');
+                mobileMenuButton.innerHTML = generateMobileMenuButton();
+            }
+
+            // Generate mobile menu
+            const mobileMenuContainer = document.getElementById('mobileMenuContainer');
+            if (mobileMenuContainer) {
+                console.log('Generating mobile menu...');
+                mobileMenuContainer.innerHTML = generateMobileMenu(false); // false for French
+            }
+
+            console.log('Navigation initialization complete');
+        }
+
+        // Start initialization when DOM is ready
         document.addEventListener('DOMContentLoaded', function() {
-            // Wait for shared.js to load
-            setTimeout(function() {
-                // Generate desktop navigation
-                const desktopNav = document.getElementById('desktopNav');
-                if (desktopNav && typeof generateDesktopNav === 'function') {
-                    desktopNav.innerHTML = generateDesktopNav(false); // false for French
-                }
+            initializeNavigation();
+        });
 
-                // Generate mobile menu button
-                const mobileMenuButton = document.getElementById('mobileMenuButton');
-                if (mobileMenuButton && typeof generateMobileMenuButton === 'function') {
-                    mobileMenuButton.innerHTML = generateMobileMenuButton();
-                }
-
-                // Generate mobile menu
-                const mobileMenuContainer = document.getElementById('mobileMenuContainer');
-                if (mobileMenuContainer && typeof generateMobileMenu === 'function') {
-                    mobileMenuContainer.innerHTML = generateMobileMenu(false); // false for French
-                }
-            }, 100);
+        // Also try after window load as backup
+        window.addEventListener('load', function() {
+            if (!document.getElementById('desktopNav').innerHTML) {
+                initializeNavigation();
+            }
         });
     </script>
+</body>
+</html>
 </body>
 </html>
