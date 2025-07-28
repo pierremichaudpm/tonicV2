@@ -94,6 +94,32 @@
             min-height: 100px !important;
         }
 
+        /* Ensure consistent hover for all nav items */
+        #mobileMenu .nav-item {
+            display: flex !important;
+            align-items: center !important;
+            gap: 0.75rem !important;
+            padding: 1rem !important;
+            width: 100% !important;
+            color: white !important;
+            text-decoration: none !important;
+            border-radius: 0.5rem !important;
+            transition: background 0.2s ease !important;
+        }
+
+        #mobileMenu .nav-item:hover {
+            background: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        #mobileMenu .nav-item.active {
+            background: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        /* Also fix desktop nav hover */
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.1) !important;
+        }
+
         .text-accent:hover {
             color: var(--accent-hover);
         }
@@ -391,6 +417,26 @@
                 });
             });
         });
+    </script>
+    <script>
+    // Ensure toggleMobileMenu is available immediately
+    function toggleMobileMenu() {
+        var menu = document.getElementById('mobileMenu');
+        if (!menu) return;
+        
+        if (menu.classList.contains('active')) {
+            menu.classList.remove('active');
+            menu.style.display = 'none';
+            document.body.style.overflow = '';
+        } else {
+            menu.classList.add('active');
+            menu.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    // Make it globally available
+    window.toggleMobileMenu = toggleMobileMenu;
     </script>
 
 
