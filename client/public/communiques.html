@@ -482,7 +482,7 @@
                     </nav>
 
                     <!-- Mobile Menu Button -->
-                    <button id="mobileMenuButton" class="md:hidden p-2 hover:bg-white/10 rounded-lg transition-colors text-white" style="background: rgba(0,0,0,0.2); backdrop-filter: blur(10px); color: white;">
+                    <button id="mobileMenuButton" onclick="toggleMobileMenu()" class="md:hidden p-2 hover:bg-white/10 rounded-lg transition-colors text-white" style="background: rgba(0,0,0,0.2); backdrop-filter: blur(10px); color: white;">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path d="M3 12h18M3 6h18M3 18h18"></path>
                         </svg>
@@ -501,7 +501,7 @@
                     <img src="images/tonic-logo.png" alt="Groupe Tonic Logo" style="width: 120px; height: auto;" />
                     <span class="text-white text-xs font-medium">Créateur d'expériences mémorables</span>
                 </div>
-                <button class="mobile-close-btn p-2 hover:bg-white/10 rounded-lg" aria-label="Close">
+                <button onclick="toggleMobileMenu()" class="p-2 hover:bg-white/10 rounded-lg" aria-label="Close">
                     <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path d="M6 18L18 6M6 6l12 12"></path>
                     </svg>
