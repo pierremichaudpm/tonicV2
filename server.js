@@ -194,6 +194,16 @@ app.post('/api/cms/content/:type/:lang', authenticate, (req, res) => {
   const { data } = req.body;
   
   console.log(`Saving ${type} content for ${lang}`);
+  console.log(`Received ${data.length} items to save`);
+  
+  // Log first item for debugging
+  if (data.length > 0) {
+    console.log('First item:', {
+      id: data[0].id,
+      title: data[0].title?.substring(0, 50) + '...',
+      category: data[0].category
+    });
+  }
   
   let filename, variableName;
   
