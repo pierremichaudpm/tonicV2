@@ -97,7 +97,6 @@ function createNavItemsEnglish() {
 // Toggle Mobile Menu with icon change
 function toggleMobileMenu() {
     const mobileMenu = document.getElementById('mobileMenu');
-    const menuButton = document.getElementById('mobileMenuButton');
     
     if (mobileMenu) {
         const isActive = mobileMenu.classList.contains('active');
@@ -105,9 +104,14 @@ function toggleMobileMenu() {
         // Toggle menu visibility
         mobileMenu.classList.toggle('active');
         
-        // Update button icon
-        if (menuButton) {
-            const svg = menuButton.querySelector('svg');
+        // Find the main header button specifically (not the close button inside menu)
+        const headerButton = document.querySelector('header button[onclick*="toggleMobileMenu"]') || 
+                           document.querySelector('header #mobileMenuButton') ||
+                           document.getElementById('mobileMenuButton');
+        
+        // Update header button icon
+        if (headerButton && !headerButton.closest('#mobileMenu')) {
+            const svg = headerButton.querySelector('svg');
             if (svg) {
                 if (isActive) {
                     // Menu is closing - show burger icon
