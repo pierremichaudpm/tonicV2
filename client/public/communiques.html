@@ -392,30 +392,7 @@
             });
         });
     </script>
-    <!-- Load shared JavaScript -->
-    <script src="js/shared.js?v=1753739263"></script>
 
-    <!-- Ensure toggleMobileMenu is available globally -->
-    <script>
-    // Make sure the function is available
-    if (typeof window.toggleMobileMenu === 'undefined') {
-        console.error('toggleMobileMenu not found! Defining it now...');
-        window.toggleMobileMenu = function() {
-            const menu = document.getElementById('mobileMenu');
-            if (!menu) return;
-            
-            if (menu.classList.contains('active')) {
-                menu.classList.remove('active');
-                menu.style.display = 'none';
-                document.body.style.overflow = '';
-            } else {
-                menu.classList.add('active');
-                menu.style.display = 'flex';
-                document.body.style.overflow = 'hidden';
-            }
-        };
-    }
-    </script>
 
 
 </head>
@@ -493,7 +470,7 @@
                     <img src="images/tonic-logo.png" alt="Groupe Tonic Logo" style="width: clamp(180px,35vw,250px); height: auto;" />
                     <span class="text-white text-xs md:text-sm font-medium leading-tight" style="text-shadow: 0 2px 10px rgba(0,0,0,0.9);">Créateur d'expériences mémorables</span>
                 </div>
-                <button onclick="console.log('Close clicked'); toggleMobileMenu();" class="p-2 hover:bg-white/10 rounded-lg" aria-label="Close">
+                <button onclick="toggleMobileMenu()" class="p-2 hover:bg-white/10 rounded-lg" aria-label="Close">
                     <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
                     </svg>
