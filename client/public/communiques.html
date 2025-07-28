@@ -277,18 +277,18 @@
             flex-direction: column;
             overflow-y: auto;
         }
-        
+
         .mobile-menu.active,
         #mobileMenu.active {
             display: flex;
         }
-        
+
         /* Ensure main header is hidden when mobile menu is active */
         body:has(.mobile-menu.active) header,
         body:has(#mobileMenu.active) header {
             display: none;
         }
-        
+
         .mobile-close-btn {
             position: absolute;
             top: 1rem;
@@ -304,14 +304,14 @@
             align-items: center;
             justify-content: center;
         }
-        
+
         /* Ensure mobile menu content is visible */
         .mobile-menu *,
         #mobileMenu * {
             z-index: 2000001 !important;
             position: relative !important;
         }
-        
+
         /* Mobile menu close button - force visibility */
         .mobile-close-btn,
         .mobile-menu .mobile-close-btn,
@@ -330,11 +330,11 @@
             width: 40px !important;
             height: 40px !important;
         }
-        
+
         .mobile-close-btn:hover {
             background: rgba(255,255,255,0.3) !important;
         }
-        
+
         /* Mobile menu navigation items */
         .mobile-menu .nav-item,
         #mobileMenu .nav-item {
@@ -512,7 +512,7 @@
                 </svg>
             </button>
         </div>
-        
+
         <!-- Mobile Menu Content -->
         <div class="flex-1 p-4">
             <div class="space-y-1">
@@ -750,12 +750,12 @@
             console.log('toggleMobileMenu called');
             const mobileMenu = document.getElementById('mobileMenu');
             console.log('Mobile menu element:', mobileMenu);
-            
+
             if (!mobileMenu) {
                 console.error('Mobile menu element not found');
                 return;
             }
-            
+
             if (mobileMenu.classList.contains('active')) {
                 console.log('Closing mobile menu');
                 mobileMenu.classList.remove('active');
