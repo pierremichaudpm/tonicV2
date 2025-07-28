@@ -646,6 +646,11 @@
             return classMap[category] || 'category-tonic';
         };
 
+        // Get news data function
+        function getNews() {
+            return window.pressReleases || [];
+        }
+
         // Render news with colored cards - matching jobs structure
         function renderNews() {
             const news = getNews();
