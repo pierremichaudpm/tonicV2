@@ -95,12 +95,19 @@ function createNavItemsEnglish() {
 
 // Toggle Mobile Menu with icon change - Robust implementation
 function toggleMobileMenu() {
-    console.log('toggleMobileMenu called');
+    console.log('toggleMobileMenu called - event timestamp:', Date.now());
     const mobileMenu = document.getElementById('mobileMenu');
     if (!mobileMenu) {
         console.log('Mobile menu element not found');
         return;
     }
+
+    // Add a small delay to prevent rapid double calls
+    if (window.mobileMenuToggling) {
+        console.log('Menu toggle already in progress, ignoring');
+        return;
+    }
+    window.mobileMenuToggling = true;
 
     // Use only the 'active' class to determine state (CSS handles display)
     const isCurrentlyOpen = mobileMenu.classList.contains('active');
@@ -134,22 +141,24 @@ function toggleMobileMenu() {
             }
         }
     }
+
+    // Clear the toggle lock after a short delay
+    setTimeout(() => {
+        window.mobileMenuToggling = false;
+    }, 100);
 }
 
-// Simple, reliable mobile menu functionality
+// Simple, reliable mobile menu functionality  
 function initializeMobileMenu() {
+    console.log('initializeMobileMenu called');
     const hamburgerButton = document.getElementById('mobileMenuButton');
     const mobileMenu = document.getElementById('mobileMenu');
 
     if (hamburgerButton && mobileMenu) {
-        // Hamburger button - open menu
-        hamburgerButton.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            toggleMobileMenu();
-        });
-
-        // Close button - close menu
+        console.log('Mobile menu elements found, but skipping event listeners (using onclick)');
+        // Skip adding event listeners since we're using onclick attributes
+        
+        // Close button - close menu (only if no onclick attribute)
         const closeButtons = mobileMenu.querySelectorAll('.mobile-close-btn');
         closeButtons.forEach(button => {
             button.addEventListener('click', function(e) {
