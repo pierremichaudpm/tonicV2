@@ -631,12 +631,13 @@ The website is now fully operational and matches the original local/Netlify func
 - **All CMS interfaces affected**: Password change applies to all admin routes (/admin/*)
 - **Status**: ✅ COMPLETED - New password 'Axelle20' is now active for CMS access
 
-### Modal Paragraph Spacing Fix - January 28, 2025 ✅ COMPLETED
-- **Issue resolved**: Fixed excessive paragraph spacing in news modal content from Quill editor
-- **Root cause identified**: Tailwind prose classes (.prose, .prose-invert) were adding default large margins
-- **Solution implemented**: Applied aggressive CSS overrides targeting all prose elements with 0.1rem margins
-- **CSS targeting**: Added nuclear option overrides for margin-block-start/end, p:first-child, p:last-child
-- **All heading margins reduced**: H1-H6 headings now use minimal spacing instead of large default margins
+### Modal Display & Z-Index Fix - January 28, 2025 ✅ COMPLETED
+- **Issue resolved**: Fixed section title "Communiqués" overlaying modal content during scroll
+- **Root cause identified**: Z-index hierarchy conflicts between page elements and modal
+- **Solution implemented**: Applied maximum z-index (999999) to modal backdrop and content with !important
+- **Sticky modal title**: Added sticky positioning (top-0 z-50) to modal header for proper scroll behavior
+- **Z-index hierarchy**: Forced all page content (main, sections, hero titles) to lower z-index values (1-10)
+- **Nuclear CSS targeting**: Applied aggressive CSS rules targeting hero titles and section headings
 - **Cache-busting updated**: Applied new version timestamps to force CSS refresh
-- **User confirmation**: User confirmed paragraph spacing is now acceptable in modals
-- **Status**: ✅ COMPLETED - Modal content now displays with tight, professional paragraph spacing
+- **User confirmation**: User confirmed modal now displays correctly without overlay issues
+- **Status**: ✅ COMPLETED - Modal displays properly with sticky title and correct z-index stacking

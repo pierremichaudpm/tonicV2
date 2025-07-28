@@ -661,35 +661,47 @@ header {
     background: #0077B5;
 }
 
-/* Modal Z-Index Fix - Override any existing modal CSS */
-.modal-backdrop, #newsModal {
+/* Modal Z-Index Fix - ULTIMATE NUCLEAR OPTION */
+.modal-backdrop, 
+#newsModal,
+.modal-backdrop *,
+#newsModal * {
     z-index: 999999 !important;
 }
 
-.modal-content {
+.modal-content,
+.modal-content * {
     z-index: 999999 !important;
 }
 
-/* Hero title should not overlay modals - NUCLEAR OPTION */
+/* NUCLEAR z-index hierarchy - force EVERYTHING behind modal */
+body > *:not(#newsModal):not(.modal-backdrop),
 .hero-title, 
 h1.hero-title,
 section h1,
-main h1 {
+main h1,
+main,
+header,
+.container,
+section,
+div,
+span,
+p,
+h1, h2, h3, h4, h5, h6 {
     z-index: 1 !important;
     position: relative !important;
 }
 
-/* Force all page content behind modal - but keep them visible */
-main, 
-.container,
-section {
-    z-index: 10 !important;
-    position: relative !important;
+/* Force page header to stay behind modal but above other content */
+header {
+    z-index: 100 !important;
 }
 
-/* Header should stay above page content but below modal */
-header {
-    z-index: 9999 !important;
+/* Modal takes absolute priority */
+#newsModal,
+.modal-backdrop {
+    z-index: 999999 !important;
+    position: fixed !important;
 }
 
 /* Mobile Menu Consistent Styling */
