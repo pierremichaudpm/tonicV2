@@ -631,9 +631,45 @@
     <!-- Initialize mobile menu after shared.js loads -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Ensure mobile menu is properly initialized
-            if (typeof window.initializeMobileMenu === 'function') {
-                window.initializeMobileMenu();
+            console.log('DOM loaded, checking mobile menu initialization...');
+            
+            // Check if elements exist
+            const menuButton = document.getElementById('mobileMenuButton');
+            const mobileMenu = document.getElementById('mobileMenu');
+            console.log('Menu button found:', !!menuButton);
+            console.log('Mobile menu found:', !!mobileMenu);
+            
+            // Direct implementation for debugging
+            if (menuButton && mobileMenu) {
+                console.log('Adding click handler to menu button');
+                menuButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Menu button clicked, current state:', mobileMenu.classList.contains('active'));
+                    
+                    if (mobileMenu.classList.contains('active')) {
+                        mobileMenu.classList.remove('active');
+                        document.body.style.overflow = '';
+                        console.log('Menu closed');
+                    } else {
+                        mobileMenu.classList.add('active');
+                        document.body.style.overflow = 'hidden';
+                        console.log('Menu opened');
+                    }
+                });
+                
+                // Add close button handlers
+                const closeButtons = mobileMenu.querySelectorAll('.mobile-close-btn');
+                console.log('Close buttons found:', closeButtons.length);
+                closeButtons.forEach(button => {
+                    button.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        mobileMenu.classList.remove('active');
+                        document.body.style.overflow = '';
+                        console.log('Menu closed via close button');
+                    });
+                });
             }
         });
     </script>
