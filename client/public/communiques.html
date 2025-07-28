@@ -283,7 +283,7 @@
             display: flex;
         }
 
-        /* Keep header visible but lower than mobile menu */
+        /* Keep header visible but adjust z-index when mobile menu is active */
         body:has(.mobile-menu.active) header,
         body:has(#mobileMenu.active) header {
             z-index: 40; /* Lower than mobile menu but still visible */
@@ -374,6 +374,14 @@
         }
     </style>
     <script>
+        // Block shared.js from causing issues
+        window.sharedJsBlocked = true;
+        Object.defineProperty(window, 'initializeNavigation', {
+            value: function() { console.log('Blocked initializeNavigation'); },
+            writable: false,
+            configurable: false
+        });
+
         // Protect mobile menu elements from external interference
         (function() {
             // Override initializeNavigation if it exists
@@ -398,8 +406,7 @@
                 configurable: false
             });
         })();
-    </script>
-    <script>
+
         // Simple inline tooltip system
         document.addEventListener('DOMContentLoaded', function() {
             // Create tooltip element
@@ -774,26 +781,12 @@
         // Mobile menu functionality - Enhanced with protection against external interference
         window.toggleMobileMenu = function() {
             console.log('toggleMobileMenu called');
-            // Create a protected reference to the mobile menu
             const mobileMenu = document.getElementById('mobileMenu');
             console.log('Mobile menu element:', mobileMenu);
 
             if (!mobileMenu) {
                 console.error('Mobile menu element not found');
                 return;
-            }
-
-            // Protect the mobile menu from being destroyed
-            if (mobileMenu.dataset.protected !== 'true') {
-                mobileMenu.dataset.protected = 'true';
-                // Override any attempts to remove or modify the mobile menu
-                Object.defineProperty(mobileMenu, 'remove', {
-                    value: function() {
-                        console.warn('Attempted to remove protected mobile menu');
-                    },
-                    writable: false,
-                    configurable: false
-                });
             }
 
             if (mobileMenu.classList.contains('active')) {
@@ -822,24 +815,7 @@
             // Render news
             renderNews();
 
-            // Protect mobile menu from external interference
-            setTimeout(function() {
-                const mobileMenu = document.getElementById('mobileMenu');
-                const mobileMenuButton = document.querySelector('button[onclick="toggleMobileMenu()"]');
-                
-                if (mobileMenu && mobileMenuButton) {
-                    // Ensure mobile menu maintains its structure
-                    mobileMenu.dataset.protected = 'true';
-                    
-                    // Re-establish event listener if it gets removed
-                    const originalOnclick = mobileMenuButton.onclick;
-                    Object.defineProperty(mobileMenuButton, 'onclick', {
-                        get() { return originalOnclick || window.toggleMobileMenu; },
-                        set(val) { console.warn('Prevented onclick override on mobile menu button'); },
-                        configurable: false
-                    });
-                }
-            }, 100); // Small delay to ensure it runs after shared.js
+
 
             // Content refresh removed to prevent flickering
 
