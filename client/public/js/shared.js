@@ -145,7 +145,7 @@ function toggleMobileMenu() {
     // Clear the toggle lock after a short delay
     setTimeout(() => {
         window.mobileMenuToggling = false;
-    }, 100);
+    }, 50);
 }
 
 // Simple, reliable mobile menu functionality  
