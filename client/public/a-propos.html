@@ -506,35 +506,11 @@
         window.addEventListener('load', function() {
             console.log('Page loaded, initializing navigation...');
             
-            // Wait a moment for shared.js to fully load
-            setTimeout(function() {
-                try {
-                    // Generate desktop navigation
-                    const desktopNav = document.getElementById('desktopNav');
-                    if (desktopNav && window.generateDesktopNav) {
-                        desktopNav.innerHTML = window.generateDesktopNav(false); // false for French
-                        console.log('Desktop nav generated');
-                    }
-
-                    // Generate mobile menu button
-                    const mobileMenuButton = document.getElementById('mobileMenuButton');
-                    if (mobileMenuButton && window.generateMobileMenuButton) {
-                        mobileMenuButton.innerHTML = window.generateMobileMenuButton();
-                        console.log('Mobile menu button generated');
-                    }
-
-                    // Generate mobile menu
-                    const mobileMenuContainer = document.getElementById('mobileMenuContainer');
-                    if (mobileMenuContainer && window.generateMobileMenu) {
-                        mobileMenuContainer.innerHTML = window.generateMobileMenu(false); // false for French
-                        console.log('Mobile menu generated');
-                    }
-
-                    console.log('Navigation initialization complete');
-                } catch (error) {
-                    console.error('Navigation initialization error:', error);
-                }
-            }, 200);
+            // Initialize standardized navigation
+            if (window.initializeNavigation) {
+                window.initializeNavigation(false, 'a-propos.html'); // false for French, current page
+                console.log('Navigation initialized');
+            }
         });
     </script>
 </body>

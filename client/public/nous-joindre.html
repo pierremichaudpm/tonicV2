@@ -439,6 +439,20 @@
     <!-- Shared JavaScript -->
     <script src="js/shared.js"></script>
 
+    <!-- Initialize standardized navigation -->
+    <script>
+        // Initialize navigation when page loads
+        window.addEventListener('load', function() {
+            console.log('Page loaded, initializing navigation...');
+            
+            // Initialize standardized navigation
+            if (window.initializeNavigation) {
+                window.initializeNavigation(false, 'nous-joindre.html'); // false for French, current page
+                console.log('Navigation initialized');
+            }
+        });
+    </script>
+
     <!-- Page Specific JavaScript -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {

@@ -570,5 +570,19 @@
     </footer>
 
     <script src="js/shared.js"></script>
+    
+    <!-- Initialize standardized navigation -->
+    <script>
+        // Initialize navigation when page loads
+        window.addEventListener('load', function() {
+            console.log('Page loaded, initializing navigation...');
+            
+            // Initialize standardized navigation
+            if (window.initializeNavigation) {
+                window.initializeNavigation(true, 'about.html'); // true for English, current page
+                console.log('Navigation initialized');
+            }
+        });
+    </script>
 </body>
 </html>

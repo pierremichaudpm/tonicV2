@@ -171,19 +171,29 @@ function formatDate(dateString) {
 }
 
 // Generate desktop navigation menu matching React homepage
-function generateDesktopNav(isEnglish = false) {
+function generateDesktopNav(isEnglish = false, currentPage = '') {
     const navItems = isEnglish ? createNavItemsEnglish() : createNavItemsFrench();
     const langLink = isEnglish ? 'index.html' : 'index-en.html';
     const langText = isEnglish ? 'FR' : 'EN';
     
+    // Normalize current page for comparison
+    const normalizedCurrentPage = currentPage.toLowerCase().replace(/^\//, '');
+    
     return `
         <nav class="hidden md:flex lg:flex items-center gap-0.5 px-2 py-0.5 rounded-full nav-container" style="background:rgba(0,0,0,0.2);backdrop-filter:blur(10px)">
-            ${navItems.map(item => `
-                <a href="${item.href}" ${item.target ? `target="${item.target}"` : ''} class="nav-item flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-white/10 transition-all text-white hover:text-white cursor-pointer" data-tooltip="${item.tooltip || item.label}">
-                    <div style="color:white">${item.icon}</div>
-                    ${item.label ? `<span class="text-xs font-medium" ${item.isSocial ? 'data-social="true"' : ''}>${item.label}</span>` : ''}
-                </a>
-            `).join('')}
+            ${navItems.map(item => {
+                // Check if this is the active page
+                const isActive = item.href && normalizedCurrentPage && 
+                    (item.href.toLowerCase() === normalizedCurrentPage || 
+                     item.href.toLowerCase().endsWith('/' + normalizedCurrentPage));
+                
+                return `
+                    <a href="${item.href}" ${item.target ? `target="${item.target}"` : ''} class="nav-item flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-white/10 transition-all text-white hover:text-white cursor-pointer${isActive ? ' bg-white/10' : ''}" data-tooltip="${item.tooltip || item.label}">
+                        <div style="color:white">${item.icon}</div>
+                        ${item.label ? `<span class="text-xs font-medium" ${item.isSocial ? 'data-social="true"' : ''}>${item.label}</span>` : ''}
+                    </a>
+                `;
+            }).join('')}
             <div class="lang-divider"></div>
             <a href="${langLink}" class="lang-switcher"><span>${langText}</span></a>
         </nav>
@@ -191,24 +201,34 @@ function generateDesktopNav(isEnglish = false) {
 }
 
 // Generate mobile menu matching React homepage
-function generateMobileMenu(isEnglish = false) {
+function generateMobileMenu(isEnglish = false, currentPage = '') {
     const navItems = isEnglish ? createNavItemsEnglish() : createNavItemsFrench();
     const langLink = isEnglish ? 'index.html' : 'index-en.html';
     const langText = isEnglish ? 'Français' : 'English';
     const langIcon = Icons.lang();
+    
+    // Normalize current page for comparison
+    const normalizedCurrentPage = currentPage.toLowerCase().replace(/^\//, '');
     
     return `
         <div id="mobileMenu" class="md:hidden fixed inset-0 z-40 bg-black/95 backdrop-blur-md" style="display: none;">
             <div class="h-full pt-20 pb-6">
                 <div class="container mx-auto px-4 py-4">
                     <div class="space-y-2">
-                        ${navItems.map(item => `
-                            <a href="${item.href}" ${item.target ? `target="${item.target}"` : ''} class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/10 transition-all cursor-pointer text-white">
-                                <div style="color:white">${item.icon}</div>
-                                ${item.label ? `<span class="font-medium text-white">${item.label}</span>` : ''}
-                                ${!item.label && item.tooltip ? `<span class="font-medium text-white">${item.tooltip}</span>` : ''}
-                            </a>
-                        `).join('')}
+                        ${navItems.map(item => {
+                            // Check if this is the active page
+                            const isActive = item.href && normalizedCurrentPage && 
+                                (item.href.toLowerCase() === normalizedCurrentPage || 
+                                 item.href.toLowerCase().endsWith('/' + normalizedCurrentPage));
+                            
+                            return `
+                                <a href="${item.href}" ${item.target ? `target="${item.target}"` : ''} class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/10 transition-all cursor-pointer text-white${isActive ? ' bg-white/10' : ''}">
+                                    <div style="color:white">${item.icon}</div>
+                                    ${item.label ? `<span class="font-medium text-white">${item.label}</span>` : ''}
+                                    ${!item.label && item.tooltip ? `<span class="font-medium text-white">${item.tooltip}</span>` : ''}
+                                </a>
+                            `;
+                        }).join('')}
                         <a href="${langLink}" class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/10 transition-all cursor-pointer text-white">
                             <div style="color:white">${langIcon}</div>
                             <span class="font-medium text-white">${langText}</span>
@@ -279,8 +299,69 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+// Generate complete standardized header matching React homepage
+function generateStandardHeader(isEnglish = false, currentPage = '') {
+    const logoAlt = isEnglish 
+        ? "Groupe Tonic Logo - Creator of memorable experiences for over 40 years"
+        : "Logo Groupe Tonic - Créateur d'expériences mémorables depuis plus de 40 ans";
+    
+    const taglineDesktop = isEnglish 
+        ? "| Creator of memorable experiences"
+        : "| Créateur d'expériences mémorables";
+    
+    const taglineMobile = isEnglish 
+        ? "Creator of memorable experiences"
+        : "Créateur d'expériences mémorables";
+    
+    return `
+        <header class="fixed top-0 left-0 right-0 z-50" style="background: linear-gradient(180deg, rgba(0,0,0,0.98) 0%, rgba(0,0,0,0.95) 50%, rgba(0,0,0,0.85) 100%); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); box-shadow: 0 4px 30px rgba(0,0,0,0.5);">
+            <div class="container mx-auto px-2 py-2 sm:px-4 sm:py-5">
+                <div class="flex items-center justify-between">
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center gap-0 sm:gap-4">
+                        <h1 class="header-logo text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white leading-none" 
+                            style="text-shadow: 0 4px 20px rgba(0,0,0,0.9), 0 2px 10px rgba(0,0,0,0.8); cursor: pointer;"
+                            onclick="window.location.href='${isEnglish ? 'index-en.html' : 'index.html'}'">
+                            <img src="images/tonic-logo.png" alt="${logoAlt}" style="width: clamp(180px,35vw,250px); height: auto;" />
+                        </h1>
+                        <span class="text-white text-xs md:text-sm font-medium leading-tight"
+                            style="text-shadow: 0 2px 10px rgba(0,0,0,0.9);">
+                            <span class="hidden sm:inline">${taglineDesktop}</span>
+                            <span class="sm:hidden">${taglineMobile}</span>
+                        </span>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        ${generateDesktopNav(isEnglish, currentPage)}
+                        ${generateMobileMenuButton()}
+                    </div>
+                </div>
+            </div>
+            ${generateMobileMenu(isEnglish, currentPage)}
+        </header>
+    `;
+}
+
+// Initialize navigation on page load
+function initializeNavigation(isEnglish = false, currentPage = '') {
+    // Wait for DOM to be ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeNavigation(isEnglish, currentPage);
+        });
+        return;
+    }
+    
+    // Find header element
+    const headerElement = document.querySelector('header');
+    if (headerElement) {
+        // Replace the entire header with standardized version
+        headerElement.outerHTML = generateStandardHeader(isEnglish, currentPage);
+    }
+}
+
 // Export functions to window object for use in other pages
 window.generateDesktopNav = generateDesktopNav;
 window.generateMobileMenu = generateMobileMenu;
 window.generateMobileMenuButton = generateMobileMenuButton;
 window.toggleMobileMenu = toggleMobileMenu;
+window.generateStandardHeader = generateStandardHeader;
+window.initializeNavigation = initializeNavigation;
