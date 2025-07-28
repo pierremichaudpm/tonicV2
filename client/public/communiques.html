@@ -805,8 +805,12 @@
 
         // Initialize application when DOM is ready
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, checking data:', typeof pressReleases);
+            console.log('Press releases:', window.pressReleases || pressReleases || 'undefined');
+            
             // Small delay to ensure scripts have loaded
             setTimeout(() => {
+                console.log('Initializing app...');
                 initializeApp();
             }, 200);
         });
