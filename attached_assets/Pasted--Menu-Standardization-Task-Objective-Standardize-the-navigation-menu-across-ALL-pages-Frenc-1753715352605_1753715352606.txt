@@ -1,0 +1,103 @@
+## Menu Standardization Task
+
+**Objective**: Standardize the navigation menu across ALL pages (French and English) to match the index.html implementation.
+
+**Current Situation**:
+- index.html has the correct menu implementation (React-based)
+- Secondary pages have inconsistent HTML implementations
+- Icons and mobile menus differ between pages
+- Both French and English pages need updating
+
+**Reference Implementation** (from index.html):
+```javascript
+// Navigation items structure
+{href:'index.html',icon:Icons.grid,label:'Accueil'},
+{href:'a-propos.html',icon:Icons.info,label:'À propos'},
+{href:'emplois.html',icon:Icons.work,label:'Emplois'},
+{href:'communiques.html',icon:Icons.news,label:'Communiqués'},
+{href:'nous-joindre.html',icon:Icons.mail,label:'Nous joindre'},
+{href:'https://www.instagram.com/groupetonic/',icon:Icons.instagram,label:'',tooltip:'Instagram',isSocial:true,target:'_blank'},
+{href:'https://www.linkedin.com/company/groupe-tonic/',icon:Icons.linkedin,label:'',tooltip:'LinkedIn',isSocial:true,target:'_blank'}
+```
+
+**Required Changes**:
+
+1. **Create a shared navigation component** that can be used across all pages:
+   - Extract the header HTML structure from index.html
+   - Convert React icons to inline SVGs
+   - Ensure consistent styling and behavior
+   - Support both French and English labels
+
+2. **Update ALL French pages** with the standardized menu:
+   - a-propos.html
+   - communiques.html
+   - conditions-utilisation.html
+   - emplois.html
+   - nous-joindre.html
+   - politique-de-confidentialite.html
+
+3. **Update ALL English pages** with the standardized menu:
+   - index-en.html
+   - about.html (or equivalent)
+   - communiques-en.html (news)
+   - emplois-en.html (jobs)
+   - nous-joindre-en.html (contact)
+   - terms-of-use.html
+   - privacy-policy.html
+
+4. **Ensure consistency for**:
+   - Desktop navigation layout and styling
+   - Mobile menu implementation
+   - Icon usage (must match index.html exactly)
+   - Active state indicators
+   - Hover effects
+   - Language switcher placement (FR/EN toggle)
+
+5. **Specific Icon Requirements** (use exact SVGs from index.html):
+   - Home/Grid: Rectangle grid icon
+   - À propos/About: Filled info circle icon
+   - Emplois/Jobs: Briefcase icon
+   - Communiqués/News: Document with lines icon
+   - Nous joindre/Contact: Mail envelope icon
+   - Instagram/LinkedIn: Their respective brand icons
+
+6. **Mobile Menu Requirements**:
+   - Must match the index.html mobile menu structure
+   - Include social media links
+   - Include language switcher
+   - Proper animations and backdrop
+   - Correct labels in both languages
+
+7. **Language-Specific Labels**:
+   - French: Accueil, À propos, Emplois, Communiqués, Nous joindre
+   - English: Home, About, Jobs, News, Contact
+   - Language switcher: "EN" on French pages, "FR" on English pages
+
+8. **Styling Requirements**:
+   - Maintain the glass morphism effect
+   - Keep the exact same spacing and padding
+   - Preserve hover states and transitions
+   - Active page highlighting
+   - Consistent header background treatment
+
+**Implementation Approach**:
+1. First update shared.js to include a standardized menu generation function that supports both languages
+2. Then update each HTML page (both French and English) to use this standardized implementation
+3. Ensure proper language switching links between French/English page pairs
+4. Test on both desktop and mobile viewports
+5. Ensure the active page is properly highlighted on each page
+
+**Quality Checks**:
+- Menu looks identical on all pages (both languages)
+- Mobile menu works consistently
+- Icons are exactly the same across all pages
+- Active states work correctly
+- Language switcher properly links to corresponding page in other language
+- No broken links
+- Tooltips work on social media icons
+
+**Important Note**: The English pages should have the exact same menu structure and styling as French pages, only with translated labels and proper language switcher links.
+
+---
+
+This prompt recipe ensures your Replit agent will standardize the menu across all pages in both French and English while maintaining the exact implementation from your index.html file.
