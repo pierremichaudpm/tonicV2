@@ -539,7 +539,7 @@
                 </button>
             </div>
         </div>
-
+        
         <!-- Menu Content -->
         <div class="container mx-auto px-4" style="padding-top: 100px; padding-bottom: 2rem;">
             <div class="space-y-2">
@@ -564,7 +564,7 @@
                     <span>Nous joindre</span>
                 </a>
                 <a href="https://www.instagram.com/groupetonic/" class="nav-item w-full" data-tooltip="Instagram" target="_blank">
-                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="white" style="color: white; fill: white;"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.40z"/></svg>
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="white" style="color: white; fill: white;"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.40s-.644-1.44-1.439-1.40z"/></svg>
                     <span>Instagram</span>
                 </a>
                 <a href="https://www.linkedin.com/company/groupe-tonic/" class="nav-item w-full" data-tooltip="LinkedIn" target="_blank">
@@ -633,123 +633,225 @@
     </footer>
 
     <!-- Load news data -->
-    <script src="js/communiques-data.js"></script>
+    <script src="js/communiques-data.js?v=1753739263"></script>
 
     <!-- Load shared JavaScript -->
-    <script src="js/shared.js"></script>
+    <script src="js/shared.js?v=1753739263"></script>
 
     <!-- Page specific JavaScript - Matching jobs page structure -->
-    
     <script>
-        // Initialize the communiques page
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM loaded, checking data:', typeof pressReleases);
+        // Cache DOM elements
+        const DOM = {
+            prList: null,
+            modal: null,
+            modalTitle: null,
+            modalContent: null
+        };
 
-            // Check if data is available
-            if (typeof pressReleases !== 'undefined' && Array.isArray(pressReleases)) {
-                console.log('Press releases found:', pressReleases.length, 'items');
-                initializeApp();
-            } else {
-                console.error('Press releases data not available');
-                // Try to load data from window object as fallback
-                if (window.pressReleases) {
-                    console.log('Using window.pressReleases as fallback');
-                    window.pressReleases = window.pressReleases;
-                    initializeApp();
-                } else {
-                    console.error('No press releases data found');
-                }
-            }
-        });
+        // State management
+        const state = {
+            isModalOpen: false
+        };
 
-        function initializeApp() {
-            console.log('Initializing app...');
+        // Category image mapping (matching CMS system)
+        const categoryImageMap = {
+            'Beach Pro Tour': 'images/beach-pro-tour-hero.webp',
+            'Grands Prix Cyclistes': 'images/grands-prix-cyclistes-hero.webp',
+            'Marathon Beneva': 'images/marathon-beneva-hero.webp',
+            'Marathon Beneva 21K': 'images/marathon-beneva-hero.webp',
+            'UCI 2026': 'images/montreal-2026-uci-hero.webp',
+            'Studio 76': 'images/studio76-logo.png',
+            'Dock 619': 'images/dock619-hero-new.webp',
+            '21K de Montréal': 'images/21k-hero.webp',
+            'Groupe Tonic': 'images/tonic-logo.png'
+        };
 
-            // Check if we have the required DOM elements
-            const prList = document.getElementById('prList');
-
-            if (!prList) {
-                console.error('prList element not found');
-                return;
-            }
-
-            console.log('DOM elements found - rendering news');
-            renderNews(pressReleases);
+        // Get category image
+        function getCategoryImage(category) {
+            return categoryImageMap[category] || 'images/tonic-logo.png';
         }
 
-        function renderNews(newsItems) {
-            console.log('Rendering news:', newsItems.length, 'items');
+        // Get category class for styling based on category colors
+        const getCategoryClass = (category) => {
+            const classMap = {
+                'Beach Pro Tour': 'category-beach',
+                'Grands Prix Cyclistes': 'category-cycling',
+                'Marathon Beneva': 'category-marathon',
+                'Marathon Beneva 21K': 'category-marathon',
+                'UCI 2026': 'category-uci',
+                'Studio 76': 'category-studio',
+                'Dock 619': 'category-dock',
+                '21K de Montréal': 'category-21k',
+                'Groupe Tonic': 'category-tonic'
+            };
+            return classMap[category] || 'category-tonic';
+        };
 
-            const prList = document.getElementById('prList');
+        // Get news data function
+        function getNews() {
+            return typeof pressReleases !== 'undefined' ? pressReleases : [];
+        }
 
-            if (!prList) {
-                console.error('prList element not found');
+        // Format date function (matching English version)
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('fr-FR', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+        }
+
+        // Render news with colored cards - matching jobs structure
+        function renderNews() {
+            const news = getNews();
+            console.log('Rendering news:', news.length, 'items');
+            console.log('DOM.prList exists:', !!DOM.prList);
+
+            if (!DOM.prList) {
+                console.log('ERROR: prList element not found!');
                 return;
             }
 
-            // Clear existing content
-            prList.innerHTML = '';
+            if (news.length === 0) {
+                console.log('No news items found');
+                DOM.prList.innerHTML = '<p class="text-white text-center py-8">Aucun communiqué disponible.</p>';
+                return;
+            }
 
-            // Generate HTML for all news items
-            newsItems.forEach(item => {
-                const truncatedContent = item.content.replace(/<[^>]*>/g, '').substring(0, 150) + '...';
-                const formattedDate = new Date(item.date).toLocaleDateString('fr-FR', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                });
+            // Sort by date (newest first)
+            news.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-                const cardElement = document.createElement('div');
-                cardElement.className = 'bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300';
-                cardElement.innerHTML = `
-                    <div class="p-6">
-                        <div class="flex justify-between items-start mb-4">
-                            <span class="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">
-                                ${item.category}
-                            </span>
-                            <span class="text-gray-500 text-sm">${formattedDate}</span>
+            const html = news.map((item, index) => {
+                const categoryClass = getCategoryClass(item.category);
+                const image = getCategoryImage(item.category);
+
+                return `
+                    <div class="job-card relative rounded-xl p-6 sm:p-8 cursor-pointer" 
+                         data-news-id="${item.id}"
+                         onclick="openNewsModal('${item.id}')"
+                         style="opacity: 1; visibility: visible; display: block;">
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <div class="sm:w-48 h-32 sm:h-32 flex-shrink-0 relative">
+                                <img src="${image}" alt="${item.category}" class="w-full h-full object-cover rounded-lg" loading="lazy">
+                                ${item.category !== 'Groupe Tonic' ? `<div class="absolute inset-0 rounded-lg ${categoryClass} opacity-40"></div>` : ''}
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex items-start justify-between gap-4 mb-2">
+                                    <span class="inline-block px-3 py-1 rounded-full text-xs font-medium text-white ${categoryClass}">
+                                        ${item.category}
+                                    </span>
+                                    <span class="text-sm text-white whitespace-nowrap">${formatDate(item.date)}</span>
+                                </div>
+                                <h2 class="text-xl sm:text-2xl font-bold mb-2 text-white hover:text-white transition-colors">
+                                    ${item.title}
+                                </h2>
+                                <p class="text-white line-clamp-2 mb-2">${item.subtitle}</p>
+                                <div class="mt-4 text-accent font-medium text-sm flex items-center gap-1">
+                                    <span>Lire la suite</span>
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                    </svg>
+                                </div>
+                            </div>
                         </div>
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">${item.title}</h3>
-                        <p class="text-gray-600 mb-3">${item.subtitle}</p>
-                        <p class="text-gray-700 mb-4">${truncatedContent}</p>
-                        <button onclick="openModal('${item.id}')" 
-                                class="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors">
-                            Lire la suite
-                            <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                            </svg>
-                        </button>
                     </div>
                 `;
+            }).join('');
+            
+            console.log('Generated HTML length:', html.length);            
+            DOM.prList.innerHTML = html;
+            
+            // Force visibility for debugging
+            DOM.prList.style.display = 'block';
+            DOM.prList.style.visibility = 'visible';
+            DOM.prList.style.opacity = '1';
+            
+            console.log('Content inserted and forced visible');
+            console.log('First card element:', DOM.prList.querySelector('.job-card'));
+        }
 
-                prList.appendChild(cardElement);
+        // Open news modal with mobile-friendly content
+        window.openNewsModal = function(id) {
+            console.log('Opening modal for ID:', id);
+            const item = getNews().find(news => String(news.id) === String(id));
+            if (!item) {
+                return;
+            }
+
+            DOM.modalTitle.textContent = item.title;
+            DOM.modalContent.innerHTML = `
+                <div class="text-white">
+                    <div class="mb-4">
+                        <span class="px-3 py-1 ${getCategoryClass(item.category)} text-white text-sm rounded-full">${item.category}</span>
+                    </div>
+                    <div class="prose prose-invert max-w-none text-white" style="color: white; line-height: 1.6;">
+                        ${item.content}
+                    </div>
+                </div>
+            `;
+            DOM.modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            state.isModalOpen = true;
+        }
+
+        // Close modal
+        window.closeModal = function() {
+            if (DOM.modal) {
+                DOM.modal.classList.remove('active');
+                document.body.style.overflow = '';
+                state.isModalOpen = false;
+            }
+        }
+
+
+
+        // Initialize application
+        function initializeApp() {
+            DOM.prList = document.getElementById('prList');
+            DOM.modal = document.getElementById('newsModal');
+            DOM.modalTitle = document.getElementById('modalTitle');
+            DOM.modalContent = document.getElementById('modalContent');
+
+            console.log('DOM elements found:', {
+                prList: !!DOM.prList,
+                modal: !!DOM.modal,
+                modalTitle: !!DOM.modalTitle,
+                modalContent: !!DOM.modalContent
             });
 
-            console.log('Content inserted successfully, total cards:', prList.children.length);
+            // Render news
+            renderNews();
+
+            // Modal close handlers
+            DOM.modal?.addEventListener('click', (e) => {
+                if (e.target === DOM.modal) {
+                    closeModal();
+                }
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && state.isModalOpen) {
+                    closeModal();
+                }
+            });
         }
 
-        function openModal(id) {
-            const item = pressReleases.find(pr => pr.id === id);
-            if (!item) return;
-
-            document.getElementById('modalTitle').textContent = item.title;
-            document.getElementById('modalContent').innerHTML = item.content;
-            document.getElementById('newsModal').classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeModal() {
-            document.getElementById('newsModal').classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-
-        // Close modal when clicking outside
-        document.addEventListener('click', function(e) {
-            const modal = document.getElementById('newsModal');
-            if (e.target === modal) {
-                closeModal();
-            }
+        // Initialize application when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, checking data:', typeof pressReleases);
+            console.log('Press releases:', window.pressReleases || pressReleases || 'undefined');
+            
+            // Small delay to ensure scripts have loaded
+            setTimeout(() => {
+                console.log('Initializing app...');
+                initializeApp();
+            }, 200);
         });
+
+
+
+
     </script>
 </body>
 </html>
