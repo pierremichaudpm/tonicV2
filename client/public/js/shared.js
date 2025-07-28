@@ -8,7 +8,7 @@
         console.warn('Icons already defined, skipping redeclaration');
         return;
     }
-    
+
     window.Icons = {
     grid: () => '<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>',
 
@@ -101,13 +101,13 @@ function toggleMobileMenu() {
         console.log('Mobile menu element not found');
         return;
     }
-    
+
     console.log('toggleMobileMenu called');
     console.log('Mobile menu element:', mobileMenu);
-    
+
     // Toggle menu visibility using display style
     const isCurrentlyOpen = mobileMenu.style.display !== 'none' && mobileMenu.style.display !== '';
-    
+
     if (isCurrentlyOpen) {
         mobileMenu.style.display = 'none';
         mobileMenu.classList.remove('active');
@@ -117,14 +117,14 @@ function toggleMobileMenu() {
         mobileMenu.classList.add('active');
         console.log('Opening mobile menu');
     }
-    
+
     const newState = !isCurrentlyOpen;
-    
+
     // Find and update button icon - try multiple selectors
     const headerButton = document.getElementById('mobileMenuButton') || 
                         document.querySelector('button[onclick*="toggleMobileMenu"]') ||
                         document.querySelector('.md\\:hidden button');
-    
+
     if (headerButton) {
         const svg = headerButton.querySelector('svg');
         if (svg) {
@@ -132,7 +132,7 @@ function toggleMobileMenu() {
             svg.setAttribute('stroke', 'currentColor');
             svg.setAttribute('stroke-width', '2');
             svg.setAttribute('viewBox', '0 0 24 24');
-            
+
             if (newState) {
                 // Menu is open - show close (X) icon
                 svg.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>';
@@ -228,10 +228,10 @@ function generateDesktopNav(isEnglish = false, currentPage = '') {
     const navItems = isEnglish ? createNavItemsEnglish() : createNavItemsFrench();
     const langLink = isEnglish ? 'index.html' : 'index-en.html';
     const langText = isEnglish ? 'FR' : 'EN';
-    
+
     // Normalize current page for comparison
     const normalizedCurrentPage = currentPage.toLowerCase().replace(/^\//, '');
-    
+
     return `
         <nav class="hidden md:flex lg:flex items-center gap-0.5 px-2 py-0.5 rounded-full nav-container" style="background:rgba(0,0,0,0.2);backdrop-filter:blur(10px)">
             ${navItems.map(item => {
@@ -239,7 +239,7 @@ function generateDesktopNav(isEnglish = false, currentPage = '') {
                 const isActive = item.href && normalizedCurrentPage && 
                     (item.href.toLowerCase() === normalizedCurrentPage || 
                      item.href.toLowerCase().endsWith('/' + normalizedCurrentPage));
-                
+
                 return `
                     <a href="${item.href}" ${item.target ? `target="${item.target}"` : ''} class="nav-item flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-white/10 transition-all text-white hover:text-white cursor-pointer${isActive ? ' bg-white/10' : ''}" data-tooltip="${item.tooltip || item.label}">
                         <div style="color:white">${item.icon}</div>
@@ -259,10 +259,10 @@ function generateMobileMenu(isEnglish = false, currentPage = '') {
     const langLink = isEnglish ? 'index.html' : 'index-en.html';
     const langText = isEnglish ? 'Français' : 'English';
     const langIcon = window.Icons.lang();
-    
+
     // Normalize current page for comparison
     const normalizedCurrentPage = currentPage.toLowerCase().replace(/^\//, '');
-    
+
     return `
         <div id="mobileMenu" class="md:hidden fixed inset-0 z-40 bg-black/95 backdrop-blur-md" style="display: none;">
             <div class="h-full pt-20 pb-6">
@@ -273,7 +273,7 @@ function generateMobileMenu(isEnglish = false, currentPage = '') {
                             const isActive = item.href && normalizedCurrentPage && 
                                 (item.href.toLowerCase() === normalizedCurrentPage || 
                                  item.href.toLowerCase().endsWith('/' + normalizedCurrentPage));
-                            
+
                             return `
                                 <a href="${item.href}" ${item.target ? `target="${item.target}"` : ''} class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/10 transition-all cursor-pointer text-white${isActive ? ' bg-white/10' : ''}">
                                     <div style="color:white">${item.icon}</div>
@@ -308,7 +308,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (typeof window.toggleMobileMenu === 'undefined') {
         window.toggleMobileMenu = toggleMobileMenu;
     }
-    
+
     // Close mobile menu when clicking outside
     document.addEventListener('click', function(event) {
         const mobileMenu = document.getElementById('mobileMenu');
@@ -320,10 +320,10 @@ document.addEventListener('DOMContentLoaded', function() {
             (mobileMenu.style.display === 'block' || mobileMenu.classList.contains('active')) && 
             !mobileMenu.contains(event.target) && 
             !menuButton) {
-            
+
             mobileMenu.style.display = 'none';
             mobileMenu.classList.remove('active');
-            
+
             // Reset burger icon
             const headerButton = document.getElementById('mobileMenuButton') || 
                                 document.querySelector('button[onclick*="toggleMobileMenu"]') ||
@@ -344,7 +344,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (mobileMenu && (mobileMenu.style.display === 'block' || mobileMenu.classList.contains('active'))) {
                 mobileMenu.style.display = 'none';
                 mobileMenu.classList.remove('active');
-                
+
                 // Reset burger icon
                 const headerButton = document.getElementById('mobileMenuButton') || 
                                     document.querySelector('button[onclick*="toggleMobileMenu"]') ||
@@ -367,15 +367,15 @@ function generateStandardHeader(isEnglish = false, currentPage = '') {
     const logoAlt = isEnglish 
         ? "Groupe Tonic Logo - Creator of memorable experiences for over 40 years"
         : "Logo Groupe Tonic - Créateur d'expériences mémorables depuis plus de 40 ans";
-    
+
     const taglineDesktop = isEnglish 
         ? "| Creator of memorable experiences"
         : "| Créateur d'expériences mémorables";
-    
+
     const taglineMobile = isEnglish 
         ? "Creator of memorable experiences"
         : "Créateur d'expériences mémorables";
-    
+
     return `
         <header class="fixed top-0 left-0 right-0 z-50" style="background: linear-gradient(180deg, rgba(0,0,0,0.98) 0%, rgba(0,0,0,0.95) 50%, rgba(0,0,0,0.85) 100%); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); box-shadow: 0 4px 30px rgba(0,0,0,0.5);">
             <div class="container mx-auto px-2 py-2 sm:px-4 sm:py-5">
@@ -405,6 +405,11 @@ function generateStandardHeader(isEnglish = false, currentPage = '') {
 
 // Initialize navigation on page load
 function initializeNavigation(isEnglish = false, currentPage = '') {
+    // Prevent multiple initializations
+    if (window.navigationInitialized) {
+        return;
+    }
+    window.navigationInitialized = true;
     // Wait for DOM to be ready
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', function() {
@@ -412,7 +417,7 @@ function initializeNavigation(isEnglish = false, currentPage = '') {
         });
         return;
     }
-    
+
     // Find header element - looking for main-header id
     const headerElement = document.getElementById('main-header') || document.querySelector('header');
     if (headerElement) {
@@ -435,4 +440,3 @@ window.initializeNavigation = initializeNavigation;
 if (typeof window !== 'undefined') {
     window.toggleMobileMenu = toggleMobileMenu;
 }
-
