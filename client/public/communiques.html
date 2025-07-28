@@ -263,24 +263,24 @@
         /* Mobile Menu Override - Complete Fix */
         .mobile-menu,
         #mobileMenu {
-            display: none !important;
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            right: 0 !important;
-            bottom: 0 !important;
-            width: 100vw !important;
-            height: 100vh !important;
-            background: rgba(0,0,0,0.95) !important;
-            backdrop-filter: blur(20px) !important;
-            z-index: 2000000 !important;
-            flex-direction: column !important;
-            overflow-y: auto !important;
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.95);
+            backdrop-filter: blur(20px);
+            z-index: 999999;
+            flex-direction: column;
+            overflow-y: auto;
         }
 
         .mobile-menu.active,
         #mobileMenu.active {
-            display: flex !important;
+            display: flex;
         }
 
         /* Keep header visible but adjust z-index when mobile menu is active */
@@ -629,15 +629,59 @@
     <!-- Mobile menu initialization -->
     <script>
         function toggleMobileMenu() {
+            console.log('toggleMobileMenu called');
             var menu = document.getElementById('mobileMenu');
+            var button = document.getElementById('mobileMenuButton');
+            
+            if (!menu) {
+                console.error('Mobile menu not found');
+                return;
+            }
+            
             if (menu.classList.contains('active')) {
                 menu.classList.remove('active');
                 document.body.style.overflow = '';
+                // Reset hamburger icon
+                if (button) {
+                    var svg = button.querySelector('svg');
+                    if (svg) {
+                        svg.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>';
+                    }
+                }
             } else {
                 menu.classList.add('active');
                 document.body.style.overflow = 'hidden';
+                // Show close icon
+                if (button) {
+                    var svg = button.querySelector('svg');
+                    if (svg) {
+                        svg.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>';
+                    }
+                }
             }
         }
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            var menu = document.getElementById('mobileMenu');
+            var button = document.getElementById('mobileMenuButton');
+            
+            if (menu && menu.classList.contains('active') && 
+                !menu.contains(event.target) && 
+                !button.contains(event.target)) {
+                toggleMobileMenu();
+            }
+        });
+
+        // Close menu on escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                var menu = document.getElementById('mobileMenu');
+                if (menu && menu.classList.contains('active')) {
+                    toggleMobileMenu();
+                }
+            }
+        });
     </script>
 
     <!-- Page specific JavaScript - Matching jobs page structure -->
