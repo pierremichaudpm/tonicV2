@@ -681,29 +681,28 @@ header {
     position: relative !important;
 }
 
-/* FORCE ALL PAGE CONTENT TO MINIMUM Z-INDEX */
-* {
-    z-index: auto !important;
-}
-
-*:not(#newsModal):not(.modal-backdrop):not(.modal-content):not(.mobile-menu):not(#mobileMenu) {
+/* FORCE SPECIFIC PAGE CONTENT TO MINIMUM Z-INDEX - TARGETED APPROACH */
+.hero-title,
+h1.hero-title,
+section h1:not(.modal-content h1),
+main h1:not(.modal-content h1),
+.text-4xl:not(.modal-content .text-4xl),
+.text-5xl:not(.modal-content .text-5xl),
+.text-6xl:not(.modal-content .text-6xl) {
     z-index: 1 !important;
 }
 
-/* Specific targeting for problematic elements */
-.hero-title,
-h1.hero-title,
-section h1,
-main h1,
-.text-4xl,
-.text-5xl,
-.text-6xl {
+/* Additional specific targeting for problematic elements */
+section > h1,
+section > .hero-title {
     z-index: 1 !important;
     position: relative !important;
 }
 
-/* Hide any potential overlay during modal display */
-body.modal-open * {
+/* Hide specific elements during modal display */
+body.modal-open .hero-title,
+body.modal-open section h1,
+body.modal-open main h1 {
     z-index: 1 !important;
 }
 
