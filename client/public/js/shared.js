@@ -93,6 +93,9 @@ function createNavItemsEnglish() {
     ];
 }
 
+// Global state for mobile menu
+window.mobileMenuOpen = false;
+
 // Toggle Mobile Menu with icon change - Robust implementation
 function toggleMobileMenu() {
     console.log('toggleMobileMenu called - event timestamp:', Date.now());
@@ -102,23 +105,24 @@ function toggleMobileMenu() {
         return;
     }
 
-    // Check actual computed display style instead of class
-    const computedStyle = window.getComputedStyle(mobileMenu);
-    const isCurrentlyOpen = computedStyle.display !== 'none' && computedStyle.display !== '';
-    console.log('Menu currently open:', isCurrentlyOpen, 'Display style:', computedStyle.display);
+    // Use global state instead of unreliable CSS detection
+    const isCurrentlyOpen = window.mobileMenuOpen;
+    console.log('Menu currently open:', isCurrentlyOpen, 'Global state:', window.mobileMenuOpen);
 
     if (isCurrentlyOpen) {
         // Close menu
         mobileMenu.classList.remove('active');
         mobileMenu.style.display = 'none';
         document.body.style.overflow = '';
-        console.log('Menu closed');
+        window.mobileMenuOpen = false;
+        console.log('Menu closed - state updated to false');
     } else {
         // Open menu
         mobileMenu.classList.add('active');
         mobileMenu.style.display = 'flex';
         document.body.style.overflow = 'hidden';
-        console.log('Menu opened');
+        window.mobileMenuOpen = true;
+        console.log('Menu opened - state updated to true');
     }
 
     // Update button icon - simple and reliable
@@ -126,7 +130,7 @@ function toggleMobileMenu() {
     if (headerButton) {
         const svg = headerButton.querySelector('svg');
         if (svg) {
-            if (!isCurrentlyOpen) {
+            if (window.mobileMenuOpen) {
                 // Menu is now open - show close (X) icon
                 svg.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>';
             } else {
