@@ -692,6 +692,16 @@
             return typeof pressReleases !== 'undefined' ? pressReleases : [];
         }
 
+        // Format date function (matching English version)
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('fr-FR', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+        }
+
         // Render news with colored cards - matching jobs structure
         function renderNews() {
             const news = getNews();
@@ -712,14 +722,14 @@
             // Sort by date (newest first)
             news.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-            DOM.prList.innerHTML = news.map((item, index) => {
+            const html = news.map((item, index) => {
                 const categoryClass = getCategoryClass(item.category);
                 const image = getCategoryImage(item.category);
 
                 return `
                     <div class="job-card relative rounded-xl p-6 sm:p-8 cursor-pointer fade-in delay-${Math.min(index * 100, 500)}" 
                          data-news-id="${item.id}"
-                         onclick="openNewsModal(${item.id})">
+                         onclick="openNewsModal('${item.id}')">
                         <div class="flex flex-col sm:flex-row gap-4">
                             <div class="sm:w-48 h-32 sm:h-32 flex-shrink-0 relative">
                                 <img src="${image}" alt="${item.category}" class="w-full h-full object-cover rounded-lg" loading="lazy">
@@ -747,10 +757,15 @@
                     </div>
                 `;
             }).join('');
+            
+            console.log('Generated HTML length:', html.length);
+            DOM.prList.innerHTML = html;
+            console.log('Content inserted into DOM');
         }
 
         // Open news modal with mobile-friendly content
         window.openNewsModal = function(id) {
+            console.log('Opening modal for ID:', id);
             const item = getNews().find(news => String(news.id) === String(id));
             if (!item) {
                 return;
