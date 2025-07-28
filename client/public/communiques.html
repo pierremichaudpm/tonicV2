@@ -290,6 +290,32 @@
             z-index: 2000001 !important;
             position: relative !important;
         }
+        
+        /* Mobile menu close button - force visibility */
+        .mobile-menu button,
+        #mobileMenu button {
+            display: block !important;
+            position: absolute !important;
+            top: 1rem !important;
+            right: 1rem !important;
+            z-index: 2000002 !important;
+            color: white !important;
+            background: rgba(255,255,255,0.1) !important;
+            border: none !important;
+            border-radius: 0.5rem !important;
+            padding: 0.5rem !important;
+            cursor: pointer !important;
+        }
+        
+        /* Mobile menu navigation items */
+        .mobile-menu .nav-item,
+        #mobileMenu .nav-item {
+            display: flex !important;
+            color: white !important;
+            padding: 1rem !important;
+            border-radius: 0.5rem !important;
+            text-decoration: none !important;
+        }
 
         /* Hero title gradient styling */
         .hero-title{
@@ -544,7 +570,7 @@
     <script src="js/simple-content.js?v=1753723200&cache=false"></script>
 
     <!-- Shared JavaScript -->
-    <script src="js/shared.js?v=1753724400&cache=false&fix=mobilemenuvisible"></script>
+    <script src="js/shared.js?v=1753724500&cache=false&fix=closebuttonfix"></script>
 
     <!-- Initialize standardized navigation -->
     <script>
@@ -693,7 +719,7 @@
             }
         }
 
-        // Mobile menu functionality - Enhanced
+        // Mobile menu functionality - Enhanced with close button fix
         window.toggleMobileMenu = function() {
             console.log('toggleMobileMenu called');
             const mobileMenu = document.getElementById('mobileMenu');
@@ -712,6 +738,23 @@
                 console.log('Opening mobile menu');
                 mobileMenu.classList.add('active');
                 document.body.style.overflow = 'hidden';
+                
+                // Ensure close button is visible after opening
+                setTimeout(() => {
+                    const closeButton = mobileMenu.querySelector('button');
+                    if (closeButton) {
+                        console.log('Close button found:', closeButton);
+                        closeButton.style.display = 'block';
+                        closeButton.style.position = 'absolute';
+                        closeButton.style.top = '1rem';
+                        closeButton.style.right = '1rem';
+                        closeButton.style.zIndex = '2000002';
+                        closeButton.style.color = 'white';
+                        closeButton.style.background = 'rgba(255,255,255,0.1)';
+                    } else {
+                        console.error('Close button not found in mobile menu');
+                    }
+                }, 100);
             }
         }
 
