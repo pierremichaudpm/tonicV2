@@ -94,11 +94,30 @@ function createNavItemsEnglish() {
     ];
 }
 
-// Toggle Mobile Menu
+// Toggle Mobile Menu with icon change
 function toggleMobileMenu() {
     const mobileMenu = document.getElementById('mobileMenu');
+    const menuButton = document.getElementById('mobileMenuButton');
+    
     if (mobileMenu) {
+        const isActive = mobileMenu.classList.contains('active');
+        
+        // Toggle menu visibility
         mobileMenu.classList.toggle('active');
+        
+        // Update button icon
+        if (menuButton) {
+            const svg = menuButton.querySelector('svg');
+            if (svg) {
+                if (isActive) {
+                    // Menu is closing - show burger icon
+                    svg.innerHTML = '<path d="M3 12h18M3 6h18M3 18h18"></path>';
+                } else {
+                    // Menu is opening - show close (X) icon
+                    svg.innerHTML = '<path d="M6 18L18 6M6 6l12 12"></path>';
+                }
+            }
+        }
     }
 }
 
