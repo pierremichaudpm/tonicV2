@@ -283,10 +283,10 @@
             display: flex;
         }
 
-        /* Ensure main header is hidden when mobile menu is active */
+        /* Keep header visible but lower than mobile menu */
         body:has(.mobile-menu.active) header,
         body:has(#mobileMenu.active) header {
-            display: none;
+            z-index: 40; /* Lower than mobile menu but still visible */
         }
 
         .mobile-close-btn {
@@ -374,6 +374,32 @@
         }
     </style>
     <script>
+        // Protect mobile menu elements from external interference
+        (function() {
+            // Override initializeNavigation if it exists
+            if (typeof window.initializeNavigation !== 'undefined') {
+                const originalInit = window.initializeNavigation;
+                window.initializeNavigation = function() {
+                    console.log('Intercepted initializeNavigation call');
+                    // Do nothing to prevent DOM destruction
+                };
+            }
+            
+            // Set up a watcher for initializeNavigation
+            Object.defineProperty(window, 'initializeNavigation', {
+                set: function(val) {
+                    console.warn('Blocked attempt to set initializeNavigation');
+                },
+                get: function() {
+                    return function() {
+                        console.log('initializeNavigation called but blocked');
+                    };
+                },
+                configurable: false
+            });
+        })();
+    </script>
+    <script>
         // Simple inline tooltip system
         document.addEventListener('DOMContentLoaded', function() {
             // Create tooltip element
@@ -431,7 +457,7 @@
 
     <!-- Header -->
     <!-- Header -->
-    <header class="fixed top-0 left-0 right-0 z-50" style="background: linear-gradient(to bottom, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.9) 40%, rgba(0,0,0,0.7) 70%, rgba(0,0,0,0.3) 90%, transparent 100%); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); box-shadow: 0 2px 20px rgba(0,0,0,0.3);">
+    <header class="fixed top-0 left-0 right-0 z-50" style="background: linear-gradient(to bottom, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.9) 40%, rgba(0,0,0,0.7) 70%, rgba(0,0,0,0.3) 90%, transparent 100%); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); box-shadow: 0 2px 20px rgba(0,0,0,0.3);" data-protected="true">
         <div class="container mx-auto px-2 py-2 sm:px-4 sm:py-5">
             <div class="flex items-center justify-between">
                 <!-- Logo -->
@@ -745,9 +771,10 @@
             }
         }
 
-        // Mobile menu functionality - Enhanced with close button fix
+        // Mobile menu functionality - Enhanced with protection against external interference
         window.toggleMobileMenu = function() {
             console.log('toggleMobileMenu called');
+            // Create a protected reference to the mobile menu
             const mobileMenu = document.getElementById('mobileMenu');
             console.log('Mobile menu element:', mobileMenu);
 
@@ -756,11 +783,27 @@
                 return;
             }
 
+            // Protect the mobile menu from being destroyed
+            if (mobileMenu.dataset.protected !== 'true') {
+                mobileMenu.dataset.protected = 'true';
+                // Override any attempts to remove or modify the mobile menu
+                Object.defineProperty(mobileMenu, 'remove', {
+                    value: function() {
+                        console.warn('Attempted to remove protected mobile menu');
+                    },
+                    writable: false,
+                    configurable: false
+                });
+            }
+
             if (mobileMenu.classList.contains('active')) {
                 console.log('Closing mobile menu');
                 mobileMenu.classList.remove('active');
                 mobileMenu.style.display = 'none';
                 document.body.style.overflow = '';
+                // Ensure header remains visible
+                const header = document.querySelector('header');
+                if (header) header.style.display = '';
             } else {
                 console.log('Opening mobile menu');
                 mobileMenu.style.display = 'flex';
@@ -778,6 +821,25 @@
 
             // Render news
             renderNews();
+
+            // Protect mobile menu from external interference
+            setTimeout(function() {
+                const mobileMenu = document.getElementById('mobileMenu');
+                const mobileMenuButton = document.querySelector('button[onclick="toggleMobileMenu()"]');
+                
+                if (mobileMenu && mobileMenuButton) {
+                    // Ensure mobile menu maintains its structure
+                    mobileMenu.dataset.protected = 'true';
+                    
+                    // Re-establish event listener if it gets removed
+                    const originalOnclick = mobileMenuButton.onclick;
+                    Object.defineProperty(mobileMenuButton, 'onclick', {
+                        get() { return originalOnclick || window.toggleMobileMenu; },
+                        set(val) { console.warn('Prevented onclick override on mobile menu button'); },
+                        configurable: false
+                    });
+                }
+            }, 100); // Small delay to ensure it runs after shared.js
 
             // Content refresh removed to prevent flickering
 
