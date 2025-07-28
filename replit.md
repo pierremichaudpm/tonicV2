@@ -252,7 +252,9 @@ The website is now fully operational and matches the original local/Netlify func
 - **Navigation consistency**: All responsive breakpoints (md:hidden/md:flex) working correctly across website
 - **Button system standardized**: Converted checkbox-based systems to unified button-based approach
 - **A-propos page special fix**: Updated a-propos.html to match emplois/communiques mobile menu structure with proper header, logo, and close button
-- **Final status**: Mobile menu hamburger opens properly, close button (X) closes properly, no more hamburger showing through overlay on any page - ALL PAGES WORKING
+- **Mobile menu header branding consistency**: Applied vertical layout (flex flex-col items-start) with tagline under logo across ALL pages
+- **Responsive padding standardization**: Updated all mobile menu headers to use consistent responsive padding (px-2 py-2 sm:px-4 sm:py-5) matching main header sections
+- **Final status**: Mobile menu hamburger opens properly, close button (X) closes properly, consistent branding with vertical tagline layout and responsive padding across ALL pages - COMPLETE CONSISTENCY ACHIEVED
 
 ### Tagline Consistency - July 22, 2025
 - **Standardized French tagline** across all pages (both French and English versions)
