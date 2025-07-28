@@ -96,28 +96,36 @@ function createNavItemsEnglish() {
 
 // Toggle Mobile Menu with icon change
 function toggleMobileMenu() {
+    console.log('toggleMobileMenu called');
+    
     const mobileMenu = document.getElementById('mobileMenu');
+    console.log('mobileMenu found:', !!mobileMenu);
     
     if (mobileMenu) {
         const isActive = mobileMenu.classList.contains('active');
+        console.log('Menu was active:', isActive);
         
         // Toggle menu visibility
         mobileMenu.classList.toggle('active');
+        console.log('Menu now active:', mobileMenu.classList.contains('active'));
         
         // Find the main header button specifically (not the close button inside menu)
-        const headerButton = document.querySelector('header button[onclick*="toggleMobileMenu"]') || 
-                           document.querySelector('header #mobileMenuButton') ||
-                           document.getElementById('mobileMenuButton');
+        const headerButton = document.getElementById('mobileMenuButton');
+        console.log('headerButton found:', !!headerButton);
         
         // Update header button icon
-        if (headerButton && !headerButton.closest('#mobileMenu')) {
+        if (headerButton) {
             const svg = headerButton.querySelector('svg');
+            console.log('svg found:', !!svg);
+            
             if (svg) {
                 if (isActive) {
-                    // Menu is closing - show burger icon
+                    // Menu was active, now closing - show burger icon
+                    console.log('Setting burger icon');
                     svg.innerHTML = '<path d="M3 12h18M3 6h18M3 18h18"></path>';
                 } else {
-                    // Menu is opening - show close (X) icon
+                    // Menu was closed, now opening - show close (X) icon
+                    console.log('Setting close icon');
                     svg.innerHTML = '<path d="M6 18L18 6M6 6l12 12"></path>';
                 }
             }
