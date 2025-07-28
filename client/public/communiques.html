@@ -688,14 +688,23 @@
 
         // Get news data function
         function getNews() {
+            console.log('Getting news data, window.pressReleases:', window.pressReleases);
             return window.pressReleases || [];
         }
 
         // Render news with colored cards - matching jobs structure
         function renderNews() {
+            console.log('Rendering news...');
             const news = getNews();
+            console.log('News data length:', news.length, 'DOM.prList:', DOM.prList);
+
+            if (!DOM.prList) {
+                console.error('DOM.prList element not found!');
+                return;
+            }
 
             if (news.length === 0) {
+                console.log('No news found, showing empty message');
                 DOM.prList.innerHTML = '<p class="text-white text-center py-8">Aucun communiqué disponible.</p>';
                 return;
             }
@@ -779,10 +788,20 @@
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM Content Loaded');
             DOM.prList = document.getElementById('prList');
             DOM.modal = document.getElementById('newsModal');
             DOM.modalTitle = document.getElementById('modalTitle');
             DOM.modalContent = document.getElementById('modalContent');
+
+            console.log('DOM elements found:', {
+                prList: DOM.prList,
+                modal: DOM.modal,
+                modalTitle: DOM.modalTitle,
+                modalContent: DOM.modalContent
+            });
+
+            console.log('window.pressReleases available:', !!window.pressReleases, window.pressReleases?.length);
 
             // Render news
             renderNews();
