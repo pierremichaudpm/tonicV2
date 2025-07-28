@@ -97,30 +97,41 @@ function createNavItemsEnglish() {
 function toggleMobileMenu() {
     const mobileMenu = document.getElementById('mobileMenu');
     if (!mobileMenu) {
+        console.warn('Mobile menu not found');
         return;
     }
     
-    // Toggle menu visibility using display style
-    const isCurrentlyOpen = mobileMenu.style.display !== 'none' && mobileMenu.style.display !== '';
+    // Check current state using active class only
+    const isCurrentlyOpen = mobileMenu.classList.contains('active');
     
     if (isCurrentlyOpen) {
+        // Close menu
         mobileMenu.style.display = 'none';
         mobileMenu.classList.remove('active');
+        document.body.style.overflow = '';
     } else {
+        // Open menu
         mobileMenu.style.display = 'block';
         mobileMenu.classList.add('active');
+        document.body.style.overflow = 'hidden';
     }
     
-    const newState = !isCurrentlyOpen;
+    // Update all menu buttons (header and mobile menu close button)
+    updateMenuButtonIcons(!isCurrentlyOpen);
+}
+
+// Helper function to update all menu button icons
+function updateMenuButtonIcons(isOpen) {
+    // Find all possible menu buttons
+    const buttons = [
+        document.getElementById('mobileMenuButton'),
+        document.querySelector('button[onclick*="toggleMobileMenu"]'),
+        document.querySelector('.md\\:hidden button'),
+        document.querySelector('#mobileMenu button[onclick*="toggleMobileMenu"]')
+    ].filter(Boolean);
     
-    // Find and update button icon
-    const headerButton = document.getElementById('mobileMenuButton') || 
-                        document.querySelector('button[onclick*="toggleMobileMenu"]') ||
-                        document.querySelector('.md\\:hidden button');
-    
-    if (headerButton) {
-        let svg = headerButton.querySelector('svg');
-        
+    buttons.forEach(button => {
+        const svg = button.querySelector('svg');
         if (svg) {
             svg.setAttribute('fill', 'none');
             svg.setAttribute('stroke', 'currentColor');
@@ -128,15 +139,15 @@ function toggleMobileMenu() {
             svg.setAttribute('viewBox', '0 0 24 24');
             svg.className = 'w-6 h-6';
             
-            if (newState) {
+            if (isOpen) {
                 // Menu is open - show close (X) icon
-                svg.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>';
+                svg.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>';
             } else {
                 // Menu is closed - show burger icon  
-                svg.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12h18M3 6h18M3 18h18"></path>';
+                svg.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M3 12h18M3 6h18M3 18h18"></path>';
             }
         }
-    }
+    });
 }
 
 // Handle form submission (for contact form)
@@ -302,23 +313,9 @@ document.addEventListener('DOMContentLoaded', function() {
         window.toggleMobileMenu = toggleMobileMenu;
     }
     
-    // Function to reset burger icon
-    function resetBurgerIcon() {
-        const headerButton = document.getElementById('mobileMenuButton') || 
-                            document.querySelector('button[onclick*="toggleMobileMenu"]') ||
-                            document.querySelector('.md\\:hidden button');
-        if (headerButton) {
-            let svg = headerButton.querySelector('svg');
-            
-            if (svg) {
-                svg.setAttribute('fill', 'none');
-                svg.setAttribute('stroke', 'currentColor');
-                svg.setAttribute('stroke-width', '2');
-                svg.setAttribute('viewBox', '0 0 24 24');
-                svg.className = 'w-6 h-6';
-                svg.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12h18M3 6h18M3 18h18"></path>';
-            }
-        }
+    // Make updateMenuButtonIcons available globally too
+    if (typeof window.updateMenuButtonIcons === 'undefined') {
+        window.updateMenuButtonIcons = updateMenuButtonIcons;
     }
 
     // Close mobile menu when clicking outside
@@ -330,13 +327,14 @@ document.addEventListener('DOMContentLoaded', function() {
                           event.target.closest('header button');
 
         if (mobileMenu && 
-            (mobileMenu.style.display === 'block' || mobileMenu.classList.contains('active')) && 
+            mobileMenu.classList.contains('active') && 
             !mobileMenu.contains(event.target) && 
             !menuButton) {
             
             mobileMenu.style.display = 'none';
             mobileMenu.classList.remove('active');
-            resetBurgerIcon();
+            document.body.style.overflow = '';
+            updateMenuButtonIcons(false);
         }
     });
 
@@ -344,10 +342,11 @@ document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('keydown', function(event) {
         if (event.key === 'Escape') {
             const mobileMenu = document.getElementById('mobileMenu');
-            if (mobileMenu && (mobileMenu.style.display === 'block' || mobileMenu.classList.contains('active'))) {
+            if (mobileMenu && mobileMenu.classList.contains('active')) {
                 mobileMenu.style.display = 'none';
                 mobileMenu.classList.remove('active');
-                resetBurgerIcon();
+                document.body.style.overflow = '';
+                updateMenuButtonIcons(false);
             }
         }
     });
@@ -436,13 +435,15 @@ window.generateDesktopNav = generateDesktopNav;
 window.generateMobileMenu = generateMobileMenu;
 window.generateMobileMenuButton = generateMobileMenuButton;
 window.toggleMobileMenu = toggleMobileMenu;
+window.updateMenuButtonIcons = updateMenuButtonIcons;
 window.generateStandardHeader = generateStandardHeader;
 window.initializeNavigation = initializeNavigation;
 window.hidePDFLoading = hidePDFLoading;
 window.showPDFLoading = showPDFLoading;
 
-// Ensure toggleMobileMenu is immediately available
+// Ensure functions are immediately available
 if (typeof window !== 'undefined') {
     window.toggleMobileMenu = toggleMobileMenu;
+    window.updateMenuButtonIcons = updateMenuButtonIcons;
 }
 
