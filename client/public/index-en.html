@@ -11,11 +11,8 @@
     <meta property="og:type" content="website">
     <link rel="preload" href="css/shared.css" as="style">
     <link rel="preload" href="css/4k-presentation.css" as="style">
-    <link rel="preload" href="css/tailwind-production.css" as="style">
-    <link rel="stylesheet" href="css/shared.css">
-    <link rel="stylesheet" href="css/4k-presentation.css">
-    <link rel="stylesheet" href="css/tailwind-production.css">
     <link rel="preload" href="https://fonts.cbc.ca/fonts/CBCSans-Bold.woff2" as="font" type="font/woff2" crossorigin>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.cbc.ca">
 
     <style>
@@ -24,7 +21,7 @@
         @font-face{font-family:'CBC Sans';font-weight:900;font-display:swap;src:url('https://fonts.cbc.ca/fonts/CBCSans-Black.woff2') format('woff2')}
         *{box-sizing:border-box;font-family:'CBC Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
         body{margin:0;background:#000;overflow-x:hidden;min-height:100vh;min-height:100dvh;overscroll-behavior:none}
-        
+
         /* Core animations */
         @keyframes fadeInSoft{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
         @keyframes fadeOutSoft{to{opacity:0}}
@@ -38,15 +35,15 @@
         @keyframes gridProgress{from{width:0}to{width:100%}}
         @keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
         @keyframes fadeInOut{0%{opacity:0;transform:translate(-50%,-50%) scale(.8)}20%{opacity:1;transform:translate(-50%,-50%) scale(1)}80%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) scale(.95)}}
-        
 
-        
+
+
         /* Base components */
         .view-container{position:fixed;inset:0;opacity:0;pointer-events:none;transition:opacity 3s ease-in-out}
         .view-container.active{opacity:1;pointer-events:auto}
         .splash-container{transition:opacity 1.8s ease-out}
         .splash-container{position:fixed;inset:0;z-index:100;background:#000;display:flex;align-items:center;justify-content:center;padding:2rem;flex-direction:column;overflow:hidden}
-        
+
         .splash-container::before{
             content: '';
             position: absolute;
@@ -69,7 +66,7 @@
 
         .splash-logo{width:clamp(300px,50vw,600px);height:auto;opacity:0;animation:fadeInSoft 1.2s ease-out forwards, fadeOutSoft 1.2s ease-out 3.5s forwards;filter:drop-shadow(0 4px 20px rgba(0,0,0,.8));position:relative;z-index:2}
         .splash-tagline{font-size:clamp(1rem,2.5vw,1.5rem);font-weight:500;color:#fff;text-align:center;text-shadow:0 2px 10px rgba(0,0,0,.8);opacity:0;animation:fadeInSoft 1.2s ease-out .3s forwards, fadeOutSoft 1.2s ease-out 3.5s forwards;margin-top:3rem;position:relative;z-index:2}
-        
+
         /* Grid - Updated 2:34 AM for MUCH darker backgrounds */
         .grid-selection-container{position:fixed;inset:0;z-index:90;background:#000;display:flex;flex-direction:column;height:100vh;height:100dvh;overflow:hidden;position:relative}
         .grid-selection-container::before{
@@ -99,7 +96,7 @@
         .selection-tile-title{font-size:clamp(.875rem,1.5vw,1.25rem);font-weight:900;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.9);line-height:1.1}
         .selection-tile-date{font-size:clamp(.65rem,1vw,.875rem);color:rgba(255,255,255,.9);font-weight:500}
         .selection-tile-tagline{font-size:clamp(.88rem,1.35vw,1.08rem);color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.05em;line-height:1.2;text-shadow:0 2px 6px rgba(0,0,0,.8)}
-        
+
         /* Progress indicators */
         .grid-progress-bar{position:fixed;bottom:0;left:0;right:0;height:6px;background:rgba(255,255,255,.1);z-index:95;display:none}
         .grid-progress-fill{height:100%;background:linear-gradient(90deg,color-mix(in srgb,var(--accent-primary) 10%,#000) 0%,color-mix(in srgb,var(--accent-primary) 20%,#000) 15%,color-mix(in srgb,var(--accent-primary) 40%,#000) 30%,color-mix(in srgb,var(--accent-primary) 60%,#000) 45%,var(--accent-primary) 60%,var(--accent-hover) 75%,var(--accent-light) 90%,color-mix(in srgb,var(--accent-light) 60%,#fff) 100%);animation:gridProgress 10s linear forwards;transform-origin:left;box-shadow:0 0 25px var(--accent-shadow),0 0 10px var(--accent-30)}
@@ -111,7 +108,7 @@
         .progress-line.active{background:rgba(255,255,255,.5)}
         .progress-line.active::after{content:'';position:absolute;left:0;top:0;height:100%;background:var(--accent-color);animation:progressLine 7s linear forwards;box-shadow:0 0 10px var(--accent-color),0 0 20px var(--accent-color)}
         .progress-line.active.paused::after{animation-play-state:paused}
-        
+
         /* Navigation */
         .lang-switcher{display:flex;align-items:center;gap:.25rem;padding:.25rem .5rem;border-radius:.5rem;color:rgba(255,255,255,.9);transition:all .2s ease;font-size:.75rem;font-weight:500;text-decoration:none;cursor:pointer}
         .lang-switcher:hover{background:rgba(255,255,255,.1);color:#fff}
@@ -120,7 +117,7 @@
         .side-nav-item{position:relative;cursor:pointer;transition:all .3s ease;border-radius:8px;margin-bottom:4px;overflow:hidden}
         .side-nav-item:hover{transform:translateX(-8px);background:rgba(255,255,255,.1)}
         .side-nav-item.active{background:rgba(255,255,255,.15);transform:translateX(-12px)}
-        
+
         /* Hero */
         .hero-bg{animation:subtleZoom 60s ease-in-out infinite;transition:opacity .6s ease-out,transform .6s ease-out}
         .particle{position:absolute;width:2px;height:2px;background:rgba(255,255,255,.6);border-radius:50%;animation:float 12s ease-in-out infinite}
@@ -132,7 +129,7 @@
         @media(prefers-reduced-motion:no-preference){.hero-content .cta-button-custom{animation:slideIn .6s ease-out .5s both!important}}
         .hero-logo-container{display:block;margin:0;padding:0;text-align:left}
         .hero-logo-container img{display:block;margin:0;padding:0;transform-origin:left center!important}
-        
+
         /* Mobile */
         .mobile-dots{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);z-index:40;display:none;flex-direction:column;align-items:center;gap:.5rem;padding-bottom:env(safe-area-inset-bottom)}
         .swipe-indicator{font-size:.65rem;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.1em;font-weight:500;animation:pulse 2s ease-in-out infinite;text-shadow:0 2px 8px rgba(0,0,0,.8);margin-bottom:.25rem}
@@ -140,7 +137,7 @@
         .dots-container{display:flex;flex-direction:row;align-items:center;gap:.5rem}
         .dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.4);cursor:pointer;transition:all .3s ease}
         .dot.active{width:24px;border-radius:4px;background:var(--accent-color)}
-        
+
         /* CTA Button */
         .cta-button-custom{background-size:200% 200%;animation:gradientShift 3s ease infinite;color:#fff;font-weight:700;padding:1rem 2rem;border-radius:50px;display:inline-flex;align-items:center;gap:.75rem;transition:all .3s ease;text-decoration:none;position:relative;overflow:hidden;letter-spacing:.02em;font-size:1rem;border:1px solid rgba(255,255,255,.1);z-index:1;cursor:pointer}
         .cta-button-custom:hover{transform:translateY(-2px);filter:brightness(1.1)}
@@ -150,7 +147,7 @@
         .dock619-cta{color:#333!important}
         .dock619-cta span{color:#333!important}
         .dock619-cta svg{stroke:#333}
-        
+
         /* Enhanced Dock 619 text readability */
         .hero-content[data-dock619="true"] .hero-title,
         .hero-content[data-dock619="true"] .hero-tagline,
@@ -163,7 +160,7 @@
             border-radius: 8px;
             border: 1px solid rgba(255,255,255,0.1);
         }
-        
+
         /* Other components */
         .countdown-unit{background:rgba(0,0,0,.6);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:.75rem 1rem;text-align:center;min-width:60px}
         .pause-indicator{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:45;opacity:0;pointer-events:none;transition:opacity .3s ease}
@@ -174,11 +171,11 @@
         .header-logo:hover{transform:scale(1.05)}
         .dock619-grid-content,.studio76-grid-content{display:flex;flex-direction:column;justify-content:space-between;height:100%}
         .dock619-grid-top,.studio76-grid-top{display:flex;justify-content:space-between;align-items:flex-start}
-        
+
         /* Ensure CTA buttons are visible */
         @supports not (animation: slideIn 1s) {.hero-content>*{opacity:1!important}}
         .hero-content .cta-button-custom{display:inline-flex!important}
-        
+
         /* Grid layouts */
         @media(min-width:2160px){
             .selection-grid{
@@ -370,51 +367,51 @@
                 display: none;
             `;
             document.body.appendChild(tooltip);
-            
+
             // Function to add tooltips to social links
             function addTooltips() {
                 const socialLinks = document.querySelectorAll('a[href*="instagram"], a[href*="linkedin"]');
-                
+
                 socialLinks.forEach(link => {
                     // Determine tooltip text based on URL
                     let tooltipText = '';
                     if (link.href.includes('instagram')) tooltipText = 'Instagram';
                     if (link.href.includes('linkedin')) tooltipText = 'LinkedIn';
-                    
+
                     if (tooltipText) {
                         // Remove existing listeners to prevent duplicates
                         link.removeEventListener('mouseenter', link._tooltipEnter);
                         link.removeEventListener('mouseleave', link._tooltipLeave);
-                        
+
                         // Create new listeners
                         link._tooltipEnter = function(e) {
                             tooltip.textContent = tooltipText;
                             tooltip.style.display = 'block';
                             tooltip.style.background = '#333';
                             tooltip.style.color = 'white';
-                            
+
                             const rect = link.getBoundingClientRect();
                             tooltip.style.left = (rect.left + rect.width/2 - 50) + 'px';
                             tooltip.style.top = (rect.bottom + 10) + 'px';
                             tooltip.style.opacity = '1';
                         };
-                        
+
                         link._tooltipLeave = function() {
                             tooltip.style.opacity = '0';
                             setTimeout(() => {
                                 tooltip.style.display = 'none';
                             }, 200);
                         };
-                        
+
                         link.addEventListener('mouseenter', link._tooltipEnter);
                         link.addEventListener('mouseleave', link._tooltipLeave);
                     }
                 });
             }
-            
+
             // Initial call
             setTimeout(addTooltips, 1000);
-            
+
             // Re-add tooltips when DOM changes (for React re-renders)
             const observer = new MutationObserver(function(mutations) {
                 mutations.forEach(function(mutation) {
@@ -423,7 +420,7 @@
                     }
                 });
             });
-            
+
             observer.observe(document.body, {
                 childList: true,
                 subtree: true
@@ -465,7 +462,7 @@
                 timeout = setTimeout(() => fn(...args), wait);
             };
         };
-        
+
         // 4K Display Fix - Disabled in favor of CSS media query
         // JavaScript injection was causing conflicts with CSS rules
 
@@ -535,16 +532,16 @@
         const Header = memo(({goToGrid, isMobileMenuOpen, setIsMobileMenuOpen, currentView}) => {
             const navItems = useMemo(() => createNavItems(goToGrid), [goToGrid]);
             const [headerScrolled, setHeaderScrolled] = useState(false);
-            
+
             useEffect(() => {
                 const gridWrapper = document.querySelector('.grid-wrapper');
                 if (!gridWrapper || currentView !== 'grid') return;
-                
+
                 const handleScroll = () => {
                     const scrollTop = gridWrapper.scrollTop;
                     setHeaderScrolled(scrollTop > 20);
                 };
-                
+
                 gridWrapper.addEventListener('scroll', handleScroll);
                 return () => gridWrapper.removeEventListener('scroll', handleScroll);
             }, [currentView]);
@@ -604,7 +601,7 @@
 
         const PropertyTile = memo(({property, index, onClick}) => {
             const handleClick = useCallback(() => onClick(index), [onClick, index]);
-            
+
             if (property.id === 7) {
                 return (
                     <div className="selection-tile" style={{'--index':index,'--brand-color':property.color}} onClick={handleClick}>
@@ -624,7 +621,7 @@
                     </div>
                 );
             }
-            
+
             if (property.id === 6) {
                 return (
                     <div className="selection-tile" style={{'--index':index,'--brand-color':property.color}} onClick={handleClick}>
@@ -644,7 +641,7 @@
                     </div>
                 );
             }
-            
+
             return (
                 <div className="selection-tile" style={{'--index':index,'--brand-color':property.color}} onClick={handleClick}>
                     <div className="selection-tile-bg" style={{backgroundImage:`url(${property.image})`,backgroundColor:property.color}}/>
@@ -718,7 +715,7 @@
 
             const currentProperty = useMemo(() => PROPERTIES[state.activeIndex], [state.activeIndex]);
             const navItems = useMemo(() => createNavItems(() => setState(prev => ({...prev, showGridProgress: false, currentView: VIEWS.GRID, isMobileMenuOpen: false}))), []);
-            
+
             // Logo scale function
             const getLogoScale = useCallback((property, isMobile) => {
                 const scales = LOGO_SCALES[property.id] || { mobile: 1.0824, desktop: .82 };
@@ -740,7 +737,7 @@
                 setState(prev => ({...prev, isInitialized: true}));
                 const img = new Image();
                 img.src = PROPERTIES[0].image;
-                
+
                 timers.current.autoPlay = setTimeout(() => {
                     setState(prev => ({...prev, currentView: VIEWS.GRID, showGridProgress: true}));
                     timers.current.grid = setTimeout(() => {
@@ -762,7 +759,7 @@
             // Auto-rotate timer
             useEffect(() => {
                 if (state.isProgressPaused || state.currentView !== VIEWS.HERO || state.isTransitioning) return;
-                
+
                 timers.current.autoPlay = setInterval(() => {
                     setState(prev => {
                         const nextIndex = (prev.activeIndex + 1) % PROPERTIES.length;
@@ -789,7 +786,7 @@
                 const updateCountdown = () => {
                     const now = new Date();
                     const newTimeLeft = {};
-                    
+
                     PROPERTIES.forEach(property => {
                         if (property.countdown) {
                             const diff = property.countdown - now;
@@ -803,7 +800,7 @@
                             }
                         }
                     });
-                    
+
                     setState(prev => ({...prev, timeLeft: newTimeLeft}));
                 };
 
@@ -827,7 +824,7 @@
 
             const handlePropertyChange = useCallback((index) => {
                 if (state.currentView !== VIEWS.HERO || index === state.activeIndex || state.isTransitioning) return;
-                
+
                 setState(prev => ({...prev, isTransitioning: true}));
                 timers.current.transition = setTimeout(() => {
                     setState(prev => ({
@@ -856,7 +853,7 @@
 
                 const handleKeyDown = (e) => {
                     if (state.isTransitioning) return;
-                    
+
                     switch(e.key) {
                         case 'ArrowLeft':
                             e.preventDefault();
@@ -888,15 +885,15 @@
 
                 const handleWheel = (e) => {
                     if (state.isTransitioning || state.isMobileView) return;
-                    
+
                     const now = Date.now();
                     if (now - timers.current.lastWheelTime < WHEEL_THROTTLE) return;
-                    
+
                     const threshold = 50;
                     if (Math.abs(e.deltaY) > threshold || Math.abs(e.deltaX) > threshold) {
                         e.preventDefault();
                         timers.current.lastWheelTime = now;
-                        
+
                         const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
                         if (delta > 0) {
                             const nextIndex = (state.activeIndex + 1) % PROPERTIES.length;
@@ -919,7 +916,7 @@
 
                 window.addEventListener('keydown', handleKeyDown);
                 window.addEventListener('wheel', handleWheel, { passive: false });
-                
+
                 return () => {
                     window.removeEventListener('keydown', handleKeyDown);
                     window.removeEventListener('wheel', handleWheel);
@@ -940,10 +937,10 @@
 
             const handleTouchEnd = useCallback(() => {
                 if (state.currentView !== VIEWS.HERO || state.isTransitioning) return;
-                
+
                 const diff = state.touchStart - state.touchEnd;
                 if (Math.abs(diff) < 50) return;
-                
+
                 if (diff > 0) {
                     const nextIndex = (state.activeIndex + 1) % PROPERTIES.length;
                     if (nextIndex === 0) {
@@ -1228,7 +1225,8 @@
                                                         className="sm:h-14 md:h-16 lg:h-20 xl:h-24 object-contain"
                                                         style={{
                                                             filter: 'drop-shadow(0 4px 20px rgba(0,0,0,0.8))',
-                                                            height: state.isMobileView ? 'auto' : undefined,
+                                                            height:```text
+ state.isMobileView ? 'auto' : undefined,
                                                             maxHeight: state.isMobileView ? '4rem' : undefined,
                                                             transform: `scale(${getLogoScale(currentProperty, state.isMobileView)})`,
                                                             transformOrigin: 'left center'
