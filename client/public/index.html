@@ -192,7 +192,7 @@
         
         /* Progress indicators */
         .grid-progress-bar{position:fixed;bottom:0;left:0;right:0;height:6px;background:rgba(255,255,255,.1);z-index:95;display:none}
-        .grid-progress-fill{height:100%;background:linear-gradient(90deg,color-mix(in srgb,var(--accent-primary) 10%,#000) 0%,color-mix(in srgb,var(--accent-primary) 20%,#000) 15%,color-mix(in srgb,var(--accent-primary) 40%,#000) 30%,color-mix(in srgb,var(--accent-primary) 60%,#000) 45%,var(--accent-primary) 60%,var(--accent-hover) 75%,var(--accent-light) 90%,color-mix(in srgb,var(--accent-light) 60%,#fff) 100%);animation:gridProgress 8s linear forwards;transform-origin:left;box-shadow:0 0 25px var(--accent-shadow),0 0 10px var(--accent-30)}
+        .grid-progress-fill{height:100%;background:linear-gradient(90deg,color-mix(in srgb,var(--accent-primary) 10%,#000) 0%,color-mix(in srgb,var(--accent-primary) 20%,#000) 15%,color-mix(in srgb,var(--accent-primary) 40%,#000) 30%,color-mix(in srgb,var(--accent-primary) 60%,#000) 45%,var(--accent-primary) 60%,var(--accent-hover) 75%,var(--accent-light) 90%,color-mix(in srgb,var(--accent-light) 60%,#fff) 100%);animation:gridProgress 7s linear forwards;transform-origin:left;box-shadow:0 0 25px var(--accent-shadow),0 0 10px var(--accent-30)}
         .progress-bar{position:absolute;bottom:0;left:0;height:4px;background:var(--accent-color);animation:progress 7s linear forwards;transform-origin:left;transform:scaleX(0);box-shadow:0 0 15px var(--accent-color);border-radius:0 3px 3px 0;z-index:10}
         .progress-bar.paused{animation-play-state:paused}
         .desktop-progress{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);z-index:40;display:none;align-items:center;gap:.75rem}
@@ -500,7 +500,7 @@
 
         // Constants
         const SPLASH_DURATION = 3500;
-        const GRID_PROGRESS_DURATION = 8000;
+        const GRID_PROGRESS_DURATION = 7000;
         const AUTO_PLAY_INTERVAL = 7000;
         const TRANSITION_DELAY = 300;
         const WHEEL_THROTTLE = 500;
