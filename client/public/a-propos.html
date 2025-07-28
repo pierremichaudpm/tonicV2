@@ -7,7 +7,12 @@
     <meta name="description" content="Découvrez Groupe Tonic, créateur d'expériences mémorables et leader dans l'organisation d'événements sportifs et culturels majeurs au Québec depuis plus de 40 ans.">
     <link rel="stylesheet" href="css/shared.css">
     <link rel="preload" href="https://fonts.cbc.ca/fonts/CBCSans-Bold.woff2" as="font" type="font/woff2" crossorigin>
-    <script src="https://cdn.tailwindcss.com"></script>
+<!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.cbc.ca">
+    <link href="css/tailwind-compiled.css" rel="stylesheet">
+
+
+    <!-- Shared Styles -->
     <link rel="preconnect" href="https://fonts.cbc.ca">
 
     <style>
@@ -136,12 +141,12 @@
         .hero-bg::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(254,68,69,0.1) 0%,transparent 70%);pointer-events:none}
         .cta-section{background:linear-gradient(135deg,rgba(254,68,69,0.05),rgba(0,0,0,0.9));border-top:1px solid var(--accent-20);position:relative}
         .cta-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(254,68,69,0.1),transparent 70%);pointer-events:none}
-        
+
         .section-header{text-align:center;margin-bottom:4rem;position:relative}
         .section-title{font-size:3.5rem;font-weight:900;background:linear-gradient(135deg,rgb(220, 38, 38),rgb(255, 87, 51),rgb(255, 127, 80),rgb(255, 160, 122),#fff,rgb(255, 160, 122),rgb(255, 127, 80),rgb(255, 87, 51),rgb(220, 38, 38));background-clip:text;-webkit-background-clip:text;color:transparent;margin-bottom:1rem;text-shadow:0 0 30px rgba(255, 87, 51, 0.5);background-size:200% 100%;animation:gradientShift 4s ease-in-out infinite alternate}
         .section-subtitle{font-size:1.3rem;color:rgba(255,255,255,0.7);max-width:600px;margin:0 auto}
         .accent-line{width:120px;height:6px;background:linear-gradient(90deg,rgb(220, 38, 38),rgb(255, 87, 51),rgb(255, 127, 80),rgb(255, 160, 122),rgb(255, 218, 185));border-radius:3px;margin:2rem auto;box-shadow:0 0 20px rgba(255, 87, 51, 0.4);animation:pulse 3s ease-in-out infinite}
-        
+
         /* Timeline responsive layout */
         @media(min-width:768px){
             .timeline-grid{display:block}
@@ -158,7 +163,7 @@
         // Simple inline tooltip system
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Tooltip script loaded');
-            
+
             // Create tooltip element
             const tooltip = document.createElement('div');
             tooltip.style.cssText = `
@@ -179,30 +184,30 @@
                 display: none;
             `;
             document.body.appendChild(tooltip);
-            
+
             // Find social media links
             const socialLinks = document.querySelectorAll('a[data-tooltip="Instagram"], a[data-tooltip="LinkedIn"]');
             console.log('Found social links:', socialLinks.length);
-            
+
             socialLinks.forEach(link => {
                 const tooltipText = link.getAttribute('data-tooltip');
                 console.log('Adding tooltip to:', tooltipText);
-                
+
                 link.addEventListener('mouseenter', function(e) {
                     console.log('Mouse enter:', tooltipText);
                     tooltip.textContent = tooltipText;
                     tooltip.style.display = 'block';
-                    
+
                     // Plain white tooltips
                     tooltip.style.background = '#333';
                     tooltip.style.color = 'white';
-                    
+
                     const rect = link.getBoundingClientRect();
                     tooltip.style.left = (rect.left + rect.width/2 - 50) + 'px';
                     tooltip.style.top = (rect.bottom + 10) + 'px';
                     tooltip.style.opacity = '1';
                 });
-                
+
                 link.addEventListener('mouseleave', function() {
                     console.log('Mouse leave:', tooltipText);
                     tooltip.style.opacity = '0';
@@ -250,7 +255,7 @@
                         <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                         <span>Nous joindre</span>
                     </a>
-                    
+
                     <!-- Social Media Links -->
                     <a href="https://www.instagram.com/groupetonic/" target="_blank" class="nav-item" data-tooltip="Instagram">
                         <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
@@ -262,7 +267,7 @@
                             <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
                         </svg>
                     </a>
-                    
+
                     <div class="w-px h-4 bg-white/20 mx-2"></div>
                     <a href="about.html" class="nav-item" data-tooltip="English">
                         <span>EN</span>
@@ -278,7 +283,7 @@
     <!-- Mobile Menu -->
     <div id="mobileMenu" class="mobile-menu">
         <div class="container mx-auto px-4 py-4">
-            <div class="space-y-2">
+<div class="space-y-2">
                 <a href="index.html" class="nav-item w-full">
                     <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" style="color: white; stroke: white;"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
                     <span>Accueil</span>
@@ -397,7 +402,7 @@
                     <h2 class="section-title">Notre histoire</h2>
                     <div class="accent-line"></div>
                 </div>
-                
+
                 <div class="timeline-section">
                     <div class="timeline-container">
                         <div class="timeline-item fade-in delay-200">
