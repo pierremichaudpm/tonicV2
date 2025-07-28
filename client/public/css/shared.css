@@ -661,47 +661,56 @@ header {
     background: #0077B5;
 }
 
-/* Modal Z-Index Fix - ULTIMATE NUCLEAR OPTION */
-.modal-backdrop, 
-#newsModal,
-.modal-backdrop *,
-#newsModal * {
-    z-index: 999999 !important;
+/* Modal Z-Index Fix - COMPLETE OVERRIDE */
+#newsModal {
+    z-index: 2147483647 !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
 }
 
-.modal-content,
-.modal-content * {
-    z-index: 999999 !important;
+.modal-backdrop {
+    z-index: 2147483647 !important;
+    position: fixed !important;
 }
 
-/* NUCLEAR z-index hierarchy - force EVERYTHING behind modal */
-body > *:not(#newsModal):not(.modal-backdrop),
-.hero-title, 
+.modal-content {
+    z-index: 2147483647 !important;
+    position: relative !important;
+}
+
+/* FORCE ALL PAGE CONTENT TO MINIMUM Z-INDEX */
+* {
+    z-index: auto !important;
+}
+
+*:not(#newsModal):not(.modal-backdrop):not(.modal-content) {
+    z-index: 1 !important;
+}
+
+/* Specific targeting for problematic elements */
+.hero-title,
 h1.hero-title,
 section h1,
 main h1,
-main,
-header,
-.container,
-section,
-div,
-span,
-p,
-h1, h2, h3, h4, h5, h6 {
+.text-4xl,
+.text-5xl,
+.text-6xl {
     z-index: 1 !important;
     position: relative !important;
 }
 
-/* Force page header to stay behind modal but above other content */
-header {
-    z-index: 100 !important;
+/* Hide any potential overlay during modal display */
+body.modal-open * {
+    z-index: 1 !important;
 }
 
-/* Modal takes absolute priority */
-#newsModal,
-.modal-backdrop {
-    z-index: 999999 !important;
-    position: fixed !important;
+body.modal-open #newsModal,
+body.modal-open .modal-backdrop,
+body.modal-open .modal-content {
+    z-index: 2147483647 !important;
 }
 
 /* Mobile Menu Consistent Styling */

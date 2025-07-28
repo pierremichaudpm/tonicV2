@@ -177,13 +177,13 @@
             z-index: 2;
         }
 
-        /* Modal styles */
+        /* Modal styles - MAXIMUM Z-INDEX FIX */
         .modal-backdrop {
             position: fixed;
             inset: 0;
             background: rgba(0,0,0,0.9);
             backdrop-filter: blur(10px);
-            z-index: 50;
+            z-index: 2147483647 !important;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -209,6 +209,8 @@
             overflow-y: auto;
             transform: scale(0.9);
             transition: transform 0.3s ease;
+            z-index: 2147483647 !important;
+            position: relative !important;
         }
 
         .modal-backdrop.show .modal-content {
@@ -492,7 +494,7 @@
     <script src="js/simple-content.js?v=1753723200&cache=false"></script>
 
     <!-- Shared JavaScript -->
-    <script src="js/shared.js?v=1753723900&cache=false&fix=ultimatefix"></script>
+    <script src="js/shared.js?v=1753724000&cache=false&fix=inlinefix"></script>
 
     <!-- Page specific JavaScript - Matching jobs page structure -->
     <script>

@@ -174,13 +174,13 @@
             border-radius: 8px !important;
         }
 
-        /* Modal styles - Optimized with single backdrop */
+        /* Modal styles - MAXIMUM Z-INDEX FIX */
         .modal-backdrop {
             background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(5px);
             position: fixed;
             inset: 0;
-            z-index: 50;
+            z-index: 2147483647 !important;
             display: flex;
             align-items: flex-start;
             justify-content: center;
@@ -215,6 +215,8 @@
             overflow-y: auto;
             transform: scale(0.9);
             transition: transform 0.3s ease;
+            z-index: 2147483647 !important;
+            position: relative !important;
         }
 
         .modal-backdrop.active .modal-content {
@@ -511,7 +513,7 @@
     <script src="js/simple-content.js?v=1753723200&cache=false"></script>
 
     <!-- Shared JavaScript -->
-    <script src="js/shared.js?v=1753723900&cache=false&fix=ultimatefix"></script>
+    <script src="js/shared.js?v=1753724000&cache=false&fix=inlinefix"></script>
 
     <!-- Initialize standardized navigation -->
     <script>
