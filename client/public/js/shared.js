@@ -103,8 +103,9 @@ function toggleMobileMenu() {
     }
 
     // Check actual computed display style instead of class
-    const isCurrentlyOpen = window.getComputedStyle(mobileMenu).display !== 'none';
-    console.log('Menu currently open:', isCurrentlyOpen);
+    const computedStyle = window.getComputedStyle(mobileMenu);
+    const isCurrentlyOpen = computedStyle.display !== 'none' && computedStyle.display !== '';
+    console.log('Menu currently open:', isCurrentlyOpen, 'Display style:', computedStyle.display);
 
     if (isCurrentlyOpen) {
         // Close menu
