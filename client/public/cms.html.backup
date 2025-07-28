@@ -599,7 +599,6 @@
         let quill = null;
         let adminPassword = null; // Store the password for API calls
         let adminPassword = null; // Store the password for API calls
-        let adminPassword = null; // Store the password for API calls
 
         // Authentication
         async function login(password) {
@@ -616,7 +615,6 @@
                 
                 if (result.success) {
                     isAuthenticated = true;
-                    adminPassword = password; // Store the password for API calls
                     document.getElementById('loginModal').style.display = 'none';
                     initializeApp();
                 } else {
@@ -630,7 +628,6 @@
 
         function logout() {
             isAuthenticated = false;
-            adminPassword = null; // Clear the password
             document.getElementById('loginModal').style.display = 'flex';
         }
 
@@ -701,7 +698,7 @@
             try {
                 const response = await fetch(`/api/cms/content/${currentType}/${currentLang}`, {
                     headers: {
-                        'x-admin-password': adminPassword
+                        'x-admin-password': 'Axelle20'
                     }
                 });
 
@@ -888,7 +885,7 @@
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'x-admin-password': adminPassword
+                        'x-admin-password': 'Axelle20'
                     },
                     body: JSON.stringify({
                         text: text,
@@ -1080,7 +1077,7 @@
                 
                 const completeSourceResponse = await fetch(`/api/cms/content/${currentType}/${sourceLang}`, {
                     headers: { 
-                        'x-admin-password': adminPassword,
+                        'x-admin-password': 'Axelle20',
                         'Cache-Control': 'no-cache'
                     }
                 });
@@ -1111,7 +1108,7 @@
                 
                 // Get target language items
                 const response = await fetch(`/api/cms/content/${currentType}/${targetLang}`, {
-                    headers: { 'x-admin-password': adminPassword }
+                    headers: { 'x-admin-password': 'Axelle20' }
                 });
                 
                 if (!response.ok) {
@@ -1139,7 +1136,7 @@
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'x-admin-password': adminPassword
+                        'x-admin-password': 'Axelle20'
                     },
                     body: JSON.stringify({ data: targetItems })
                 });
@@ -1211,7 +1208,7 @@
             try {
                 // Get current data
                 const response = await fetch(`/api/cms/content/${currentType}/${currentLang}`, {
-                    headers: { 'x-admin-password': adminPassword }
+                    headers: { 'x-admin-password': 'Axelle20' }
                 });
                 
                 
@@ -1234,7 +1231,7 @@
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'x-admin-password': adminPassword
+                        'x-admin-password': 'Axelle20'
                     },
                     body: JSON.stringify({ data: items })
                 });
@@ -1253,7 +1250,7 @@
                         // Get the complete data that was just saved to ensure we have the full content
                         const freshDataResponse = await fetch(`/api/cms/content/${currentType}/${currentLang}`, {
                             headers: { 
-                                'x-admin-password': adminPassword,
+                                'x-admin-password': 'Axelle20',
                                 'Cache-Control': 'no-cache'
                             }
                         });
@@ -1298,7 +1295,7 @@
                 // Fetch fresh data
                 const response = await fetch(`/api/cms/content/${currentType}/${currentLang}`, {
                     headers: {
-                        'x-admin-password': adminPassword,
+                        'x-admin-password': 'Axelle20',
                         'Cache-Control': 'no-cache'
                     }
                 });
@@ -1412,7 +1409,7 @@
                 
                 // Get current data
                 const response = await fetch(`/api/cms/content/${currentType}/${currentLang}`, {
-                    headers: { 'x-admin-password': adminPassword }
+                    headers: { 'x-admin-password': 'Axelle20' }
                 });
                 
                 if (!response.ok) {
@@ -1441,7 +1438,7 @@
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'x-admin-password': adminPassword
+                        'x-admin-password': 'Axelle20'
                     },
                     body: JSON.stringify({ data: filteredItems })
                 });
