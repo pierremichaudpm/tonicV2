@@ -495,13 +495,27 @@
 
     <!-- Mobile Menu -->
     <div id="mobileMenu" class="mobile-menu">
-        <div class="container mx-auto px-4 py-4">
-            <button onclick="toggleMobileMenu()" class="absolute top-4 right-4 p-2 hover:bg-white/10 rounded-lg" aria-label="Fermer">
+        <!-- Mobile Menu Header with Logo and Close Button -->
+        <div class="flex items-center justify-between p-4 bg-black/95 backdrop-blur-md border-b border-white/10">
+            <!-- Logo in mobile menu -->
+            <div class="flex items-center gap-2">
+                <img src="images/tonic-logo.png" alt="Groupe Tonic" style="height: 2.5rem; width: auto;" />
+                <div class="flex flex-col">
+                    <span class="text-white text-sm font-bold">Groupe Tonic</span>
+                    <span class="text-white/70 text-xs">Créateur d'expériences mémorables</span>
+                </div>
+            </div>
+            <!-- Close Button -->
+            <button onclick="toggleMobileMenu()" class="p-2 hover:bg-white/10 rounded-lg text-white bg-white/20 border border-white/30" aria-label="Fermer">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
             </button>
-            <div class="space-y-2 mt-8">
+        </div>
+        
+        <!-- Mobile Menu Content -->
+        <div class="flex-1 p-4">
+            <div class="space-y-1">
                 <a href="index.html" class="nav-item w-full">
                     <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
                     <span>Accueil</span>
