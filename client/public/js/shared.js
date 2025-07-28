@@ -1,7 +1,15 @@
 // shared.js - Shared JavaScript across all pages
 
 // Navigation Icons SVG Components - Matching React homepage exactly
-const Icons = {
+// Wrap in IIFE to avoid redeclaration conflicts
+(function() {
+    // Check if Icons already exists
+    if (typeof window.Icons !== 'undefined') {
+        console.warn('Icons already defined, skipping redeclaration');
+        return;
+    }
+    
+    window.Icons = {
     grid: () => '<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>',
 
     info: () => '<svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>',
@@ -26,6 +34,7 @@ const Icons = {
     briefcase: () => '<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>',
     newspaper: () => '<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M10 6h8"/><path d="M10 10h8"/><path d="M10 14h4"/></svg>'
 };
+})(); // Close IIFE to avoid redeclaration conflicts
 
 // Category utilities
 const CategoryUtils = {
@@ -63,25 +72,25 @@ const CategoryUtils = {
 // Navigation factory functions matching React homepage exactly
 function createNavItemsFrench() {
     return [
-        {href: 'index.html', icon: Icons.grid(), label: 'Accueil'},
-        {href: 'a-propos.html', icon: Icons.info(), label: 'À propos'},
-        {href: 'emplois.html', icon: Icons.work(), label: 'Emplois'},
-        {href: 'communiques.html', icon: Icons.news(), label: 'Communiqués'},
-        {href: 'nous-joindre.html', icon: Icons.mail(), label: 'Nous joindre'},
-        {href: 'https://www.instagram.com/groupetonic/', icon: Icons.instagram(), label: '', tooltip: 'Instagram', isSocial: true, target: '_blank'},
-        {href: 'https://www.linkedin.com/company/groupe-tonic/', icon: Icons.linkedin(), label: '', tooltip: 'LinkedIn', isSocial: true, target: '_blank'}
+        {href: 'index.html', icon: window.Icons.grid(), label: 'Accueil'},
+        {href: 'a-propos.html', icon: window.Icons.info(), label: 'À propos'},
+        {href: 'emplois.html', icon: window.Icons.work(), label: 'Emplois'},
+        {href: 'communiques.html', icon: window.Icons.news(), label: 'Communiqués'},
+        {href: 'nous-joindre.html', icon: window.Icons.mail(), label: 'Nous joindre'},
+        {href: 'https://www.instagram.com/groupetonic/', icon: window.Icons.instagram(), label: '', tooltip: 'Instagram', isSocial: true, target: '_blank'},
+        {href: 'https://www.linkedin.com/company/groupe-tonic/', icon: window.Icons.linkedin(), label: '', tooltip: 'LinkedIn', isSocial: true, target: '_blank'}
     ];
 }
 
 function createNavItemsEnglish() {
     return [
-        {href: 'index-en.html', icon: Icons.grid(), label: 'Home'},
-        {href: 'about.html', icon: Icons.info(), label: 'About'},
-        {href: 'emplois-en.html', icon: Icons.work(), label: 'Jobs'},
-        {href: 'communiques-en.html', icon: Icons.news(), label: 'News'},
-        {href: 'nous-joindre-en.html', icon: Icons.mail(), label: 'Contact'},
-        {href: 'https://www.instagram.com/groupetonic/', icon: Icons.instagram(), label: '', tooltip: 'Instagram', isSocial: true, target: '_blank'},
-        {href: 'https://www.linkedin.com/company/groupe-tonic/', icon: Icons.linkedin(), label: '', tooltip: 'LinkedIn', isSocial: true, target: '_blank'}
+        {href: 'index-en.html', icon: window.Icons.grid(), label: 'Home'},
+        {href: 'about.html', icon: window.Icons.info(), label: 'About'},
+        {href: 'emplois-en.html', icon: window.Icons.work(), label: 'Jobs'},
+        {href: 'communiques-en.html', icon: window.Icons.news(), label: 'News'},
+        {href: 'nous-joindre-en.html', icon: window.Icons.mail(), label: 'Contact'},
+        {href: 'https://www.instagram.com/groupetonic/', icon: window.Icons.instagram(), label: '', tooltip: 'Instagram', isSocial: true, target: '_blank'},
+        {href: 'https://www.linkedin.com/company/groupe-tonic/', icon: window.Icons.linkedin(), label: '', tooltip: 'LinkedIn', isSocial: true, target: '_blank'}
     ];
 }
 
@@ -205,7 +214,7 @@ function generateMobileMenu(isEnglish = false, currentPage = '') {
     const navItems = isEnglish ? createNavItemsEnglish() : createNavItemsFrench();
     const langLink = isEnglish ? 'index.html' : 'index-en.html';
     const langText = isEnglish ? 'Français' : 'English';
-    const langIcon = Icons.lang();
+    const langIcon = window.Icons.lang();
     
     // Normalize current page for comparison
     const normalizedCurrentPage = currentPage.toLowerCase().replace(/^\//, '');
@@ -244,7 +253,7 @@ function generateMobileMenu(isEnglish = false, currentPage = '') {
 function generateMobileMenuButton() {
     return `
         <button onclick="toggleMobileMenu()" class="md:hidden p-2 hover:bg-white/10 rounded-lg transition-colors text-white" style="background:rgba(0,0,0,0.2);backdrop-filter:blur(10px);color:white">
-            <div style="color:white" id="menuIcon">${Icons.menu()}</div>
+            <div style="color:white" id="menuIcon">${window.Icons.menu()}</div>
         </button>
     `;
 }
@@ -259,7 +268,7 @@ function toggleMobileMenu() {
         mobileMenu.style.display = isActive ? 'none' : 'block';
         
         if (menuIcon) {
-            menuIcon.innerHTML = isActive ? Icons.menu() : Icons.x();
+            menuIcon.innerHTML = isActive ? window.Icons.menu() : window.Icons.x();
         }
     }
 }
@@ -279,7 +288,7 @@ document.addEventListener('DOMContentLoaded', function() {
             mobileMenu.style.display = 'none';
             const menuIcon = document.getElementById('menuIcon');
             if (menuIcon) {
-                menuIcon.innerHTML = Icons.menu();
+                menuIcon.innerHTML = window.Icons.menu();
             }
         }
     });
@@ -292,7 +301,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 mobileMenu.style.display = 'none';
                 const menuIcon = document.getElementById('menuIcon');
                 if (menuIcon) {
-                    menuIcon.innerHTML = Icons.menu();
+                    menuIcon.innerHTML = window.Icons.menu();
                 }
             }
         }
