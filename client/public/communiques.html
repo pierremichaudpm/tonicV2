@@ -688,8 +688,8 @@
 
         // Get news data function
         function getNews() {
-            console.log('Getting news data, window.pressReleases:', window.pressReleases);
-            return window.pressReleases || [];
+            console.log('Getting news data, pressReleases available:', typeof pressReleases !== 'undefined');
+            return typeof pressReleases !== 'undefined' ? pressReleases : [];
         }
 
         // Render news with colored cards - matching jobs structure
@@ -801,7 +801,7 @@
                 modalContent: DOM.modalContent
             });
 
-            console.log('window.pressReleases available:', !!window.pressReleases, window.pressReleases?.length);
+            console.log('pressReleases available:', typeof pressReleases !== 'undefined', typeof pressReleases !== 'undefined' ? pressReleases.length : 0);
 
             // Render news
             renderNews();
@@ -827,7 +827,7 @@
             // Add a small delay to ensure scripts have loaded
             setTimeout(() => {
                 console.log('Checking for data after timeout...');
-                console.log('window.pressReleases:', window.pressReleases);
+                console.log('pressReleases:', typeof pressReleases !== 'undefined' ? pressReleases : 'undefined');
                 initializeApp();
             }, 200);
         });
