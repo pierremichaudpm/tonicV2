@@ -661,6 +661,20 @@ header {
     background: #0077B5;
 }
 
+/* Modal Z-Index Fix - Override any existing modal CSS */
+.modal-backdrop, #newsModal {
+    z-index: 999999 !important;
+}
+
+.modal-content {
+    z-index: 999999 !important;
+}
+
+/* Hero title should not overlay modals */
+.hero-title {
+    z-index: 1 !important;
+}
+
 /* Mobile Menu Consistent Styling */
 .mobile-menu {
     display: none;
