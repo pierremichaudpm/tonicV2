@@ -413,7 +413,7 @@
                     <!-- Mobile Menu Button -->
                     <button id="mobileMenuButton" onclick="toggleMobileMenu()" class="md:hidden p-2 hover:bg-white/10 rounded-lg transition-colors text-white" style="background: rgba(0,0,0,0.2); backdrop-filter: blur(10px); color: white;">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path d="M3 12h18M3 6h18M3 18h18"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 12h18M3 6h18M3 18h18"></path>
                         </svg>
                     </button>
                 </div>
@@ -437,7 +437,7 @@
                 </button>
             </div>
         </div>
-        
+
         <!-- Menu Content -->
         <div class="container mx-auto px-4" style="padding-top: 100px; padding-bottom: 2rem;">
             <div class="space-y-2">
@@ -655,7 +655,7 @@
         // Initialize navigation when page loads
         window.addEventListener('load', function() {
             console.log('Page loaded, initializing navigation...');
-            
+
             // Initialize standardized navigation
             if (window.initializeNavigation) {
                 window.initializeNavigation(false, 'emplois.html'); // false for French, current page
@@ -830,8 +830,7 @@
         // Open job modal - Simplified for CMS data structure
         function openJobModal(jobId) {
             const jobs = getJobs();
-            const job = jobs.find(j => String(j.id) === String(jobId));
-            if (!job) return;
+            const job = jobs.find(j => String(j.id) === String(jobId)); if (!job) return;
 
             state.isModalOpen = true;
             DOM.modalTitle.textContent = job.title;

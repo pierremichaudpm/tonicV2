@@ -97,25 +97,52 @@ function createNavItemsEnglish() {
 // Toggle Mobile Menu with icon change
 function toggleMobileMenu() {
     const mobileMenu = document.getElementById('mobileMenu');
-    if (!mobileMenu) return;
+    if (!mobileMenu) {
+        console.log('Mobile menu element not found');
+        return;
+    }
     
-    // Toggle menu visibility
-    mobileMenu.classList.toggle('active');
-    const isActive = mobileMenu.classList.contains('active');
+    console.log('toggleMobileMenu called');
+    console.log('Mobile menu element:', mobileMenu);
     
-    // Find and update button icon
-    const headerButton = document.getElementById('mobileMenuButton');
+    // Toggle menu visibility using display style
+    const isCurrentlyOpen = mobileMenu.style.display !== 'none' && mobileMenu.style.display !== '';
+    
+    if (isCurrentlyOpen) {
+        mobileMenu.style.display = 'none';
+        mobileMenu.classList.remove('active');
+        console.log('Closing mobile menu');
+    } else {
+        mobileMenu.style.display = 'block';
+        mobileMenu.classList.add('active');
+        console.log('Opening mobile menu');
+    }
+    
+    const newState = !isCurrentlyOpen;
+    
+    // Find and update button icon - try multiple selectors
+    const headerButton = document.getElementById('mobileMenuButton') || 
+                        document.querySelector('button[onclick*="toggleMobileMenu"]') ||
+                        document.querySelector('.md\\:hidden button');
+    
     if (headerButton) {
         const svg = headerButton.querySelector('svg');
         if (svg) {
-            if (isActive) {
+            svg.setAttribute('fill', 'none');
+            svg.setAttribute('stroke', 'currentColor');
+            svg.setAttribute('stroke-width', '2');
+            svg.setAttribute('viewBox', '0 0 24 24');
+            
+            if (newState) {
                 // Menu is open - show close (X) icon
-                svg.innerHTML = '<path d="M6 18L18 6M6 6l12 12"></path>';
+                svg.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>';
             } else {
                 // Menu is closed - show burger icon
-                svg.innerHTML = '<path d="M3 12h18M3 6h18M3 18h18"></path>';
+                svg.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M3 12h18M3 6h18M3 18h18"></path>';
             }
         }
+    } else {
+        console.log('Mobile menu button not found');
     }
 }
 
@@ -275,37 +302,37 @@ function generateMobileMenuButton() {
     `;
 }
 
-// Update mobile menu button icon when toggling
-function toggleMobileMenu() {
-    const mobileMenu = document.getElementById('mobileMenu');
-    const menuIcon = document.getElementById('menuIcon');
-    
-    if (mobileMenu) {
-        const isActive = mobileMenu.style.display !== 'none';
-        mobileMenu.style.display = isActive ? 'none' : 'block';
-        
-        if (menuIcon) {
-            menuIcon.innerHTML = isActive ? window.Icons.menu() : window.Icons.x();
-        }
-    }
-}
-
-// Initialize shared components
+// Ensure mobile menu close functionality works across all pages
 document.addEventListener('DOMContentLoaded', function() {
-    // Production-ready initialization
-
-    // Use local Tailwind CSS only - no CDN loading
-
+    // Make sure toggleMobileMenu is available globally
+    if (typeof window.toggleMobileMenu === 'undefined') {
+        window.toggleMobileMenu = toggleMobileMenu;
+    }
+    
     // Close mobile menu when clicking outside
     document.addEventListener('click', function(event) {
         const mobileMenu = document.getElementById('mobileMenu');
-        const menuButton = event.target.closest('button[onclick*="toggleMobileMenu"]');
+        const menuButton = event.target.closest('button[onclick*="toggleMobileMenu"]') || 
+                          event.target.closest('#mobileMenuButton') ||
+                          event.target.closest('.md\\:hidden button');
 
-        if (mobileMenu && mobileMenu.style.display !== 'none' && !mobileMenu.contains(event.target) && !menuButton) {
+        if (mobileMenu && 
+            (mobileMenu.style.display === 'block' || mobileMenu.classList.contains('active')) && 
+            !mobileMenu.contains(event.target) && 
+            !menuButton) {
+            
             mobileMenu.style.display = 'none';
-            const menuIcon = document.getElementById('menuIcon');
-            if (menuIcon) {
-                menuIcon.innerHTML = window.Icons.menu();
+            mobileMenu.classList.remove('active');
+            
+            // Reset burger icon
+            const headerButton = document.getElementById('mobileMenuButton') || 
+                                document.querySelector('button[onclick*="toggleMobileMenu"]') ||
+                                document.querySelector('.md\\:hidden button');
+            if (headerButton) {
+                const svg = headerButton.querySelector('svg');
+                if (svg) {
+                    svg.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M3 12h18M3 6h18M3 18h18"></path>';
+                }
             }
         }
     });
@@ -314,16 +341,26 @@ document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('keydown', function(event) {
         if (event.key === 'Escape') {
             const mobileMenu = document.getElementById('mobileMenu');
-            if (mobileMenu && mobileMenu.style.display !== 'none') {
+            if (mobileMenu && (mobileMenu.style.display === 'block' || mobileMenu.classList.contains('active'))) {
                 mobileMenu.style.display = 'none';
-                const menuIcon = document.getElementById('menuIcon');
-                if (menuIcon) {
-                    menuIcon.innerHTML = window.Icons.menu();
+                mobileMenu.classList.remove('active');
+                
+                // Reset burger icon
+                const headerButton = document.getElementById('mobileMenuButton') || 
+                                    document.querySelector('button[onclick*="toggleMobileMenu"]') ||
+                                    document.querySelector('.md\\:hidden button');
+                if (headerButton) {
+                    const svg = headerButton.querySelector('svg');
+                    if (svg) {
+                        svg.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M3 12h18M3 6h18M3 18h18"></path>';
+                    }
                 }
             }
         }
     });
 });
+
+
 
 // Generate complete standardized header matching React homepage
 function generateStandardHeader(isEnglish = false, currentPage = '') {
