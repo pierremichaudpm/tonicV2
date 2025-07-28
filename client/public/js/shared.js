@@ -93,7 +93,7 @@ function createNavItemsEnglish() {
     ];
 }
 
-// Toggle Mobile Menu with icon change
+// Toggle Mobile Menu with icon change - Robust implementation
 function toggleMobileMenu() {
     const mobileMenu = document.getElementById('mobileMenu');
     if (!mobileMenu) return;
@@ -124,6 +124,34 @@ function toggleMobileMenu() {
                 svg.innerHTML = '<path d="M3 12h18M3 6h18M3 18h18"></path>';
             }
         }
+    }
+}
+
+// Initialize mobile menu functionality with event listeners
+function initializeMobileMenu() {
+    // Remove any existing onclick handlers and use event listeners instead
+    const headerButton = document.getElementById('mobileMenuButton');
+    if (headerButton) {
+        headerButton.removeAttribute('onclick');
+        headerButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleMobileMenu();
+        });
+    }
+    
+    // Handle all close buttons in mobile menu
+    const mobileMenu = document.getElementById('mobileMenu');
+    if (mobileMenu) {
+        const closeButtons = mobileMenu.querySelectorAll('button[onclick*="toggleMobileMenu"]');
+        closeButtons.forEach(button => {
+            button.removeAttribute('onclick');
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleMobileMenu();
+            });
+        });
     }
 }
 
@@ -414,6 +442,7 @@ window.generateMobileMenuButton = generateMobileMenuButton;
 window.toggleMobileMenu = toggleMobileMenu;
 window.generateStandardHeader = generateStandardHeader;
 window.initializeNavigation = initializeNavigation;
+window.initializeMobileMenu = initializeMobileMenu;
 window.hidePDFLoading = hidePDFLoading;
 window.showPDFLoading = showPDFLoading;
 
@@ -422,8 +451,11 @@ if (typeof window !== 'undefined') {
     window.toggleMobileMenu = toggleMobileMenu;
 }
 
-// Close mobile menu when clicking outside or on menu links
+// Complete mobile menu initialization
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize mobile menu functionality
+    initializeMobileMenu();
+    
     // Close menu when clicking outside
     document.addEventListener('click', function(event) {
         const mobileMenu = document.getElementById('mobileMenu');
@@ -451,4 +483,12 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+// Also initialize immediately if DOM is already loaded
+if (document.readyState === 'loading') {
+    // DOM hasn't finished loading yet
+} else {
+    // DOM is already ready
+    initializeMobileMenu();
+}
 
