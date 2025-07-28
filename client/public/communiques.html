@@ -482,15 +482,20 @@
                     </nav>
 
                     <!-- Mobile Menu Button -->
-                    <button id="mobileMenuButton" onclick="document.getElementById('mobileMenu').classList.add('active'); document.body.style.overflow = 'hidden';" class="md:hidden p-2 hover:bg-white/10 rounded-lg transition-colors text-white" style="background: rgba(0,0,0,0.2); backdrop-filter: blur(10px); color: white;">
+                    <button id="mobileMenuButton" onclick="toggleMobileMenu()" class="md:hidden p-2 hover:bg-white/10 rounded-lg transition-colors text-white" style="background: rgba(0,0,0,0.2); backdrop-filter: blur(10px); color: white;">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path d="M3 12h18M3 6h18M3 18h18"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 12h18M3 6h18M3 18h18"></path>
                         </svg>
                     </button>
                 </div>
             </div>
         </div>
     </header>
+
+    <!-- TEST BUTTON -->
+    <button onclick="alert('JavaScript works!');" style="position: fixed; top: 100px; right: 20px; background: red; color: white; padding: 10px; z-index: 9999;">
+        TEST JS
+    </button>
 
     <!-- Mobile Menu -->
     <div id="mobileMenu" class="mobile-menu" style="padding-top: 0 !important;">
@@ -501,7 +506,7 @@
                     <img src="images/tonic-logo.png" alt="Groupe Tonic Logo" style="width: 120px; height: auto;" />
                     <span class="text-white text-xs font-medium">Créateur d'expériences mémorables</span>
                 </div>
-                <button onclick="document.getElementById('mobileMenu').classList.remove('active'); document.body.style.overflow = '';" class="p-2 hover:bg-white/10 rounded-lg" aria-label="Close">
+                <button onclick="toggleMobileMenu()" class="p-2 hover:bg-white/10 rounded-lg" aria-label="Close">
                     <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path d="M6 18L18 6M6 6l12 12"></path>
                     </svg>
