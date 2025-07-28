@@ -473,6 +473,51 @@ header {
     margin-block-end: 0.1rem !important;
 }
 
+/* Large screen specific fixes - the root cause! */
+@media (min-width: 1024px) {
+    #modalContent p,
+    #modalContent .prose p,
+    #modalContent .prose-invert p {
+        margin-top: 0.1rem !important;
+        margin-bottom: 0.1rem !important;
+        margin-block-start: 0.1rem !important;
+        margin-block-end: 0.1rem !important;
+        line-height: 1.4 !important;
+    }
+    
+    #modalContent h1,
+    #modalContent h2,
+    #modalContent h3,
+    #modalContent h4,
+    #modalContent h5,
+    #modalContent h6,
+    #modalContent .prose h1,
+    #modalContent .prose h2,
+    #modalContent .prose h3,
+    #modalContent .prose h4,
+    #modalContent .prose h5,
+    #modalContent .prose h6,
+    #modalContent .prose-invert h1,
+    #modalContent .prose-invert h2,
+    #modalContent .prose-invert h3,
+    #modalContent .prose-invert h4,
+    #modalContent .prose-invert h5,
+    #modalContent .prose-invert h6 {
+        margin-top: 0.1rem !important;
+        margin-bottom: 0.1rem !important;
+        margin-block-start: 0.1rem !important;
+        margin-block-end: 0.1rem !important;
+    }
+    
+    /* Force all elements in modal to use tight spacing on large screens */  
+    #modalContent *,
+    #modalContent .prose *,
+    #modalContent .prose-invert * {
+        margin-top: 0.1rem !important;
+        margin-bottom: 0.1rem !important;
+    }
+}
+
 /* Modal Content Headings - White color for modals */
 #modalContent .ql-size-huge,
 #modalContent .ql-size-large,
