@@ -474,7 +474,7 @@
     <!-- News Modal -->
     <div id="newsModal" class="modal-backdrop">
         <div class="modal-content" onclick="event.stopPropagation()">
-            <div class="bg-black border-b border-white/10 p-6 flex justify-between items-start">
+            <div class="sticky top-0 bg-black border-b border-white/10 p-6 flex justify-between items-start z-50">
                 <h2 id="modalTitle" class="text-2xl font-bold pr-4 text-white"></h2>
                 <button onclick="closeModal()" class="p-2 hover:bg-white/10 rounded-lg transition-colors" aria-label="Fermer">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -511,7 +511,7 @@
     <script src="js/simple-content.js?v=1753723200&cache=false"></script>
 
     <!-- Shared JavaScript -->
-    <script src="js/shared.js?v=1753723600&cache=false&fix=modalzindex"></script>
+    <script src="js/shared.js?v=1753723800&cache=false&fix=zindexfix"></script>
 
     <!-- Initialize standardized navigation -->
     <script>

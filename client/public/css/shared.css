@@ -670,9 +670,26 @@ header {
     z-index: 999999 !important;
 }
 
-/* Hero title should not overlay modals */
-.hero-title {
+/* Hero title should not overlay modals - NUCLEAR OPTION */
+.hero-title, 
+h1.hero-title,
+section h1,
+main h1 {
     z-index: 1 !important;
+    position: relative !important;
+}
+
+/* Force all page content behind modal - but keep them visible */
+main, 
+.container,
+section {
+    z-index: 10 !important;
+    position: relative !important;
+}
+
+/* Header should stay above page content but below modal */
+header {
+    z-index: 9999 !important;
 }
 
 /* Mobile Menu Consistent Styling */
