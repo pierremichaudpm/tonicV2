@@ -1,0 +1,142 @@
+I see the issue. The mobile menu has conflicting styles and the `toggleMobileMenu()` function needs to be more robust. Here's the fix for both files:
+
+## Fix for both `communiques.html` and `communiques-en.html`:
+
+Replace the existing `toggleMobileMenu()` function with this complete version:
+
+```javascript
+<script>
+/* Fix 3: Define toggleMobileMenu function */
+function toggleMobileMenu() {
+    var menu = document.getElementById('mobileMenu');
+    var button = document.getElementById('mobileMenuButton');
+    
+    if (!menu) return;
+    
+    if (menu.classList.contains('active')) {
+        // Close menu
+        menu.classList.remove('active');
+        menu.style.display = 'none';
+        document.body.style.overflow = '';
+        
+        // Reset hamburger icon
+        if (button) {
+            const svg = button.querySelector('svg');
+            if (svg) {
+                svg.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>';
+            }
+        }
+    } else {
+        // Open menu
+        menu.classList.add('active');
+        menu.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        
+        // Change to X icon
+        if (button) {
+            const svg = button.querySelector('svg');
+            if (svg) {
+                svg.innerHTML = '<path d="M6 18L18 6M6 6l12 12"></path>';
+            }
+        }
+    }
+}
+</script>
+```
+
+## Fix the CSS for mobile menu (update in both files):
+
+Replace the mobile menu CSS section with this:
+
+```css
+/* Mobile Menu Override - Complete Fix */
+.mobile-menu,
+#mobileMenu {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.95);
+    backdrop-filter: blur(20px);
+    z-index: 999999;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.mobile-menu.active,
+#mobileMenu.active {
+    display: flex !important;
+}
+
+/* Remove the extra z-index overrides */
+#mobileMenu {
+    z-index: 999999 !important;
+}
+
+/* Fix mobile menu header positioning */
+#mobileMenu > div:first-child {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 1000 !important;
+    background: rgba(0,0,0,0.95) !important;
+    backdrop-filter: blur(20px) !important;
+}
+
+/* Ensure proper content spacing */
+#mobileMenu > div:last-child {
+    padding-top: 100px !important;
+    padding-bottom: 2rem !important;
+}
+```
+
+## Remove the duplicate mobile menu initialization scripts
+
+At the bottom of both files, **remove this entire script block** (around line 577-620):
+
+```javascript
+<!-- Mobile menu initialization -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const menuButton = document.getElementById('mobileMenuButton');
+    const mobileMenu = document.getElementById('mobileMenu');
+    
+    // ... rest of the duplicate script
+});
+</script>
+```
+
+## For `communiques-en.html` specifically - Fix the mobile menu header:
+
+Replace the mobile menu header section with:
+
+```html
+<!-- Mobile Menu Header - Fixed at top -->
+<div class="bg-black/95 backdrop-blur-md border-b border-white/10 px-2 py-2 sm:px-4 sm:py-5">
+    <div class="flex items-center justify-between">
+        <div class="flex flex-col items-start gap-0">
+            <img src="images/tonic-logo.png" alt="Groupe Tonic Logo" style="width: clamp(180px,35vw,250px); height: auto;" />
+            <span class="text-white text-xs md:text-sm font-medium leading-tight" style="text-shadow: 0 2px 10px rgba(0,0,0,0.9);">Créateur d'expériences mémorables</span>
+        </div>
+        <button onclick="toggleMobileMenu()" class="p-2 hover:bg-white/10 rounded-lg" aria-label="Close">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+    </div>
+</div>
+```
+
+## Summary of changes needed:
+
+1. **Update the `toggleMobileMenu()` function** to explicitly set `display: flex/none`
+2. **Fix the CSS** to remove conflicting styles
+3. **Remove duplicate initialization scripts** that interfere with the onclick handlers
+4. **Ensure consistent mobile menu header structure** in both files
+
+These changes should make the mobile menu work correctly in both the French and English versions.

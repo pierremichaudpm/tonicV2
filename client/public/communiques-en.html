@@ -263,19 +263,19 @@
         /* Mobile Menu Override - Complete Fix */
         .mobile-menu,
         #mobileMenu {
-            display: none !important;
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            right: 0 !important;
-            bottom: 0 !important;
-            width: 100vw !important;
-            height: 100vh !important;
-            background: rgba(0,0,0,0.95) !important;
-            backdrop-filter: blur(20px) !important;
-            z-index: 2000000 !important;
-            flex-direction: column !important;
-            overflow-y: auto !important;
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.95);
+            backdrop-filter: blur(20px);
+            z-index: 999999;
+            flex-direction: column;
+            overflow-y: auto;
         }
 
         .mobile-menu.active,
@@ -283,66 +283,21 @@
             display: flex !important;
         }
 
-        /* Keep header visible but adjust z-index when mobile menu is active */
-        body:has(.mobile-menu.active) header,
-        body:has(#mobileMenu.active) header {
-            z-index: 40; /* Lower than mobile menu but still visible */
+        /* Fix mobile menu header positioning */
+        #mobileMenu > div:first-child {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            z-index: 1000 !important;
+            background: rgba(0,0,0,0.95) !important;
+            backdrop-filter: blur(20px) !important;
         }
 
-        .mobile-close-btn {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            z-index: 2000001;
-            background: rgba(255,255,255,0.2);
-            border: 1px solid rgba(255,255,255,0.3);
-            color: white;
-            padding: 0.5rem;
-            border-radius: 0.5rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Ensure mobile menu content is visible */
-        .mobile-menu *,
-        #mobileMenu * {
-            z-index: 2000001 !important;
-            position: relative !important;
-        }
-
-        /* Mobile menu close button - force visibility */
-        .mobile-close-btn,
-        .mobile-menu .mobile-close-btn,
-        #mobileMenu .mobile-close-btn {
-            display: block !important;
-            position: absolute !important;
-            top: 1rem !important;
-            right: 1rem !important;
-            z-index: 2000002 !important;
-            color: white !important;
-            background: rgba(255,255,255,0.2) !important;
-            border: none !important;
-            border-radius: 0.5rem !important;
-            padding: 0.5rem !important;
-            cursor: pointer !important;
-            width: 40px !important;
-            height: 40px !important;
-        }
-
-        .mobile-close-btn:hover {
-            background: rgba(255,255,255,0.3) !important;
-        }
-
-        /* Mobile menu navigation items */
-        .mobile-menu .nav-item,
-        #mobileMenu .nav-item {
-            display: flex !important;
-            color: white !important;
-            padding: 1rem !important;
-            border-radius: 0.5rem !important;
-            text-decoration: none !important;
+        /* Ensure proper content spacing */
+        #mobileMenu > div:last-child {
+            padding-top: 100px !important;
+            padding-bottom: 2rem !important;
         }
 
         /* Hero title gradient styling */
@@ -448,12 +403,36 @@
     /* Fix 3: Define toggleMobileMenu function */
     function toggleMobileMenu() {
         var menu = document.getElementById('mobileMenu');
+        var button = document.getElementById('mobileMenuButton');
+        
+        if (!menu) return;
+        
         if (menu.classList.contains('active')) {
+            // Close menu
             menu.classList.remove('active');
+            menu.style.display = 'none';
             document.body.style.overflow = '';
+            
+            // Reset hamburger icon
+            if (button) {
+                const svg = button.querySelector('svg');
+                if (svg) {
+                    svg.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M3 12h18M3 6h18M3 18h18"></path>';
+                }
+            }
         } else {
+            // Open menu
             menu.classList.add('active');
+            menu.style.display = 'flex';
             document.body.style.overflow = 'hidden';
+            
+            // Change to X icon
+            if (button) {
+                const svg = button.querySelector('svg');
+                if (svg) {
+                    svg.innerHTML = '<path d="M6 18L18 6M6 6l12 12"></path>';
+                }
+            }
         }
     }
     </script>
@@ -527,7 +506,7 @@
     <!-- Mobile Menu -->
     <div id="mobileMenu" class="mobile-menu" style="padding-top: 0 !important;">
         <!-- Mobile Menu Header - Fixed at top -->
-        <div class="bg-black/95 backdrop-blur-md border-b border-white/10 px-2 py-2 sm:px-4 sm:py-5" style="position: absolute; top: 0; left: 0; right: 0; z-index: 1000;">
+        <div class="bg-black/95 backdrop-blur-md border-b border-white/10 px-2 py-2 sm:px-4 sm:py-5">
             <div class="flex items-center justify-between">
                 <div class="flex flex-col items-start gap-0">
                     <img src="images/tonic-logo.png" alt="Groupe Tonic Logo" style="width: clamp(180px,35vw,250px); height: auto;" />
