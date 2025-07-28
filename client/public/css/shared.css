@@ -770,3 +770,32 @@ body.modal-open .modal-content {
     height: 1.25rem;
     flex-shrink: 0;
 }
+
+/* CSS-ONLY MOBILE MENU SOLUTION - NO JAVASCRIPT REQUIRED */
+#mobile-menu-toggle {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    position: absolute !important;
+    left: -9999px !important;
+}
+
+/* Show menu when checkbox is checked - Multiple selector strategies */
+#mobile-menu-toggle:checked ~ #mobileMenu,
+#mobile-menu-toggle:checked ~ * #mobileMenu,
+#mobile-menu-toggle:checked ~ div #mobileMenu,
+#mobile-menu-toggle:checked + * + #mobileMenu {
+    display: flex !important;
+    visibility: visible !important;
+}
+
+/* Alternative approach for complex HTML structures */
+body:has(#mobile-menu-toggle:checked) #mobileMenu {
+    display: flex !important;
+}
+
+/* Prevent body scroll when menu is open */
+#mobile-menu-toggle:checked ~ body,
+body:has(#mobile-menu-toggle:checked) {
+    overflow: hidden !important;
+}
