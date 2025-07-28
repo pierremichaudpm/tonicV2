@@ -292,19 +292,26 @@
         }
         
         /* Mobile menu close button - force visibility */
-        .mobile-menu button,
-        #mobileMenu button {
+        .mobile-close-btn,
+        .mobile-menu .mobile-close-btn,
+        #mobileMenu .mobile-close-btn {
             display: block !important;
             position: absolute !important;
             top: 1rem !important;
             right: 1rem !important;
             z-index: 2000002 !important;
             color: white !important;
-            background: rgba(255,255,255,0.1) !important;
+            background: rgba(255,255,255,0.2) !important;
             border: none !important;
             border-radius: 0.5rem !important;
             padding: 0.5rem !important;
             cursor: pointer !important;
+            width: 40px !important;
+            height: 40px !important;
+        }
+        
+        .mobile-close-btn:hover {
+            background: rgba(255,255,255,0.3) !important;
         }
         
         /* Mobile menu navigation items */
@@ -467,12 +474,14 @@
 
     <!-- Mobile Menu -->
     <div id="mobileMenu" class="mobile-menu">
+        <!-- Close Button - Always Visible -->
+        <button onclick="toggleMobileMenu()" class="mobile-close-btn" style="position: absolute !important; top: 1rem !important; right: 1rem !important; z-index: 2000002 !important; color: white !important; background: rgba(255,255,255,0.1) !important; border: none !important; border-radius: 0.5rem !important; padding: 0.5rem !important; cursor: pointer !important; display: block !important;">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="color: white; stroke: white;">
+                <path d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+        
         <div class="container mx-auto px-4 py-4">
-            <button onclick="toggleMobileMenu()" class="absolute top-4 right-4 p-2 hover:bg-white/10 rounded-lg" aria-label="Close">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-            </button>
 
             <div class="space-y-2 mt-8">
                 <a href="index.html" class="nav-item w-full">
@@ -570,7 +579,7 @@
     <script src="js/simple-content.js?v=1753723200&cache=false"></script>
 
     <!-- Shared JavaScript -->
-    <script src="js/shared.js?v=1753724500&cache=false&fix=closebuttonfix"></script>
+    <script src="js/shared.js?v=1753724600&cache=false&fix=closebuttonvisible"></script>
 
     <!-- Initialize standardized navigation -->
     <script>
@@ -741,20 +750,16 @@
                 
                 // Ensure close button is visible after opening
                 setTimeout(() => {
-                    const closeButton = mobileMenu.querySelector('button');
+                    const closeButton = mobileMenu.querySelector('.mobile-close-btn');
                     if (closeButton) {
                         console.log('Close button found:', closeButton);
                         closeButton.style.display = 'block';
-                        closeButton.style.position = 'absolute';
-                        closeButton.style.top = '1rem';
-                        closeButton.style.right = '1rem';
-                        closeButton.style.zIndex = '2000002';
-                        closeButton.style.color = 'white';
-                        closeButton.style.background = 'rgba(255,255,255,0.1)';
+                        closeButton.style.visibility = 'visible';
+                        closeButton.style.opacity = '1';
                     } else {
                         console.error('Close button not found in mobile menu');
                     }
-                }, 100);
+                }, 50);
             }
         }
 
