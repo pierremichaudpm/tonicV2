@@ -1,0 +1,82 @@
+Let's fix these issues:
+
+## 1. Fix the Close Button Not Working
+
+The issue is that `toggleMobileMenu` might not be available when the button is clicked. Add this script right after your CSS styles and before the closing `</head>` tag:
+
+```javascript
+<script>
+// Ensure toggleMobileMenu is available immediately
+function toggleMobileMenu() {
+    var menu = document.getElementById('mobileMenu');
+    if (!menu) return;
+    
+    if (menu.classList.contains('active')) {
+        menu.classList.remove('active');
+        menu.style.display = 'none';
+        document.body.style.overflow = '';
+    } else {
+        menu.classList.add('active');
+        menu.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+// Make it globally available
+window.toggleMobileMenu = toggleMobileMenu;
+</script>
+```
+
+## 2. Fix the Hover Color on Nav Items
+
+Add this CSS to ensure consistent hover behavior for ALL nav items in the mobile menu:
+
+```css
+/* Ensure consistent hover for all nav items */
+#mobileMenu .nav-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+    padding: 1rem !important;
+    width: 100% !important;
+    color: white !important;
+    text-decoration: none !important;
+    border-radius: 0.5rem !important;
+    transition: background 0.2s ease !important;
+}
+
+#mobileMenu .nav-item:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+
+#mobileMenu .nav-item.active {
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Also fix desktop nav hover */
+.nav-item:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+```
+
+## 3. Alternative Debug Approach for Close Button
+
+If the close button still doesn't work, try replacing the close button HTML with this debug version:
+
+```html
+<button onclick="console.log('Button clicked'); if(window.toggleMobileMenu) { window.toggleMobileMenu(); } else { document.getElementById('mobileMenu').classList.remove('active'); document.getElementById('mobileMenu').style.display='none'; }" 
+        class="p-2 hover:bg-white/10 rounded-lg" 
+        aria-label="Close">
+    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path d="M6 18L18 6M6 6l12 12"></path>
+    </svg>
+</button>
+```
+
+## Complete Fix Summary:
+
+1. Add the toggleMobileMenu function definition early in the page (in the head)
+2. Update the CSS to ensure consistent hover states
+3. If needed, use the inline fallback for the close button
+
+The key issue is that `shared.js` loads after the HTML, so when the button is clicked, the function might not be available yet. By defining it early in the page, we ensure it's always available.
