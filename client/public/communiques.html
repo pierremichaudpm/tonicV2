@@ -632,7 +632,7 @@
     </footer>
 
     <!-- Load news data -->
-    <script src="js/communiques-data.js?v=1753723200&cache=false"></script>
+    <script src="js/communiques-data.js"></script>
 
     <!-- Load shared JavaScript -->
     <script src="js/shared.js"></script>
@@ -786,9 +786,9 @@
 
 
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM Content Loaded');
+        // Initialize with data loading check
+        function initializeApp() {
+            console.log('Initializing app...');
             DOM.prList = document.getElementById('prList');
             DOM.modal = document.getElementById('newsModal');
             DOM.modalTitle = document.getElementById('modalTitle');
@@ -806,10 +806,6 @@
             // Render news
             renderNews();
 
-
-
-            // Content refresh removed to prevent flickering
-
             // Modal close handlers
             DOM.modal?.addEventListener('click', (e) => {
                 if (e.target === DOM.modal) {
@@ -822,7 +818,23 @@
                     closeModal();
                 }
             });
+        }
+
+        // Simple initialization - let's try without timing complexity
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM Content Loaded');
+            
+            // Add a small delay to ensure scripts have loaded
+            setTimeout(() => {
+                console.log('Checking for data after timeout...');
+                console.log('window.pressReleases:', window.pressReleases);
+                initializeApp();
+            }, 200);
         });
+
+
+
+
     </script>
 </body>
 </html>
