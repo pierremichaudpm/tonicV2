@@ -370,6 +370,37 @@
             });
         });
     </script>
+
+    <style>
+    /* Fix 1: Make mobile menu appear above everything */
+    #mobileMenu {
+        z-index: 999999 !important;
+    }
+
+    /* Fix 2: Ensure menu is properly positioned when active */
+    #mobileMenu.active {
+        z-index: 999999 !important;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+    }
+    </style>
+
+    <script>
+    /* Fix 3: Define toggleMobileMenu function */
+    function toggleMobileMenu() {
+        var menu = document.getElementById('mobileMenu');
+        if (menu.classList.contains('active')) {
+            menu.classList.remove('active');
+            document.body.style.overflow = '';
+        } else {
+            menu.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+    }
+    </script>
 </head>
 <body class="bg-black text-white min-h-screen">
     <!-- Header -->
