@@ -442,8 +442,64 @@
         right: 0 !important;
         bottom: 0 !important;
     }
+
+    /* Fix 3: Ensure mobile menu header is fixed at top with high z-index */
+    #mobileMenu .container:first-child {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        z-index: 1000000 !important;
+        background: rgba(0,0,0,0.95) !important;
+        backdrop-filter: blur(20px) !important;
+    }
+
+    /* Fix 4: Ensure close button has proper positioning and hover states */
+    #mobileMenu .mobile-close-btn,
+    #mobileMenu button[onclick="toggleMobileMenu()"] {
+        position: absolute !important;
+        top: 1rem !important;
+        right: 1rem !important;
+        z-index: 1000001 !important;
+        background: rgba(255,255,255,0.2) !important;
+        border: none !important;
+        color: white !important;
+        padding: 0.5rem !important;
+        border-radius: 0.5rem !important;
+        cursor: pointer !important;
+        width: 40px !important;
+        height: 40px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    #mobileMenu .mobile-close-btn:hover,
+    #mobileMenu button[onclick="toggleMobileMenu()"]:hover {
+        background: rgba(255,255,255,0.3) !important;
+    }
     </style>
 
+    <script>
+    /* Add toggleMobileMenu function */
+    function toggleMobileMenu() {
+        var menu = document.getElementById('mobileMenu');
+        var button = document.getElementById('mobileMenuButton');
+        var hamburgerIcon = button.querySelector('svg');
+        
+        if (menu.classList.contains('active')) {
+            menu.classList.remove('active');
+            document.body.style.overflow = '';
+            // Switch back to hamburger icon
+            hamburgerIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M3 12h18M3 6h18M3 18h18"></path>';
+        } else {
+            menu.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            // Switch to X icon
+            hamburgerIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>';
+        }
+    }
+    </script>
 
 </head>
 <body class="bg-black text-white min-h-screen">
@@ -501,7 +557,7 @@
                     </nav>
 
                     <!-- Mobile Menu Button -->
-                    <button id="mobileMenuButton" class="md:hidden p-2 hover:bg-white/10 rounded-lg transition-colors text-white" style="background: rgba(0,0,0,0.2); backdrop-filter: blur(10px); color: white;">
+                    <button id="mobileMenuButton" onclick="toggleMobileMenu()" class="md:hidden p-2 hover:bg-white/10 rounded-lg transition-colors text-white" style="background: rgba(0,0,0,0.2); backdrop-filter: blur(10px); color: white;">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M3 12h18M3 6h18M3 18h18"></path>
                         </svg>
@@ -628,62 +684,11 @@
     <!-- Load shared JavaScript -->
     <script src="js/shared.js?v=1753739263"></script>
     
-    <!-- Mobile menu initialization -->
+    <!-- Mobile menu initialization - Simplified -->
     <script>
+        // Simple initialization for any remaining elements that need it
         document.addEventListener('DOMContentLoaded', function() {
-            const menuButton = document.getElementById('mobileMenuButton');
-            const mobileMenu = document.getElementById('mobileMenu');
-            
-            if (menuButton && mobileMenu) {
-                // Remove any existing event listeners
-                const newButton = menuButton.cloneNode(true);
-                menuButton.parentNode.replaceChild(newButton, menuButton);
-                
-                // Add single click handler
-                newButton.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    const isOpen = mobileMenu.classList.contains('active');
-                    
-                    if (isOpen) {
-                        mobileMenu.classList.remove('active');
-                        mobileMenu.style.display = 'none';
-                        document.body.style.overflow = '';
-                        // Reset hamburger icon
-                        const svg = newButton.querySelector('svg');
-                        if (svg) {
-                            svg.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M3 12h18M3 6h18M3 18h18"></path>';
-                        }
-                    } else {
-                        mobileMenu.classList.add('active');
-                        mobileMenu.style.display = 'flex';
-                        document.body.style.overflow = 'hidden';
-                        // Change to X icon
-                        const svg = newButton.querySelector('svg');
-                        if (svg) {
-                            svg.innerHTML = '<path d="M6 18L18 6M6 6l12 12"></path>';
-                        }
-                    }
-                });
-                
-                // Close button handler
-                const closeButton = mobileMenu.querySelector('.mobile-close-btn');
-                if (closeButton) {
-                    closeButton.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        mobileMenu.classList.remove('active');
-                        mobileMenu.style.display = 'none';
-                        document.body.style.overflow = '';
-                        // Reset hamburger icon
-                        const svg = newButton.querySelector('svg');
-                        if (svg) {
-                            svg.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M3 12h18M3 6h18M3 18h18"></path>';
-                        }
-                    });
-                }
-            }
+            console.log('Mobile menu using toggleMobileMenu() function');
         });
     </script>
 
