@@ -645,3 +645,15 @@ The website is now fully operational and matches the original local/Netlify func
 - **Cache-busting updated**: Applied new version timestamps to force CSS refresh
 - **User confirmation**: User confirmed modal now displays correctly without overlay issues
 - **Status**: ✅ COMPLETED - Modal displays properly with sticky title and correct z-index stacking
+
+### Complete English Translation of Static Content - January 28, 2025 ✅ COMPLETED
+- **Contact page footer translation**: Fixed "Suivez-nous" → "Follow Us", "Tous droits réservés" → "All rights reserved", and legal links to English versions
+- **About page full translation**: Completed comprehensive English translation of all static content:
+  - Mission section: "Notre mission" → "Our Mission" with complete paragraph translations
+  - Statistics section: All stat labels translated ("Années d'expérience" → "Years of Experience", etc.)
+  - Values section: "Nos valeurs" → "Our Values" with all 5 value cards translated (Excellence, Boldness, Community, Collaboration, Lasting Impact)
+  - History timeline: "Notre histoire" → "Our History" with all 15 timeline entries translated (1978-2025)
+  - CTA section: "Participons ensemble" → "Let's Create a Memorable Event Together" with contact link updated
+- **Job modal z-index fix**: Applied same z-index solution to both French and English job pages to prevent "Available Positions" title overlay
+- **Language separation maintained**: CMS-inserted content preserved in original languages while all static interface elements fully translated
+- **Status**: ✅ COMPLETED - Full English translation achieved while maintaining CMS content integrity
