@@ -692,8 +692,8 @@
             return typeof pressReleases !== 'undefined' ? pressReleases : [];
         }
 
-        // Format date function (matching English version)
-        function formatDate(dateStr) {
+        // Format date function
+        function formatNewsDate(dateStr) {
             const date = new Date(dateStr);
             return date.toLocaleDateString('fr-FR', { 
                 year: 'numeric', 
@@ -741,7 +741,7 @@
                                     <span class="inline-block px-3 py-1 rounded-full text-xs font-medium text-white ${categoryClass}">
                                         ${item.category}
                                     </span>
-                                    <span class="text-sm text-white whitespace-nowrap">${formatDate(item.date)}</span>
+                                    <span class="text-sm text-white whitespace-nowrap">${formatNewsDate(item.date)}</span>
                                 </div>
                                 <h2 class="text-xl sm:text-2xl font-bold mb-2 text-white hover:text-white transition-colors">
                                     ${item.title}
@@ -838,16 +838,11 @@
         }
 
         // Initialize application when DOM is ready
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM loaded, checking data:', typeof pressReleases);
-            console.log('Press releases:', window.pressReleases || pressReleases || 'undefined');
-            
-            // Small delay to ensure scripts have loaded
-            setTimeout(() => {
-                console.log('Initializing app...');
-                initializeApp();
-            }, 200);
-        });
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeApp);
+        } else {
+            initializeApp();
+        }
 
 
 
