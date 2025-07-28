@@ -1,24 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jobs | Groupe Tonic</title>
-    
+    <title>Emplois | Groupe Tonic</title>
+
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Join the Groupe Tonic team. Discover our career opportunities in events and production.">
-    
+    <meta name="description" content="Rejoignez l'équipe du Groupe Tonic. Découvrez nos opportunités de carrière en événementiel et production.">
+
     <!-- Preconnect for performance -->
     <link rel="preconnect" href="https://fonts.cbc.ca">
-    <link rel="preconnect" href="https://cdn.tailwindcss.com">
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="css/tailwind-compiled.css" rel="stylesheet">
 
-    
+
     <!-- Shared Styles -->
     <link rel="stylesheet" href="css/shared.css">
-    
+
     <!-- Page Specific Styles -->
     <style>
         /* Language Switcher */
@@ -35,12 +32,12 @@
             text-decoration: none;
             cursor: pointer;
         }
-        
+
         .lang-switcher:hover {
             background: rgba(255, 255, 255, 0.1);
             color: white;
         }
-        
+
         .lang-divider {
             width: 1px;
             height: 16px;
@@ -48,7 +45,7 @@
             margin: 0 0.5rem;
             align-self: center;
         }
-        
+
         /* Optimized styles with CSS custom properties */
         :root {
             --glass-bg: rgba(255,255,255,0.05);
@@ -57,7 +54,7 @@
             --glass-border-hover: rgba(255, 255, 255, 0.2);
             --transition-default: all 0.3s ease;
         }
-        
+
         /* Job Card Styles */
         .job-card {
             background: linear-gradient(135deg, var(--glass-bg), var(--glass-bg-hover));
@@ -68,7 +65,7 @@
             position: relative;
             overflow: hidden;
         }
-        
+
         .job-card:hover {
             transform: translateY(-4px);
             box-shadow: 0 20px 40px rgba(0,0,0,0.3);
@@ -79,7 +76,7 @@
         .category-beach { --cat-color: #ff0e9b; background: linear-gradient(135deg, var(--cat-color), rgba(255, 14, 155, 0.8)); }
         .category-marathon { --cat-color: #463092; background: linear-gradient(135deg, var(--cat-color), rgba(70, 48, 146, 0.8)); }
         .category-cycling { --cat-color: #b7d233; background: linear-gradient(135deg, var(--cat-color), rgba(183, 210, 51, 0.8)); }
-        .category-uci { --cat-color: #ef4444; background: linear-gradient(135deg, var(--cat-color), rgba(239, 68, 68, 0.8)); }
+        .category-uci { --cat-color: #3b82f6; background: linear-gradient(135deg, var(--cat-color), rgba(59, 130, 246, 0.8)); }
         .category-studio { --cat-color: #b7d233; background: linear-gradient(135deg, var(--cat-color), rgba(183, 210, 51, 0.8)); }
         .category-dock { --cat-color: #6b7280; background: linear-gradient(135deg, var(--cat-color), rgba(107, 114, 128, 0.8)); }
         .category-21k { --cat-color: #f59e0b; background: linear-gradient(135deg, var(--cat-color), rgba(245, 158, 11, 0.8)); }
@@ -89,7 +86,7 @@
         .job-card {
             position: relative;
         }
-        
+
         .job-card::before {
             content: '';
             position: absolute;
@@ -106,7 +103,7 @@
             pointer-events: none;
             z-index: 1;
         }
-        
+
         @keyframes subtleFlow {
             0%, 100% { 
                 transform: translateX(0) translateY(0) scale(1);
@@ -125,7 +122,7 @@
                 opacity: 0.95;
             }
         }
-        
+
         .job-card > * {
             position: relative;
             z-index: 2;
@@ -140,29 +137,29 @@
             padding: 15px !important;
             border-radius: 8px !important;
         }
-        
+
         /* Department colors */
         .dept-events { background: linear-gradient(135deg, #ff0e9b, #ff0e9b33); }
         .dept-production { background: linear-gradient(135deg, #06b6d4, #06b6d433); }
         .dept-tonic { background: linear-gradient(135deg, var(--accent-primary), var(--accent-20)); }
-        
+
         /* Filter buttons */
         .filter-btn {
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
             transition: var(--transition-default);
         }
-        
+
         .filter-btn:hover {
             background: rgba(255, 255, 255, 0.1);
         }
-        
+
         .filter-btn.active {
             background: var(--accent-20);
             border-color: var(--accent-primary);
             color: var(--accent-primary);
         }
-        
+
         /* Modal styles - Optimized with single backdrop */
         .modal-backdrop {
             background: rgba(0, 0, 0, 0.8);
@@ -179,7 +176,7 @@
             visibility: hidden;
             transition: var(--transition-default);
         }
-        
+
         /* Center on larger screens */
         @media (min-height: 600px) {
             .modal-backdrop {
@@ -187,12 +184,12 @@
                 padding-top: 10rem;
             }
         }
-        
+
         .modal-backdrop.active {
             opacity: 1;
             visibility: visible;
         }
-        
+
         .modal-content {
             background: linear-gradient(135deg, rgba(20,20,20,0.95), rgba(10,10,10,0.95));
             backdrop-filter: blur(20px);
@@ -205,11 +202,11 @@
             transform: scale(0.9);
             transition: transform 0.3s ease;
         }
-        
+
         .modal-backdrop.active .modal-content {
             transform: scale(1);
         }
-        
+
         /* FORCE WHITE TEXT IN MODAL CONTENT */
         #modalContent,
         #modalContent *,
@@ -232,73 +229,59 @@
             color: white !important;
             background-color: transparent !important;
         }
-        
+
         /* Ensure links are visible */
         #modalContent a {
             color: #60a5fa !important;
             text-decoration: underline !important;
             background-color: transparent !important;
         }
-        
+
         /* Custom scrollbar for modal - Simplified */
         .modal-content::-webkit-scrollbar {
             width: 8px;
         }
-        
+
         .modal-content::-webkit-scrollbar-track {
             background: var(--glass-bg);
             border-radius: 4px;
         }
-        
+
         .modal-content::-webkit-scrollbar-thumb {
             background: rgba(255, 255, 255, 0.2);
             border-radius: 4px;
         }
-        
+
         .modal-content::-webkit-scrollbar-thumb:hover {
             background: rgba(255, 255, 255, 0.3);
-        }
-        
-        /* Accent color variables */
-        :root {
-            --accent-primary: #f97316;
-            --accent-hover: #ea580c;
-            --accent-light: #fb923c;
-            --accent-20: rgba(249, 115, 22, 0.2);
         }
 
         /* Icon backgrounds using CSS variables */
         .icon-bg-accent {
             background-color: var(--accent-20);
         }
-        
+
         .icon-accent {
             color: var(--accent-light);
         }
-        
+
         /* Text accent colors */
         .text-accent {
             color: var(--accent-primary);
         }
-        
+
         .text-accent:hover {
             color: var(--accent-hover);
         }
 
-        /* Category styles for consistent color coding */
-        .category-beach { background-color: #ff0e9b; }
-        .category-cycling { background-color: #b7d233; }
-        .category-marathon { background-color: #463092; }
-        .category-uci { background-color: #ef4444; }
-        .category-studio { background-color: #22c55e; }
-        .category-dock { background-color: #6b7280; }
-        .category-21k { background-color: #f59e0b; }
-        .category-tonic { background-color: #3b82f6; }
-        
         /* Hero title gradient styling */
         .hero-title{
             font-size: clamp(2rem,6vw,3.5rem) !important;
-            line-height: 0.9 !important;
+            line-height: 1.3 !important;
+            padding-top: 0.4em !important;
+            padding-bottom: 0.25em !important;
+            margin-top: 0.2em !important;
+            margin-bottom: 0.2em !important;
             font-weight: 900 !important;
             background: linear-gradient(135deg,rgba(220, 38, 38, 0.8),rgba(255, 87, 51, 0.85),rgba(255, 127, 80, 0.9),rgba(255, 160, 122, 0.95),#fff,rgba(255, 160, 122, 0.95),rgba(255, 127, 80, 0.9),rgba(255, 87, 51, 0.85),rgba(220, 38, 38, 0.8)) !important;
             background-clip: text !important;
@@ -313,7 +296,7 @@
             z-index: 999 !important;
             position: relative !important;
         }
-        
+
         @keyframes gradientShift {
             0% { background-position: 0% 50%; }
             100% { background-position: 100% 50%; }
@@ -342,27 +325,27 @@
                 display: none;
             `;
             document.body.appendChild(tooltip);
-            
+
             // Find social media links
             const socialLinks = document.querySelectorAll('a[data-tooltip="Instagram"], a[data-tooltip="LinkedIn"]');
-            
+
             socialLinks.forEach(link => {
                 const tooltipText = link.getAttribute('data-tooltip');
-                
+
                 link.addEventListener('mouseenter', function(e) {
                     tooltip.textContent = tooltipText;
                     tooltip.style.display = 'block';
-                    
+
                     // Plain white tooltips
                     tooltip.style.background = '#333';
                     tooltip.style.color = 'white';
-                    
+
                     const rect = link.getBoundingClientRect();
                     tooltip.style.left = (rect.left + rect.width/2 - 50) + 'px';
                     tooltip.style.top = (rect.bottom + 10) + 'px';
                     tooltip.style.opacity = '1';
                 });
-                
+
                 link.addEventListener('mouseleave', function() {
                     tooltip.style.opacity = '0';
                     setTimeout(() => {
@@ -375,175 +358,172 @@
 </head>
 <body class="bg-black text-white min-h-screen">
     <!-- Header -->
-    <header class="header-main fixed top-0 left-0 right-0 z-40">
-        <div class="container mx-auto px-4 py-6 sm:py-8">
+    <header class="fixed top-0 left-0 right-0 z-50">
+        <div class="container mx-auto px-2 py-2 sm:px-4 sm:py-5">
             <div class="flex items-center justify-between">
-                <!-- Logo -->
-                <a href="index-en.html" class="flex flex-col sm:flex-row items-start sm:items-center gap-0.5 sm:gap-4">
-                    <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-white" 
-                        style="text-shadow: 0 4px 20px rgba(0,0,0,0.9)">
-                        <img src="images/tonic-logo.png" alt="Groupe Tonic" style="height: clamp(1.875rem, 3.75vw, 2.625rem); width: auto;" />
+                <div class="flex flex-col sm:flex-row items-start sm:items-center gap-0 sm:gap-4">
+                    <h1 class="header-logo text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white leading-none" 
+                        style="text-shadow: 0 4px 20px rgba(0,0,0,0.9), 0 2px 10px rgba(0,0,0,0.8)"
+                        onclick="window.location.href='index.html'">
+                        <img src="images/tonic-logo.png" alt="Logo Groupe Tonic - Créateur d'expériences mémorables depuis plus de 40 ans" style="width: clamp(180px,35vw,250px); height: auto;" />
                     </h1>
-                    <span class="text-white text-xs sm:text-sm font-medium"
+                    <span class="text-white text-xs md:text-sm font-medium leading-tight"
                         style="text-shadow: 0 2px 10px rgba(0,0,0,0.9)">
-                        <span class="hidden sm:inline">| </span>Créateur d'expériences mémorables
+                        <span class="hidden sm:inline">| Créateur d'expériences mémorables</span>
+                        <span class="sm:hidden">Créateur d'expériences mémorables</span>
                     </span>
-                </a>
-                
-                <!-- Desktop Navigation -->
-                <nav class="hidden md:flex nav-container">
-                    <a href="index-en.html" class="nav-item" data-tooltip="Home">
-                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-                        <span>Home</span>
-                    </a>
-                    <a href="about.html" class="nav-item" data-tooltip="About">
-                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-                        <span>About</span>
-                    </a>
-                    <a href="emplois-en.html" class="nav-item active">
-                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-                        <span>Jobs</span>
-                    </a>
-                    <a href="communiques-en.html" class="nav-item" data-tooltip="News">
-                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M10 6h8"/><path d="M10 10h8"/><path d="M10 14h4"/></svg>
-                        <span>News</span>
-                    </a>
-                    <a href="nous-joindre-en.html" class="nav-item" data-tooltip="Contact">
-                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                        <span>Contact</span>
-                    </a>
-                    
-                    <!-- Social Media Links -->
-                    <a href="#" class="nav-item" data-tooltip="Instagram" onclick="alert('Instagram account coming soon'); return false;">
-                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                </div>
+                <div class="flex items-center gap-4">
+                    <nav class="hidden md:flex lg:flex items-center gap-0.5 px-2 py-0.5 rounded-full nav-container" style="background: rgba(0,0,0,0.2); backdrop-filter: blur(10px);">
+                        <a href="index.html" class="nav-item flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-white/10 transition-all text-white hover:text-white cursor-pointer" data-tooltip="Accueil">
+                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                            <span class="text-xs font-medium">Accueil</span>
+                        </a>
+                        <a href="a-propos.html" class="nav-item flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-white/10 transition-all text-white hover:text-white cursor-pointer" data-tooltip="À propos">
+                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                            <span class="text-xs font-medium">À propos</span>
+                        </a>
+                        <a href="emplois.html" class="nav-item flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-white/10 transition-all text-white hover:text-white cursor-pointer bg-white/10" data-tooltip="Emplois">
+                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                            <span class="text-xs font-medium">Emplois</span>
+                        </a>
+                        <a href="communiques.html" class="nav-item flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-white/10 transition-all text-white hover:text-white cursor-pointer" data-tooltip="Communiqués">
+                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M10 6h8"/><path d="M10 10h8"/><path d="M10 14h4"/></svg>
+                            <span class="text-xs font-medium">Communiqués</span>
+                        </a>
+                        <a href="nous-joindre.html" class="nav-item flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-white/10 transition-all text-white hover:text-white cursor-pointer" data-tooltip="Nous joindre">
+                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                            <span class="text-xs font-medium">Nous joindre</span>
+                        </a>
+                        <a href="https://www.instagram.com/groupetonic/" class="nav-item flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-white/10 transition-all text-white hover:text-white cursor-pointer" target="_blank" data-tooltip="Instagram">
+                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.40s-.644-1.44-1.439-1.40z"/></svg>
+                        </a>
+                        <a href="https://www.linkedin.com/company/groupe-tonic/" class="nav-item flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-white/10 transition-all text-white hover:text-white cursor-pointer" target="_blank" data-tooltip="LinkedIn">
+                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                        </a>
+                        <div class="lang-divider"></div>
+                        <a href="emplois-en.html" class="lang-switcher"><span>EN</span></a>
+                    </nav>
+                    <button onclick="toggleMobileMenu()" class="md:hidden p-2 hover:bg-white/10 rounded-lg transition-colors text-white" style="background: rgba(0,0,0,0.2); backdrop-filter: blur(10px); color: white;">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="color: white;">
+                            <path d="M3 12h18M3 6h18M3 18h18"></path>
                         </svg>
-                    </a>
-                    <a href="#" class="nav-item" data-tooltip="LinkedIn" onclick="alert('LinkedIn account coming soon'); return false;">
-                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                        </svg>
-                    </a>
-                    
-                    <div class="lang-divider"></div>
-                    <a href="emplois.html" class="lang-switcher">
-                        <span>FR</span>
-                    </a>
-                </nav>
-                
-                <!-- Mobile Menu Button -->
-                <button class="md:hidden p-2 hover:bg-white/10 rounded-lg transition-colors" onclick="toggleMobileMenu()" aria-label="Menu">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path d="M3 12h18M3 6h18M3 18h18"></path>
-                    </svg>
-                </button>
+                    </button>
+                </div>
             </div>
         </div>
     </header>
-    
+
     <!-- Mobile Menu -->
     <div id="mobileMenu" class="mobile-menu">
-        <div class="container mx-auto px-4">
-            <button onclick="toggleMobileMenu()" class="absolute top-4 right-4 p-2 hover:bg-white/10 rounded-lg" aria-label="Close">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-            </button>
-            
-            <nav class="space-y-2 mt-8">
-                <a href="index-en.html" class="nav-item w-full">
+        <div class="container mx-auto px-4 py-4">
+            <div class="space-y-2">
+                <a href="index.html" class="nav-item w-full">
                     <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-                    <span>Home</span>
+                    <span>Accueil</span>
                 </a>
-                <a href="about.html" class="nav-item w-full">
+                <a href="a-propos.html" class="nav-item w-full">
                     <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-                    <span>About</span>
+                    <span>À propos</span>
                 </a>
-                <a href="emplois-en.html" class="nav-item w-full active">
+                <a href="emplois.html" class="nav-item w-full active">
                     <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-                    <span>Jobs</span>
+                    <span>Emplois</span>
                 </a>
-                <a href="communiques-en.html" class="nav-item w-full">
+                <a href="communiques.html" class="nav-item w-full">
                     <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M10 6h8"/><path d="M10 10h8"/><path d="M10 14h4"/></svg>
-                    <span>News</span>
+                    <span>Communiqués</span>
                 </a>
-                <a href="nous-joindre-en.html" class="nav-item w-full">
+                <a href="nous-joindre.html" class="nav-item w-full">
                     <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                    <span>Contact</span>
+                    <span>Nous joindre</span>
                 </a>
-                <div class="lang-divider my-2"></div>
-                <a href="emplois.html" class="lang-switcher justify-center">
-                    <span>Français</span>
+            </div>
+            Completing the remaining parts of the file.            <div class="border-t border-white/10 mt-4 pt-4 space-y-2">
+                <!-- Social Media Links -->
+                <a href="#" class="nav-item w-full" data-tooltip="Instagram" onclick="alert('Compte Instagram bientôt disponible'); return false;">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.40z"/>
+                    </svg>
                 </a>
-            </nav>
+                <a href="#" class="nav-item w-full" data-tooltip="LinkedIn" onclick="alert('Compte LinkedIn bientôt disponible'); return false;">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                    </svg>
+                </a>
+                <a href="emplois-en.html" class="nav-item w-full">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.5 21l5.5-11 5.5 11M12 18h7m-9.5 0L7 10.5 4.5 18m0 0H1m3.5 0h5"/></svg>
+                    <span>English</span>
+                </a>
+            </div>
         </div>
     </div>
-    
+
     <!-- Main Content -->
     <main class="pt-24 sm:pt-28 pb-20">
         <!-- Hero Section -->
         <section class="container mx-auto px-4 py-12 sm:py-16 text-center">
-            <h1 class="hero-title text-5xl sm:text-6xl lg:text-7xl font-black mb-4 fade-in">Jobs</h1>
+            <h1 class="hero-title text-5xl sm:text-6xl lg:text-7xl font-black mb-4 fade-in">Emplois</h1>
             <p class="text-lg sm:text-xl text-white max-w-2xl mx-auto fade-in delay-100">
-                Join a passionate team that creates memorable experiences
+                Rejoignez une équipe passionnée qui crée des expériences mémorables
             </p>
         </section>
-        
+
         <!-- Job Listings -->
         <section class="container mx-auto px-4 py-8">
             <div class="max-w-4xl mx-auto">
-                <h2 class="text-2xl font-bold mb-6 text-center">Available positions</h2>
+                <h2 class="text-2xl font-bold mb-6 text-center">Postes disponibles</h2>
                 <div id="jobsList" class="space-y-4">
                     <!-- Jobs will be inserted here by JavaScript -->
                 </div>
             </div>
         </section>
-        
+
         <!-- Culture Section -->
         <section class="container mx-auto px-4 py-16">
             <div class="max-w-4xl mx-auto text-center">
-                <h2 class="text-3xl sm:text-4xl font-black mb-8">Why work for Groupe Tonic</h2>
+                <h2 class="text-3xl sm:text-4xl font-black mb-8">Pourquoi travailler pour Groupe Tonic</h2>
                 <div class="grid md:grid-cols-3 gap-8">
                     <div class="fade-in delay-100">
-                        <div class="w-16 h-16 rounded-full bg-lime-500/20 flex items-center justify-center mx-auto mb-4">
-                            <svg class="w-8 h-8 text-lime-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                            </svg>
-                        </div>
-                        <h3 class="text-xl font-bold mb-4 text-accent">Passionate team</h3>
-                        <p class="text-gray-300">Work with talented and dedicated professionals.</p>
-                    </div>
-                    
-                    <div class="fade-in delay-200">
                         <div class="w-16 h-16 rounded-full icon-bg-accent flex items-center justify-center mx-auto mb-4">
                             <svg class="w-8 h-8 icon-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
                             </svg>
                         </div>
-                        <h3 class="text-xl font-bold mb-4 text-accent">Inspiring projects</h3>
-                        <p class="text-gray-300">Create bold events that bring together and celebrate excellence.</p>
+                        <h3 class="text-xl font-bold mb-4 text-accent">Projets inspirants</h3>
+                        <p class="text-gray-300">Créez des événements audacieux qui rassemblent et célèbrent l'excellence.</p>
                     </div>
-                    
+
+                    <div class="fade-in delay-200">
+                        <div class="w-16 h-16 rounded-full bg-lime-500/20 flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-lime-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold mb-4 text-accent">Équipe passionnée</h3>
+                        <p class="text-gray-300">Travaillez avec des professionnels talentueux et dévoués.</p>
+                    </div>
+
                     <div class="fade-in delay-300">
                         <div class="w-16 h-16 rounded-full bg-purple-500/20 flex items-center justify-center mx-auto mb-4">
                             <svg class="w-8 h-8 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
                             </svg>
                         </div>
-                        <h3 class="text-xl font-bold mb-4 text-accent">Lasting impact</h3>
-                        <p class="text-gray-300">Contribute to achievements that leave a positive mark.</p>
+                        <h3 class="text-xl font-bold mb-4 text-accent">Impact durable</h3>
+                        <p class="text-gray-300">Contribuez à des réalisations qui laissent une trace positive.</p>
                     </div>
                 </div>
             </div>
         </section>
     </main>
-    
+
     <!-- Job Modal -->
     <div id="jobModal" class="modal-backdrop">
         <div class="modal-content" onclick="event.stopPropagation()">
             <div class="sticky top-4 bg-black backdrop-blur-lg border-b border-white/10 p-6 flex justify-between items-start">
                 <h2 id="modalTitle" class="text-2xl font-bold pr-4"></h2>
-                <button onclick="closeModal()" class="p-2 hover:bg-white/10 rounded-lg transition-colors" aria-label="Close">
+                <button onclick="closeModal()" class="p-2 hover:bg-white/10 rounded-lg transition-colors" aria-label="Fermer">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                     </svg>
@@ -554,7 +534,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- PDF Viewer Modal -->
     <div id="pdfViewerModal" class="fixed inset-0 bg-black/95 backdrop-blur-sm hidden z-50">
         <div class="h-full flex flex-col">
@@ -566,13 +546,13 @@
                 </div>
                 <div class="flex gap-1 sm:gap-2 flex-shrink-0">
                     <button onclick="downloadCurrentPDF()" class="px-2 py-1 sm:px-3 sm:py-1 bg-blue-600 hover:bg-blue-700 rounded text-xs sm:text-sm transition-colors text-white">
-                        <span class="hidden sm:inline">Download</span>
+                        <span class="hidden sm:inline">Télécharger</span>
                         <svg class="w-4 h-4 sm:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                         </svg>
                     </button>
                     <button onclick="openCurrentPDFInTab()" class="px-2 py-1 sm:px-3 sm:py-1 bg-green-600 hover:bg-green-700 rounded text-xs sm:text-sm transition-colors text-white">
-                        <span class="hidden sm:inline">New tab</span>
+                        <span class="hidden sm:inline">Nouvel onglet</span>
                         <svg class="w-4 h-4 sm:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
                         </svg>
@@ -584,17 +564,17 @@
                     </button>
                 </div>
             </div>
-            
+
             <!-- PDF Container -->
             <div class="flex-1 overflow-hidden relative">
                 <!-- Loading Indicator -->
                 <div id="pdfLoading" class="absolute inset-0 flex items-center justify-center bg-gray-900 z-10">
                     <div class="text-center">
                         <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
-                        <p class="text-gray-300 text-sm">Loading PDF...</p>
+                        <p class="text-gray-300 text-sm">Chargement du PDF...</p>
                     </div>
                 </div>
-                
+
                 <!-- PDF Viewer -->
                 <div class="pdf-viewer h-full">
                     <iframe id="pdfViewerFrame" 
@@ -604,21 +584,21 @@
                             onerror="showPDFFallback()">
                     </iframe>
                 </div>
-                
+
                 <!-- Mobile Fallback -->
                 <div id="pdfFallback" class="hidden absolute inset-0 flex items-center justify-center bg-gray-900 p-4">
                     <div class="text-center max-w-sm">
                         <svg class="w-16 h-16 mx-auto mb-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"></path>
                         </svg>
-                        <p class="text-lg font-semibold mb-2 text-white">PDF not supported</p>
-                        <p class="text-sm text-gray-400 mb-6">Your browser cannot display this PDF</p>
+                        <p class="text-lg font-semibold mb-2 text-white">PDF non pris en charge</p>
+                        <p class="text-sm text-gray-400 mb-6">Votre navigateur ne peut pas afficher ce PDF</p>
                         <div class="space-y-3">
                             <button onclick="openCurrentPDFInTab()" class="w-full px-4 py-2 bg-green-600 hover:bg-green-700 rounded-lg text-white font-medium transition-colors">
-                                Open in new tab
+                                Ouvrir dans un nouvel onglet
                             </button>
                             <button onclick="downloadCurrentPDF()" class="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-medium transition-colors">
-                                Download PDF
+                                Télécharger le PDF
                             </button>
                         </div>
                     </div>
@@ -626,31 +606,32 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Footer -->
     <footer class="border-t border-white/10 py-12">
         <div class="container mx-auto px-4">
             <div class="flex flex-col md:flex-row justify-between items-center">
                 <div class="mb-6 md:mb-0">
                     <img src="images/tonic-logo.png" alt="Groupe Tonic" style="height: 1.5rem; width: auto;" class="mb-2" />
-                    <p class="text-white">© 2025 Groupe Tonic. All rights reserved.</p>
+                    <p class="text-white">© 2025 Groupe Tonic. Tous droits réservés.</p>
                 </div>
                 <div class="flex gap-6">
-                    <a href="privacy-policy.html" class="text-white hover:text-white transition-colors">Privacy Policy</a>
-                    <a href="terms-of-use.html" class="text-white hover:text-white transition-colors">Terms of Use</a>
+                    <a href="politique-de-confidentialite.html" class="text-white hover:text-white transition-colors">Politique de confidentialité</a>
+                    <a href="conditions-utilisation.html" class="text-white hover:text-white transition-colors">Conditions d'utilisation</a>
                 </div>
             </div>
         </div>
     </footer>
-    
-    <!-- Job data -->
-    <script src="js/emplois-data-en.js"></script>
+
+    <!-- Load job data -->
+    <script src="js/emplois-data.js"></script>
+
+    <!-- Simple Content -->
     <script src="js/simple-content.js"></script>
 
-    
     <!-- Shared JavaScript -->
     <script src="js/shared.js"></script>
-    
+
     <!-- Page specific JavaScript - Optimized -->
     <script>
         // Cache DOM elements
@@ -660,7 +641,7 @@
             modalTitle: null,
             modalContent: null
         };
-        
+
         // State management
         const state = {
             isModalOpen: false
@@ -698,7 +679,7 @@
             };
             return categoryMap[department] || 'tonic';
         }
-        
+
         // Get department class for styling based on category colors
         const getDepartmentClass = (department) => {
             const classMap = {
@@ -714,49 +695,30 @@
             return classMap[department] || 'category-tonic';
         };
 
-
-
-        // Get days since posting
-        function getDaysSincePosting(dateString) {
-            const postDate = new Date(dateString);
-            const today = new Date();
-            const diffTime = Math.abs(today - postDate);
-            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-            
-            if (diffDays === 0) return 'Today';
-            if (diffDays === 1) return 'Yesterday';
-            return `${diffDays} days ago`;
-        }
-
-        // Format date using shared DateUtils for English
-        function formatDate(dateString) {
-            return DateUtils.formatEnglish(dateString);
-        }
-        
-        // Render jobs with colored cards - matching French UX exactly
+        // Render jobs with colored cards
         function renderJobs() {
-            const jobs = getJobsEn();
-            
+            const jobs = getJobs();
+
             if (!DOM.jobsList) {
                 return;
             }
-            
+
             if (jobs.length === 0) {
-                DOM.jobsList.innerHTML = '<p class="text-white text-center py-8">No positions available.</p>';
+                DOM.jobsList.innerHTML = '<p class="text-white text-center py-8">Aucun emploi disponible.</p>';
                 return;
             }
-            
+
             // Sort by date (newest first)
             jobs.sort((a, b) => new Date(b.date) - new Date(a.date));
-            
+
             DOM.jobsList.innerHTML = jobs.map((job, index) => {
                 const categoryClass = getDepartmentClass(job.category);
                 const image = getCategoryImage(job.category);
-                
+
                 return `
                     <div class="job-card relative rounded-xl p-6 sm:p-8 cursor-pointer fade-in delay-${Math.min(index * 100, 500)}" 
                          data-job-id="${job.id}"
-                         onclick="openJobModal('${job.id}')">
+                         onclick="openJobModal(${job.id})">
                         <div class="flex flex-col sm:flex-row gap-4">
                             <div class="sm:w-48 h-32 sm:h-32 flex-shrink-0 relative">
                                 <img src="${image}" alt="${job.category}" class="w-full h-full object-cover rounded-lg" loading="lazy">
@@ -775,7 +737,7 @@
                                 <p class="text-white line-clamp-2 mb-2">${job.subtitle}</p>
                                 ${job.salary ? `<span class="inline-block px-3 py-1 bg-green-600 text-white text-xs rounded-full">${job.salary}</span>` : ''}
                                 <div class="mt-4 text-accent font-medium text-sm flex items-center gap-1">
-                                    <span>View details</span>
+                                    <span>Voir l'offre</span>
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                                     </svg>
@@ -786,18 +748,13 @@
                 `;
             }).join('');
         }
-        
 
-        
-        // Open job modal - Simplified for CMS data structure, matching French UX
-        function openJobModal(jobId) {
-            const jobs = getJobsEn();
-            const job = jobs.find(j => String(j.id) === String(jobId));
+        // Open job modal with mobile-friendly content
+        function openJobModal(id) {
+            const job = getJobs().find(item => item.id === id);
             if (!job) return;
-            
-            state.isModalOpen = true;
+
             DOM.modalTitle.textContent = job.title;
-            
             DOM.modalContent.innerHTML = `
                 <div class="text-white">
                     <div class="mb-4">
@@ -806,8 +763,8 @@
                     </div>
                     <div class="prose prose-invert max-w-none">${job.content}</div>
                     <div class="mt-6 p-4 bg-blue-900/30 rounded-lg">
-                        <p class="text-blue-200 text-sm mb-2"><strong>To apply:</strong></p>
-                        <p>Send your CV to <a href="mailto:rh@groupetonic.ca" class="text-blue-400 hover:text-blue-300 underline">rh@groupetonic.ca</a></p>
+                        <p class="text-blue-200 text-sm mb-2"><strong>Pour postuler :</strong></p>
+                        <p>Envoyez votre CV à <a href="mailto:rh@groupetonic.ca" class="text-blue-400 hover:text-blue-300 underline">rh@groupetonic.ca</a></p>
                     </div>
                 </div>
             `;
@@ -815,43 +772,121 @@
             document.body.style.overflow = 'hidden';
             state.isModalOpen = true;
         }
-        
+
+        // Get days since posting
+        function getDaysSincePosting(dateString) {
+            const postDate = new Date(dateString);
+            const today = new Date();
+            const diffTime = Math.abs(today - postDate);
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+            if (diffDays === 0) return 'Aujourd\'hui';
+            if (diffDays === 1) return 'Hier';
+            return `Il y a ${diffDays} jours`;
+        }
+
+        // Format job date
+        function formatJobDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('fr-CA', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        // Open job modal - Simplified for CMS data structure
+        function openJobModal(jobId) {
+            const jobs = getJobs();
+            const job = jobs.find(j => String(j.id) === String(jobId));
+            if (!job) return;
+
+            state.isModalOpen = true;
+            DOM.modalTitle.textContent = job.title;
+
+            DOM.modalContent.innerHTML = `
+                <div class="mb-6">
+                    <div class="flex flex-wrap items-center gap-4 mb-4">
+                        <span class="inline-block px-3 py-1 rounded-full text-sm font-medium text-white ${getDepartmentClass(job.category)}">
+                            ${job.category}
+                        </span>
+                        <span class="text-white">${formatDate(job.date)}</span>
+                    </div>
+
+                    ${job.salary ? `
+                    <div class="bg-white/5 rounded-lg p-4 mb-4">
+                        <p class="text-white mb-1">Salaire</p>
+                        <p class="font-medium text-lg">${job.salary}</p>
+                    </div>
+                    ` : ''}
+                </div>
+
+                <div class="prose prose-invert max-w-none mb-8">
+                    ${job.content}
+                </div>
+
+                <div class="bg-gradient-to-r from-white/10 to-white/5 rounded-xl p-6">
+                    <h3 class="font-bold mb-3 text-lg">Ce poste vous intéresse?</h3>
+                    <p class="text-white mb-4">Envoyez votre CV et lettre de motivation à :</p>
+                    <a href="mailto:rh@gpcqm.ca?subject=${encodeURIComponent('Candidature - ' + job.title)}" 
+                       class="inline-flex items-center gap-2 text-accent hover:text-accent transition-colors mb-4">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                        rh@gpcqm.ca
+                    </a>
+                    <div class="flex gap-3">
+                        <button onclick="applyForJob('Candidature - ${job.title}')" class="cta-button">
+                            <span>Postuler maintenant</span>
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            // Show modal
+            DOM.modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
         // Close modal
         function closeModal(event) {
             if (event && event.target !== event.currentTarget) return;
-            
+
             state.isModalOpen = false;
             DOM.modal.classList.remove('active');
             document.body.style.overflow = '';
         }
-        
+
         // Apply for job
         function applyForJob(emailSubject) {
-            window.location.href = `mailto:rh@groupetonic.ca?subject=${encodeURIComponent(emailSubject)}`;
+            window.location.href = `mailto:emplois@groupetonic.ca?subject=${encodeURIComponent(emailSubject)}`;
         }
-        
+
         // PDF viewer functions
         let currentPDFData = null;
-        
+
         function viewPDF(id) {
             const saved = getPDFData();
             const pdf = saved.find(p => p.id === id);
-            
+
             if (!pdf) return;
-            
+
             currentPDFData = pdf;
             document.getElementById('pdfModalTitle').textContent = pdf.title;
             document.getElementById('pdfModalSubtitle').textContent = pdf.subtitle || '';
-            
+
             // Show modal and loading
             document.getElementById('pdfViewerModal').classList.remove('hidden');
             document.getElementById('pdfLoading').classList.remove('hidden');
             document.getElementById('pdfFallback').classList.add('hidden');
-            
+
             // Load PDF
             const pdfUrl = pdf.data + '#toolbar=1&navpanes=1&scrollbar=1&view=FitH&zoom=page-fit';
             document.getElementById('pdfViewerFrame').src = pdfUrl;
-            
+
             // Fallback timeout
             setTimeout(() => {
                 if (!document.getElementById('pdfLoading').classList.contains('hidden')) {
@@ -868,7 +903,7 @@
 
         function downloadCurrentPDF() {
             if (!currentPDFData) return;
-            
+
             const link = document.createElement('a');
             link.href = currentPDFData.data;
             link.download = currentPDFData.filename;
@@ -877,7 +912,7 @@
 
         function openCurrentPDFInTab() {
             if (!currentPDFData) return;
-            
+
             window.open(currentPDFData.data, '_blank');
         }
 
@@ -886,31 +921,31 @@
                 document.getElementById('pdfLoading').classList.add('hidden');
             }, 500);
         }
-        
+
         function showPDFFallback() {
             document.getElementById('pdfLoading').classList.add('hidden');
             document.getElementById('pdfFallback').classList.remove('hidden');
         }
-        
-        // English date functions
-        function formatJobDateEn(dateString) {
+
+        // French date functions
+        function formatJobDate(dateString) {
             const options = { year: 'numeric', month: 'long', day: 'numeric' };
-            return new Date(dateString).toLocaleDateString('en-US', options);
+            return new Date(dateString).toLocaleDateString('fr-FR', options);
         }
-        
-        function getDaysSincePostingEn(dateString) {
+
+        function getDaysSincePosting(dateString) {
             const posted = new Date(dateString);
             const today = new Date();
             const diffTime = Math.abs(today - posted);
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            
-            if (diffDays === 0) return "Today";
-            if (diffDays === 1) return "Yesterday";
-            if (diffDays < 7) return `${diffDays} days ago`;
-            if (diffDays < 30) return `${Math.floor(diffDays / 7)} week${Math.floor(diffDays / 7) > 1 ? 's' : ''} ago`;
-            return `${Math.floor(diffDays / 30)} month${Math.floor(diffDays / 30) > 1 ? 's' : ''} ago`;
+
+            if (diffDays === 0) return "Aujourd'hui";
+            if (diffDays === 1) return "Hier";
+            if (diffDays < 7) return `Il y a ${diffDays} jours`;
+            if (diffDays < 30) return `Il y a ${Math.floor(diffDays / 7)} semaine${Math.floor(diffDays / 7) > 1 ? 's' : ''}`;
+            return `Il y a ${Math.floor(diffDays / 30)} mois`;
         }
-        
+
         // Initialize - Optimized with event delegation
         document.addEventListener('DOMContentLoaded', function() {
             // Cache DOM elements
@@ -918,55 +953,56 @@
             DOM.modal = document.getElementById('jobModal');
             DOM.modalTitle = document.getElementById('modalTitle');
             DOM.modalContent = document.getElementById('modalContent');
-            
-            // Check if job data is available
-            if (typeof jobsData === 'undefined' || !Array.isArray(jobsData)) {
-                DOM.jobsList.innerHTML = '<p class="text-white text-center py-8">Error loading. Please refresh the page.</p>';
-                return;
+
+            // Render jobs
+            try {
+                renderJobs();
+            } catch (error) {
+                console.error('Error rendering jobs:', error);
             }
-            
-            // Event delegation for job cards
+
+            // Content refresh removed to prevent flickering
+
+            // Event delegation for job cards (PDF and regular)
             DOM.jobsList.addEventListener('click', function(e) {
                 const jobCard = e.target.closest('.job-card');
                 if (jobCard) {
                     const jobId = jobCard.dataset.jobId;
-                    // Check if this is a PDF job
-                    const job = state.jobs.find(j => j.id === jobId);
-                    if (job && job.isPDF) {
+                    const isPDF = jobCard.dataset.isPdf === 'true';
+
+                    if (isPDF) {
+                        // Open PDF viewer
                         const pdfId = parseInt(jobId.replace('pdf-', ''));
                         viewPDF(pdfId);
                     } else {
+                        // Open regular modal
                         openJobModal(jobId);
                     }
                 }
             });
-            
+
             // Modal backdrop click
             DOM.modal.addEventListener('click', closeModal);
-            
-            // Close PDF modal when clicking outside and add keyboard support
+
+            // Keyboard events
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    if (state.isModalOpen) {
+                        closeModal();
+                    }
+                    closePDFViewer();
+                }
+            });
+
+            // Close PDF modal when clicking outside
             document.getElementById('pdfViewerModal').addEventListener('click', (e) => {
                 if (e.target === document.getElementById('pdfViewerModal')) {
                     closePDFViewer();
                 }
             });
-            
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    closeModal();
-                    closePDFViewer();
-                }
-            });
-            
-            // Keyboard events
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && state.isModalOpen) {
-                    closeModal();
-                }
-            });
-            
-            // Initial render
-            renderJobs();
+
+            // Initial render (already called above on line 917)
+            // renderJobs();
         });
     </script>
 </body>
