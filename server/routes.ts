@@ -21,41 +21,52 @@ const authenticate = (req: any, res: any, next: any) => {
     }
 };
 
-// Helper function to read data files
+// Optimized data file reading with caching
+const dataCache = new Map();
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+
 const readDataFile = (filename: string) => {
+    const cacheKey = filename;
+    const cached = dataCache.get(cacheKey);
+    
+    if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
+        return cached.data;
+    }
+
     try {
         const filePath = path.join(__dirname, '../client/public/js', filename);
         const content = fs.readFileSync(filePath, 'utf8');
         
-        // Extract the array from the JavaScript file based on variable names
-        let match;
-        if (filename.includes('emplois-data-en')) {
-            match = content.match(/const\s+jobsData\s*=\s*(\[[\s\S]*?\]);/);
-        } else if (filename.includes('emplois-data')) {
-            match = content.match(/const\s+jobListings\s*=\s*(\[[\s\S]*?\]);/);
-        } else if (filename.includes('communiques-data-en')) {
-            match = content.match(/const\s+communiquesData\s*=\s*(\[[\s\S]*?\]);/);
-        } else if (filename.includes('communiques-data')) {
-            match = content.match(/const\s+pressReleases\s*=\s*(\[[\s\S]*?\]);/);
-        }
+        // Optimized regex patterns
+        const patterns = {
+            'emplois-data-en': /const\s+jobsData\s*=\s*(\[[\s\S]*?\]);/,
+            'emplois-data': /const\s+jobListings\s*=\s*(\[[\s\S]*?\]);/,
+            'communiques-data-en': /const\s+communiquesData\s*=\s*(\[[\s\S]*?\]);/,
+            'communiques-data': /const\s+pressReleases\s*=\s*(\[[\s\S]*?\]);/
+        };
+
+        const pattern = Object.keys(patterns).find(key => filename.includes(key));
+        const match = pattern ? content.match(patterns[pattern]) : null;
         
         if (match) {
             try {
-                // First try JSON parsing for simple cases
-                return JSON.parse(match[1]);
+                const data = JSON.parse(match[1]);
+                dataCache.set(cacheKey, { data, timestamp: Date.now() });
+                return data;
             } catch (e) {
-                // If JSON fails, evaluate the JavaScript array (safe in controlled context)
                 try {
-                    // Use Function constructor instead of eval for safety
-                    const fn = new Function('return ' + match[1]);
-                    return fn();
+                    const data = new Function('return ' + match[1])();
+                    dataCache.set(cacheKey, { data, timestamp: Date.now() });
+                    return data;
                 } catch (evalError) {
+                    console.error(`Error parsing ${filename}:`, evalError);
                     return [];
                 }
             }
         }
         return [];
     } catch (error) {
+        console.error(`Error reading ${filename}:`, error);
         return [];
     }
 };
@@ -190,7 +201,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Translation endpoint removed - not currently in use
+  // Translation functionality removed as requested
   
   // Serve CSS, JS, and images as static files
   app.use("/css", express.static(path.join(publicPath, "css")));

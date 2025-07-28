@@ -246,92 +246,75 @@ const DateUtils = {
 };
 
 // Backwards compatibility
-function formatDate(dateString) {
-    return DateUtils.formatFrench(dateString);
-}
+const formatDate = DateUtils.formatFrench;
 
-// Generate desktop navigation menu matching React homepage
+// Optimized desktop navigation generation
 function generateDesktopNav(isEnglish = false, currentPage = '') {
     const navItems = isEnglish ? createNavItemsEnglish() : createNavItemsFrench();
     const langLink = isEnglish ? 'index.html' : 'index-en.html';
     const langText = isEnglish ? 'FR' : 'EN';
-
-    // Normalize current page for comparison
     const normalizedCurrentPage = currentPage.toLowerCase().replace(/^\//, '');
 
-    return `
-        <nav class="hidden md:flex lg:flex items-center gap-0.5 px-2 py-0.5 rounded-full nav-container" style="background:rgba(0,0,0,0.2);backdrop-filter:blur(10px)">
-            ${navItems.map(item => {
-                // Check if this is the active page
-                const isActive = item.href && normalizedCurrentPage && 
-                    (item.href.toLowerCase() === normalizedCurrentPage || 
-                     item.href.toLowerCase().endsWith('/' + normalizedCurrentPage));
+    const navHTML = navItems.map(item => {
+        const isActive = item.href && normalizedCurrentPage && 
+            (item.href.toLowerCase() === normalizedCurrentPage || 
+             item.href.toLowerCase().endsWith('/' + normalizedCurrentPage));
 
-                return `
-                    <a href="${item.href}" ${item.target ? `target="${item.target}"` : ''} class="nav-item flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-white/10 transition-all text-white hover:text-white cursor-pointer${isActive ? ' bg-white/10' : ''}" data-tooltip="${item.tooltip || item.label}">
-                        <div style="color:white">${item.icon}</div>
-                        ${item.label ? `<span class="text-xs font-medium" ${item.isSocial ? 'data-social="true"' : ''}>${item.label}</span>` : ''}
-                    </a>
-                `;
-            }).join('')}
-            <div class="lang-divider"></div>
-            <a href="${langLink}" class="lang-switcher"><span>${langText}</span></a>
-        </nav>
-    `;
+        return `<a href="${item.href}" ${item.target ? `target="${item.target}"` : ''} class="nav-item flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-white/10 transition-all text-white hover:text-white cursor-pointer${isActive ? ' bg-white/10' : ''}" data-tooltip="${item.tooltip || item.label}">
+            <div style="color:white">${item.icon}</div>
+            ${item.label ? `<span class="text-xs font-medium" ${item.isSocial ? 'data-social="true"' : ''}>${item.label}</span>` : ''}
+        </a>`;
+    }).join('');
+
+    return `<nav class="hidden md:flex lg:flex items-center gap-0.5 px-2 py-0.5 rounded-full nav-container" style="background:rgba(0,0,0,0.2);backdrop-filter:blur(10px)">
+        ${navHTML}
+        <div class="lang-divider"></div>
+        <a href="${langLink}" class="lang-switcher"><span>${langText}</span></a>
+    </nav>`;
 }
 
-// Generate mobile menu matching React homepage
+// Optimized mobile menu generation
 function generateMobileMenu(isEnglish = false, currentPage = '') {
     const navItems = isEnglish ? createNavItemsEnglish() : createNavItemsFrench();
     const langLink = isEnglish ? 'index.html' : 'index-en.html';
     const langText = isEnglish ? 'Français' : 'English';
-    const langIcon = window.Icons.lang();
-
-    // Normalize current page for comparison
     const normalizedCurrentPage = currentPage.toLowerCase().replace(/^\//, '');
 
-    return `
-        <div id="mobileMenu" class="mobile-menu" style="padding-top: 0 !important;">
-            <!-- Mobile Menu Header - Fixed at top -->
-            <div class="bg-black/95 backdrop-blur-md border-b border-white/10 px-2 py-2 sm:px-4 sm:py-5" style="position: absolute; top: 0; left: 0; right: 0; z-index: 1000;">
-                <div class="flex items-center justify-between">
-                    <div class="flex flex-col items-start gap-0">
-                        <img src="images/tonic-logo.png" alt="Groupe Tonic Logo" style="width: clamp(180px,35vw,250px); height: auto;" />
-                        <span class="text-white text-xs md:text-sm font-medium leading-tight" style="text-shadow: 0 2px 10px rgba(0,0,0,0.9);">Créateur d'expériences mémorables</span>
-                    </div>
-                    <button onclick="toggleMobileMenu()" class="p-2 hover:bg-white/10 rounded-lg" aria-label="Close">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                    </button>
-                </div>
-            </div>
+    const menuItems = navItems.map(item => {
+        const isActive = item.href && normalizedCurrentPage && 
+            (item.href.toLowerCase() === normalizedCurrentPage || 
+             item.href.toLowerCase().endsWith('/' + normalizedCurrentPage));
 
-            <!-- Menu Content -->
-            <div class="container mx-auto px-4" style="padding-top: 100px; padding-bottom: 2rem;">
-                <div class="space-y-2">
-                    ${navItems.map(item => {
-                        // Check if this is the active page
-                        const isActive = item.href && normalizedCurrentPage && 
-                            (item.href.toLowerCase() === normalizedCurrentPage || 
-                             item.href.toLowerCase().endsWith('/' + normalizedCurrentPage));
+        return `<a href="${item.href}" ${item.target ? `target="${item.target}"` : ''} class="nav-item w-full${isActive ? ' active' : ''}">
+            <div style="color: white; stroke: white;">${item.icon}</div>
+            <span>${item.label || item.tooltip}</span>
+        </a>`;
+    }).join('');
 
-                        return `
-                            <a href="${item.href}" ${item.target ? `target="${item.target}"` : ''} class="nav-item w-full${isActive ? ' active' : ''}">
-                                <div style="color: white; stroke: white;">${item.icon}</div>
-                                ${item.label ? `<span>${item.label}</span>` : ''}
-                                ${!item.label && item.tooltip ? `<span>${item.tooltip}</span>` : ''}
-                            </a>
-                        `;
-                    }).join('')}
-                    <a href="${langLink}" class="nav-item w-full">
-                        <div style="color: white; stroke: white;">${langIcon}</div>
-                        <span>${langText}</span>
-                    </a>
+    return `<div id="mobileMenu" class="mobile-menu" style="padding-top: 0 !important;">
+        <div class="bg-black/95 backdrop-blur-md border-b border-white/10 px-2 py-2 sm:px-4 sm:py-5" style="position: absolute; top: 0; left: 0; right: 0; z-index: 1000;">
+            <div class="flex items-center justify-between">
+                <div class="flex flex-col items-start gap-0">
+                    <img src="images/tonic-logo.png" alt="Groupe Tonic Logo" style="width: clamp(180px,35vw,250px); height: auto;" />
+                    <span class="text-white text-xs md:text-sm font-medium leading-tight" style="text-shadow: 0 2px 10px rgba(0,0,0,0.9);">Créateur d'expériences mémorables</span>
                 </div>
+                <button onclick="toggleMobileMenu()" class="p-2 hover:bg-white/10 rounded-lg" aria-label="Close">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
             </div>
         </div>
-    `;
+        <div class="container mx-auto px-4" style="padding-top: 100px; padding-bottom: 2rem;">
+            <div class="space-y-2">
+                ${menuItems}
+                <a href="${langLink}" class="nav-item w-full">
+                    <div style="color: white; stroke: white;">${window.Icons.lang()}</div>
+                    <span>${langText}</span>
+                </a>
+            </div>
+        </div>
+    </div>`;
 }
 
 // Generate mobile menu button matching React homepage
@@ -483,43 +466,5 @@ if (typeof window !== 'undefined') {
     window.toggleMobileMenu = toggleMobileMenu;
 }
 
-// Complete mobile menu initialization
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize mobile menu functionality
-    initializeMobileMenu();
-
-    // Close menu when clicking outside
-    document.addEventListener('click', function(event) {
-        const mobileMenu = document.getElementById('mobileMenu');
-        const mobileMenuButton = document.getElementById('mobileMenuButton');
-
-        if (mobileMenu && mobileMenu.classList.contains('active')) {
-            // Check if click is outside menu and not the button
-            if (!mobileMenu.contains(event.target) && !mobileMenuButton.contains(event.target)) {
-                toggleMobileMenu();
-            }
-        }
-    });
-
-    // Close menu when clicking on navigation links (not social links)
-    const mobileMenu = document.getElementById('mobileMenu');
-    if (mobileMenu) {
-        const navLinks = mobileMenu.querySelectorAll('a.nav-item:not([data-tooltip])');
-        navLinks.forEach(link => {
-            link.addEventListener('click', function() {
-                // Don't close for external links, let them navigate
-                if (!this.getAttribute('target')) {
-                    toggleMobileMenu();
-                }
-            });
-        });
-    }
-});
-
-// Also initialize immediately if DOM is already loaded
-if (document.readyState === 'loading') {
-    // DOM hasn't finished loading yet
-} else {
-    // DOM is already ready
-    initializeMobileMenu();
-}
+// Optimized single initialization
+document.addEventListener('DOMContentLoaded', initializeMobileMenu);

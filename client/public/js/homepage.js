@@ -334,7 +334,7 @@ function previousProperty() {
     showHeroView(currentPropertyIndex);
 }
 
-// Auto-play functions
+// Optimized auto-play functions
 function startAutoPlay() {
     if (currentView === 'grid' && !isAutoPlaying) {
         isAutoPlaying = true;
