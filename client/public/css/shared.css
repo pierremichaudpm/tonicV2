@@ -771,22 +771,4 @@ body.modal-open .modal-content {
     flex-shrink: 0;
 }
 
-/* CSS-ONLY MOBILE MENU SOLUTION - NO JAVASCRIPT REQUIRED */
-#mobile-menu-toggle {
-    display: none !important;
-}
-
-/* Show menu when checkbox is checked - Using :has() selector for modern browsers */
-body:has(#mobile-menu-toggle:checked) #mobileMenu {
-    display: flex !important;
-}
-
-/* Fallback for browsers without :has() support - use JavaScript as backup */
-#mobile-menu-toggle:checked {
-    /* This will be detected by JavaScript fallback */
-}
-
-/* Prevent body scroll when menu is open */
-body:has(#mobile-menu-toggle:checked) {
-    overflow: hidden !important;
-}
+/* Mobile menu uses JavaScript toggle with .active class */
