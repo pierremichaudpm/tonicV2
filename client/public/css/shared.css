@@ -473,16 +473,18 @@ header {
     margin-block-end: 0.1rem !important;
 }
 
-/* Large screen specific fixes - the root cause! */
+/* Large screen specific fixes - ULTIMATE NUCLEAR OPTION */
 @media (min-width: 1024px) {
     #modalContent p,
     #modalContent .prose p,
     #modalContent .prose-invert p {
-        margin-top: 0.1rem !important;
-        margin-bottom: 0.1rem !important;
-        margin-block-start: 0.1rem !important;
-        margin-block-end: 0.1rem !important;
-        line-height: 1.4 !important;
+        margin: 0 !important;
+        margin-top: 0.05rem !important;
+        margin-bottom: 0.05rem !important;
+        margin-block-start: 0.05rem !important;
+        margin-block-end: 0.05rem !important;
+        line-height: 1.3 !important;
+        padding: 0 !important;
     }
     
     #modalContent h1,
@@ -503,18 +505,29 @@ header {
     #modalContent .prose-invert h4,
     #modalContent .prose-invert h5,
     #modalContent .prose-invert h6 {
-        margin-top: 0.1rem !important;
-        margin-bottom: 0.1rem !important;
-        margin-block-start: 0.1rem !important;
-        margin-block-end: 0.1rem !important;
+        margin: 0 !important;
+        margin-top: 0.05rem !important;
+        margin-bottom: 0.05rem !important;
+        margin-block-start: 0.05rem !important;
+        margin-block-end: 0.05rem !important;
+        padding: 0 !important;
     }
     
-    /* Force all elements in modal to use tight spacing on large screens */  
+    /* NUCLEAR: Force all elements in modal to use minimal spacing on large screens */  
     #modalContent *,
     #modalContent .prose *,
     #modalContent .prose-invert * {
-        margin-top: 0.1rem !important;
-        margin-bottom: 0.1rem !important;
+        margin: 0 !important;
+        margin-top: 0.05rem !important;
+        margin-bottom: 0.05rem !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+    }
+    
+    /* Override any remaining Tailwind prose defaults */
+    #modalContent .prose > * + *,
+    #modalContent .prose-invert > * + * {
+        margin-top: 0.05rem !important;
     }
 }
 
