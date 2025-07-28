@@ -522,5 +522,27 @@
     </footer>
 
     <script src="js/shared.js"></script>
+    <script>
+        // Initialize navigation components using shared.js
+        document.addEventListener('DOMContentLoaded', function() {
+            // Generate desktop navigation
+            const desktopNav = document.getElementById('desktopNav');
+            if (desktopNav) {
+                desktopNav.innerHTML = generateDesktopNav(false); // false for French
+            }
+
+            // Generate mobile menu button
+            const mobileMenuButton = document.getElementById('mobileMenuButton');
+            if (mobileMenuButton) {
+                mobileMenuButton.innerHTML = generateMobileMenuButton();
+            }
+
+            // Generate mobile menu
+            const mobileMenuContainer = document.getElementById('mobileMenuContainer');
+            if (mobileMenuContainer) {
+                mobileMenuContainer.innerHTML = generateMobileMenu(false); // false for French
+            }
+        });
+    </script>
 </body>
 </html>
