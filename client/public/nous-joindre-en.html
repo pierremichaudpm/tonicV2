@@ -256,9 +256,11 @@
 
                 <!-- Mobile Menu Button -->
                 <button id="mobileMenuButton" onclick="toggleMobileMenu()" class="md:hidden p-2 hover:bg-white/10 rounded-lg transition-colors text-white" style="background: rgba(0,0,0,0.2); backdrop-filter: blur(10px); color: white;">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path d="M3 12h18M3 6h18M3 18h18"></path>
-                    </svg>
+                    <span id="menuIcon">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path d="M3 12h18M3 6h18M3 18h18"></path>
+                        </svg>
+                    </span>
                 </button>
                 </div>
             </div>
@@ -266,7 +268,7 @@
     </header>
 
     <!-- Mobile Menu -->
-    <div id="mobileMenu" class="mobile-menu" style="padding-top: 0 !important;">
+    <div id="mobileMenu" class="mobile-menu" style="padding-top: 0 !important; display: none;">
         <!-- Mobile Menu Header - Fixed at top -->
         <div class="bg-black/95 backdrop-blur-md border-b border-white/10 px-4 py-4" style="position: absolute; top: 0; left: 0; right: 0; z-index: 1000;">
             <div class="flex items-center justify-between">
@@ -275,13 +277,15 @@
                     <span class="text-white text-xs font-medium">Créateur d'expériences mémorables</span>
                 </div>
                 <button onclick="toggleMobileMenu()" class="p-2 hover:bg-white/10 rounded-lg" aria-label="Close">
-                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
+                    <span id="menuIcon">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </span>
                 </button>
             </div>
         </div>
-        
+
         <!-- Menu Content -->
         <div class="container mx-auto px-4" style="padding-top: 100px; padding-bottom: 2rem;">
             <div class="space-y-2">
@@ -464,6 +468,26 @@
                 });
             });
         });
+
+        // Mobile menu toggle function - matching working French pages
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const menuIcon = document.getElementById('menuIcon');
+
+            if (mobileMenu) {
+                const isActive = mobileMenu.style.display !== 'none';
+                mobileMenu.style.display = isActive ? 'none' : 'block';
+
+                if (menuIcon) {
+                    menuIcon.innerHTML = isActive ? 
+                        '<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12h18M3 6h18M3 18h18"></path></svg>' : 
+                        '<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"></path></svg>';
+                }
+            }
+        }
+
+        // Make function globally available
+        window.toggleMobileMenu = toggleMobileMenu;
     </script>
 </body>
 </html>
@@ -701,19 +725,39 @@
 
     <!-- Shared JavaScript -->
     <script src="js/shared.js"></script>
-    
+
     <!-- Initialize standardized navigation -->
     <script>
         // Initialize navigation when page loads
         window.addEventListener('load', function() {
             console.log('Page loaded, initializing navigation...');
-            
+
             // Initialize standardized navigation
             if (window.initializeNavigation) {
                 window.initializeNavigation(true, 'nous-joindre-en.html'); // true for English, current page
                 console.log('Navigation initialized');
             }
         });
+
+        // Mobile menu toggle function - matching working French pages
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const menuIcon = document.getElementById('menuIcon');
+
+            if (mobileMenu) {
+                const isActive = mobileMenu.style.display !== 'none';
+                mobileMenu.style.display = isActive ? 'none' : 'block';
+
+                if (menuIcon) {
+                    menuIcon.innerHTML = isActive ? 
+                        '<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12h18M3 6h18M3 18h18"></path></svg>' : 
+                        '<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"></path></svg>';
+                }
+            }
+        }
+
+        // Make function globally available
+        window.toggleMobileMenu = toggleMobileMenu;
     </script>
 </body>
 </html>
