@@ -575,6 +575,19 @@ The website is now fully operational and matches the original local/Netlify func
 - **Special case**: a-propos.html uses shared.js implementation through div placeholders
 - **Status**: ✅ COMPLETED - All French and English pages now have consistent navigation structure
 
+### Mobile Menu Social Media Links Standardization - January 28, 2025 ✅ COMPLETED
+- **Issue addressed**: French pages had placeholder social media links with alert popups in mobile menus
+- **Pages updated**: emplois.html, communiques.html, nous-joindre.html
+- **Fixes applied**:
+  - Replaced placeholder "#" links with actual social media URLs
+  - Instagram: https://www.instagram.com/groupetonic/
+  - LinkedIn: https://www.linkedin.com/company/groupe-tonic/
+  - Added "Instagram" and "LinkedIn" text labels for mobile menu items
+  - Removed onclick alerts saying "Compte Instagram/LinkedIn bientôt disponible"
+  - Added target="_blank" to open links in new tabs
+- **Consistency achieved**: All French pages now match the standardization document requirements
+- **Status**: ✅ COMPLETED - Mobile menus now have proper social media links across all French pages
+
 ### Modal Display Link Enhancement - July 25, 2025 ✅ COMPLETED  
 - **Fixed white link blocks**: Enhanced CSS to target Word-style link spans with Google Docs colors (#1155cc)
 - **JavaScript link processing**: Automatic post-injection link styling to force blue underlined appearance
