@@ -1,0 +1,65 @@
+# Mobile Menu Close Button Fix Request
+
+I have a website for Groupe Tonic with a mobile menu that has an inconsistent issue. The mobile menu close button works on some pages but not others.
+
+## Problem Description:
+- The mobile menu opens correctly on all pages when clicking the hamburger button
+- The close button (X) works on `communiques.html` page
+- The close button does NOT work on other secondary pages like `emplois.html`
+- Both pages use identical mobile menu HTML structure
+
+## Current Implementation:
+
+### Mobile Menu HTML Structure (same on all pages):
+```html
+<!-- Mobile Menu Button -->
+<button id="mobileMenuButton" onclick="toggleMobileMenu()" class="md:hidden p-2 hover:bg-white/10 rounded-lg transition-colors text-white">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path d="M3 12h18M3 6h18M3 18h18"></path>
+    </svg>
+</button>
+
+<!-- Mobile Menu -->
+<div id="mobileMenu" class="mobile-menu">
+    <div class="bg-black/95 backdrop-blur-md border-b border-white/10 px-4 py-4">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <img src="images/tonic-logo.png" alt="Groupe Tonic Logo" style="width: 120px; height: auto;" />
+                <span class="text-white text-xs font-medium">Créateur d'expériences mémorables</span>
+            </div>
+            <button onclick="toggleMobileMenu()" class="p-2 hover:bg-white/10 rounded-lg" aria-label="Close">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+    <!-- Menu items here -->
+</div>
+```
+
+### Files Structure:
+- `js/shared.js` - Contains shared JavaScript including navigation functions
+- `emplois.html` - Jobs page (close button NOT working)
+- `communiques.html` - News page (close button IS working)
+
+## What I Need:
+
+1. **Diagnose** why `toggleMobileMenu()` works on some pages but not others
+2. **Fix** the close button functionality to work consistently on ALL pages
+3. **Ensure** the solution is robust and won't break with page updates
+
+## Additional Context:
+- The site uses Tailwind CSS
+- All pages load `js/shared.js`
+- The `toggleMobileMenu` function should toggle the `active` class on the mobile menu
+- When active, `body` should have `overflow: hidden`
+
+## Expected Solution:
+Please provide:
+1. The root cause of why it works on some pages but not others
+2. A complete, tested fix that can be implemented in the shared.js file
+3. Any additional changes needed in the HTML if required
+4. Explanation of what was causing the issue
+
+The fix should ensure the mobile menu close button works reliably on all pages without requiring page-specific JavaScript.
