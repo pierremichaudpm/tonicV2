@@ -59,3 +59,25 @@ module.exports = {
   },
   plugins: [],
 }
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: ["./client/public/**/*.{html,js}"],
+  theme: {
+    extend: {
+      colors: {
+        'accent-primary': '#1e40af',
+        'accent-secondary': '#3b82f6',
+      },
+      animation: {
+        'gradient-shift': 'gradientShift 3s ease-in-out infinite',
+      },
+      keyframes: {
+        gradientShift: {
+          '0%': { 'background-position': '0% 50%' },
+          '100%': { 'background-position': '100% 50%' },
+        }
+      }
+    },
+  },
+  plugins: [],
+}
