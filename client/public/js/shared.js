@@ -247,6 +247,7 @@ const DateUtils = {
 
 // Backwards compatibility
 const formatDate = DateUtils.formatFrench;
+window.formatDate = formatDate;
 
 // Optimized desktop navigation generation
 function generateDesktopNav(isEnglish = false, currentPage = '') {
