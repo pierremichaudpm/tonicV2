@@ -260,11 +260,17 @@
             text-decoration-thickness: 3px !important;
         }
 
-        /* Mobile Menu Override - Force High Z-Index */
+        /* Mobile Menu Override - Complete Fix */
         .mobile-menu,
         #mobileMenu {
-            z-index: 2000000 !important;
+            display: none !important;
             position: fixed !important;
+            inset: 0 !important;
+            background: rgba(0,0,0,0.95) !important;
+            backdrop-filter: blur(20px) !important;
+            z-index: 2000000 !important;
+            padding-top: 5rem !important;
+            overflow-y: auto !important;
         }
         
         .mobile-menu.active,
@@ -526,7 +532,7 @@
     <script src="js/simple-content.js?v=1753723200&cache=false"></script>
 
     <!-- Shared JavaScript -->
-    <script src="js/shared.js?v=1753724100&cache=false&fix=mobilemenufix"></script>
+    <script src="js/shared.js?v=1753724200&cache=false&fix=mobilemenufix2"></script>
 
     <!-- Initialize standardized navigation -->
     <script>
@@ -675,13 +681,23 @@
             }
         }
 
-        // Mobile menu functionality from shared.js
-        function toggleMobileMenu() {
+        // Mobile menu functionality - Enhanced
+        window.toggleMobileMenu = function() {
+            console.log('toggleMobileMenu called');
             const mobileMenu = document.getElementById('mobileMenu');
+            console.log('Mobile menu element:', mobileMenu);
+            
+            if (!mobileMenu) {
+                console.error('Mobile menu element not found');
+                return;
+            }
+            
             if (mobileMenu.classList.contains('active')) {
+                console.log('Closing mobile menu');
                 mobileMenu.classList.remove('active');
                 document.body.style.overflow = '';
             } else {
+                console.log('Opening mobile menu');
                 mobileMenu.classList.add('active');
                 document.body.style.overflow = 'hidden';
             }
