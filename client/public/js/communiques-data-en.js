@@ -50,5 +50,14 @@ const communiquesData = [
         "date": "2025-07-28",
         "content": "<p>2g44g4</p>",
         "isAutoTranslated": true
+    },
+    {
+        "id": "1753722503605",
+        "title": "yjmfmrm",
+        "subtitle": "I notice that \"eymrnnmry\" doesn't appear to be French text or any recognizable language. It seems to be either:\n- A random string of characters\n- Possibly corrupted text\n- An encoding error\n\nCould you please provide the actual French text you'd like me to translate?",
+        "category": "Groupe Tonic",
+        "date": "2025-07-28",
+        "content": "<p>rmyrymyrm</p>",
+        "isAutoTranslated": true
     }
 ];
