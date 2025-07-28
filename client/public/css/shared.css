@@ -684,11 +684,11 @@ header {
 /* FORCE SPECIFIC PAGE CONTENT TO MINIMUM Z-INDEX - TARGETED APPROACH */
 .hero-title,
 h1.hero-title,
-section h1:not(.modal-content h1),
-main h1:not(.modal-content h1),
-.text-4xl:not(.modal-content .text-4xl),
-.text-5xl:not(.modal-content .text-5xl),
-.text-6xl:not(.modal-content .text-6xl) {
+section h1:not(.modal-content h1):not(.mobile-menu h1),
+main h1:not(.modal-content h1):not(.mobile-menu h1),
+.text-4xl:not(.modal-content .text-4xl):not(.mobile-menu .text-4xl),
+.text-5xl:not(.modal-content .text-5xl):not(.mobile-menu .text-5xl),
+.text-6xl:not(.modal-content .text-6xl):not(.mobile-menu .text-6xl) {
     z-index: 1 !important;
 }
 
@@ -699,11 +699,20 @@ section > .hero-title {
     position: relative !important;
 }
 
-/* Hide specific elements during modal display */
-body.modal-open .hero-title,
-body.modal-open section h1,
-body.modal-open main h1 {
+/* Hide specific elements during modal display - but keep mobile menu visible */
+body.modal-open .hero-title:not(.mobile-menu .hero-title),
+body.modal-open section h1:not(.mobile-menu h1),
+body.modal-open main h1:not(.mobile-menu h1) {
     z-index: 1 !important;
+}
+
+/* Ensure mobile menu and its contents are NEVER affected by z-index rules */
+.mobile-menu,
+#mobileMenu,
+.mobile-menu *,
+#mobileMenu *,
+.mobile-close-btn {
+    z-index: 2000000 !important;
 }
 
 body.modal-open #newsModal,
