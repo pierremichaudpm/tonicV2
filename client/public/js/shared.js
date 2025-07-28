@@ -102,8 +102,14 @@ function toggleMobileMenu() {
         // Toggle menu visibility
         mobileMenu.classList.toggle('active');
         
-        // Find the main header button specifically (not the close button inside menu)
-        const headerButton = document.getElementById('mobileMenuButton');
+        // Find the main header button - try multiple selectors to ensure we find it
+        let headerButton = document.getElementById('mobileMenuButton');
+        if (!headerButton) {
+            headerButton = document.querySelector('header button[onclick*="toggleMobileMenu"]');
+        }
+        if (!headerButton) {
+            headerButton = document.querySelector('button[onclick*="toggleMobileMenu"]:not(#mobileMenu button)');
+        }
         
         // Update header button icon
         if (headerButton) {
@@ -397,3 +403,8 @@ window.generateMobileMenuButton = generateMobileMenuButton;
 window.toggleMobileMenu = toggleMobileMenu;
 window.generateStandardHeader = generateStandardHeader;
 window.initializeNavigation = initializeNavigation;
+
+// Ensure toggleMobileMenu is immediately available
+if (typeof window !== 'undefined') {
+    window.toggleMobileMenu = toggleMobileMenu;
+}
