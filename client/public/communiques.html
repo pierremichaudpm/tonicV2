@@ -260,6 +260,19 @@
             text-decoration-thickness: 3px !important;
         }
 
+        /* Mobile Menu Override - Force High Z-Index */
+        .mobile-menu,
+        #mobileMenu {
+            z-index: 2000000 !important;
+            position: fixed !important;
+        }
+        
+        .mobile-menu.active,
+        #mobileMenu.active {
+            display: block !important;
+            z-index: 2000000 !important;
+        }
+
         /* Hero title gradient styling */
         .hero-title{
             font-size: clamp(2rem,6vw,3.5rem) !important;
@@ -513,7 +526,7 @@
     <script src="js/simple-content.js?v=1753723200&cache=false"></script>
 
     <!-- Shared JavaScript -->
-    <script src="js/shared.js?v=1753724000&cache=false&fix=inlinefix"></script>
+    <script src="js/shared.js?v=1753724100&cache=false&fix=mobilemenufix"></script>
 
     <!-- Initialize standardized navigation -->
     <script>

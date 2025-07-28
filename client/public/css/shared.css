@@ -686,7 +686,7 @@ header {
     z-index: auto !important;
 }
 
-*:not(#newsModal):not(.modal-backdrop):not(.modal-content) {
+*:not(#newsModal):not(.modal-backdrop):not(.modal-content):not(.mobile-menu):not(#mobileMenu) {
     z-index: 1 !important;
 }
 
@@ -713,17 +713,18 @@ body.modal-open .modal-content {
     z-index: 2147483647 !important;
 }
 
-/* Mobile Menu Consistent Styling */
-.mobile-menu {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.95);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    z-index: 9999;
-    padding-top: 5rem;
-    overflow-y: auto;
+/* Mobile Menu Consistent Styling - High Z-Index */
+.mobile-menu,
+#mobileMenu {
+    display: none !important;
+    position: fixed !important;
+    inset: 0 !important;
+    background: rgba(0,0,0,0.95) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    z-index: 1000000 !important;
+    padding-top: 5rem !important;
+    overflow-y: auto !important;
 }
 
 .mobile-menu.active {
