@@ -283,6 +283,11 @@
             display: flex !important;
         }
 
+        /* Remove the extra z-index overrides */
+        #mobileMenu {
+            z-index: 999999 !important;
+        }
+
         /* Fix mobile menu header positioning */
         #mobileMenu > div:first-child {
             position: fixed !important;
@@ -381,23 +386,6 @@
             });
         });
     </script>
-
-    <style>
-    /* Fix 1: Make mobile menu appear above everything */
-    #mobileMenu {
-        z-index: 999999 !important;
-    }
-
-    /* Fix 2: Ensure menu is properly positioned when active */
-    #mobileMenu.active {
-        z-index: 999999 !important;
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        right: 0 !important;
-        bottom: 0 !important;
-    }
-    </style>
 
     <script>
     /* Fix 3: Define toggleMobileMenu function */
@@ -819,12 +807,8 @@
             });
         }
 
-        // Initialize application when DOM is ready
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initializeApp);
-        } else {
-            initializeApp();
-        }
+        // Initialize application
+        initializeApp();
 
 
 
