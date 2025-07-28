@@ -254,7 +254,18 @@ The website is now fully operational and matches the original local/Netlify func
 - **A-propos page special fix**: Updated a-propos.html to match emplois/communiques mobile menu structure with proper header, logo, and close button
 - **Mobile menu header branding consistency**: Applied vertical layout (flex flex-col items-start) with tagline under logo across ALL pages
 - **Responsive padding standardization**: Updated all mobile menu headers to use consistent responsive padding (px-2 py-2 sm:px-4 sm:py-5) matching main header sections
+- **Logo sizing perfection**: Fixed mobile menu logo sizing with clamp(180px,35vw,250px) matching main headers exactly
+- **Tagline spacing eliminated visual jump**: Replaced mt-1 with gap-0 and leading-tight for perfect consistency with main headers
 - **Final status**: Mobile menu hamburger opens properly, close button (X) closes properly, consistent branding with vertical tagline layout and responsive padding across ALL pages - COMPLETE CONSISTENCY ACHIEVED
+
+### Desktop Navigation Language Consistency Fix - January 28, 2025 ✅ COMPLETED
+- **Major issue resolved**: nous-joindre-en.html desktop navigation was showing French labels (Accueil, À propos, Emplois, Communiqués) instead of English
+- **English navigation corrected**: All English pages now show proper English labels (Home, About, Jobs, News, Contact)
+- **Language separation maintained**: English pages link to English versions, French pages link to French versions
+- **Language toggle functionality verified**: All English pages properly link to corresponding French pages via FR button
+- **Navigation consistency achieved**: Desktop navigation now properly separated by language across entire bilingual website
+- **Active page highlighting working**: Current page shows bg-white/10 background correctly on all pages
+- **Complete desktop navigation standardization**: All English and French pages have proper language-specific navigation with working toggle system
 
 ### Tagline Consistency - July 22, 2025
 - **Standardized French tagline** across all pages (both French and English versions)
