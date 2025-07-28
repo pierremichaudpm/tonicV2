@@ -96,58 +96,35 @@ function createNavItemsEnglish() {
 // Toggle Mobile Menu with icon change
 function toggleMobileMenu() {
     const mobileMenu = document.getElementById('mobileMenu');
-    if (!mobileMenu) {
-        console.warn('Mobile menu not found');
-        return;
-    }
+    if (!mobileMenu) return;
     
-    // Check current state using active class only
+    // Use only the 'active' class to determine state (CSS handles display)
     const isCurrentlyOpen = mobileMenu.classList.contains('active');
     
     if (isCurrentlyOpen) {
         // Close menu
-        mobileMenu.style.display = 'none';
         mobileMenu.classList.remove('active');
         document.body.style.overflow = '';
     } else {
         // Open menu
-        mobileMenu.style.display = 'block';
         mobileMenu.classList.add('active');
         document.body.style.overflow = 'hidden';
     }
     
-    // Update all menu buttons (header and mobile menu close button)
-    updateMenuButtonIcons(!isCurrentlyOpen);
-}
-
-// Helper function to update all menu button icons
-function updateMenuButtonIcons(isOpen) {
-    // Find all possible menu buttons
-    const buttons = [
-        document.getElementById('mobileMenuButton'),
-        document.querySelector('button[onclick*="toggleMobileMenu"]'),
-        document.querySelector('.md\\:hidden button'),
-        document.querySelector('#mobileMenu button[onclick*="toggleMobileMenu"]')
-    ].filter(Boolean);
-    
-    buttons.forEach(button => {
-        const svg = button.querySelector('svg');
+    // Update button icon - simple and reliable
+    const headerButton = document.getElementById('mobileMenuButton');
+    if (headerButton) {
+        const svg = headerButton.querySelector('svg');
         if (svg) {
-            svg.setAttribute('fill', 'none');
-            svg.setAttribute('stroke', 'currentColor');
-            svg.setAttribute('stroke-width', '2');
-            svg.setAttribute('viewBox', '0 0 24 24');
-            svg.className = 'w-6 h-6';
-            
-            if (isOpen) {
-                // Menu is open - show close (X) icon
-                svg.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>';
+            if (!isCurrentlyOpen) {
+                // Menu is now open - show close (X) icon
+                svg.innerHTML = '<path d="M6 18L18 6M6 6l12 12"></path>';
             } else {
-                // Menu is closed - show burger icon  
-                svg.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M3 12h18M3 6h18M3 18h18"></path>';
+                // Menu is now closed - show burger icon
+                svg.innerHTML = '<path d="M3 12h18M3 6h18M3 18h18"></path>';
             }
         }
-    });
+    }
 }
 
 // Handle form submission (for contact form)
@@ -435,7 +412,6 @@ window.generateDesktopNav = generateDesktopNav;
 window.generateMobileMenu = generateMobileMenu;
 window.generateMobileMenuButton = generateMobileMenuButton;
 window.toggleMobileMenu = toggleMobileMenu;
-window.updateMenuButtonIcons = updateMenuButtonIcons;
 window.generateStandardHeader = generateStandardHeader;
 window.initializeNavigation = initializeNavigation;
 window.hidePDFLoading = hidePDFLoading;
@@ -444,6 +420,35 @@ window.showPDFLoading = showPDFLoading;
 // Ensure functions are immediately available
 if (typeof window !== 'undefined') {
     window.toggleMobileMenu = toggleMobileMenu;
-    window.updateMenuButtonIcons = updateMenuButtonIcons;
 }
+
+// Close mobile menu when clicking outside or on menu links
+document.addEventListener('DOMContentLoaded', function() {
+    // Close menu when clicking outside
+    document.addEventListener('click', function(event) {
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        
+        if (mobileMenu && mobileMenu.classList.contains('active')) {
+            // Check if click is outside menu and not the button
+            if (!mobileMenu.contains(event.target) && !mobileMenuButton.contains(event.target)) {
+                toggleMobileMenu();
+            }
+        }
+    });
+    
+    // Close menu when clicking on navigation links (not social links)
+    const mobileMenu = document.getElementById('mobileMenu');
+    if (mobileMenu) {
+        const navLinks = mobileMenu.querySelectorAll('a.nav-item:not([data-tooltip])');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                // Don't close for external links, let them navigate
+                if (!this.getAttribute('target')) {
+                    toggleMobileMenu();
+                }
+            });
+        });
+    }
+});
 
