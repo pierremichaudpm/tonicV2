@@ -374,125 +374,57 @@
         }
     </style>
     <script>
-    // CRITICAL: Block ALL external script interference BEFORE they load
-    (function() {
-        // Store original functions we need to protect
-        window._protectedFunctions = {
-            toggleMobileMenu: null
-        };
-        
-        // Block initializeNavigation completely
-        Object.defineProperty(window, 'initializeNavigation', {
-            value: function() { 
-                console.log('Blocked initializeNavigation'); 
-            },
-            writable: false,
-            configurable: false
-        });
-        
-        // Block any attempts to modify our protected elements
-        const protectElement = (id) => {
-            Object.defineProperty(window, `_protected_${id}`, {
-                value: true,
-                writable: false,
-                configurable: false
-            });
-        };
-        
-        // Protect our mobile menu
-        protectElement('mobileMenu');
-        protectElement('toggleMobileMenu');
-    })();
+        // Simple inline tooltip system
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create tooltip element
+            const tooltip = document.createElement('div');
+            tooltip.style.cssText = `
+                position: fixed;
+                background: #333;
+                color: white;
+                padding: 8px 12px;
+                border-radius: 6px;
+                font-size: 14px;
+                font-weight: 500;
+                white-space: nowrap;
+                z-index: 999999;
+                pointer-events: none;
+                border: 2px solid #fff;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.8);
+                opacity: 0;
+                transition: opacity 0.2s ease;
+                display: none;
+            `;
+            document.body.appendChild(tooltip);
 
-    // Define our mobile menu function IMMEDIATELY
-    window.toggleMobileMenu = function() {
-        console.log('toggleMobileMenu called');
-        const mobileMenu = document.getElementById('mobileMenu');
-        
-        if (!mobileMenu) {
-            console.error('Mobile menu element not found');
-            return;
-        }
+            // Find social media links
+            const socialLinks = document.querySelectorAll('a[data-tooltip="Instagram"], a[data-tooltip="LinkedIn"]');
 
-        if (mobileMenu.classList.contains('active')) {
-            console.log('Closing mobile menu');
-            mobileMenu.classList.remove('active');
-            mobileMenu.style.display = 'none';
-            document.body.style.overflow = '';
-        } else {
-            console.log('Opening mobile menu');
-            mobileMenu.style.display = 'flex';
-            mobileMenu.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-    };
-    
-    // Protect the function from being overwritten
-    Object.defineProperty(window, 'toggleMobileMenu', {
-        value: window.toggleMobileMenu,
-        writable: false,
-        configurable: false
-    });
+            socialLinks.forEach(link => {
+                const tooltipText = link.getAttribute('data-tooltip');
 
-    // Simple inline tooltip system
-    document.addEventListener('DOMContentLoaded', function() {
-        // Ensure our mobile menu function survives
-        const mobileMenuButton = document.querySelector('button[onclick="toggleMobileMenu()"]');
-        if (mobileMenuButton) {
-            // Remove the onclick attribute and add event listener instead
-            mobileMenuButton.removeAttribute('onclick');
-            mobileMenuButton.addEventListener('click', window.toggleMobileMenu);
-        }
-        
-        // Create tooltip element
-        const tooltip = document.createElement('div');
-        tooltip.style.cssText = `
-            position: fixed;
-            background: #333;
-            color: white;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 500;
-            white-space: nowrap;
-            z-index: 999999;
-            pointer-events: none;
-            border: 2px solid #fff;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.8);
-            opacity: 0;
-            transition: opacity 0.2s ease;
-            display: none;
-        `;
-        document.body.appendChild(tooltip);
+                link.addEventListener('mouseenter', function(e) {
+                    tooltip.textContent = tooltipText;
+                    tooltip.style.display = 'block';
 
-        // Find social media links
-        const socialLinks = document.querySelectorAll('a[data-tooltip="Instagram"], a[data-tooltip="LinkedIn"]');
+                    // Plain white tooltips
+                    tooltip.style.background = '#333';
+                    tooltip.style.color = 'white';
 
-        socialLinks.forEach(link => {
-            const tooltipText = link.getAttribute('data-tooltip');
+                    const rect = link.getBoundingClientRect();
+                    tooltip.style.left = (rect.left + rect.width/2 - 50) + 'px';
+                    tooltip.style.top = (rect.bottom + 10) + 'px';
+                    tooltip.style.opacity = '1';
+                });
 
-            link.addEventListener('mouseenter', function(e) {
-                tooltip.textContent = tooltipText;
-                tooltip.style.display = 'block';
-
-                // Plain white tooltips
-                tooltip.style.background = '#333';
-                tooltip.style.color = 'white';
-
-                const rect = link.getBoundingClientRect();
-                tooltip.style.left = (rect.left + rect.width/2 - 50) + 'px';
-                tooltip.style.top = (rect.bottom + 10) + 'px';
-                tooltip.style.opacity = '1';
-            });
-
-            link.addEventListener('mouseleave', function() {
-                tooltip.style.opacity = '0';
-                setTimeout(() => {
-                    tooltip.style.display = 'none';
-                }, 200);
+                link.addEventListener('mouseleave', function() {
+                    tooltip.style.opacity = '0';
+                    setTimeout(() => {
+                        tooltip.style.display = 'none';
+                    }, 200);
+                });
             });
         });
-    });
     </script>
 </head>
 <body class="bg-black text-white min-h-screen">
@@ -563,61 +495,46 @@
 
     <!-- Mobile Menu -->
     <div id="mobileMenu" class="mobile-menu">
-        <!-- Mobile Menu Header with Logo and Close Button -->
-        <div class="flex items-center justify-between p-4 bg-black/95 backdrop-blur-md border-b border-white/10">
-            <!-- Logo in mobile menu -->
-            <div class="flex items-center gap-2">
-                <img src="images/tonic-logo.png" alt="Groupe Tonic" style="height: 2.5rem; width: auto;" />
-                <div class="flex flex-col">
-                    <span class="text-white text-sm font-bold">Groupe Tonic</span>
-                    <span class="text-white/70 text-xs">Créateur d'expériences mémorables</span>
-                </div>
-            </div>
-            <!-- Close Button -->
-            <button onclick="toggleMobileMenu()" class="p-2 hover:bg-white/10 rounded-lg text-white bg-white/20 border border-white/30" aria-label="Fermer">
+        <div class="container mx-auto px-4 py-4">
+            <button onclick="toggleMobileMenu()" class="absolute top-4 right-4 p-2 hover:bg-white/10 rounded-lg" aria-label="Close">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                    <path d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
             </button>
-        </div>
 
-        <!-- Mobile Menu Content -->
-        <div class="flex-1 p-4">
-            <div class="space-y-1">
+            <div class="space-y-2 mt-8">
                 <a href="index.html" class="nav-item w-full">
-                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" style="color: white; stroke: white;"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
                     <span>Accueil</span>
                 </a>
                 <a href="a-propos.html" class="nav-item w-full">
-                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="white" style="color: white; fill: white;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
                     <span>À propos</span>
                 </a>
                 <a href="emplois.html" class="nav-item w-full">
-                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" style="color: white; stroke: white;"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
                     <span>Emplois</span>
                 </a>
-                <a href="communiques.html" class="nav-item active w-full">
-                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="2"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M10 6h8"/><path d="M10 10h8"/><path d="M10 14h4"/></svg>
+                <a href="communiques.html" class="nav-item w-full active">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" style="color: white; stroke: white;"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M10 6h8"/><path d="M10 10h8"/><path d="M10 14h4"/></svg>
                     <span>Communiqués</span>
                 </a>
                 <a href="nous-joindre.html" class="nav-item w-full">
-                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" style="color: white; stroke: white;"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                     <span>Nous joindre</span>
                 </a>
-                <a href="https://www.instagram.com/groupetonic/" class="nav-item w-full" target="_blank">
-                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.40z"/></svg>
+                <a href="https://www.instagram.com/groupetonic/" class="nav-item w-full" data-tooltip="Instagram" target="_blank">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="white" style="color: white; fill: white;"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.40s-.644-1.44-1.439-1.40z"/></svg>
                     <span>Instagram</span>
                 </a>
-                <a href="https://www.linkedin.com/company/groupe-tonic/" class="nav-item w-full" target="_blank">
-                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="white"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                <a href="https://www.linkedin.com/company/groupe-tonic/" class="nav-item w-full" data-tooltip="LinkedIn" target="_blank">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="white" style="color: white; fill: white;"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
                     <span>LinkedIn</span>
                 </a>
-                <div class="border-t border-white/10 mt-4 pt-4">
-                    <a href="communiques-en.html" class="nav-item w-full">
-                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M3 5h12v4H3zM3 15h12v4H3zM8 10v4"/></svg>
-                        <span>English</span>
-                    </a>
-                </div>
+                <div class="h-px bg-white/10 my-4"></div>
+                <a href="communiques-en.html" class="nav-item w-full">
+                    <span>English</span>
+                </a>
             </div>
         </div>
     </div>
@@ -677,28 +594,8 @@
     <!-- Load news data -->
     <script src="js/communiques-data.js?v=1753723200&cache=false"></script>
 
-    <!-- Block Simple Content from interfering -->
-    <script>
-        // Capture any global functions that might interfere
-        (function() {
-            const originalToggle = window.toggleMobileMenu;
-            
-            // Create a proxy to intercept script loading
-            const scriptLoadHandler = function() {
-                // Restore our protected function
-                if (window.toggleMobileMenu !== originalToggle) {
-                    console.warn('Restoring toggleMobileMenu function');
-                    window.toggleMobileMenu = originalToggle;
-                }
-            };
-            
-            // Monitor for changes
-            setInterval(scriptLoadHandler, 100);
-        })();
-    </script>
-
-    <!-- Simple Content -->
-    <script src="js/simple-content.js?v=1753723200&cache=false"></script>
+    <!-- Load shared JavaScript -->
+    <script src="js/shared.js"></script>
 
     <!-- Page specific JavaScript - Matching jobs page structure -->
     <script>
