@@ -320,8 +320,10 @@ function generateMobileMenu(isEnglish = false, currentPage = '') {
 // Generate mobile menu button matching React homepage
 function generateMobileMenuButton() {
     return `
-        <button onclick="toggleMobileMenu()" class="md:hidden p-2 hover:bg-white/10 rounded-lg transition-colors text-white" style="background:rgba(0,0,0,0.2);backdrop-filter:blur(10px);color:white">
-            <div style="color:white" id="menuIcon">${window.Icons.menu()}</div>
+        <button id="mobileMenuButton" onclick="toggleMobileMenu()" class="md:hidden p-2 hover:bg-white/10 rounded-lg transition-colors text-white" style="background:rgba(0,0,0,0.2);backdrop-filter:blur(10px);color:white">
+            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 12h18M3 6h18M3 18h18"></path>
+            </svg>
         </button>
     `;
 }
@@ -333,10 +335,7 @@ document.addEventListener('DOMContentLoaded', function() {
         window.toggleMobileMenu = toggleMobileMenu;
     }
 
-    // Make updateMenuButtonIcons available globally too
-    if (typeof window.updateMenuButtonIcons === 'undefined') {
-        window.updateMenuButtonIcons = updateMenuButtonIcons;
-    }
+
 
     // Close mobile menu when clicking outside
     document.addEventListener('click', function(event) {
@@ -354,7 +353,14 @@ document.addEventListener('DOMContentLoaded', function() {
             mobileMenu.style.display = 'none';
             mobileMenu.classList.remove('active');
             document.body.style.overflow = '';
-            updateMenuButtonIcons(false);
+            // Reset menu button icon to hamburger
+            const headerButton = document.getElementById('mobileMenuButton');
+            if (headerButton) {
+                const svg = headerButton.querySelector('svg');
+                if (svg) {
+                    svg.innerHTML = '<path d="M3 12h18M3 6h18M3 18h18"></path>';
+                }
+            }
         }
     });
 
@@ -366,7 +372,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 mobileMenu.style.display = 'none';
                 mobileMenu.classList.remove('active');
                 document.body.style.overflow = '';
-                updateMenuButtonIcons(false);
+                // Reset menu button icon to hamburger
+                const headerButton = document.getElementById('mobileMenuButton');
+                if (headerButton) {
+                    const svg = headerButton.querySelector('svg');
+                    if (svg) {
+                        svg.innerHTML = '<path d="M3 12h18M3 6h18M3 18h18"></path>';
+                    }
+                }
             }
         }
     });
