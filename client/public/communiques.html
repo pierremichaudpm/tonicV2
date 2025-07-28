@@ -366,7 +366,32 @@
             });
         });
     </script>
-
+    <script>
+        // Override for French page - completely independent mobile menu
+        let frenchMenuState = false;
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const btn = document.getElementById('mobileMenuButton');
+            
+            if (frenchMenuState) {
+                menu.style.display = 'none';
+                document.body.style.overflow = '';
+                frenchMenuState = false;
+                console.log('French menu CLOSED by override');
+                if (btn && btn.querySelector('svg')) {
+                    btn.querySelector('svg').innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M3 12h18M3 6h18M3 18h18"></path>';
+                }
+            } else {
+                menu.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+                frenchMenuState = true;
+                console.log('French menu OPENED by override');
+                if (btn && btn.querySelector('svg')) {
+                    btn.querySelector('svg').innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>';
+                }
+            }
+        }
+    </script>
 
 
 </head>
