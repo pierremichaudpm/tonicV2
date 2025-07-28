@@ -1,0 +1,35 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom components and utilities */
+.icon-bg-accent {
+  background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+}
+
+.icon-accent {
+  color: #60a5fa;
+}
+
+.text-accent {
+  color: #3b82f6;
+}
+
+.bg-accent {
+  background-color: #3b82f6;
+}
+
+.border-accent {
+  border-color: #3b82f6;
+}
+
+/* Selection grid optimizations */
+@media only screen and (min-width: 3000px) {
+    .selection-grid {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        grid-template-rows: repeat(3, minmax(300px, 1fr)) !important;
+        gap: 1.5rem !important;
+    }
+}
