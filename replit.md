@@ -551,16 +551,29 @@ The website is now fully operational and matches the original local/Netlify func
 - **Production-ready architecture**: Maintainable WordProcessor class with clear separation of concerns
 - **Status**: ✅ FULLY FUNCTIONAL - Complete escape from formatting rabbit hole with professional-grade Word document processing
 
-### Mobile Menu Navigation Fix - January 28, 2025 🔧 IN PROGRESS
+### Mobile Menu Navigation Fix - January 28, 2025 ✅ COMPLETED
 - **User frustration addressed**: User provided screenshots showing misplaced burger menu icon on English secondary pages
 - **Progress made**: Fixed mobile menu structure in emplois-en.html and communiques-en.html
 - **Key fixes applied**: 
   - Added navigation container wrapper div to properly align burger menu icon
   - Fixed active state highlighting for current pages
   - Ensured proper icon and button positioning
-- **Remaining issues**: Contact page (nous-joindre-en.html) still needs navigation container wrapper
-- **Technical challenges**: Multiple occurrence errors when trying to edit contact page header structure
-- **Status**: 🔧 PARTIALLY COMPLETE - Jobs and News pages fixed, Contact page pending
+- **All English pages fixed**: Jobs, News, and Contact pages now have proper navigation structure
+- **Status**: ✅ COMPLETED - All English secondary pages have standardized navigation
+
+### Navigation Standardization Extension - January 28, 2025 ✅ COMPLETED
+- **Extended to legal pages**: Applied standardized navigation structure to French legal pages
+- **Updated pages**: politique-de-confidentialite.html and conditions-utilisation.html
+- **Fixed broken links**: Repaired duplicated href attributes in English legal pages (privacy-policy.html and terms-of-use.html)
+- **Standardized features applied**:
+  - Navigation container wrapper with backdrop blur effect
+  - Icon-based navigation items with tooltips
+  - Social media links (Instagram and LinkedIn)
+  - Mobile burger menu button
+  - Language switcher with divider
+- **Discovery**: Main French pages (communiques.html, emplois.html, nous-joindre.html) already have standardized navigation
+- **Special case**: a-propos.html uses shared.js implementation through div placeholders
+- **Status**: ✅ COMPLETED - All French and English pages now have consistent navigation structure
 
 ### Modal Display Link Enhancement - July 25, 2025 ✅ COMPLETED  
 - **Fixed white link blocks**: Enhanced CSS to target Word-style link spans with Google Docs colors (#1155cc)
