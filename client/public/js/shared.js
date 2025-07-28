@@ -96,51 +96,26 @@ function createNavItemsEnglish() {
 
 // Toggle Mobile Menu with icon change
 function toggleMobileMenu() {
-    console.log('toggleMobileMenu called - starting execution');
     const mobileMenu = document.getElementById('mobileMenu');
-    console.log('mobileMenu found:', !!mobileMenu);
+    if (!mobileMenu) return;
     
-    if (mobileMenu) {
-        // Toggle menu visibility
-        mobileMenu.classList.toggle('active');
-        const isActive = mobileMenu.classList.contains('active');
-        console.log('Menu is now active:', isActive);
-        
-        // Find the main header button - try multiple selectors to ensure we find it
-        let headerButton = document.getElementById('mobileMenuButton');
-        console.log('Found button by ID:', !!headerButton);
-        
-        if (!headerButton) {
-            headerButton = document.querySelector('header button[onclick*="toggleMobileMenu"]');
-            console.log('Found button by header selector:', !!headerButton);
-        }
-        if (!headerButton) {
-            headerButton = document.querySelector('button[onclick*="toggleMobileMenu"]:not(#mobileMenu button)');
-            console.log('Found button by generic selector:', !!headerButton);
-        }
-        
-        // Update header button icon
-        if (headerButton) {
-            console.log('Updating button icon - button found');
-            const svg = headerButton.querySelector('svg');
-            console.log('SVG found:', !!svg);
-            
-            if (svg) {
-                if (isActive) {
-                    // Menu is now open - show close (X) icon
-                    console.log('Setting close (X) icon');
-                    svg.innerHTML = '<path d="M6 18L18 6M6 6l12 12"></path>';
-                } else {
-                    // Menu is now closed - show burger icon
-                    console.log('Setting burger icon');
-                    svg.innerHTML = '<path d="M3 12h18M3 6h18M3 18h18"></path>';
-                }
+    // Toggle menu visibility
+    mobileMenu.classList.toggle('active');
+    const isActive = mobileMenu.classList.contains('active');
+    
+    // Find and update button icon
+    const headerButton = document.getElementById('mobileMenuButton');
+    if (headerButton) {
+        const svg = headerButton.querySelector('svg');
+        if (svg) {
+            if (isActive) {
+                // Menu is open - show close (X) icon
+                svg.innerHTML = '<path d="M6 18L18 6M6 6l12 12"></path>';
+            } else {
+                // Menu is closed - show burger icon
+                svg.innerHTML = '<path d="M3 12h18M3 6h18M3 18h18"></path>';
             }
-        } else {
-            console.log('ERROR: Header button not found!');
         }
-    } else {
-        console.log('ERROR: Mobile menu not found!');
     }
 }
 
@@ -424,52 +399,3 @@ if (typeof window !== 'undefined') {
     window.toggleMobileMenu = toggleMobileMenu;
 }
 
-// Also define it globally to be absolutely sure
-window.toggleMobileMenu = function() {
-    console.log('GLOBAL toggleMobileMenu called - starting execution');
-    const mobileMenu = document.getElementById('mobileMenu');
-    console.log('GLOBAL mobileMenu found:', !!mobileMenu);
-    
-    if (mobileMenu) {
-        // Toggle menu visibility
-        mobileMenu.classList.toggle('active');
-        const isActive = mobileMenu.classList.contains('active');
-        console.log('GLOBAL Menu is now active:', isActive);
-        
-        // Find the main header button - try multiple selectors to ensure we find it
-        let headerButton = document.getElementById('mobileMenuButton');
-        console.log('GLOBAL Found button by ID:', !!headerButton);
-        
-        if (!headerButton) {
-            headerButton = document.querySelector('header button[onclick*="toggleMobileMenu"]');
-            console.log('GLOBAL Found button by header selector:', !!headerButton);
-        }
-        if (!headerButton) {
-            headerButton = document.querySelector('button[onclick*="toggleMobileMenu"]:not(#mobileMenu button)');
-            console.log('GLOBAL Found button by generic selector:', !!headerButton);
-        }
-        
-        // Update header button icon
-        if (headerButton) {
-            console.log('GLOBAL Updating button icon - button found');
-            const svg = headerButton.querySelector('svg');
-            console.log('GLOBAL SVG found:', !!svg);
-            
-            if (svg) {
-                if (isActive) {
-                    // Menu is now open - show close (X) icon
-                    console.log('GLOBAL Setting close (X) icon');
-                    svg.innerHTML = '<path d="M6 18L18 6M6 6l12 12"></path>';
-                } else {
-                    // Menu is now closed - show burger icon
-                    console.log('GLOBAL Setting burger icon');
-                    svg.innerHTML = '<path d="M3 12h18M3 6h18M3 18h18"></path>';
-                }
-            }
-        } else {
-            console.log('GLOBAL ERROR: Header button not found!');
-        }
-    } else {
-        console.log('GLOBAL ERROR: Mobile menu not found!');
-    }
-};
