@@ -397,37 +397,24 @@
 
     <!-- Ensure toggleMobileMenu is available globally -->
     <script>
-    // Override toggleMobileMenu completely for French page
-    window.toggleMobileMenu = function() {
-        console.log('French toggleMobileMenu called');
-        const menu = document.getElementById('mobileMenu');
-        if (!menu) {
-            console.log('Menu not found!');
-            return;
-        }
-        
-        console.log('Menu display before:', menu.style.display);
-        console.log('Menu classList before:', menu.classList.toString());
-        
-        // Check if menu is currently visible
-        const isVisible = menu.style.display === 'flex' || menu.classList.contains('active');
-        console.log('Menu is visible:', isVisible);
-        
-        if (isVisible) {
-            console.log('Closing menu...');
-            menu.classList.remove('active');
-            menu.style.display = 'none';
-            document.body.style.overflow = '';
-        } else {
-            console.log('Opening menu...');
-            menu.classList.add('active');
-            menu.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-        }
-        
-        console.log('Menu display after:', menu.style.display);
-        console.log('Menu classList after:', menu.classList.toString());
-    };
+    // Make sure the function is available
+    if (typeof window.toggleMobileMenu === 'undefined') {
+        console.error('toggleMobileMenu not found! Defining it now...');
+        window.toggleMobileMenu = function() {
+            const menu = document.getElementById('mobileMenu');
+            if (!menu) return;
+            
+            if (menu.classList.contains('active')) {
+                menu.classList.remove('active');
+                menu.style.display = 'none';
+                document.body.style.overflow = '';
+            } else {
+                menu.classList.add('active');
+                menu.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+        };
+    }
     </script>
 
 
