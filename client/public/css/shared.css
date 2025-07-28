@@ -126,6 +126,58 @@
     position: relative;
 }
 
+/* Navigation Consistency - Match Homepage Styling */
+.nav-container {
+    background: rgba(0,0,0,0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.5rem;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.nav-item:hover {
+    background: rgba(255,255,255,0.1);
+    color: white;
+}
+
+.lang-switcher {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.5rem;
+    color: rgba(255,255,255,0.9);
+    transition: all 0.2s ease;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.lang-switcher:hover {
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+}
+
+.lang-divider {
+    width: 1px;
+    height: 16px;
+    background: rgba(255,255,255,0.2);
+    margin: 0 0.5rem;
+}
+
 /* Tablet Navigation Optimizations */
 @media (min-width: 768px) and (max-width: 1023px) {
     .nav-item:hover::after {
