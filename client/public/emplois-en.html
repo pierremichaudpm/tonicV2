@@ -301,6 +301,30 @@
             0% { background-position: 0% 50%; }
             100% { background-position: 100% 50%; }
         }
+
+        /* Fix section title overlaying modal */
+        main, section, .hero-title, h1, h2, h3 {
+            z-index: 1 !important;
+            position: relative !important;
+        }
+
+        /* Force modal to highest z-index */
+        .modal-backdrop {
+            z-index: 999999 !important;
+            position: fixed !important;
+        }
+
+        .modal-content {
+            z-index: 999999 !important;
+            position: relative !important;
+        }
+
+        /* Modal header sticky positioning */
+        .modal-content .sticky {
+            position: sticky !important;
+            top: 0 !important;
+            z-index: 50 !important;
+        }
     </style>
     <script>
         // Simple inline tooltip system
