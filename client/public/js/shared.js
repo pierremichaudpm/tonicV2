@@ -102,15 +102,8 @@ function toggleMobileMenu() {
         return;
     }
 
-    // Add a small delay to prevent rapid double calls
-    if (window.mobileMenuToggling) {
-        console.log('Menu toggle already in progress, ignoring');
-        return;
-    }
-    window.mobileMenuToggling = true;
-
-    // Use only the 'active' class to determine state (CSS handles display)
-    const isCurrentlyOpen = mobileMenu.classList.contains('active');
+    // Check actual computed display style instead of class
+    const isCurrentlyOpen = window.getComputedStyle(mobileMenu).display !== 'none';
     console.log('Menu currently open:', isCurrentlyOpen);
 
     if (isCurrentlyOpen) {
@@ -134,18 +127,13 @@ function toggleMobileMenu() {
         if (svg) {
             if (!isCurrentlyOpen) {
                 // Menu is now open - show close (X) icon
-                svg.innerHTML = '<path d="M6 18L18 6M6 6l12 12"></path>';
+                svg.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>';
             } else {
                 // Menu is now closed - show burger icon
-                svg.innerHTML = '<path d="M3 12h18M3 6h18M3 18h18"></path>';
+                svg.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M3 12h18M3 6h18M3 18h18"></path>';
             }
         }
     }
-
-    // Clear the toggle lock after a short delay
-    setTimeout(() => {
-        window.mobileMenuToggling = false;
-    }, 50);
 }
 
 // Simple, reliable mobile menu functionality  
