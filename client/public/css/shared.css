@@ -365,27 +365,33 @@ header {
     margin-bottom: 0.3em !important;
 }
 
-/* Modal Content Spacing Fixes - More aggressive */
+/* Modal Content Spacing Fixes - NUCLEAR OPTION */
 #modalContent p {
-    margin-top: 0.25rem !important;
-    margin-bottom: 0.25rem !important;
-    line-height: 1.5 !important;
+    margin-top: 0.1rem !important;
+    margin-bottom: 0.1rem !important;
+    line-height: 1.4 !important;
+    margin-block-start: 0.1rem !important;
+    margin-block-end: 0.1rem !important;
 }
 
 #modalContent .ql-editor p {
-    margin-top: 0.25rem !important;
-    margin-bottom: 0.25rem !important;
+    margin-top: 0.1rem !important;
+    margin-bottom: 0.1rem !important;
+    margin-block-start: 0.1rem !important;
+    margin-block-end: 0.1rem !important;
 }
 
 /* Remove excessive spacing from Quill paragraphs in modals */
 #modalContent p + p {
-    margin-top: 0.25rem !important;
+    margin-top: 0.1rem !important;
 }
 
 /* Target all Quill paragraph classes specifically */
 #modalContent p[class*="ql-align"] {
-    margin-top: 0.25rem !important;
-    margin-bottom: 0.25rem !important;
+    margin-top: 0.1rem !important;
+    margin-bottom: 0.1rem !important;
+    margin-block-start: 0.1rem !important;
+    margin-block-end: 0.1rem !important;
 }
 
 /* Override any default Quill spacing */
@@ -393,8 +399,10 @@ header {
 #modalContent .ql-align-center,
 #modalContent .ql-align-left,
 #modalContent .ql-align-right {
-    margin-top: 0.25rem !important;
-    margin-bottom: 0.25rem !important;
+    margin-top: 0.1rem !important;
+    margin-bottom: 0.1rem !important;
+    margin-block-start: 0.1rem !important;
+    margin-block-end: 0.1rem !important;
 }
 
 /* Reduce spacing for spans inside paragraphs */
@@ -405,18 +413,20 @@ header {
 
 /* Additional spacing fixes for various Quill formats */
 #modalContent div[class*="ql-"] {
-    margin-top: 0.25rem !important;
-    margin-bottom: 0.25rem !important;
+    margin-top: 0.1rem !important;
+    margin-bottom: 0.1rem !important;
 }
 
 /* Force tight spacing for all content in modals - MOST AGGRESSIVE */
 #modalContent *,
 #modalContent .prose *,
 #modalContent .prose-invert * {
-    margin-top: 0.25rem !important;
-    margin-bottom: 0.25rem !important;
+    margin-top: 0.1rem !important;
+    margin-bottom: 0.1rem !important;
     padding-top: 0 !important;
     padding-bottom: 0 !important;
+    margin-block-start: 0.1rem !important;
+    margin-block-end: 0.1rem !important;
 }
 
 /* Override Tailwind prose classes - NUCLEAR OPTION */
@@ -476,8 +486,10 @@ header {
     font-size: 2.5em !important;
     font-weight: bold !important;
     line-height: 1.2 !important;
-    margin-top: 0.25rem !important;
-    margin-bottom: 0.25rem !important;
+    margin-top: 0.1rem !important;
+    margin-bottom: 0.1rem !important;
+    margin-block-start: 0.1rem !important;
+    margin-block-end: 0.1rem !important;
     color: white !important;
 }
 
@@ -485,8 +497,10 @@ header {
     font-size: 2em !important;
     font-weight: bold !important;
     line-height: 1.3 !important;
-    margin-top: 0.25rem !important;
-    margin-bottom: 0.25rem !important;
+    margin-top: 0.1rem !important;
+    margin-bottom: 0.1rem !important;
+    margin-block-start: 0.1rem !important;
+    margin-block-end: 0.1rem !important;
     color: white !important;
 }
 
@@ -494,32 +508,40 @@ header {
     font-size: 1.5em !important;
     font-weight: bold !important;
     line-height: 1.4 !important;
-    margin-top: 0.25rem !important;
-    margin-bottom: 0.25rem !important;
+    margin-top: 0.1rem !important;
+    margin-bottom: 0.1rem !important;
+    margin-block-start: 0.1rem !important;
+    margin-block-end: 0.1rem !important;
     color: white !important;
 }
 
 #modalContent h4 {
     font-size: 1.25em !important;
     font-weight: bold !important;
-    margin-top: 0.25rem !important;
-    margin-bottom: 0.25rem !important;
+    margin-top: 0.1rem !important;
+    margin-bottom: 0.1rem !important;
+    margin-block-start: 0.1rem !important;
+    margin-block-end: 0.1rem !important;
     color: white !important;
 }
 
 #modalContent h5 {
     font-size: 1.1em !important;
     font-weight: bold !important;
-    margin-top: 0.25rem !important;
-    margin-bottom: 0.25rem !important;
+    margin-top: 0.1rem !important;
+    margin-bottom: 0.1rem !important;
+    margin-block-start: 0.1rem !important;
+    margin-block-end: 0.1rem !important;
     color: white !important;
 }
 
 #modalContent h6 {
     font-size: 1em !important;
     font-weight: bold !important;
-    margin-top: 0.25rem !important;
-    margin-bottom: 0.25rem !important;
+    margin-top: 0.1rem !important;
+    margin-bottom: 0.1rem !important;
+    margin-block-start: 0.1rem !important;
+    margin-block-end: 0.1rem !important;
     color: white !important;
 }
 
