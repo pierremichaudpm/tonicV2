@@ -17,10 +17,16 @@
     <link rel="stylesheet" href="css/shared.css">
     
     <script>
-        // Mobile menu functionality
+        // Mobile menu functionality with debouncing
+        let isToggling = false;
+        
         function toggleMobileMenu() {
+            if (isToggling) return;
+            isToggling = true;
+            
             const mobileMenu = document.getElementById('mobileMenu');
-            const isOpen = mobileMenu.style.display === 'block';
+            const computedStyle = window.getComputedStyle(mobileMenu);
+            const isOpen = computedStyle.display === 'block';
             
             if (isOpen) {
                 mobileMenu.style.display = 'none';
@@ -29,6 +35,11 @@
                 mobileMenu.style.display = 'block';
                 console.log('Menu opened - state updated to true');
             }
+            
+            // Reset debounce after short delay
+            setTimeout(() => {
+                isToggling = false;
+            }, 100);
         }
     </script>
 
