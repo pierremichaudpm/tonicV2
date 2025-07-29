@@ -697,6 +697,16 @@ The website is now fully operational and matches the original local/Netlify func
 - **User confirmation**: User confirmed "we did it" - complete visual and functional consistency achieved
 - **Status**: ✅ FULLY COMPLETED - Perfect header consistency between French and English pages across entire website
 
+### Site-Wide Button Color Standardization - January 29, 2025 ✅ COMPLETED
+- **Issue identified**: Button colors were inconsistent across pages - communiques used red while other pages should use Tonic orange
+- **Global color system updated**: Changed shared.css primary accent color from red (#fe4445) to Tonic orange (#f97316)
+- **Color variations updated**: Updated all accent color variations (hover: #fb923c, dark: #ea580c, light: #fdba74)
+- **Local overrides corrected**: Fixed communiques.html and communiques-en.html local CSS variables to use orange instead of red
+- **Cache-busting applied**: Updated version numbers to force browser refresh of updated styles
+- **Complete consistency achieved**: All "Lire la suite" and "Read more" buttons now use unified Tonic orange across entire website
+- **User confirmation**: User confirmed menu buttons in communiques pages are now consistent with other pages
+- **Status**: ✅ FULLY COMPLETED - Perfect button color consistency across all French and English pages site-wide
+
 ### Communiques Mobile Menu Fixes - January 28, 2025 ✅ COMPLETED
 - **French burger menu reliability fix**: Added missing toggleMobileMenu() JavaScript function to communiques.html
 - **Debouncing implementation**: Added 100ms cooldown to prevent rapid-fire toggle conflicts causing fragile behavior
