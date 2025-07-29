@@ -1,3 +1,4 @@
+
 // shared.js - Shared JavaScript across all pages
 
 // Navigation Icons SVG Components - Matching React homepage exactly
@@ -243,9 +244,16 @@ const DateUtils = {
     }
 };
 
-// Backwards compatibility
-const formatDate = DateUtils.formatFrench;
-window.formatDate = formatDate;
+// formatDate function for backwards compatibility
+function formatDate(dateString) {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('fr-CA', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+}
 
 // Optimized desktop navigation generation
 function generateDesktopNav(isEnglish = false, currentPage = '') {
@@ -329,65 +337,6 @@ function generateMobileMenuButton() {
     `;
 }
 
-// Ensure mobile menu close functionality works across all pages
-document.addEventListener('DOMContentLoaded', function() {
-    // Make sure toggleMobileMenu is available globally
-    if (typeof window.toggleMobileMenu === 'undefined') {
-        window.toggleMobileMenu = toggleMobileMenu;
-    }
-
-
-
-    // Close mobile menu when clicking outside
-    document.addEventListener('click', function(event) {
-        const mobileMenu = document.getElementById('mobileMenu');
-        const menuButton = event.target.closest('button[onclick*="toggleMobileMenu"]') || 
-                          event.target.closest('#mobileMenuButton') ||
-                          event.target.closest('.md\\:hidden button') ||
-                          event.target.closest('header button');
-
-        if (mobileMenu && 
-            mobileMenu.classList.contains('active') && 
-            !mobileMenu.contains(event.target) && 
-            !menuButton) {
-
-            mobileMenu.style.display = 'none';
-            mobileMenu.classList.remove('active');
-            document.body.style.overflow = '';
-            // Reset menu button icon to hamburger
-            const headerButton = document.getElementById('mobileMenuButton');
-            if (headerButton) {
-                const svg = headerButton.querySelector('svg');
-                if (svg) {
-                    svg.innerHTML = '<path d="M3 12h18M3 6h18M3 18h18"></path>';
-                }
-            }
-        }
-    });
-
-    // Handle escape key to close mobile menu
-    document.addEventListener('keydown', function(event) {
-        if (event.key === 'Escape') {
-            const mobileMenu = document.getElementById('mobileMenu');
-            if (mobileMenu && mobileMenu.classList.contains('active')) {
-                mobileMenu.style.display = 'none';
-                mobileMenu.classList.remove('active');
-                document.body.style.overflow = '';
-                // Reset menu button icon to hamburger
-                const headerButton = document.getElementById('mobileMenuButton');
-                if (headerButton) {
-                    const svg = headerButton.querySelector('svg');
-                    if (svg) {
-                        svg.innerHTML = '<path d="M3 12h18M3 6h18M3 18h18"></path>';
-                    }
-                }
-            }
-        }
-    });
-});
-
-
-
 // Generate complete standardized header matching React homepage
 function generateStandardHeader(isEnglish = false, currentPage = '') {
     const logoAlt = isEnglish 
@@ -464,16 +413,60 @@ function showPDFLoading() {
     }
 }
 
-// Add formatDate function
-function formatDate(dateString) {
-    if (!dateString) return '';
-    const date = new Date(dateString);
-    return date.toLocaleDateString('fr-CA', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
+// Ensure mobile menu close functionality works across all pages
+document.addEventListener('DOMContentLoaded', function() {
+    // Make sure toggleMobileMenu is available globally
+    if (typeof window.toggleMobileMenu === 'undefined') {
+        window.toggleMobileMenu = toggleMobileMenu;
+    }
+
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', function(event) {
+        const mobileMenu = document.getElementById('mobileMenu');
+        const menuButton = event.target.closest('button[onclick*="toggleMobileMenu"]') || 
+                          event.target.closest('#mobileMenuButton') ||
+                          event.target.closest('.md\\:hidden button') ||
+                          event.target.closest('header button');
+
+        if (mobileMenu && 
+            mobileMenu.classList.contains('active') && 
+            !mobileMenu.contains(event.target) && 
+            !menuButton) {
+
+            mobileMenu.style.display = 'none';
+            mobileMenu.classList.remove('active');
+            document.body.style.overflow = '';
+            // Reset menu button icon to hamburger
+            const headerButton = document.getElementById('mobileMenuButton');
+            if (headerButton) {
+                const svg = headerButton.querySelector('svg');
+                if (svg) {
+                    svg.innerHTML = '<path d="M3 12h18M3 6h18M3 18h18"></path>';
+                }
+            }
+        }
     });
-}
+
+    // Handle escape key to close mobile menu
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            const mobileMenu = document.getElementById('mobileMenu');
+            if (mobileMenu && mobileMenu.classList.contains('active')) {
+                mobileMenu.style.display = 'none';
+                mobileMenu.classList.remove('active');
+                document.body.style.overflow = '';
+                // Reset menu button icon to hamburger
+                const headerButton = document.getElementById('mobileMenuButton');
+                if (headerButton) {
+                    const svg = headerButton.querySelector('svg');
+                    if (svg) {
+                        svg.innerHTML = '<path d="M3 12h18M3 6h18M3 18h18"></path>';
+                    }
+                }
+            }
+        }
+    });
+});
 
 // Export functions to window object for use in other pages
 window.generateDesktopNav = generateDesktopNav;
