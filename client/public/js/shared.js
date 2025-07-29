@@ -86,9 +86,15 @@ function generateMobileMenuButton() {
     `;
 }
 
-// Toggle mobile menu - pure DOM approach, no variables
+// Toggle mobile menu - Firefox mobile compatible version
 function toggleMobileMenu() {
     console.log('toggleMobileMenu called - event timestamp:', Date.now());
+    
+    // Prevent event bubbling for Firefox mobile
+    if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
     
     const mobileMenu = document.getElementById('mobileMenu');
     if (!mobileMenu) {
@@ -96,28 +102,31 @@ function toggleMobileMenu() {
         return;
     }
 
-    // Get computed style to check actual visibility
-    const computedStyle = window.getComputedStyle(mobileMenu);
-    const isCurrentlyOpen = computedStyle.display === 'flex' || mobileMenu.style.display === 'flex';
+    // Firefox-compatible visibility check
+    const isCurrentlyOpen = mobileMenu.classList.contains('active') || 
+                           mobileMenu.style.display === 'flex' ||
+                           window.getComputedStyle(mobileMenu).display === 'flex';
+    
     console.log('Menu currently open:', isCurrentlyOpen);
-    console.log('Current display style:', mobileMenu.style.display);
-    console.log('Computed display:', computedStyle.display);
 
     if (isCurrentlyOpen) {
-        // Close menu
+        // Close menu - Firefox compatible
+        mobileMenu.classList.remove('active');
         mobileMenu.style.display = 'none';
         mobileMenu.style.visibility = 'hidden';
-        mobileMenu.classList.remove('active');
+        mobileMenu.style.opacity = '0';
         document.body.style.overflow = '';
-        console.log('Menu closed - display set to none');
+        document.body.style.touchAction = '';
+        console.log('Menu closed');
     } else {
-        // Open menu
+        // Open menu - Firefox compatible
+        mobileMenu.classList.add('active');
         mobileMenu.style.display = 'flex';
         mobileMenu.style.visibility = 'visible';
         mobileMenu.style.opacity = '1';
-        mobileMenu.classList.add('active');
         document.body.style.overflow = 'hidden';
-        console.log('Menu opened - display set to flex');
+        document.body.style.touchAction = 'none'; // Prevent scroll on mobile
+        console.log('Menu opened');
     }
 }
 

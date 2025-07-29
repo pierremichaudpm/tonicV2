@@ -277,18 +277,23 @@ header {
     z-index: 9999 !important;
 }
 
-/* Mobile Menu */
-.mobile-menu {
+/* Mobile Menu - Firefox Compatible */
+.mobile-menu, #mobileMenu {
     display: none;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
+    width: 100vw;
+    height: 100vh;
     background: rgba(0, 0, 0, 0.95);
     backdrop-filter: blur(10px);
-    z-index: 9998;
-    padding-top: 100px; 
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 999999;
+    padding-top: 100px;
+    touch-action: none;
+    -webkit-overflow-scrolling: touch;
 }
 
 .mobile-menu.active {
@@ -740,7 +745,7 @@ body.modal-open .modal-content {
     overflow-y: auto !important;
 }
 
-/* Show mobile menu when active */
+/* Show mobile menu when active - Firefox Compatible */
 .mobile-menu.active,
 #mobileMenu.active,
 .mobile-menu[style*="display: flex"],
@@ -748,9 +753,11 @@ body.modal-open .modal-content {
     display: flex !important;
     visibility: visible !important;
     opacity: 1 !important;
+    touch-action: none !important;
+    -webkit-overflow-scrolling: touch !important;
 }
 
-/* Mobile menu navigation items */
+/* Mobile menu navigation items - Firefox Compatible */
 .mobile-menu .nav-item {
     display: flex !important;
     align-items: center !important;
@@ -762,6 +769,8 @@ body.modal-open .modal-content {
     border-radius: 0.5rem !important;
     transition: background 0.2s ease !important;
     min-height: 44px !important;
+    touch-action: manipulation !important;
+    -webkit-tap-highlight-color: transparent !important;
 }
 
 .mobile-menu .nav-item:hover {

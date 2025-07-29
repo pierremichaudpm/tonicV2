@@ -14,7 +14,7 @@
 
 
     <!-- Shared Styles -->
-    <link rel="stylesheet" href="css/shared.css?v=1753753350">
+    <link rel="stylesheet" href="css/shared.css?v=1753753450">
     
     <script>
         // Mobile menu will be handled by shared.js - no variable manipulation
@@ -400,15 +400,27 @@
     </script>
 
     <script>
-    /* Fix 3: Define toggleMobileMenu function */
+    /* Firefox Mobile Compatible Menu Toggle */
     function toggleMobileMenu() {
+        // Prevent default behavior for Firefox mobile
+        if (event) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        
         var menu = document.getElementById('mobileMenu');
+        if (!menu) return;
+        
         if (menu.classList.contains('active')) {
             menu.classList.remove('active');
+            menu.style.display = 'none';
             document.body.style.overflow = '';
+            document.body.style.touchAction = '';
         } else {
             menu.classList.add('active');
+            menu.style.display = 'flex';
             document.body.style.overflow = 'hidden';
+            document.body.style.touchAction = 'none';
         }
     }
     </script>
@@ -468,8 +480,8 @@
                         <a href="communiques-en.html" class="lang-switcher"><span>EN</span></a>
                     </nav>
 
-                    <!-- Mobile Menu Button -->
-                    <button id="mobileMenuButton" onclick="toggleMobileMenu()" class="md:hidden p-2 hover:bg-white/10 rounded-lg transition-colors text-white" style="background: rgba(0,0,0,0.2); backdrop-filter: blur(10px); color: white;">
+                    <!-- Mobile Menu Button - Firefox Compatible -->
+                    <button id="mobileMenuButton" onclick="toggleMobileMenu()" ontouch="toggleMobileMenu()" class="md:hidden p-2 hover:bg-white/10 rounded-lg transition-colors text-white" style="background: rgba(0,0,0,0.2); backdrop-filter: blur(10px); color: white; touch-action: manipulation; -webkit-tap-highlight-color: transparent; min-width: 44px; min-height: 44px;">
                         <svg class="w-6 h-6 text-white" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
                         </svg>
