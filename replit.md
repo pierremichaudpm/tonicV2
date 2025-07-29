@@ -274,18 +274,17 @@ The website is now fully operational and matches the original local/Netlify func
 - **Tagline spacing eliminated visual jump**: Replaced mt-1 with gap-0 and leading-tight for perfect consistency with main headers
 - **Final status**: Mobile menu hamburger opens properly, close button (X) closes properly, consistent branding with vertical tagline layout and responsive padding across ALL pages - COMPLETE CONSISTENCY ACHIEVED
 
-### Complete HTML Cleanup & Architectural Standardization - January 29, 2025 ✅ COMPLETED
-- **Issue resolved**: Fixed visual jumping between secondary pages by applying universal header CSS rules
-- **Root cause identified**: Communiques pages had conflicting CSS variable system (--z-header: 50) that overrode global header rules
-- **Complete architectural cleanup**: Standardized CSS variable Z-index system across all pages instead of removing it
-- **Mobile menu Z-index fix**: Resolved mobile menu appearing behind content by using consistent CSS variable system
-- **Global approach implemented**: Added identical header positioning CSS with !important declarations to all 8 secondary pages  
-- **Standardized properties**: position, top, left, right, z-index, background, backdrop-filter, box-shadow all forced to identical values
-- **Container padding unified**: 0.5rem mobile, 1.25rem desktop with responsive breakpoints applied universally
-- **Logo sizing standardized**: clamp(180px,35vw,250px) width enforced across all pages with !important
+### Global CSS Architecture Implementation - January 29, 2025 ✅ COMPLETED
+- **Root cause identified**: Header jumping caused by duplicate CSS rules across 8+ individual pages creating conflicts
+- **Global solution implemented**: Created single global-header.css file as single source of truth for all header styling
+- **Architectural cleanup**: Eliminated all duplicate header CSS from individual pages (emplois.html, communiques.html, etc.)
+- **CSS variables standardized**: Unified Z-index system (--z-header: 50, --z-mobile-menu: 999999, --z-modal: 2147483647)
+- **Global file inclusion**: Added global-header.css link to all 8 secondary pages' head sections
+- **Duplicate code elimination**: Removed hundreds of lines of redundant CSS from individual page files
+- **Single maintenance point**: All header changes now managed through one global CSS file instead of 8 separate files
 - **Complete coverage**: emplois.html, emplois-en.html, communiques.html, communiques-en.html, nous-joindre.html, nous-joindre-en.html, about.html, a-propos.html
-- **Logo hover effects maintained**: CSS hover scaling preserved while eliminating all visual inconsistencies
-- **Status**: ✅ PRODUCTION READY - Complete consistency achieved across entire bilingual website with standardized CSS architecture
+- **Consistent behavior**: Identical header positioning, mobile menu Z-index, and logo styling across entire website
+- **Status**: ✅ PRODUCTION READY - Global CSS architecture eliminates header jumping through centralized styling management
 
 ### Desktop Navigation Language Consistency Fix - January 28, 2025 ✅ COMPLETED
 - **Major issue resolved**: nous-joindre-en.html desktop navigation was showing French labels (Accueil, À propos, Emplois, Communiqués) instead of English
