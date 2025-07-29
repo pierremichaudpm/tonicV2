@@ -1,94 +1,79 @@
+// Navigation data
+const navigationItems = [
+    { text: 'Accueil', href: 'index.html', textEn: 'Home', hrefEn: 'index-en.html' },
+    { text: 'À propos', href: 'a-propos.html', textEn: 'About', hrefEn: 'about.html' },
+    { text: 'Emplois', href: 'emplois.html', textEn: 'Jobs', hrefEn: 'emplois-en.html' },
+    { text: 'Communiqués', href: 'communiques.html', textEn: 'Press Releases', hrefEn: 'communiques-en.html' },
+    { text: 'Nous joindre', href: 'nous-joindre.html', textEn: 'Contact Us', hrefEn: 'nous-joindre-en.html' }
+];
 
-// Global mobile menu state
-let isMobileMenuOpen = false;
-
-// Generate desktop navigation matching React homepage
-function generateDesktopNav() {
-    return `
-        <nav class="hidden md:flex items-center nav-container">
-            <a href="index.html" class="nav-item" data-tooltip="Accueil">
-                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-                <span>Accueil</span>
-            </a>
-            <a href="a-propos.html" class="nav-item" data-tooltip="À propos">
-                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                <span>À propos</span>
-            </a>
-            <a href="emplois.html" class="nav-item" data-tooltip="Emplois">
-                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-                <span>Emplois</span>
-            </a>
-            <a href="communiques.html" class="nav-item" data-tooltip="Communiqués">
-                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><path d="M10 10h8"/><path d="M10 14h4"/></svg>
-                <span>Communiqués</span>
-            </a>
-            <a href="nous-joindre.html" class="nav-item" data-tooltip="Nous joindre">
-                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                <span>Nous joindre</span>
-            </a>
-        </nav>
-
-        <nav class="hidden md:flex items-center ml-8">
-            <div class="lang-divider"></div>
-            <a href="index-en.html" class="lang-switcher"><span>EN</span></a>
-        </nav>
-    `;
+// Check if current page is English version
+function isEnglishPage() {
+    return window.location.pathname.includes('-en.html') || window.location.pathname.includes('index-en.html');
 }
 
-// Generate mobile menu matching React homepage
+// Generate desktop navigation
+function generateDesktopNav() {
+    const isEn = isEnglishPage();
+    const currentPath = window.location.pathname.split('/').pop();
+
+    return navigationItems.map(item => {
+        const href = isEn ? item.hrefEn : item.href;
+        const text = isEn ? item.textEn : item.text;
+        const isActive = currentPath === href || 
+                        (currentPath === 'index.html' && href === 'index.html') ||
+                        (currentPath === 'index-en.html' && href === 'index-en.html') ||
+                        (currentPath === '' && href === 'index.html');
+
+        return `<a href="${href}" class="text-white hover:text-blue-300 transition-colors ${isActive ? 'border-b-2 border-blue-300 font-semibold' : ''}">${text}</a>`;
+    }).join('');
+}
+
+// Generate mobile menu
 function generateMobileMenu() {
+    const isEn = isEnglishPage();
+    const currentPath = window.location.pathname.split('/').pop();
+
+    const menuItems = navigationItems.map(item => {
+        const href = isEn ? item.hrefEn : item.href;
+        const text = isEn ? item.textEn : item.text;
+        const isActive = currentPath === href || 
+                        (currentPath === 'index.html' && href === 'index.html') ||
+                        (currentPath === 'index-en.html' && href === 'index-en.html') ||
+                        (currentPath === '' && href === 'index.html');
+
+        return `<a href="${href}" class="block px-4 py-3 text-white hover:bg-white/10 transition-colors ${isActive ? 'bg-white/20 font-semibold' : ''}">${text}</a>`;
+    }).join('');
+
+    const langSwitchText = isEn ? 'Français' : 'English';
+    const langSwitchHref = isEn ? 
+        currentPath.replace('-en.html', '.html').replace('index-en.html', 'index.html') :
+        (currentPath === 'index.html' ? 'index-en.html' : currentPath.replace('.html', '-en.html'));
+
     return `
-        <div id="mobileMenu" class="mobile-menu" style="padding-top: 0 !important;">
-            <!-- Mobile Menu Header - Fixed at top -->
-            <div class="bg-black/95 backdrop-blur-md border-b border-white/10 px-2 py-2 sm:px-4 sm:py-5" style="position: absolute; top: 0; left: 0; right: 0; z-index: 1000;">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-4">
-                        <a href="index.html" class="header-logo">
-                            <img src="images/tonic-logo.png" alt="Groupe Tonic" style="height: clamp(1.875rem, 3.75vw, 2.625rem); width: auto;" />
-                        </a>
-                        <span class="hidden sm:inline text-white text-sm">| Créateur d'expériences mémorables</span>
-                    </div>
-                    <button onclick="toggleMobileMenu()" class="text-white p-2 hover:bg-white/10 rounded-lg transition-colors" style="background: rgba(0,0,0,0.2); backdrop-filter: blur(10px);">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                    </button>
-                </div>
+    <div id="mobileMenu" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+        <div class="fixed right-0 top-0 h-full w-80 bg-gray-900 shadow-xl transform translate-x-full transition-transform duration-300 ease-in-out" id="mobileMenuPanel">
+            <div class="flex justify-between items-center p-4 border-b border-gray-700">
+                <h2 class="text-white text-lg font-semibold">Menu</h2>
+                <button onclick="toggleMobileMenu()" class="text-white hover:text-gray-300 p-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
             </div>
-            
-            <!-- Navigation items with proper spacing from header -->
-            <div style="padding-top: 5rem;">
-                <a href="index.html" class="nav-item w-full">
-                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-                    <span>Accueil</span>
-                </a>
-                <a href="a-propos.html" class="nav-item w-full">
-                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                    <span>À propos</span>
-                </a>
-                <a href="emplois.html" class="nav-item w-full">
-                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-                    <span>Emplois</span>
-                </a>
-                <a href="communiques.html" class="nav-item w-full">
-                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><path d="M10 10h8"/><path d="M10 14h4"/></svg>
-                    <span>Communiqués</span>
-                </a>
-                <a href="nous-joindre.html" class="nav-item w-full">
-                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                    <span>Nous joindre</span>
-                </a>
-                <div class="border-t border-white/20 mt-6 pt-6">
-                    <a href="index-en.html" class="nav-item w-full text-center">
-                        <span>🌐 English</span>
+            <nav class="py-4">
+                ${menuItems}
+                <div class="border-t border-gray-700 mt-4 pt-4">
+                    <a href="${langSwitchHref}" class="block px-4 py-3 text-blue-300 hover:bg-white/10 transition-colors">
+                        🌐 ${langSwitchText}
                     </a>
                 </div>
-            </div>
+            </nav>
         </div>
-    `;
+    </div>`;
 }
 
-// Generate mobile menu button matching React homepage standards
+// Generate mobile menu button
 function generateMobileMenuButton() {
     return `
         <button id="mobileMenuButton" onclick="toggleMobileMenu()" 
@@ -101,45 +86,79 @@ function generateMobileMenuButton() {
     `;
 }
 
-// Toggle mobile menu function
+// Mobile menu state
+let isMobileMenuOpen = false;
+
+// Toggle mobile menu
 function toggleMobileMenu() {
     console.log('toggleMobileMenu called - event timestamp:', Date.now());
-    const mobileMenu = document.getElementById('mobileMenu');
-    
     console.log('Menu currently open:', isMobileMenuOpen, 'Global state:', isMobileMenuOpen);
-    
-    if (mobileMenu) {
-        if (isMobileMenuOpen) {
-            mobileMenu.classList.remove('active');
-            isMobileMenuOpen = false;
-            console.log('Menu closed - state updated to false');
-        } else {
-            mobileMenu.classList.add('active');
-            isMobileMenuOpen = true;
-            console.log('Menu opened - state updated to true');
-        }
+
+    const mobileMenu = document.getElementById('mobileMenu');
+    const mobileMenuPanel = document.getElementById('mobileMenuPanel');
+
+    if (!mobileMenu || !mobileMenuPanel) return;
+
+    if (isMobileMenuOpen) {
+        // Close menu
+        mobileMenuPanel.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+            mobileMenu.classList.add('hidden');
+            document.body.style.overflow = '';
+        }, 300);
+        isMobileMenuOpen = false;
+        console.log('Menu closed - state updated to false');
+    } else {
+        // Open menu
+        mobileMenu.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+        setTimeout(() => {
+            mobileMenuPanel.style.transform = 'translateX(0)';
+        }, 10);
+        isMobileMenuOpen = true;
+        console.log('Menu opened - state updated to true');
     }
 }
 
-// Generate standard header with navigation
+// Generate standard header
 function generateStandardHeader() {
+    const isEn = isEnglishPage();
+    const langSwitchText = isEn ? 'Français' : 'English';
+    const currentPath = window.location.pathname.split('/').pop();
+    const langSwitchHref = isEn ? 
+        currentPath.replace('-en.html', '.html').replace('index-en.html', 'index.html') :
+        (currentPath === 'index.html' ? 'index-en.html' : currentPath.replace('.html', '-en.html'));
+
     return `
-        <header class="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-md border-b border-white/10 transition-all duration-300">
-            <div class="container mx-auto px-4 py-5">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-4">
-                        <a href="index.html" class="header-logo">
-                            <img src="images/tonic-logo.png" alt="Groupe Tonic" style="height: clamp(1.875rem, 3.75vw, 2.625rem); width: auto;" />
-                        </a>
-                        <span class="hidden sm:inline text-white text-sm">| Créateur d'expériences mémorables</span>
-                    </div>
-                    ${generateDesktopNav()}
-                    ${generateMobileMenuButton()}
+    <header class="bg-gradient-to-r from-gray-900 to-black text-white sticky top-0 z-40 backdrop-blur-md">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-4">
+                    <a href="${isEn ? 'index-en.html' : 'index.html'}" class="flex items-center space-x-3">
+                        <img src="images/groupe-tonic-logo.svg" alt="Groupe Tonic" class="h-8 w-auto">
+                        <span class="text-xl font-bold">Groupe Tonic</span>
+                    </a>
                 </div>
+
+                <nav class="hidden md:flex items-center space-x-6">
+                    ${generateDesktopNav()}
+                    <a href="${langSwitchHref}" class="text-blue-300 hover:text-blue-200 transition-colors">
+                        🌐 ${langSwitchText}
+                    </a>
+                </nav>
+
+                ${generateMobileMenuButton()}
             </div>
-        </header>
+        </div>
         ${generateMobileMenu()}
-    `;
+    </header>`;
+}
+
+// Initialize navigation
+function initializeNavigation() {
+    console.log('Page loaded, initializing navigation...');
+    console.log('toggleMobileMenu available:', typeof window.toggleMobileMenu);
+    console.log('formatDate available:', typeof window.formatDate);
 }
 
 // Initialize mobile menu
@@ -147,30 +166,35 @@ function initializeMobileMenu() {
     console.log('initializeMobileMenu called');
     const mobileMenuButton = document.getElementById('mobileMenuButton');
     const mobileMenu = document.getElementById('mobileMenu');
-    
+
     if (mobileMenuButton && mobileMenu) {
         console.log('Mobile menu elements found, but skipping event listeners (using onclick)');
-    } else {
-        console.log('Mobile menu elements not found');
     }
 }
 
-// PDF helper functions
+// PDF loading functions
 function showPDFLoading() {
-    const loadingDiv = document.getElementById('pdf-loading');
-    if (loadingDiv) {
-        loadingDiv.style.display = 'flex';
-    }
+    const loadingDiv = document.createElement('div');
+    loadingDiv.id = 'pdfLoading';
+    loadingDiv.innerHTML = `
+        <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                <p>Chargement du PDF...</p>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(loadingDiv);
 }
 
 function hidePDFLoading() {
-    const loadingDiv = document.getElementById('pdf-loading');
+    const loadingDiv = document.getElementById('pdfLoading');
     if (loadingDiv) {
-        loadingDiv.style.display = 'none';
+        loadingDiv.remove();
     }
 }
 
-// Add formatDate function
+// Format date function
 function formatDate(dateString) {
     if (!dateString) return '';
     const date = new Date(dateString);
@@ -187,6 +211,7 @@ window.generateMobileMenu = generateMobileMenu;
 window.generateMobileMenuButton = generateMobileMenuButton;
 window.toggleMobileMenu = toggleMobileMenu;
 window.generateStandardHeader = generateStandardHeader;
+window.initializeNavigation = initializeNavigation;
 window.initializeMobileMenu = initializeMobileMenu;
 window.hidePDFLoading = hidePDFLoading;
 window.showPDFLoading = showPDFLoading;
@@ -194,10 +219,8 @@ window.formatDate = formatDate;
 
 // Ensure functions are immediately available
 if (typeof window !== 'undefined') {
-    // Auto-initialize if DOM is ready
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initializeMobileMenu);
-    } else {
-        initializeMobileMenu();
-    }
+    window.toggleMobileMenu = toggleMobileMenu;
 }
+
+// Optimized single initialization
+document.addEventListener('DOMContentLoaded', initializeNavigation);

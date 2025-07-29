@@ -18,7 +18,7 @@
     
     <script>
         // Global state for mobile menu
-        window.mobileMenuOpen = false;
+        let isMobileMenuOpen = false;
         
         // Mobile menu functionality
         function toggleMobileMenu() {
@@ -29,20 +29,19 @@
                 return;
             }
 
-            const isCurrentlyOpen = window.mobileMenuOpen;
-            console.log('Menu currently open:', isCurrentlyOpen, 'Global state:', window.mobileMenuOpen);
+            console.log('Menu currently open:', isMobileMenuOpen);
 
-            if (isCurrentlyOpen) {
+            if (isMobileMenuOpen) {
                 // Close menu
                 mobileMenu.style.display = 'none';
                 document.body.style.overflow = '';
-                window.mobileMenuOpen = false;
+                isMobileMenuOpen = false;
                 console.log('Menu closed - state updated to false');
             } else {
                 // Open menu
                 mobileMenu.style.display = 'flex';
                 document.body.style.overflow = 'hidden';
-                window.mobileMenuOpen = true;
+                isMobileMenuOpen = true;
                 console.log('Menu opened - state updated to true');
             }
         }
