@@ -5,23 +5,23 @@
    =================================== */
 :root {
     /* Primary Accent Color - CHANGE THIS ONE VALUE TO UPDATE EVERYWHERE */
-    --accent-primary: #fe4445;
+    --accent-primary: #f97316;
     
     /* Accent Color Variations - Automatically calculated or manually set */
-    --accent-hover: #ff6667;      /* Lighter version for hover states */
-    --accent-dark: #d53536;        /* Darker version */
-    --accent-light: #ff9091;       /* Light version */
+    --accent-hover: #fb923c;      /* Lighter version for hover states */
+    --accent-dark: #ea580c;        /* Darker version */
+    --accent-light: #fdba74;       /* Light version */
     
     /* Accent with opacity */
-    --accent-10: rgba(254, 68, 69, 0.1);
-    --accent-20: rgba(254, 68, 69, 0.2);
-    --accent-30: rgba(254, 68, 69, 0.3);
-    --accent-40: rgba(254, 68, 69, 0.4);
-    --accent-50: rgba(254, 68, 69, 0.5);
+    --accent-10: rgba(249, 115, 22, 0.1);
+    --accent-20: rgba(249, 115, 22, 0.2);
+    --accent-30: rgba(249, 115, 22, 0.3);
+    --accent-40: rgba(249, 115, 22, 0.4);
+    --accent-50: rgba(249, 115, 22, 0.5);
     
     /* Accent glow/shadow */
-    --accent-glow: rgba(254, 68, 69, 0.27);
-    --accent-shadow: rgba(254, 68, 69, 0.3);
+    --accent-glow: rgba(249, 115, 22, 0.27);
+    --accent-shadow: rgba(249, 115, 22, 0.3);
     
     /* Legacy color mappings for easy migration */
     --coral-400: var(--accent-light);
