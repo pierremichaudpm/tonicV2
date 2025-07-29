@@ -400,7 +400,19 @@
         });
     </script>
 
-
+    <script>
+    /* Fix 3: Define toggleMobileMenu function */
+    function toggleMobileMenu() {
+        var menu = document.getElementById('mobileMenu');
+        if (menu.classList.contains('active')) {
+            menu.classList.remove('active');
+            document.body.style.overflow = '';
+        } else {
+            menu.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+    }
+    </script>
 
 </head>
 <body class="bg-black text-white min-h-screen">
@@ -458,7 +470,7 @@
                     </nav>
 
                     <!-- Mobile Menu Button -->
-                    <button id="mobileMenuButton" onclick="toggleMobileMenu()" class="md:hidden p-3 hover:bg-white/10 rounded-lg transition-colors" style="background: transparent;">
+                    <button id="mobileMenuButton" onclick="toggleMobileMenu()" class="md:hidden p-2 hover:bg-white/10 rounded-lg transition-colors text-white" style="background: rgba(0,0,0,0.2); backdrop-filter: blur(10px); color: white;">
                         <svg class="w-6 h-6 text-white" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
                         </svg>
