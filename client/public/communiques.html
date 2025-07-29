@@ -538,14 +538,7 @@
             100% { background-position: 100% 50%; }
         }
 
-        /* Logo hover effect */
-        .header-logo {
-            cursor: pointer;
-            transition: transform 0.2s ease;
-        }
-        .header-logo:hover {
-            transform: scale(1.05);
-        }
+        /* Logo hover effect moved to global-header.css */
 
 
     </style>
@@ -636,7 +629,7 @@
 <body class="bg-black text-white min-h-screen">
 
     <!-- Header -->
-    <header class="fixed top-0 left-0 right-0 z-50" style="background: linear-gradient(to bottom, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.9) 40%, rgba(0,0,0,0.7) 70%, rgba(0,0,0,0.3) 90%, transparent 100%); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); box-shadow: 0 2px 20px rgba(0,0,0,0.3);">
+    <header class="fixed top-0 left-0 right-0 z-50">
         <div class="container mx-auto px-2 py-2 sm:px-4 sm:py-5">
             <div class="flex items-center justify-between">
                 <!-- Logo -->
