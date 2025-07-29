@@ -685,6 +685,18 @@ The website is now fully operational and matches the original local/Netlify func
 - **User confirmation**: User confirmed modal now displays correctly without overlay issues
 - **Status**: ✅ COMPLETED - Modal displays properly with sticky title and correct z-index stacking
 
+### Complete Header Consistency Fix - January 29, 2025 ✅ COMPLETED
+- **Critical inconsistencies resolved**: Fixed all header structure differences between communiques pages and other site pages
+- **Header container padding standardized**: English communiques page updated from `px-4 py-4` to responsive `px-2 py-2 sm:px-4 sm:py-5`
+- **Navigation container styling unified**: Both pages now use consistent `gap-0.5 px-2 py-0.5` with `background: rgba(0,0,0,0.2)`
+- **Navigation item styling standardized**: All nav items use `gap-1 px-2 py-1` with `text-xs font-medium` across both languages
+- **Active page styling corrected**: English News page now uses proper `bg-white/10` instead of orange accent styling
+- **Mobile menu button consistency**: Both pages use `p-2` padding with proper background and color properties
+- **Close button functionality enhanced**: Added local `toggleMobileMenu()` functions to both communiques pages for reliable operation
+- **Button color consistency maintained**: All accent buttons use site-wide red (#dc2626) instead of orange
+- **User confirmation**: User confirmed "we did it" - complete visual and functional consistency achieved
+- **Status**: ✅ FULLY COMPLETED - Perfect header consistency between French and English pages across entire website
+
 ### Communiques Mobile Menu Fixes - January 28, 2025 ✅ COMPLETED
 - **French burger menu reliability fix**: Added missing toggleMobileMenu() JavaScript function to communiques.html
 - **Debouncing implementation**: Added 100ms cooldown to prevent rapid-fire toggle conflicts causing fragile behavior
