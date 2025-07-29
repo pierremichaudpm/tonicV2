@@ -66,13 +66,21 @@
 
     <!-- Page Specific Styles -->
     <style>
-        /* Z-INDEX STANDARDIZATION - Removed conflicting CSS variables */
-        #mobileMenu, .mobile-menu { z-index: 999999 !important; }
+        /* Z-INDEX COMPLETE STANDARDIZATION - Fix mobile menu layering */
+        #mobileMenu, .mobile-menu { 
+            z-index: 999999999 !important; 
+            position: fixed !important;
+        }
         #newsModal, #jobModal, .modal-backdrop { z-index: 2147483647 !important; }
         .modal-content { z-index: 2147483647 !important; }
 
-        /* Force page content below modals */
-        main, section, .hero-title, h1, h2, h3 { z-index: 1 !important; }
+        /* Force ALL page content below mobile menu */
+        main, section, .hero-title, h1, h2, h3, div, article, header { z-index: 1 !important; }
+        .hero-title { z-index: 1 !important; }
+        
+        /* Override any conflicting z-index in content */
+        * { z-index: 1 !important; }
+        #mobileMenu, .mobile-menu, #mobileMenu *, .mobile-menu * { z-index: 999999999 !important; }
 
         /* === NAVIGATION MASTER OVERRIDE === */
         .nav-container {
@@ -463,7 +471,7 @@
             height: 100vh;
             background: rgba(0,0,0,0.95);
             backdrop-filter: blur(20px);
-            z-index: 999999;
+            z-index: 999999999;
             flex-direction: column;
             overflow-y: auto;
         }
