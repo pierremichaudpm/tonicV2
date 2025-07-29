@@ -20,12 +20,30 @@ header {
     box-shadow: 0 2px 20px rgba(0,0,0,0.3) !important;
 }
 
-header .container {
+/* Force IDENTICAL container padding across ALL pages */
+header .container,
+header div.container {
+    padding: 0.5rem 0.5rem !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+@media (min-width: 640px) {
+    header .container,
+    header div.container {
+        padding: 1.25rem 1rem !important;
+    }
+}
+
+/* Override ANY Tailwind container classes within header */
+header .container.mx-auto,
+header div.container.mx-auto {
     padding: 0.5rem 0.5rem !important;
 }
 
 @media (min-width: 640px) {
-    header .container {
+    header .container.mx-auto,
+    header div.container.mx-auto {
         padding: 1.25rem 1rem !important;
     }
 }
