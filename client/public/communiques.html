@@ -88,17 +88,10 @@
 
     <!-- Page Specific Styles -->
     <style>
-        /* === Z-INDEX MASTER OVERRIDE === */
-        :root {
-            --z-header: 50;
-            --z-mobile-menu: 999999; 
-            --z-modal: 2147483647;
-        }
-
-        header { z-index: var(--z-header) !important; }
-        #mobileMenu, .mobile-menu { z-index: var(--z-mobile-menu) !important; }
-        #newsModal, #jobModal, .modal-backdrop { z-index: var(--z-modal) !important; }
-        .modal-content { z-index: var(--z-modal) !important; }
+        /* Z-INDEX STANDARDIZATION - Removed conflicting CSS variables */
+        #mobileMenu, .mobile-menu { z-index: 999999 !important; }
+        #newsModal, #jobModal, .modal-backdrop { z-index: 2147483647 !important; }
+        .modal-content { z-index: 2147483647 !important; }
 
         /* Force page content below modals */
         main, section, .hero-title, h1, h2, h3 { z-index: 1 !important; }
