@@ -331,7 +331,7 @@
     <script>
         // Simple inline tooltip system
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('Tooltip script loaded');
+
 
             // Create tooltip element
             const tooltip = document.createElement('div');
@@ -356,14 +356,14 @@
 
             // Find social media links
             const socialLinks = document.querySelectorAll('a[data-tooltip="Instagram"], a[data-tooltip="LinkedIn"]');
-            console.log('Found social links:', socialLinks.length);
+
 
             socialLinks.forEach(link => {
                 const tooltipText = link.getAttribute('data-tooltip');
-                console.log('Adding tooltip to:', tooltipText);
+
 
                 link.addEventListener('mouseenter', function(e) {
-                    console.log('Mouse enter:', tooltipText);
+
                     tooltip.textContent = tooltipText;
                     tooltip.style.display = 'block';
 
@@ -378,7 +378,7 @@
                 });
 
                 link.addEventListener('mouseleave', function() {
-                    console.log('Mouse leave:', tooltipText);
+
                     tooltip.style.opacity = '0';
                     setTimeout(() => {
                         tooltip.style.display = 'none';
@@ -408,7 +408,7 @@
     <script>
         // === MOBILE MENU FUNCTION STANDARDIZATION ===
         function toggleMobileMenu() {
-            console.log('toggleMobileMenu called - timestamp:', Date.now());
+
             
             if (event) {
                 event.preventDefault();
@@ -417,7 +417,7 @@
             
             const mobileMenu = document.getElementById('mobileMenu');
             if (!mobileMenu) {
-                console.log('Mobile menu element not found');
+
                 return;
             }
 
@@ -425,7 +425,7 @@
                                    mobileMenu.style.display === 'flex' ||
                                    window.getComputedStyle(mobileMenu).display === 'flex';
             
-            console.log('Menu currently open:', isCurrentlyOpen);
+
 
             if (isCurrentlyOpen) {
                 mobileMenu.classList.remove('active');
@@ -434,7 +434,7 @@
                 mobileMenu.style.opacity = '0';
                 document.body.style.overflow = '';
                 document.body.style.touchAction = '';
-                console.log('Menu closed');
+
             } else {
                 mobileMenu.classList.add('active');
                 mobileMenu.style.display = 'flex';
@@ -442,122 +442,11 @@
                 mobileMenu.style.opacity = '1';
                 document.body.style.overflow = 'hidden';
                 document.body.style.touchAction = 'none';
-                console.log('Menu opened');
+
             }
         }
 
-        // === TEMPORARY TEST FUNCTION === 
-        function validateCleanBuild() {
-            console.log('🧪 TESTING CLEAN BUILD - Page:', document.title);
-            
-            const results = {
-                page: document.title,
-                mobileMenuExists: !!document.getElementById('mobileMenu'),
-                toggleFunctionWorks: typeof toggleMobileMenu === 'function',
-                modalExists: !!(document.getElementById('newsModal') || document.getElementById('jobModal')),
-                navItemsCount: document.querySelectorAll('.nav-item').length,
-                zIndexCorrect: false
-            };
-            
-            // Test z-index hierarchy
-            const modal = document.getElementById('newsModal') || document.getElementById('jobModal');
-            if (modal) {
-                const modalZ = parseInt(window.getComputedStyle(modal).zIndex);
-                results.zIndexCorrect = modalZ > 1000000;
-                results.modalZIndex = modalZ;
-            }
-            
-            console.table(results);
-            return results;
-        }
 
-        // Auto-run test
-        setTimeout(validateCleanBuild, 2000);
-
-        // === MOBILE MENU CLICK DIAGNOSTIC ===
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('🔧 MOBILE MENU DEBUG LOADED');
-            
-            // Debug mobile menu structure
-            const mobileMenu = document.getElementById('mobileMenu');
-            if (mobileMenu) {
-                console.log('📱 Mobile menu found:', mobileMenu);
-                console.log('📱 Mobile menu style:', window.getComputedStyle(mobileMenu));
-                
-                // Find all clickable elements inside
-                const clickableElements = mobileMenu.querySelectorAll('button, img, a, [onclick]');
-                console.log('🔘 Clickable elements found:', clickableElements.length);
-                
-                clickableElements.forEach((el, index) => {
-                    console.log(`Element ${index}:`, el);
-                    console.log(`Z-index:`, window.getComputedStyle(el).zIndex);
-                    console.log(`Pointer events:`, window.getComputedStyle(el).pointerEvents);
-                    console.log(`Position:`, window.getComputedStyle(el).position);
-                    
-                    // Add click test
-                    el.addEventListener('click', function(e) {
-                        console.log('🎯 CLICK DETECTED on:', el);
-                        console.log('Event details:', e);
-                    });
-                });
-            }
-            
-            // Test click detection on document
-            document.addEventListener('click', function(e) {
-                console.log('📍 Document click at:', e.clientX, e.clientY);
-                console.log('📍 Target element:', e.target);
-                console.log('📍 Is mobile menu open?', mobileMenu?.classList.contains('active'));
-            });
-        });
-
-        // Add visual debugging
-        function addDebugBorders() {
-            const style = document.createElement('style');
-            style.textContent = `
-                .mobile-menu * { border: 1px solid red !important; }
-                .mobile-menu button { border: 3px solid lime !important; }
-                .mobile-menu img { border: 3px solid blue !important; }
-                .mobile-menu .header-section { border: 5px solid yellow !important; }
-            `;
-            document.head.appendChild(style);
-            console.log('🎨 Debug borders added');
-            
-            // Enhanced debugging for specific elements
-            setTimeout(() => {
-                const mobileMenu = document.getElementById('mobileMenu');
-                if (mobileMenu) {
-                    console.log('🔎 ENHANCED DEBUG - Mobile Menu Analysis:');
-                    
-                    // Find logo specifically
-                    const logos = mobileMenu.querySelectorAll('img, [onclick*="index.html"]');
-                    console.log('🖼️ Logo elements found:', logos.length);
-                    logos.forEach((logo, i) => {
-                        console.log(`Logo ${i}:`, logo);
-                        console.log(`Logo onclick:`, logo.getAttribute('onclick'));
-                        console.log(`Logo style:`, window.getComputedStyle(logo));
-                    });
-                    
-                    // Find close button specifically
-                    const closeButtons = mobileMenu.querySelectorAll('button, [onclick*="toggleMobileMenu"]');
-                    console.log('❌ Close button elements found:', closeButtons.length);
-                    closeButtons.forEach((btn, i) => {
-                        console.log(`Close button ${i}:`, btn);
-                        console.log(`Button onclick:`, btn.getAttribute('onclick'));
-                        console.log(`Button style:`, window.getComputedStyle(btn));
-                    });
-                    
-                    // Check for overlapping elements
-                    const headerSection = mobileMenu.querySelector('.header-section');
-                    if (headerSection) {
-                        console.log('📦 Header section found:', headerSection);
-                        console.log('📦 Header section bounds:', headerSection.getBoundingClientRect());
-                    }
-                }
-            }, 3000);
-        }
-
-        // Call after 2 seconds
-        setTimeout(addDebugBorders, 2000);
     </script>
 </head>
 <body class="bg-black text-white">
@@ -898,12 +787,12 @@
     <script>
         // Initialize navigation when page loads
         window.addEventListener('load', function() {
-            console.log('Page loaded, initializing navigation...');
+
 
             // Initialize standardized navigation
             if (window.initializeNavigation) {
                 window.initializeNavigation(false, 'a-propos.html'); // false for French, current page
-                console.log('Navigation initialized');
+
             }
         });
     </script>
