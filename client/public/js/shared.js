@@ -86,7 +86,7 @@ function generateMobileMenuButton() {
     `;
 }
 
-// Toggle mobile menu - using DOM state instead of variable to avoid conflicts
+// Toggle mobile menu - pure DOM approach, no variables
 function toggleMobileMenu() {
     console.log('toggleMobileMenu called - event timestamp:', Date.now());
     
@@ -96,8 +96,8 @@ function toggleMobileMenu() {
         return;
     }
 
-    // Check current state from DOM instead of variable
-    const isCurrentlyOpen = mobileMenu.style.display === 'flex' || !mobileMenu.classList.contains('hidden');
+    // Check current state from DOM classes only
+    const isCurrentlyOpen = !mobileMenu.classList.contains('hidden') && mobileMenu.style.display !== 'none';
     console.log('Menu currently open:', isCurrentlyOpen);
 
     if (isCurrentlyOpen) {
@@ -105,13 +105,13 @@ function toggleMobileMenu() {
         mobileMenu.style.display = 'none';
         mobileMenu.classList.add('hidden');
         document.body.style.overflow = '';
-        console.log('Menu closed - state updated to false');
+        console.log('Menu closed');
     } else {
         // Open menu
         mobileMenu.style.display = 'flex';
         mobileMenu.classList.remove('hidden');
         document.body.style.overflow = 'hidden';
-        console.log('Menu opened - state updated to true');
+        console.log('Menu opened');
     }
 }
 
@@ -212,25 +212,8 @@ window.hidePDFLoading = hidePDFLoading;
 window.showPDFLoading = showPDFLoading;
 window.formatDate = formatDate;
 
-// Ensure functions are immediately available and clean any existing conflicts
+// Make functions globally available without any variable cleanup
 if (typeof window !== 'undefined') {
-    // Comprehensive cleanup of conflicting variables
-    try {
-        if (typeof window.isMobileMenuOpen !== 'undefined') {
-            delete window.isMobileMenuOpen;
-        }
-        if (typeof isMobileMenuOpen !== 'undefined') {
-            // Force undefined for any page-level variable
-            window.eval(`
-                if (typeof isMobileMenuOpen !== 'undefined') {
-                    isMobileMenuOpen = undefined;
-                }
-            `);
-        }
-    } catch (e) {
-        console.log('Variable cleanup completed');
-    }
-    
     window.toggleMobileMenu = toggleMobileMenu;
 }
 

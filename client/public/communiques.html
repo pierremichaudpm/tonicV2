@@ -17,20 +17,11 @@
     <link rel="stylesheet" href="css/shared.css?v=1753739263">
     
     <script>
-        // Mobile menu will be handled by shared.js
-        // Clean initialization without any variable conflicts
+        // Mobile menu will be handled by shared.js - no variable manipulation
         document.addEventListener('DOMContentLoaded', function() {
-            // Clear any potential conflicting variables
-            if (typeof window.isMobileMenuOpen !== 'undefined') {
-                delete window.isMobileMenuOpen;
-            }
-            if (typeof isMobileMenuOpen !== 'undefined') {
-                isMobileMenuOpen = undefined;
-            }
-            
-            // Ensure function is available
+            // Simple check that function is available
             if (typeof window.toggleMobileMenu === 'function') {
-                console.log('Mobile menu function loaded from shared.js - conflicts cleared');
+                console.log('Mobile menu function loaded from shared.js');
             }
         });
     </script>
