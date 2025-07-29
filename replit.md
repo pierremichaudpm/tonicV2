@@ -274,17 +274,18 @@ The website is now fully operational and matches the original local/Netlify func
 - **Tagline spacing eliminated visual jump**: Replaced mt-1 with gap-0 and leading-tight for perfect consistency with main headers
 - **Final status**: Mobile menu hamburger opens properly, close button (X) closes properly, consistent branding with vertical tagline layout and responsive padding across ALL pages - COMPLETE CONSISTENCY ACHIEVED
 
-### Global Header Positioning Standardization - January 29, 2025 ✅ COMPLETED
+### Complete HTML Cleanup & Architectural Standardization - January 29, 2025 ✅ COMPLETED
 - **Issue resolved**: Fixed visual jumping between secondary pages by applying universal header CSS rules
 - **Root cause identified**: Communiques pages had conflicting CSS variable system (--z-header: 50) that overrode global header rules
-- **Conflicting CSS variables removed**: Eliminated CSS variable Z-index system from communiques pages that was causing conflicts
+- **Complete architectural cleanup**: Standardized CSS variable Z-index system across all pages instead of removing it
+- **Mobile menu Z-index fix**: Resolved mobile menu appearing behind content by using consistent CSS variable system
 - **Global approach implemented**: Added identical header positioning CSS with !important declarations to all 8 secondary pages  
 - **Standardized properties**: position, top, left, right, z-index, background, backdrop-filter, box-shadow all forced to identical values
 - **Container padding unified**: 0.5rem mobile, 1.25rem desktop with responsive breakpoints applied universally
 - **Logo sizing standardized**: clamp(180px,35vw,250px) width enforced across all pages with !important
 - **Complete coverage**: emplois.html, emplois-en.html, communiques.html, communiques-en.html, nous-joindre.html, nous-joindre-en.html, about.html, a-propos.html
 - **Logo hover effects maintained**: CSS hover scaling preserved while eliminating all visual inconsistencies
-- **Status**: ✅ PRODUCTION READY - Zero visual jumping between secondary pages achieved by removing CSS conflicts and enforcing global rules
+- **Status**: ✅ PRODUCTION READY - Complete consistency achieved across entire bilingual website with standardized CSS architecture
 
 ### Desktop Navigation Language Consistency Fix - January 28, 2025 ✅ COMPLETED
 - **Major issue resolved**: nous-joindre-en.html desktop navigation was showing French labels (Accueil, À propos, Emplois, Communiqués) instead of English
