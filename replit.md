@@ -685,6 +685,14 @@ The website is now fully operational and matches the original local/Netlify func
 - **User confirmation**: User confirmed modal now displays correctly without overlay issues
 - **Status**: ✅ COMPLETED - Modal displays properly with sticky title and correct z-index stacking
 
+### Communiques Mobile Menu Fixes - January 28, 2025 ✅ COMPLETED
+- **French burger menu reliability fix**: Added missing toggleMobileMenu() JavaScript function to communiques.html
+- **Debouncing implementation**: Added 100ms cooldown to prevent rapid-fire toggle conflicts causing fragile behavior
+- **Improved state detection**: Using getComputedStyle for more reliable display state checking
+- **Active state text color correction**: Fixed orange text to white text on orange background for better readability
+- **Cross-language consistency**: Applied fixes to both French and English communiques pages
+- **Status**: ✅ COMPLETED - Both French and English mobile menus now work reliably with proper styling
+
 ### Complete English Translation of Static Content - January 28, 2025 ✅ COMPLETED
 - **Contact page footer translation**: Fixed "Suivez-nous" → "Follow Us", "Tous droits réservés" → "All rights reserved", and legal links to English versions
 - **About page full translation**: Completed comprehensive English translation of all static content:
