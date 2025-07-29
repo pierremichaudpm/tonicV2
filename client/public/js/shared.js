@@ -316,7 +316,7 @@ function generateMobileMenu(isEnglish = false, currentPage = '') {
     </div>`;
 }
 
-// Generate mobile menu button matching Replit standards
+// Generate mobile menu button matching React homepage standards
 function generateMobileMenuButton() {
     return `
         <button id="mobileMenuButton" onclick="toggleMobileMenu()" 
@@ -324,15 +324,6 @@ function generateMobileMenuButton() {
                 style="background: rgba(0,0,0,0.2); backdrop-filter: blur(10px); color: white;">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="color: white;">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 12h18M3 6h18M3 18h18"></path>
-            </svg>
-        </button>
-    `;
-}act homepage
-function generateMobileMenuButton() {
-    return `
-        <button id="mobileMenuButton" onclick="toggleMobileMenu()" class="md:hidden p-2 hover:bg-white/10 rounded-lg transition-colors text-white" style="background:rgba(0,0,0,0.2);backdrop-filter:blur(10px);color:white">
-            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M3 12h18M3 6h18M3 18h18"></path>
             </svg>
         </button>
     `;
@@ -473,10 +464,6 @@ function showPDFLoading() {
     }
 }
 
-// Export functions to window object for use in other pages
-window.generateDesktopNav = generateDesktopNav;
-window.generateMobileMenu = generateMobileMenu;
-```text
 // Add formatDate function
 function formatDate(dateString) {
     if (!dateString) return '';
@@ -488,6 +475,9 @@ function formatDate(dateString) {
     });
 }
 
+// Export functions to window object for use in other pages
+window.generateDesktopNav = generateDesktopNav;
+window.generateMobileMenu = generateMobileMenu;
 window.generateMobileMenuButton = generateMobileMenuButton;
 window.toggleMobileMenu = toggleMobileMenu;
 window.generateStandardHeader = generateStandardHeader;
