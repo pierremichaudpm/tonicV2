@@ -17,30 +17,38 @@
     <link rel="stylesheet" href="css/shared.css?v=1753739263">
     
     <script>
-        // Mobile menu functionality with debouncing
-        let isToggling = false;
+        // Global state for mobile menu
+        window.mobileMenuOpen = false;
         
+        // Mobile menu functionality
         function toggleMobileMenu() {
-            if (isToggling) return;
-            isToggling = true;
-            
+            console.log('toggleMobileMenu called - event timestamp:', Date.now());
             const mobileMenu = document.getElementById('mobileMenu');
-            const computedStyle = window.getComputedStyle(mobileMenu);
-            const isOpen = computedStyle.display === 'block';
-            
-            if (isOpen) {
+            if (!mobileMenu) {
+                console.log('Mobile menu element not found');
+                return;
+            }
+
+            const isCurrentlyOpen = window.mobileMenuOpen;
+            console.log('Menu currently open:', isCurrentlyOpen, 'Global state:', window.mobileMenuOpen);
+
+            if (isCurrentlyOpen) {
+                // Close menu
                 mobileMenu.style.display = 'none';
+                document.body.style.overflow = '';
+                window.mobileMenuOpen = false;
                 console.log('Menu closed - state updated to false');
             } else {
-                mobileMenu.style.display = 'block';
+                // Open menu
+                mobileMenu.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+                window.mobileMenuOpen = true;
                 console.log('Menu opened - state updated to true');
             }
-            
-            // Reset debounce after short delay
-            setTimeout(() => {
-                isToggling = false;
-            }, 100);
         }
+        
+        // Ensure function is globally available
+        window.toggleMobileMenu = toggleMobileMenu;
     </script>
 
     <!-- Page Specific Styles -->
@@ -492,9 +500,9 @@
     </header>
 
     <!-- Mobile Menu -->
-    <div id="mobileMenu" class="mobile-menu">
+    <div id="mobileMenu" class="mobile-menu" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); backdrop-filter: blur(20px); z-index: 999999; flex-direction: column; overflow-y: auto;">
         <!-- Mobile Menu Header - Fixed at top -->
-        <div class="bg-black/95 backdrop-blur-md border-b border-white/10 px-2 py-1" style="position: absolute; top: 0; left: 0; right: 0; z-index: 1000;">
+        <div class="bg-black/95 backdrop-blur-md border-b border-white/10 px-2 py-2 sm:px-4 sm:py-5">
             <div class="flex items-center justify-between">
                 <div class="flex flex-col items-start gap-0">
                     <img src="images/tonic-logo.png" alt="Groupe Tonic Logo" style="width: clamp(180px,35vw,250px); height: auto;" />
@@ -509,7 +517,7 @@
         </div>
         
         <!-- Menu Content -->
-        <div class="container mx-auto px-4" style="padding-top: 20px; padding-bottom: 1rem;">
+        <div class="container mx-auto px-4 py-8">
             <div class="space-y-2">
                 <a href="index.html" class="nav-item w-full">
                     <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" style="color: white; stroke: white;"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>

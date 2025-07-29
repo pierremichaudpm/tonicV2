@@ -730,13 +730,32 @@ body.modal-open .modal-content {
     background: rgba(0,0,0,0.95) !important;
     backdrop-filter: blur(20px) !important;
     -webkit-backdrop-filter: blur(20px) !important;
-    z-index: 1000000 !important;
-    padding-top: 5rem !important;
+    z-index: 999999 !important;
+    flex-direction: column !important;
     overflow-y: auto !important;
 }
 
-.mobile-menu.active {
-    display: block;
+/* Mobile menu navigation items */
+.mobile-menu .nav-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+    padding: 0.75rem 1rem !important;
+    width: 100% !important;
+    color: white !important;
+    text-decoration: none !important;
+    border-radius: 0.5rem !important;
+    transition: background 0.2s ease !important;
+    min-height: 44px !important;
+}
+
+.mobile-menu .nav-item:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.mobile-menu .nav-item.active {
+    background: rgba(249, 115, 22, 0.2) !important;
+    color: white !important;
 }
 
 .mobile-menu .nav-item {

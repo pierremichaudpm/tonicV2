@@ -96,7 +96,7 @@ function createNavItemsEnglish() {
 // Global state for mobile menu
 window.mobileMenuOpen = false;
 
-// Toggle Mobile Menu with icon change - Robust implementation
+// Consistent mobile menu toggle function
 function toggleMobileMenu() {
     console.log('toggleMobileMenu called - event timestamp:', Date.now());
     const mobileMenu = document.getElementById('mobileMenu');
@@ -105,39 +105,26 @@ function toggleMobileMenu() {
         return;
     }
 
-    // Use global state instead of unreliable CSS detection
+    // Initialize global state if not set
+    if (typeof window.mobileMenuOpen === 'undefined') {
+        window.mobileMenuOpen = false;
+    }
+
     const isCurrentlyOpen = window.mobileMenuOpen;
     console.log('Menu currently open:', isCurrentlyOpen, 'Global state:', window.mobileMenuOpen);
 
     if (isCurrentlyOpen) {
         // Close menu
-        mobileMenu.classList.remove('active');
         mobileMenu.style.display = 'none';
         document.body.style.overflow = '';
         window.mobileMenuOpen = false;
         console.log('Menu closed - state updated to false');
     } else {
         // Open menu
-        mobileMenu.classList.add('active');
         mobileMenu.style.display = 'flex';
         document.body.style.overflow = 'hidden';
         window.mobileMenuOpen = true;
         console.log('Menu opened - state updated to true');
-    }
-
-    // Update button icon - simple and reliable
-    const headerButton = document.getElementById('mobileMenuButton');
-    if (headerButton) {
-        const svg = headerButton.querySelector('svg');
-        if (svg) {
-            if (window.mobileMenuOpen) {
-                // Menu is now open - show close (X) icon
-                svg.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>';
-            } else {
-                // Menu is now closed - show burger icon
-                svg.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M3 12h18M3 6h18M3 18h18"></path>';
-            }
-        }
     }
 }
 
@@ -150,7 +137,7 @@ function initializeMobileMenu() {
     if (hamburgerButton && mobileMenu) {
         console.log('Mobile menu elements found, but skipping event listeners (using onclick)');
         // Skip adding event listeners since we're using onclick attributes
-        
+
         // Close button - close menu (only if no onclick attribute)
         const closeButtons = mobileMenu.querySelectorAll('.mobile-close-btn');
         closeButtons.forEach(button => {
@@ -478,6 +465,7 @@ function showPDFLoading() {
 // Export functions to window object for use in other pages
 window.generateDesktopNav = generateDesktopNav;
 window.generateMobileMenu = generateMobileMenu;
+```text
 window.generateMobileMenuButton = generateMobileMenuButton;
 window.toggleMobileMenu = toggleMobileMenu;
 window.generateStandardHeader = generateStandardHeader;
