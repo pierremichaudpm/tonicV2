@@ -14,7 +14,7 @@
 
 
     <!-- Shared Styles -->
-    <link rel="stylesheet" href="css/shared.css?v=1753752900">
+    <link rel="stylesheet" href="css/shared.css?v=1753753200">
     
     <script>
         // Mobile menu will be handled by shared.js - no variable manipulation
@@ -65,13 +65,7 @@
             }
         }
 
-        /* CSS Variables for Tonic accent colors - Use orange brand color */
-        :root {
-            --accent-primary: #f97316;
-            --accent-light: #fdba74;
-            --accent-hover: #fb923c;
-            --accent-20: rgba(249, 115, 22, 0.2);
-        }
+        /* Use global CSS variables from shared.css - no local overrides */
 
         /* Text accent colors */
         .text-accent {
@@ -97,7 +91,7 @@
         }
 
         #mobileMenu .nav-item.active {
-            background: rgba(249, 115, 22, 0.2) !important;
+            background: rgba(255, 255, 255, 0.1) !important;
             color: white !important;
         }
 
