@@ -1,3 +1,101 @@
+// ========================================
+// HEADER NORMALIZATION FIX
+// ========================================
+// This ensures consistent header styling across all pages
+(function() {
+    'use strict';
+    
+    // Run immediately and on DOM ready
+    function normalizeHeader() {
+        const header = document.querySelector('header');
+        if (!header) return;
+        
+        // Find the container element
+        const headerContainer = header.querySelector('.container, [class*="container"]');
+        if (!headerContainer) return;
+        
+        // Store original classes for debugging
+        const originalClasses = headerContainer.className;
+        
+        // Remove all Tailwind spacing classes
+        headerContainer.className = headerContainer.className
+            .replace(/\b(px-\d+|py-\d+|sm:px-\d+|sm:py-\d+|p-\d+|sm:p-\d+|md:px-\d+|md:py-\d+|lg:px-\d+|lg:py-\d+)\b/g, '')
+            .replace(/\s+/g, ' ')
+            .trim();
+        
+        // Add normalized class
+        headerContainer.classList.add('header-normalized');
+        
+        // Ensure header has correct structure
+        header.style.cssText = `
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            width: 100% !important;
+            z-index: 50 !important;
+        `;
+        
+        // Log for debugging
+        console.log('Header normalized:', {
+            original: originalClasses,
+            normalized: headerContainer.className
+        });
+    }
+    
+    // Run immediately
+    normalizeHeader();
+    
+    // Run when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', normalizeHeader);
+    } else {
+        // DOM is already ready
+        normalizeHeader();
+    }
+    
+    // Run after a short delay to catch any dynamic changes
+    setTimeout(normalizeHeader, 100);
+})();
+
+// ========================================
+// PAGE LAYOUT FIX
+// ========================================
+// Ensure consistent spacing below header
+(function() {
+    'use strict';
+    
+    function fixPageLayout() {
+        // Get computed header height
+        const header = document.querySelector('header');
+        if (!header) return;
+        
+        const headerHeight = header.offsetHeight;
+        const isMobile = window.innerWidth < 640;
+        
+        // Set consistent body padding
+        document.body.style.paddingTop = headerHeight + 'px';
+        
+        // Adjust main element padding
+        const main = document.querySelector('main');
+        if (main) {
+            main.style.paddingTop = isMobile ? '1.5rem' : '2rem';
+        }
+        
+        console.log('Page layout fixed:', {
+            headerHeight: headerHeight,
+            isMobile: isMobile
+        });
+    }
+    
+    // Run on load and resize
+    window.addEventListener('load', fixPageLayout);
+    window.addEventListener('resize', fixPageLayout);
+    
+    // Run immediately
+    fixPageLayout();
+})();
+
 // Navigation data
 const navigationItems = [
     { text: 'Accueil', href: 'index.html', textEn: 'Home', hrefEn: 'index-en.html' },

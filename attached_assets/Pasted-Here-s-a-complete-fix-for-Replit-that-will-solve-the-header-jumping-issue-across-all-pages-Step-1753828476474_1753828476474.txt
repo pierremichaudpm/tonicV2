@@ -1,0 +1,356 @@
+Here's a complete fix for Replit that will solve the header jumping issue across all pages:
+
+## Step 1: Update global-header.css
+
+Replace the entire content of `client/public/css/global-header.css` with:
+
+```css
+/* GLOBAL HEADER STANDARDIZATION - Single source of truth for all pages */
+/* This file eliminates header jumping by providing consistent styling across all pages */
+
+:root {
+    --z-header: 50;
+    --z-mobile-menu: 999999; 
+    --z-modal: 2147483647;
+    --header-height-mobile: 80px;
+    --header-height-desktop: 100px;
+}
+
+/* Force identical header positioning across ALL pages */
+header {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    z-index: var(--z-header) !important;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.9) 40%, rgba(0,0,0,0.7) 70%, rgba(0,0,0,0.3) 90%, transparent 100%) !important;
+    backdrop-filter: blur(15px) !important;
+    -webkit-backdrop-filter: blur(15px) !important;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.3) !important;
+}
+
+/* CRITICAL: Override ALL container styles with maximum specificity */
+header > div,
+header > .container,
+header > div.container,
+header > div[class*="container"],
+header > div[class*="mx-auto"],
+header > div[class*="px-"],
+header > div[class*="py-"],
+header .container,
+header div.container {
+    /* Reset all Tailwind padding/margin */
+    padding: 0 !important;
+    margin: 0 !important;
+    
+    /* Apply consistent padding */
+    padding: 0.5rem 0.5rem !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    max-width: 100% !important;
+    width: 100% !important;
+}
+
+/* Specific override for the exact classes used */
+header .container.mx-auto.px-2.py-2.sm\:px-4.sm\:py-5 {
+    padding: 0.5rem 0.5rem !important;
+}
+
+@media (min-width: 640px) {
+    header > div,
+    header > .container,
+    header > div.container,
+    header > div[class*="container"],
+    header > div[class*="mx-auto"],
+    header > div[class*="px-"],
+    header > div[class*="py-"],
+    header .container,
+    header div.container,
+    header .container.mx-auto.px-2.py-2.sm\:px-4.sm\:py-5 {
+        padding: 1.25rem 1rem !important;
+        max-width: 1280px !important;
+    }
+}
+
+/* Ensure consistent header height */
+header {
+    min-height: var(--header-height-mobile) !important;
+}
+
+@media (min-width: 640px) {
+    header {
+        min-height: var(--header-height-desktop) !important;
+    }
+}
+
+/* Logo consistency */
+.header-logo {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.header-logo img {
+    width: clamp(180px, 35vw, 250px) !important;
+    height: auto !important;
+    cursor: pointer !important;
+    display: block !important;
+}
+
+.header-logo:hover {
+    transform: scale(1.05);
+}
+
+/* Navigation container override */
+.nav-container {
+    background: rgba(0,0,0,0.2) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    padding: 0.125rem 0.5rem !important;
+    border-radius: 9999px !important;
+    gap: 0.125rem !important;
+}
+
+/* Mobile menu standardization */
+#mobileMenu, .mobile-menu { 
+    z-index: var(--z-mobile-menu) !important; 
+    display: none !important;
+}
+
+#mobileMenu.active, .mobile-menu.active {
+    display: flex !important;
+}
+
+/* Modal z-index */
+#newsModal, #jobModal, .modal-backdrop { 
+    z-index: var(--z-modal) !important; 
+}
+
+.modal-content { 
+    z-index: var(--z-modal) !important; 
+}
+
+/* Force page content below header with consistent spacing */
+body {
+    padding-top: var(--header-height-mobile) !important;
+}
+
+@media (min-width: 640px) {
+    body {
+        padding-top: var(--header-height-desktop) !important;
+    }
+}
+
+/* Override main padding to prevent double spacing */
+main {
+    padding-top: 1.5rem !important;
+}
+
+@media (min-width: 640px) {
+    main {
+        padding-top: 2rem !important;
+    }
+}
+
+/* Ensure page content stays below modals */
+main, section, .hero-title, h1, h2, h3 { 
+    z-index: 1 !important; 
+    position: relative !important;
+}
+
+/* Header normalization class for JavaScript fix */
+.header-normalized {
+    padding: 0.5rem 0.5rem !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    max-width: 100% !important;
+}
+
+@media (min-width: 640px) {
+    .header-normalized {
+        padding: 1.25rem 1rem !important;
+        max-width: 1280px !important;
+    }
+}
+```
+
+## Step 2: Add JavaScript Fix to shared.js
+
+Add this code to the beginning of `client/public/js/shared.js`:
+
+```javascript
+// ========================================
+// HEADER NORMALIZATION FIX
+// ========================================
+// This ensures consistent header styling across all pages
+(function() {
+    'use strict';
+    
+    // Run immediately and on DOM ready
+    function normalizeHeader() {
+        const header = document.querySelector('header');
+        if (!header) return;
+        
+        // Find the container element
+        const headerContainer = header.querySelector('.container, [class*="container"]');
+        if (!headerContainer) return;
+        
+        // Store original classes for debugging
+        const originalClasses = headerContainer.className;
+        
+        // Remove all Tailwind spacing classes
+        headerContainer.className = headerContainer.className
+            .replace(/\b(px-\d+|py-\d+|sm:px-\d+|sm:py-\d+|p-\d+|sm:p-\d+|md:px-\d+|md:py-\d+|lg:px-\d+|lg:py-\d+)\b/g, '')
+            .replace(/\s+/g, ' ')
+            .trim();
+        
+        // Add normalized class
+        headerContainer.classList.add('header-normalized');
+        
+        // Ensure header has correct structure
+        header.style.cssText = `
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            width: 100% !important;
+            z-index: 50 !important;
+        `;
+        
+        // Log for debugging
+        console.log('Header normalized:', {
+            original: originalClasses,
+            normalized: headerContainer.className
+        });
+    }
+    
+    // Run immediately
+    normalizeHeader();
+    
+    // Run when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', normalizeHeader);
+    } else {
+        // DOM is already ready
+        normalizeHeader();
+    }
+    
+    // Run after a short delay to catch any dynamic changes
+    setTimeout(normalizeHeader, 100);
+})();
+
+// ========================================
+// PAGE LAYOUT FIX
+// ========================================
+// Ensure consistent spacing below header
+(function() {
+    'use strict';
+    
+    function fixPageLayout() {
+        // Get computed header height
+        const header = document.querySelector('header');
+        if (!header) return;
+        
+        const headerHeight = header.offsetHeight;
+        const isMobile = window.innerWidth < 640;
+        
+        // Set consistent body padding
+        document.body.style.paddingTop = headerHeight + 'px';
+        
+        // Adjust main element padding
+        const main = document.querySelector('main');
+        if (main) {
+            main.style.paddingTop = isMobile ? '1.5rem' : '2rem';
+        }
+        
+        console.log('Page layout fixed:', {
+            headerHeight: headerHeight,
+            isMobile: isMobile
+        });
+    }
+    
+    // Run on load and resize
+    window.addEventListener('load', fixPageLayout);
+    window.addEventListener('resize', fixPageLayout);
+    
+    // Run immediately
+    fixPageLayout();
+})();
+```
+
+## Step 3: Force Cache Refresh
+
+Update the global-header.css link in all HTML files by adding a version parameter. You can do this with a find-and-replace:
+
+**Find:**
+```html
+<link rel="stylesheet" href="css/global-header.css">
+```
+
+**Replace with:**
+```html
+<link rel="stylesheet" href="css/global-header.css?v=3">
+```
+
+## Step 4: Quick Implementation in Replit
+
+1. **Open Replit Shell** and run these commands to update all files at once:
+
+```bash
+cd client/public
+
+# Backup files first
+cp css/global-header.css css/global-header.css.backup
+cp js/shared.js js/shared.js.backup
+
+# Add version to global-header.css links in all HTML files
+find . -name "*.html" -type f -exec sed -i 's/global-header\.css"/global-header.css?v=3"/g' {} +
+
+# If on Mac, use this instead:
+# find . -name "*.html" -type f -exec sed -i '' 's/global-header\.css"/global-header.css?v=3"/g' {} +
+```
+
+2. **Copy and paste** the updated CSS content into `client/public/css/global-header.css`
+
+3. **Add** the JavaScript fix to the beginning of `client/public/js/shared.js`
+
+## Step 5: Test the Fix
+
+1. Clear your browser cache (Ctrl+Shift+R or Cmd+Shift+R)
+2. Navigate between different pages
+3. The header should now remain consistent without jumping
+
+## Optional: Emergency CSS Override
+
+If you still see issues, add this emergency override to `client/public/css/shared.css`:
+
+```css
+/* EMERGENCY HEADER OVERRIDE - Remove once issue is resolved */
+header > div[class*="container"] {
+    padding: 0.5rem 0.5rem !important;
+}
+
+@media (min-width: 640px) {
+    header > div[class*="container"] {
+        padding: 1.25rem 1rem !important;
+    }
+}
+
+body {
+    padding-top: 80px !important;
+}
+
+@media (min-width: 640px) {
+    body {
+        padding-top: 100px !important;
+    }
+}
+```
+
+This solution will:
+1. Override all Tailwind classes that affect header spacing
+2. Normalize headers via JavaScript on page load
+3. Ensure consistent spacing between header and content
+4. Work without modifying the HTML structure of every page
+
+The header jumping should be completely eliminated after implementing these changes.
