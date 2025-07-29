@@ -685,6 +685,17 @@ The website is now fully operational and matches the original local/Netlify func
 - **User confirmation**: User confirmed modal now displays correctly without overlay issues
 - **Status**: ✅ COMPLETED - Modal displays properly with sticky title and correct z-index stacking
 
+### Mobile Menu Click Functionality Fix - January 29, 2025 ✅ COMPLETED
+- **Critical mobile menu issue resolved**: Fixed non-clickable logo and close button elements in mobile menu across ALL secondary pages
+- **Enhanced z-index hierarchy**: Applied maximum z-index values (2000001-2000003) with !important declarations to ensure clickable elements are on top
+- **Logo onclick handlers added**: Added missing onclick="window.location.href='[homepage]'" to all mobile menu logos
+- **Enhanced positioning**: Added relative positioning and pointer-events management for optimal click detection
+- **Close button optimization**: Set SVG pointer-events to none to prevent click blocking, enhanced button z-index
+- **Pages fixed**: Applied to all 8 secondary pages (a-propos.html, about.html, emplois.html, emplois-en.html, communiques.html, communiques-en.html, nous-joindre.html, nous-joindre-en.html)
+- **Language-specific navigation**: French pages link to index.html, English pages link to index-en.html
+- **User confirmation**: User confirmed fix works correctly after testing on a-propos.html
+- **Status**: ✅ PRODUCTION READY - Complete mobile menu functionality across entire bilingual website
+
 ### Complete Header Consistency Fix - January 29, 2025 ✅ COMPLETED
 - **Critical inconsistencies resolved**: Fixed all header structure differences between communiques pages and other site pages
 - **Header container padding standardized**: English communiques page updated from `px-4 py-4` to responsive `px-2 py-2 sm:px-4 sm:py-5`
