@@ -15,6 +15,22 @@
 
     <!-- Shared Styles -->
     <link rel="stylesheet" href="css/shared.css?v=1753739263">
+    
+    <script>
+        // Mobile menu functionality
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const isOpen = mobileMenu.style.display === 'block';
+            
+            if (isOpen) {
+                mobileMenu.style.display = 'none';
+                console.log('Menu closed - state updated to false');
+            } else {
+                mobileMenu.style.display = 'block';
+                console.log('Menu opened - state updated to true');
+            }
+        }
+    </script>
 
     <!-- Page Specific Styles -->
     <style>
