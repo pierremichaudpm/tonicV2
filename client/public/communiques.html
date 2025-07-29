@@ -475,9 +475,9 @@
     </header>
 
     <!-- Mobile Menu -->
-    <div id="mobileMenu" class="mobile-menu" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); backdrop-filter: blur(20px); z-index: 999999; flex-direction: column; overflow-y: auto;">
+    <div id="mobileMenu" class="mobile-menu" style="padding-top: 0 !important;">
         <!-- Mobile Menu Header - Fixed at top -->
-        <div class="bg-black/95 backdrop-blur-md border-b border-white/10 px-2 py-2 sm:px-4 sm:py-5">
+        <div class="bg-black/95 backdrop-blur-md border-b border-white/10 px-2 py-2 sm:px-4 sm:py-5" style="position: absolute; top: 0; left: 0; right: 0; z-index: 1000;">
             <div class="flex items-center justify-between">
                 <div class="flex flex-col items-start gap-0">
                     <img src="images/tonic-logo.png" alt="Groupe Tonic Logo" style="width: clamp(180px,35vw,250px); height: auto;" />
@@ -492,7 +492,7 @@
         </div>
         
         <!-- Menu Content -->
-        <div class="container mx-auto px-4 py-8">
+        <div class="container mx-auto px-4" style="padding-top: 100px; padding-bottom: 2rem;">
             <div class="space-y-2">
                 <a href="index.html" class="nav-item w-full">
                     <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" style="color: white; stroke: white;"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
