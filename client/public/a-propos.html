@@ -627,13 +627,13 @@
     <!-- Mobile Menu -->
     <div id="mobileMenu" class="mobile-menu" style="padding-top: 0 !important;">
         <!-- Mobile Menu Header - Fixed at top -->
-        <div class="bg-black/95 backdrop-blur-md border-b border-white/10 px-2 py-2 sm:px-4 sm:py-5" style="position: absolute; top: 0; left: 0; right: 0; z-index: 1000;">
-            <div class="flex items-center justify-between">
-                <div class="flex flex-col items-start gap-0">
-                    <img src="images/tonic-logo.png" alt="Groupe Tonic Logo" style="width: clamp(180px,35vw,250px); height: auto; cursor: pointer;" onclick="window.location.href='index.html'" />
-                    <span class="text-white text-xs md:text-sm font-medium leading-tight" style="text-shadow: 0 2px 10px rgba(0,0,0,0.9);">Créateur d'expériences mémorables</span>
+        <div class="bg-black/95 backdrop-blur-md border-b border-white/10 px-2 py-2 sm:px-4 sm:py-5" style="position: absolute; top: 0; left: 0; right: 0; z-index: 2000001 !important;">
+            <div class="flex items-center justify-between" style="z-index: 2000002 !important; position: relative;">
+                <div class="flex flex-col items-start gap-0" style="z-index: 2000002 !important; position: relative;">
+                    <img src="images/tonic-logo.png" alt="Groupe Tonic Logo" style="width: clamp(180px,35vw,250px); height: auto; cursor: pointer; z-index: 2000003 !important; position: relative;" onclick="window.location.href='index.html'" />
+                    <span class="text-white text-xs md:text-sm font-medium leading-tight" style="text-shadow: 0 2px 10px rgba(0,0,0,0.9); pointer-events: none;">Créateur d'expériences mémorables</span>
                 </div>
-                <button onclick="toggleMobileMenu()" class="p-2 hover:bg-white/10 rounded-lg" aria-label="Close" style="z-index: 10000; position: relative;">
+                <button onclick="toggleMobileMenu()" class="p-2 hover:bg-white/10 rounded-lg" aria-label="Close" style="z-index: 2000003 !important; position: relative;">
                     <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="pointer-events: none;">
                         <path d="M6 18L18 6M6 6l12 12"></path>
                     </svg>
