@@ -726,13 +726,28 @@ body.modal-open .modal-content {
 #mobileMenu {
     display: none !important;
     position: fixed !important;
-    inset: 0 !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
     background: rgba(0,0,0,0.95) !important;
     backdrop-filter: blur(20px) !important;
     -webkit-backdrop-filter: blur(20px) !important;
     z-index: 999999 !important;
     flex-direction: column !important;
     overflow-y: auto !important;
+}
+
+/* Show mobile menu when active */
+.mobile-menu.active,
+#mobileMenu.active,
+.mobile-menu[style*="display: flex"],
+#mobileMenu[style*="display: flex"] {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
 /* Mobile menu navigation items */

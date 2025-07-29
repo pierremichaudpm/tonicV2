@@ -96,22 +96,28 @@ function toggleMobileMenu() {
         return;
     }
 
-    // Check current state from DOM classes only
-    const isCurrentlyOpen = !mobileMenu.classList.contains('hidden') && mobileMenu.style.display !== 'none';
+    // Get computed style to check actual visibility
+    const computedStyle = window.getComputedStyle(mobileMenu);
+    const isCurrentlyOpen = computedStyle.display === 'flex' || mobileMenu.style.display === 'flex';
     console.log('Menu currently open:', isCurrentlyOpen);
+    console.log('Current display style:', mobileMenu.style.display);
+    console.log('Computed display:', computedStyle.display);
 
     if (isCurrentlyOpen) {
         // Close menu
         mobileMenu.style.display = 'none';
-        mobileMenu.classList.add('hidden');
+        mobileMenu.style.visibility = 'hidden';
+        mobileMenu.classList.remove('active');
         document.body.style.overflow = '';
-        console.log('Menu closed');
+        console.log('Menu closed - display set to none');
     } else {
         // Open menu
         mobileMenu.style.display = 'flex';
-        mobileMenu.classList.remove('hidden');
+        mobileMenu.style.visibility = 'visible';
+        mobileMenu.style.opacity = '1';
+        mobileMenu.classList.add('active');
         document.body.style.overflow = 'hidden';
-        console.log('Menu opened');
+        console.log('Menu opened - display set to flex');
     }
 }
 
