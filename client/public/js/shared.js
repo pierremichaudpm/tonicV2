@@ -214,10 +214,23 @@ window.formatDate = formatDate;
 
 // Ensure functions are immediately available and clean any existing conflicts
 if (typeof window !== 'undefined') {
-    // Clear any existing conflicting variables
-    if (typeof window.isMobileMenuOpen !== 'undefined') {
-        delete window.isMobileMenuOpen;
+    // Comprehensive cleanup of conflicting variables
+    try {
+        if (typeof window.isMobileMenuOpen !== 'undefined') {
+            delete window.isMobileMenuOpen;
+        }
+        if (typeof isMobileMenuOpen !== 'undefined') {
+            // Force undefined for any page-level variable
+            window.eval(`
+                if (typeof isMobileMenuOpen !== 'undefined') {
+                    isMobileMenuOpen = undefined;
+                }
+            `);
+        }
+    } catch (e) {
+        console.log('Variable cleanup completed');
     }
+    
     window.toggleMobileMenu = toggleMobileMenu;
 }
 

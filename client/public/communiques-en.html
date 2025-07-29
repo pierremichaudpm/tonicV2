@@ -18,10 +18,19 @@
     
     <script>
         // Mobile menu will be handled by shared.js
-        // Ensure function is globally available when shared.js loads
+        // Clean initialization without any variable conflicts
         document.addEventListener('DOMContentLoaded', function() {
+            // Clear any potential conflicting variables
+            if (typeof window.isMobileMenuOpen !== 'undefined') {
+                delete window.isMobileMenuOpen;
+            }
+            if (typeof isMobileMenuOpen !== 'undefined') {
+                isMobileMenuOpen = undefined;
+            }
+            
+            // Ensure function is available
             if (typeof window.toggleMobileMenu === 'function') {
-                console.log('Mobile menu function loaded from shared.js');
+                console.log('Mobile menu function loaded from shared.js - conflicts cleared');
             }
         });
     </script>
