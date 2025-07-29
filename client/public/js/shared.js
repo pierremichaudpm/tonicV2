@@ -86,36 +86,31 @@ function generateMobileMenuButton() {
     `;
 }
 
-// Mobile menu state
-let isMobileMenuOpen = false;
-
-// Toggle mobile menu
+// Toggle mobile menu - using DOM state instead of variable to avoid conflicts
 function toggleMobileMenu() {
     console.log('toggleMobileMenu called - event timestamp:', Date.now());
-    console.log('Menu currently open:', isMobileMenuOpen, 'Global state:', isMobileMenuOpen);
-
+    
     const mobileMenu = document.getElementById('mobileMenu');
-    const mobileMenuPanel = document.getElementById('mobileMenuPanel');
+    if (!mobileMenu) {
+        console.log('Mobile menu element not found');
+        return;
+    }
 
-    if (!mobileMenu || !mobileMenuPanel) return;
+    // Check current state from DOM instead of variable
+    const isCurrentlyOpen = mobileMenu.style.display === 'flex' || !mobileMenu.classList.contains('hidden');
+    console.log('Menu currently open:', isCurrentlyOpen);
 
-    if (isMobileMenuOpen) {
+    if (isCurrentlyOpen) {
         // Close menu
-        mobileMenuPanel.style.transform = 'translateX(100%)';
-        setTimeout(() => {
-            mobileMenu.classList.add('hidden');
-            document.body.style.overflow = '';
-        }, 300);
-        isMobileMenuOpen = false;
+        mobileMenu.style.display = 'none';
+        mobileMenu.classList.add('hidden');
+        document.body.style.overflow = '';
         console.log('Menu closed - state updated to false');
     } else {
         // Open menu
+        mobileMenu.style.display = 'flex';
         mobileMenu.classList.remove('hidden');
         document.body.style.overflow = 'hidden';
-        setTimeout(() => {
-            mobileMenuPanel.style.transform = 'translateX(0)';
-        }, 10);
-        isMobileMenuOpen = true;
         console.log('Menu opened - state updated to true');
     }
 }
@@ -217,8 +212,12 @@ window.hidePDFLoading = hidePDFLoading;
 window.showPDFLoading = showPDFLoading;
 window.formatDate = formatDate;
 
-// Ensure functions are immediately available
+// Ensure functions are immediately available and clean any existing conflicts
 if (typeof window !== 'undefined') {
+    // Clear any existing conflicting variables
+    if (typeof window.isMobileMenuOpen !== 'undefined') {
+        delete window.isMobileMenuOpen;
+    }
     window.toggleMobileMenu = toggleMobileMenu;
 }
 
