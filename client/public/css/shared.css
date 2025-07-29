@@ -311,8 +311,8 @@ header {
 }
 
 .mobile-menu .nav-item.active {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: var(--accent-20);
+    border: 1px solid var(--accent-30);
 }
 
 .mobile-menu .nav-item svg {
