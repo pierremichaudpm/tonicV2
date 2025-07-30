@@ -856,7 +856,7 @@ body.modal-open .modal-content {
             @keyframes slideInMobileCTA {
                 from {
                     opacity: 0;
-                    transform: translateX(-0.5rem);
+                    transform: translateX(-0.25rem);
                 }
                 to {
                     opacity: 1;
