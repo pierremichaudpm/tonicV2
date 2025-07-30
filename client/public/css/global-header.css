@@ -45,6 +45,24 @@ header div.container {
     width: 100% !important;
 }
 
+/* Firefox-specific header container padding fix */
+@-moz-document url-prefix() {
+    header > div,
+    header > .container,
+    header > div.container,
+    header > div[class*="container"],
+    header > div[class*="mx-auto"],
+    header > div[class*="px-"],
+    header > div[class*="py-"],
+    header .container,
+    header div.container {
+        padding: 0.5rem 0.5rem !important;
+        padding-top: 0.5rem !important;
+        padding-bottom: 0.5rem !important;
+        box-sizing: border-box !important;
+    }
+}
+
 /* Specific override for the exact classes used */
 header .container.mx-auto.px-2.py-2.sm\:px-4.sm\:py-5 {
     padding: 0.5rem 0.5rem !important;
@@ -63,6 +81,25 @@ header .container.mx-auto.px-2.py-2.sm\:px-4.sm\:py-5 {
     header .container.mx-auto.px-2.py-2.sm\:px-4.sm\:py-5 {
         padding: 1.25rem 1rem !important;
         max-width: 1280px !important;
+    }
+    
+    /* Firefox-specific responsive padding fix */
+    @-moz-document url-prefix() {
+        header > div,
+        header > .container,
+        header > div.container,
+        header > div[class*="container"],
+        header > div[class*="mx-auto"],
+        header > div[class*="px-"],
+        header > div[class*="py-"],
+        header .container,
+        header div.container,
+        header .container.mx-auto.px-2.py-2.sm\:px-4.sm\:py-5 {
+            padding: 1.25rem 1rem !important;
+            padding-top: 1.25rem !important;
+            padding-bottom: 1.25rem !important;
+            box-sizing: border-box !important;
+        }
     }
 }
 
