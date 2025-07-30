@@ -9,17 +9,17 @@
     <link href="css/tailwind-compiled.css" rel="stylesheet">
     <link rel="stylesheet" href="css/shared.css">
     <link rel="stylesheet" href="css/global-header.css?v=3">
-    
+
     <script>
         // === MOBILE MENU FUNCTION STANDARDIZATION ===
         function toggleMobileMenu() {
             console.log('toggleMobileMenu called - timestamp:', Date.now());
-            
+
             if (event) {
                 event.preventDefault();
                 event.stopPropagation();
             }
-            
+
             const mobileMenu = document.getElementById('mobileMenu');
             if (!mobileMenu) {
                 console.log('Mobile menu element not found');
@@ -29,7 +29,7 @@
             const isCurrentlyOpen = mobileMenu.classList.contains('active') || 
                                    mobileMenu.style.display === 'flex' ||
                                    window.getComputedStyle(mobileMenu).display === 'flex';
-            
+
             console.log('Menu currently open:', isCurrentlyOpen);
 
             if (isCurrentlyOpen) {
@@ -51,7 +51,7 @@
             }
         }
     </script>
-    
+
     <style>
         /* Only keep essential content styles - let global-header.css handle all header/nav */
         .legal-section {
@@ -195,7 +195,7 @@
                     <span>Nous joindre</span>
                 </a>
                 <a href="https://www.instagram.com/groupetonic/" class="nav-item w-full" data-tooltip="Instagram" target="_blank">
-                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="white" style="color: white; fill: white;"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.40z"/></svg>
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="white" style="color: white; fill: white;"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
                     <span>Instagram</span>
                 </a>
                 <a href="https://www.linkedin.com/company/groupe-tonic/" class="nav-item w-full" data-tooltip="LinkedIn" target="_blank">
@@ -206,6 +206,41 @@
                 <a href="privacy-policy.html" class="nav-item w-full">
                     <span>EN</span>
                 </a>
+
+                <!-- Hero Items -->
+                <div class="events-section" style="border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 1rem; margin-top: 1rem;">
+                    <div class="events-title" style="color: rgba(255, 255, 255, 0.7); font-size: 0.875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; padding: 0.5rem 1rem; margin-bottom: 0.5rem;">NOS HÉROS</div>
+                    <a href="index.html#beach-pro-tour" class="hero-menu-item" onclick="toggleMobileMenu(); setTimeout(() => window.location.href='index.html#beach-pro-tour', 100);" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; width: 100%; color: white; text-decoration: none; border-radius: 0.5rem; transition: background 0.2s ease; min-height: 44px; font-size: 0.875rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.025em;">
+                        <div class="hero-color-bar" style="width: 4px; height: 2.5rem; border-radius: 2px; background-color: #ff0e9b; flex-shrink: 0;"></div>
+                        <span>BEACH PRO TOUR</span>
+                    </a>
+                    <a href="index.html#grands-prix-cyclistes" class="hero-menu-item" onclick="toggleMobileMenu(); setTimeout(() => window.location.href='index.html#grands-prix-cyclistes', 100);" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; width: 100%; color: white; text-decoration: none; border-radius: 0.5rem; transition: background 0.2s ease; min-height: 44px; font-size: 0.875rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.025em;">
+                        <div class="hero-color-bar" style="width: 4px; height: 2.5rem; border-radius: 2px; background-color: #b7d233; flex-shrink: 0;"></div>
+                        <span>GRANDS PRIX CYCLISTES</span>
+                    </a>
+                    <a href="index.html#marathon-beneva" class="hero-menu-item" onclick="toggleMobileMenu(); setTimeout(() => window.location.href='index.html#marathon-beneva', 100);" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; width: 100%; color: white; text-decoration: none; border-radius: 0.5rem; transition: background 0.2s ease; min-height: 44px; font-size: 0.875rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.025em;">
+                        <div class="hero-color-bar" style="width: 4px; height: 2.5rem; border-radius: 2px; background-color: #957ab7; flex-shrink: 0;"></div>
+                        <span>MARATHON BENEVA DE MONTRÉAL</span>
+                    </a>
+                    <a href="index.html#21k-montreal" class="hero-menu-item" onclick="toggleMobileMenu(); setTimeout(() => window.location.href='index.html#21k-montreal', 100);" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; width: 100%; color: white; text-decoration: none; border-radius: 0.5rem; transition: background 0.2s ease; min-height: 44px; font-size: 0.875rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.025em;">
+                        <div class="hero-color-bar" style="width: 4px; height: 2.5rem; border-radius: 2px; background-color: #e2493c; flex-shrink: 0;"></div>
+                        <span>21K DE MONTRÉAL</span>
+                    </a>
+                    <a href="index.html#montreal-2026-uci" class="hero-menu-item" onclick="toggleMobileMenu(); setTimeout(() => window.location.href='index.html#montreal-2026-uci', 100);" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; width: 100%; color: white; text-decoration: none; border-radius: 0.5rem; transition: background 0.2s ease; min-height: 44px; font-size: 0.875rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.025em;">
+                        <div class="hero-color-bar" style="width: 4px; height: 2.5rem; border-radius: 2px; background-color: #da273b; flex-shrink: 0;"></div>
+                        <span>CHAMPIONNATS DU MONDE ROUTE UCI MONTRÉAL 2026</span>
+                    </a>
+                    <a href="index.html#studio-76" class="hero-menu-item" onclick="toggleMobileMenu(); setTimeout(() => window.location.href='index.html#studio-76', 100);" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; width: 100%; color: white; text-decoration: none; border-radius: 0.5rem; transition: background 0.2s ease; min-height: 44px; font-size: 0.875rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.025em;">
+                        <div class="hero-color-bar" style="width: 4px; height: 2.5rem; border-radius: 2px; background-color: #03b0f9; flex-shrink: 0;"></div>
+                        <span>STUDIO 76</span>
+                    </a>
+                    <a href="index.html#dock-619" class="hero-menu-item" onclick="toggleMobileMenu(); setTimeout(() => window.location.href='index.html#dock-619', 100);" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; width: 100%; color: white; text-decoration: none; border-radius: 0.5rem; transition: background 0.2s ease; min-height: 44px; font-size: 0.875rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.025em;">
+                        <div class="hero-color-bar" style="width: 4px; height: 2.5rem; border-radius: 2px; background-color: #ffffff; flex-shrink: 0;"></div>
+                        <span>DOCK 619</span>
+                    </a>
+                </div>
+
+                </div>
             </div>
         </div>
     </div>
@@ -316,13 +351,13 @@
     </main>
 
     <script src="js/shared.js"></script>
-    
+
     <!-- Initialize standardized navigation -->
     <script>
         // Initialize navigation when page loads
         window.addEventListener('load', function() {
             console.log('Page loaded, initializing navigation...');
-            
+
             // Initialize standardized navigation
             if (window.initializeNavigation) {
                 window.initializeNavigation(false, 'politique-de-confidentialite.html'); // false for French, current page
