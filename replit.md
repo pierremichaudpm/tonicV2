@@ -736,6 +736,13 @@ The website is now fully operational and matches the original local/Netlify func
 - **Studio 76 CTA URL update**: Changed external link from "https://studio-76.replit.app/" to "https://studio-76.ca/" in both French and English homepage files
 - **Status**: ✅ COMPLETED - Privacy pages have consistent header styling and Studio 76 now links to external website studio-76.ca
 
+### Beach Pro Tour Logo Update - January 30, 2025 ✅ COMPLETED
+- **New logo implementation**: Replaced Beach Pro Tour logo with new "VOLLEYBALL WORLD BEACH PRO TOUR" branding across both French and English homepages
+- **Cache-busting solution**: Added version parameter `?v=20250130` to logo URLs to force browser refresh and bypass aggressive caching (max-age=31536000)
+- **File replacement**: Updated `images/beach-pro-tour-logo.png` with new 45KB PNG logo featuring VW symbol and updated branding
+- **Cross-language consistency**: Applied logo update to both index.html and index-en.html PROPERTIES arrays
+- **Status**: ✅ COMPLETED - New Beach Pro Tour logo now displays across all website sections with cache-busting parameters
+
 ### Site-Wide Button Color Standardization & CSS Variable System - January 29, 2025 ✅ COMPLETED
 - **Issue identified**: Button colors were inconsistent across pages - communiques used different colors than other pages
 - **Global color system updated**: Changed shared.css primary accent color from red (#fe4445) to Tonic orange (#f97316)
