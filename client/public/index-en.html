@@ -992,9 +992,16 @@
                 const checkForHeroNavigation = () => {
                     const hash = window.location.hash.substring(1); // Remove the #
                     const urlParams = new URLSearchParams(window.location.search);
-                    const heroId = hash || urlParams.get('hero');
+                    const heroParam = urlParams.get('hero');
+                    const heroId = hash || heroParam;
                     
-                    console.log('Checking for hero navigation:', { hash, heroParam: urlParams.get('hero'), heroId });
+                    console.log('🔍 Hero navigation check:', { 
+                        url: window.location.href, 
+                        hash, 
+                        heroParam, 
+                        heroId,
+                        search: window.location.search
+                    });
                     
                     if (heroId) {
                         // Map hash/parameter to property index
@@ -1009,14 +1016,18 @@
                         };
                         
                         const heroIndex = heroMap[heroId];
-                        console.log('Hero mapping:', { heroId, heroIndex, heroMap });
+                        console.log('🎯 Hero found:', { heroId, heroIndex, willNavigate: heroIndex !== undefined });
                         
                         if (heroIndex !== undefined) {
                             // Skip splash completely, go directly to hero
-                            console.log('Navigating directly to hero:', heroIndex);
+                            console.log('✅ Navigating directly to hero:', heroIndex);
                             setState(prev => ({...prev, currentView: 'hero', activeIndex: heroIndex}));
                             return true;
+                        } else {
+                            console.log('❌ Hero ID not found in map:', heroId);
                         }
+                    } else {
+                        console.log('ℹ️ No hero parameter found, will show splash');
                     }
                     return false;
                 };
