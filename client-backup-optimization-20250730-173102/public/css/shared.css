@@ -1,0 +1,817 @@
+/* shared.css - Shared styles across all pages */
+
+/* ===================================
+   COLOR SYSTEM - SINGLE SOURCE OF TRUTH
+   =================================== */
+:root {
+    /* Primary Accent Color - CHANGE THIS ONE VALUE TO UPDATE EVERYWHERE */
+    --accent-primary: #f97316;
+    
+    /* Accent Color Variations - Automatically calculated or manually set */
+    --accent-hover: #fb923c;      /* Lighter version for hover states */
+    --accent-dark: #ea580c;        /* Darker version */
+    --accent-light: #fdba74;       /* Light version */
+    
+    /* Accent with opacity */
+    --accent-10: rgba(249, 115, 22, 0.1);
+    --accent-20: rgba(249, 115, 22, 0.2);
+    --accent-30: rgba(249, 115, 22, 0.3);
+    --accent-40: rgba(249, 115, 22, 0.4);
+    --accent-50: rgba(249, 115, 22, 0.5);
+    
+    /* Accent glow/shadow */
+    --accent-glow: rgba(249, 115, 22, 0.27);
+    --accent-shadow: rgba(249, 115, 22, 0.3);
+    
+    /* Legacy color mappings for easy migration */
+    --coral-400: var(--accent-light);
+    --coral-500: var(--accent-primary);
+    --coral-600: var(--accent-dark);
+}
+
+/* Font Face Definitions */
+@font-face {
+    font-family: 'CBC Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('https://fonts.cbc.ca/fonts/CBCSans-Regular.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'CBC Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('https://fonts.cbc.ca/fonts/CBCSans-Bold.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'CBC Sans';
+    font-style: normal;
+    font-weight: 900;
+    font-display: swap;
+    src: url('https://fonts.cbc.ca/fonts/CBCSans-Black.woff2') format('woff2');
+}
+
+/* Global Base Styles */
+* {
+    font-family: 'CBC Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Animation Classes */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    opacity: 0;
+    animation: fadeIn 0.8s ease-out forwards;
+}
+
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }
+.delay-400 { animation-delay: 0.4s; }
+.delay-500 { animation-delay: 0.5s; }
+
+/* Glass effects */
+.glass {
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+/* Header Styles */
+.header-main {
+    background: linear-gradient(to bottom, 
+        rgba(0,0,0,0.95) 0%, 
+        rgba(0,0,0,0.9) 40%, 
+        rgba(0,0,0,0.7) 70%, 
+        rgba(0,0,0,0.3) 90%, 
+        transparent 100% 
+    );
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+}
+
+/* Navigation Styles */
+.nav-container {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 9999px;
+    padding: 0.125rem 0.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.5rem;
+    color: rgba(255, 255, 255, 0.9);
+    transition: all 0.2s ease;
+    font-size: 0.75rem;
+    font-weight: 500;
+    white-space: nowrap;
+    position: relative;
+}
+
+/* Navigation consistency across all pages */
+.nav-container {
+    background: rgba(0,0,0,0.2) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    padding: 0.125rem 0.5rem !important;
+    border-radius: 9999px !important;
+    gap: 0.125rem !important;
+}
+
+.nav-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.25rem !important;
+    padding: 0.25rem 0.5rem !important;
+    border-radius: 0.5rem !important;
+    color: white !important;
+    text-decoration: none !important;
+    transition: all 0.2s ease !important;
+    cursor: pointer !important;
+    font-size: 0.75rem !important;
+    font-weight: 500 !important;
+}
+
+.nav-item:hover {
+    background: rgba(255,255,255,0.1) !important;
+    color: white !important;
+}
+
+.nav-item svg {
+    width: 1rem !important;
+    height: 1rem !important;
+    flex-shrink: 0 !important;
+}
+
+.nav-item span {
+    font-size: 0.75rem !important;
+    font-weight: 500 !important;
+    color: white !important;
+}
+
+.lang-switcher {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.25rem !important;
+    padding: 0.25rem 0.5rem !important;
+    border-radius: 0.5rem !important;
+    color: rgba(255,255,255,.9) !important;
+    transition: all 0.2s ease !important;
+    font-size: 0.75rem !important;
+    font-weight: 500 !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+}
+
+.lang-switcher:hover {
+    background: rgba(255,255,255,.1) !important;
+    color: #fff !important;
+}
+
+.lang-divider {
+    width: 1px !important;
+    height: 16px !important;
+    background: rgba(255,255,255,.2) !important;
+    margin: 0 0.5rem !important;
+}
+
+/* Tablet Navigation Optimizations */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .nav-item:hover::after {
+        content: attr(data-tooltip);
+        position: absolute;
+        bottom: -2rem;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.9);
+        color: white;
+        padding: 0.25rem 0.5rem;
+        border-radius: 0.25rem;
+        font-size: 0.625rem;
+        white-space: nowrap;
+        z-index: 50;
+        pointer-events: none;
+    }
+    
+    .nav-item {
+        padding: 0.125rem 0.25rem;
+        font-size: 0.625rem;
+        gap: 0.125rem;
+    }
+    
+    /* Keep social media icons visible - only hide nav text */
+    .nav-item span:not([data-social]) {
+        display: none; 
+    }
+    
+    .nav-item svg {
+        width: 1rem;
+        height: 1rem;
+    }
+    
+    .nav-container {
+        padding: 0.125rem 0.25rem;
+        gap: 0.125rem;
+    }
+    
+    .lang-switcher {
+        font-size: 0.625rem !important;
+        padding: 0.125rem 0.25rem !important;
+    }
+    
+    .lang-switcher span {
+        display: block !important; 
+    }
+    
+    .lang-divider {
+        margin: 0 0.25rem;
+        height: 12px;
+    }
+    
+    nav[class*="hidden"] a[class*="px-2"] {
+        padding: 0.125rem 0.25rem !important;
+        gap: 0.125rem !important;
+    }
+    
+    nav[class*="hidden"] a[class*="px-2"] span.text-xs {
+        display: none !important;
+    }
+    
+    nav[class*="hidden"] a[class*="px-2"] svg {
+        width: 1rem !important;
+        height: 1rem !important;
+    }
+}
+
+/* Additional Tablet Layout Optimizations */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .container { padding: 0.75rem !important; }
+    .selection-grid { gap: 0.75rem !important; padding: 0.75rem !important; }
+    .selection-tile { height: 100px !important; padding: 0.5rem !important; font-size: 0.8rem !important; }
+}
+
+/* Header Positioning */
+header {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 9999 !important;
+}
+
+/* Mobile Menu - Firefox Compatible */
+.mobile-menu, #mobileMenu {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 999999;
+    padding-top: 100px;
+    touch-action: none;
+    -webkit-overflow-scrolling: touch;
+}
+
+.mobile-menu.active {
+    display: block;
+}
+
+.mobile-menu .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    color: white;
+    text-decoration: none;
+    border-radius: 0.5rem;
+    transition: background-color 0.2s ease;
+}
+
+.mobile-menu .nav-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.mobile-menu .nav-item.active {
+    background: var(--accent-20);
+    border: 1px solid var(--accent-30);
+}
+
+.mobile-menu .nav-item svg {
+    width: 1rem;
+    height: 1rem;
+    stroke: white;
+    fill: none;
+}
+
+.mobile-menu .nav-item.active svg {
+    fill: white;
+    stroke: white;
+}
+
+/* Quill Editor Heading Styles */
+.ql-size-huge {
+    font-size: 2.5em !important;
+    font-weight: bold !important;
+    line-height: 1.2 !important;
+    margin-top: 1em !important;
+    margin-bottom: 0.5em !important;
+}
+
+.ql-size-large {
+    font-size: 1.75em !important;
+    font-weight: bold !important;
+    line-height: 1.3 !important;
+    margin-top: 0.8em !important;
+    margin-bottom: 0.4em !important;
+}
+
+.ql-header-1, h1.ql-header-1 {
+    font-size: 2em !important;
+    font-weight: bold !important;
+    margin-top: 1em !important;
+    margin-bottom: 0.5em !important;
+}
+
+.ql-header-2, h2.ql-header-2 {
+    font-size: 1.5em !important;
+    font-weight: bold !important;
+    margin-top: 0.8em !important;
+    margin-bottom: 0.4em !important;
+}
+
+.ql-header-3, h3.ql-header-3 {
+    font-size: 1.25em !important;
+    font-weight: bold !important;
+    margin-top: 0.6em !important;
+    margin-bottom: 0.3em !important;
+}
+
+/* Modal Content Spacing Fixes - NUCLEAR OPTION */
+#modalContent p {
+    margin-top: 0.1rem !important;
+    margin-bottom: 0.1rem !important;
+    line-height: 1.4 !important;
+    margin-block-start: 0.1rem !important;
+    margin-block-end: 0.1rem !important;
+}
+
+#modalContent .ql-editor p {
+    margin-top: 0.1rem !important;
+    margin-bottom: 0.1rem !important;
+    margin-block-start: 0.1rem !important;
+    margin-block-end: 0.1rem !important;
+}
+
+/* Remove excessive spacing from Quill paragraphs in modals */
+#modalContent p + p {
+    margin-top: 0.1rem !important;
+}
+
+/* Target all Quill paragraph classes specifically */
+#modalContent p[class*="ql-align"] {
+    margin-top: 0.1rem !important;
+    margin-bottom: 0.1rem !important;
+    margin-block-start: 0.1rem !important;
+    margin-block-end: 0.1rem !important;
+}
+
+/* Override any default Quill spacing */
+#modalContent .ql-align-justify,
+#modalContent .ql-align-center,
+#modalContent .ql-align-left,
+#modalContent .ql-align-right {
+    margin-top: 0.1rem !important;
+    margin-bottom: 0.1rem !important;
+    margin-block-start: 0.1rem !important;
+    margin-block-end: 0.1rem !important;
+}
+
+/* Reduce spacing for spans inside paragraphs */
+#modalContent p span {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Additional spacing fixes for various Quill formats */
+#modalContent div[class*="ql-"] {
+    margin-top: 0.1rem !important;
+    margin-bottom: 0.1rem !important;
+}
+
+/* Force tight spacing for all content in modals - MOST AGGRESSIVE */
+#modalContent *,
+#modalContent .prose *,
+#modalContent .prose-invert * {
+    margin-top: 0.1rem !important;
+    margin-bottom: 0.1rem !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    margin-block-start: 0.1rem !important;
+    margin-block-end: 0.1rem !important;
+}
+
+/* Override Tailwind prose classes - NUCLEAR OPTION */
+#modalContent .prose p,
+#modalContent .prose-invert p,
+#modalContent .prose p:first-child,
+#modalContent .prose p:last-child,
+#modalContent .prose-invert p:first-child,
+#modalContent .prose-invert p:last-child {
+    margin-top: 0.1rem !important;
+    margin-bottom: 0.1rem !important;
+    margin-block-start: 0.1rem !important;
+    margin-block-end: 0.1rem !important;
+}
+
+#modalContent .prose h1,
+#modalContent .prose h2,
+#modalContent .prose h3,
+#modalContent .prose h4,
+#modalContent .prose h5,
+#modalContent .prose h6,
+#modalContent .prose-invert h1,
+#modalContent .prose-invert h2,
+#modalContent .prose-invert h3,
+#modalContent .prose-invert h4,
+#modalContent .prose-invert h5,
+#modalContent .prose-invert h6 {
+    margin-top: 0.1rem !important;
+    margin-bottom: 0.1rem !important;
+    margin-block-start: 0.1rem !important;
+    margin-block-end: 0.1rem !important;
+}
+
+/* Ultra-aggressive spacing reset */
+#modalContent .prose > *,
+#modalContent .prose-invert > * {
+    margin-top: 0.1rem !important;
+    margin-bottom: 0.1rem !important;
+}
+
+/* Reset browser default paragraph margins */
+#modalContent p {
+    margin-block-start: 0.1rem !important;
+    margin-block-end: 0.1rem !important;
+}
+
+/* Large screen specific fixes - ULTIMATE NUCLEAR OPTION */
+@media (min-width: 1024px) {
+    #modalContent p,
+    #modalContent .prose p,
+    #modalContent .prose-invert p {
+        margin: 0 !important;
+        margin-top: 0.05rem !important;
+        margin-bottom: 0.05rem !important;
+        margin-block-start: 0.05rem !important;
+        margin-block-end: 0.05rem !important;
+        line-height: 1.3 !important;
+        padding: 0 !important;
+    }
+    
+    #modalContent h1,
+    #modalContent h2,
+    #modalContent h3,
+    #modalContent h4,
+    #modalContent h5,
+    #modalContent h6,
+    #modalContent .prose h1,
+    #modalContent .prose h2,
+    #modalContent .prose h3,
+    #modalContent .prose h4,
+    #modalContent .prose h5,
+    #modalContent .prose h6,
+    #modalContent .prose-invert h1,
+    #modalContent .prose-invert h2,
+    #modalContent .prose-invert h3,
+    #modalContent .prose-invert h4,
+    #modalContent .prose-invert h5,
+    #modalContent .prose-invert h6 {
+        margin: 0 !important;
+        margin-top: 0.05rem !important;
+        margin-bottom: 0.05rem !important;
+        margin-block-start: 0.05rem !important;
+        margin-block-end: 0.05rem !important;
+        padding: 0 !important;
+    }
+    
+    /* NUCLEAR: Force all elements in modal to use minimal spacing on large screens */  
+    #modalContent *,
+    #modalContent .prose *,
+    #modalContent .prose-invert * {
+        margin: 0 !important;
+        margin-top: 0.05rem !important;
+        margin-bottom: 0.05rem !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+    }
+    
+    /* Override any remaining Tailwind prose defaults */
+    #modalContent .prose > * + *,
+    #modalContent .prose-invert > * + * {
+        margin-top: 0.05rem !important;
+    }
+}
+
+/* Modal Content Headings - White color for modals */
+#modalContent .ql-size-huge,
+#modalContent .ql-size-large,
+#modalContent .ql-header-1,
+#modalContent .ql-header-2,
+#modalContent .ql-header-3 {
+    color: white !important;
+}
+
+#modalContent h1 {
+    font-size: 2.5em !important;
+    font-weight: bold !important;
+    line-height: 1.2 !important;
+    margin-top: 0.1rem !important;
+    margin-bottom: 0.1rem !important;
+    margin-block-start: 0.1rem !important;
+    margin-block-end: 0.1rem !important;
+    color: white !important;
+}
+
+#modalContent h2 {
+    font-size: 2em !important;
+    font-weight: bold !important;
+    line-height: 1.3 !important;
+    margin-top: 0.1rem !important;
+    margin-bottom: 0.1rem !important;
+    margin-block-start: 0.1rem !important;
+    margin-block-end: 0.1rem !important;
+    color: white !important;
+}
+
+#modalContent h3 {
+    font-size: 1.5em !important;
+    font-weight: bold !important;
+    line-height: 1.4 !important;
+    margin-top: 0.1rem !important;
+    margin-bottom: 0.1rem !important;
+    margin-block-start: 0.1rem !important;
+    margin-block-end: 0.1rem !important;
+    color: white !important;
+}
+
+#modalContent h4 {
+    font-size: 1.25em !important;
+    font-weight: bold !important;
+    margin-top: 0.1rem !important;
+    margin-bottom: 0.1rem !important;
+    margin-block-start: 0.1rem !important;
+    margin-block-end: 0.1rem !important;
+    color: white !important;
+}
+
+#modalContent h5 {
+    font-size: 1.1em !important;
+    font-weight: bold !important;
+    margin-top: 0.1rem !important;
+    margin-bottom: 0.1rem !important;
+    margin-block-start: 0.1rem !important;
+    margin-block-end: 0.1rem !important;
+    color: white !important;
+}
+
+#modalContent h6 {
+    font-size: 1em !important;
+    font-weight: bold !important;
+    margin-top: 0.1rem !important;
+    margin-bottom: 0.1rem !important;
+    margin-block-start: 0.1rem !important;
+    margin-block-end: 0.1rem !important;
+    color: white !important;
+}
+
+/* Category Color Classes */
+.cat-beach { color: #ff0e9b; }
+.cat-gpc { color: #8b5cf6; }
+.cat-marathon { color: #ff4444; }
+.cat-21k { color: #ffc107; }
+.cat-uci { color: #007bff; }
+.cat-studio76 { color: #10b981; }
+.cat-dock { color: #6b7280; }
+.cat-tonic { color: #374151; }
+
+/* Job and News Card Styles */
+.job-card, .pr-card, .news-card {
+    background: rgba(249, 115, 22, 0.1) !important;
+    border: 1px solid rgba(249, 115, 22, 0.15) !important;
+}
+
+/* Accent colors for CTAs */
+.btn-accent, .accent-button {
+    background-color: var(--accent-primary) !important;
+    border-color: var(--accent-primary) !important;
+    color: white !important;
+}
+
+.btn-accent:hover, .accent-button:hover {
+    background-color: var(--accent-hover) !important;
+    border-color: var(--accent-hover) !important;
+}
+
+/* JavaScript tooltip styles */
+.js-tooltip {
+    position: absolute;
+    background: #333;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+    z-index: 999999;
+    pointer-events: none;
+    border: 2px solid #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.8);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.js-tooltip.show {
+    opacity: 1;
+}
+
+.js-tooltip.instagram {
+    background: #E4405F;
+}
+
+.js-tooltip.linkedin {
+    background: #0077B5;
+}
+
+/* Modal Z-Index Fix - COMPLETE OVERRIDE */
+#newsModal {
+    z-index: 2147483647 !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+}
+
+.modal-backdrop {
+    z-index: 2147483647 !important;
+    position: fixed !important;
+}
+
+.modal-content {
+    z-index: 2147483647 !important;
+    position: relative !important;
+}
+
+/* FORCE SPECIFIC PAGE CONTENT TO MINIMUM Z-INDEX - TARGETED APPROACH */
+.hero-title,
+h1.hero-title,
+section h1:not(.modal-content h1):not(.mobile-menu h1),
+main h1:not(.modal-content h1):not(.mobile-menu h1),
+.text-4xl:not(.modal-content .text-4xl):not(.mobile-menu .text-4xl),
+.text-5xl:not(.modal-content .text-5xl):not(.mobile-menu .text-5xl),
+.text-6xl:not(.modal-content .text-6xl):not(.mobile-menu .text-6xl) {
+    z-index: 1 !important;
+}
+
+/* Additional specific targeting for problematic elements */
+section > h1,
+section > .hero-title {
+    z-index: 1 !important;
+    position: relative !important;
+}
+
+/* Hide specific elements during modal display - but keep mobile menu visible */
+body.modal-open .hero-title:not(.mobile-menu .hero-title),
+body.modal-open section h1:not(.mobile-menu h1),
+body.modal-open main h1:not(.mobile-menu h1) {
+    z-index: 1 !important;
+}
+
+/* Ensure mobile menu and its contents are NEVER affected by z-index rules */
+.mobile-menu,
+#mobileMenu,
+.mobile-menu *,
+#mobileMenu *,
+.mobile-close-btn {
+    z-index: 2000000 !important;
+}
+
+body.modal-open #newsModal,
+body.modal-open .modal-backdrop,
+body.modal-open .modal-content {
+    z-index: 2147483647 !important;
+}
+
+/* Mobile Menu Consistent Styling - High Z-Index */
+.mobile-menu,
+#mobileMenu {
+    display: none !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background: rgba(0,0,0,0.95) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    z-index: 999999 !important;
+    flex-direction: column !important;
+    overflow-y: auto !important;
+}
+
+/* Show mobile menu when active - Firefox Compatible */
+.mobile-menu.active,
+#mobileMenu.active,
+.mobile-menu[style*="display: flex"],
+#mobileMenu[style*="display: flex"] {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    touch-action: none !important;
+    -webkit-overflow-scrolling: touch !important;
+}
+
+/* Mobile menu navigation items - Firefox Compatible */
+.mobile-menu .nav-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+    padding: 0.75rem 1rem !important;
+    width: 100% !important;
+    color: white !important;
+    text-decoration: none !important;
+    border-radius: 0.5rem !important;
+    transition: background 0.2s ease !important;
+    min-height: 44px !important;
+    touch-action: manipulation !important;
+    -webkit-tap-highlight-color: transparent !important;
+}
+
+.mobile-menu .nav-item:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.mobile-menu .nav-item.active {
+    background: rgba(249, 115, 22, 0.2) !important;
+    color: white !important;
+}
+
+.mobile-menu .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 3rem 1rem;
+    border-radius: 0.5rem;
+    background: transparent;
+    color: white;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: none;
+    cursor: pointer;
+    font-size: 1.125rem;
+    font-weight: 500;
+    text-align: left;
+}
+
+.mobile-menu .nav-item:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+.mobile-menu .nav-item.active {
+    background: rgba(255,255,255,0.1);
+}
+
+.mobile-menu .nav-item svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex-shrink: 0;
+}
+
+/* Mobile menu uses JavaScript toggle with .active class */
