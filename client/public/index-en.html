@@ -748,7 +748,7 @@
 
         // Logo scales (Beach Pro Tour reduced by 25% - updated 2025-01-30)
         const LOGO_SCALES = {
-            4: { mobile: .225, desktop: .15 }, // Reduced by 25% for grid view
+            4: { mobile: .9, desktop: .9 }, // Grid view - reduced by 25% from 1.20
             1: { mobile: .7632, desktop: .578 },
             5: { mobile: .9504, desktop: .72 },
             3: { mobile: 1.0932, desktop: .828 },
@@ -964,7 +964,7 @@
                     if (isGridView) {
                         return isMobile ? scales.mobile : scales.desktop; // Use reduced values for grid
                     } else {
-                        return isMobile ? 0.3 : 0.2; // Use original values for hero view
+                        return 0.78; // Hero view reduced by 35% (1.20 × 0.65)
                     }
                 }
                 
