@@ -5,15 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Groupe Tonic | Créateur d'expériences mémorables - Événements sportifs Québec</title>
     <meta name="description" content="Groupe Tonic organise les plus grands événements sportifs au Québec : Beach Pro Tour, Marathon Beneva, Grands Prix Cyclistes. Plus de 40 ans d'expérience.">
-    
+
     <!-- Canonical URL -->
     <link rel="canonical" href="https://website-migrator-pmicho.replit.app/">
-    
+
     <!-- Hreflang tags -->
     <link rel="alternate" hreflang="fr" href="https://website-migrator-pmicho.replit.app/">
     <link rel="alternate" hreflang="en" href="https://website-migrator-pmicho.replit.app/index-en.html">
     <link rel="alternate" hreflang="x-default" href="https://website-migrator-pmicho.replit.app/">
-    
+
     <!-- Open Graph tags -->
     <meta property="og:site_name" content="Groupe Tonic">
     <meta property="og:title" content="Groupe Tonic | Créateur d'expériences mémorables">
@@ -24,18 +24,18 @@
     <meta property="og:url" content="https://website-migrator-pmicho.replit.app/">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="fr_CA">
-    
+
     <!-- Twitter Card tags -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Groupe Tonic | Créateur d'expériences mémorables">
     <meta name="twitter:description" content="Groupe Tonic organise les plus grands événements sportifs au Québec : Beach Pro Tour, Marathon Beneva, Grands Prix Cyclistes.">
     <meta name="twitter:image" content="https://website-migrator-pmicho.replit.app/images/groupe-tonic-og.jpg">
-    
+
     <!-- Additional SEO tags -->
     <meta name="robots" content="index, follow">
     <meta name="author" content="Groupe Tonic">
     <meta name="keywords" content="événements sportifs Québec, Beach Pro Tour, Marathon Beneva, Grands Prix Cyclistes, UCI, Montréal, organisation événementielle">
-    
+
     <!-- Preload critical resources -->
     <link rel="preload" href="css/shared.css" as="style">
     <link rel="preload" href="css/4k-presentation.css" as="style">
@@ -44,7 +44,7 @@
     <link rel="stylesheet" href="css/4k-presentation.css">
     <link rel="stylesheet" href="css/tailwind-production.css">
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <!-- Structured Data -->
     <script type="application/ld+json">
     {
@@ -84,7 +84,7 @@
         ]
     }
     </script>
-    
+
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -246,7 +246,7 @@
 
         *{box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
         body{margin:0;background:#000;overflow-x:hidden;min-height:100vh;min-height:100dvh;overscroll-behavior:none;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
-        
+
         /* Core animations - Optimized for mobile performance */
         @keyframes fadeInSoft{from{opacity:0;transform:translate3d(0,20px,0)}to{opacity:1;transform:translate3d(0,0,0)}}
         @keyframes fadeOutSoft{to{opacity:0;transform:translate3d(0,0,0)}}
@@ -261,15 +261,15 @@
         @keyframes gridProgress{from{width:0}to{width:100%}}
         @keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
         @keyframes fadeInOut{0%{opacity:0;transform:translate(-50%,-50%) scale(.8)}20%{opacity:1;transform:translate(-50%,-50%) scale(1)}80%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) scale(.95)}}
-        
 
-        
+
+
         /* Base components - Optimized for mobile */
         .view-container{position:fixed;inset:0;opacity:0;pointer-events:none;transition:opacity 0.8s ease-out;will-change:opacity;transform:translateZ(0);-webkit-transform:translateZ(0)}
         .view-container.active{opacity:1;pointer-events:auto}
         .splash-container{transition:opacity 0.8s ease-out;will-change:opacity;transform:translateZ(0);-webkit-transform:translateZ(0)}
         .splash-container{position:fixed;inset:0;z-index:100;background:#000;display:flex;align-items:center;justify-content:center;padding:2rem;flex-direction:column;overflow:hidden}
-        
+
         .splash-container::before{
             content: '';
             position: absolute;
@@ -291,7 +291,7 @@
         }
         .splash-logo{width:clamp(300px,50vw,600px);height:auto;opacity:0;animation:fadeInSoft 1.0s ease-out forwards, fadeOutSoft 0.6s ease-out 2.2s forwards;filter:drop-shadow(0 4px 20px rgba(0,0,0,.8));position:relative;z-index:2;will-change:opacity;transform:translateZ(0);-webkit-transform:translateZ(0)}
         .splash-tagline{font-size:clamp(1rem,2.5vw,1.5rem);font-weight:500;color:#fff;text-align:center;text-shadow:0 2px 10px rgba(0,0,0,.8);opacity:0;animation:fadeInSoft 1.0s ease-out .2s forwards, fadeOutSoft 0.6s ease-out 2.2s forwards;margin-top:3rem;position:relative;z-index:2;will-change:opacity;transform:translateZ(0);-webkit-transform:translateZ(0)}
-        
+
         /* Grid - Updated 2:34 AM for MUCH darker backgrounds - Mobile optimized */
         .grid-selection-container{position:fixed;inset:0;z-index:90;background:#000;display:flex;flex-direction:column;height:100vh;height:100dvh;overflow:hidden;position:relative;will-change:opacity;transform:translateZ(0);-webkit-transform:translateZ(0)}
         .grid-selection-container::before{
@@ -321,30 +321,30 @@
         .selection-tile-title{font-size:clamp(.875rem,1.5vw,1.25rem);font-weight:900;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.9);line-height:1.1}
         .selection-tile-date{font-size:clamp(.65rem,1vw,.875rem);color:rgba(255,255,255,.9);font-weight:500}
         .selection-tile-tagline{font-size:clamp(.88rem,1.35vw,1.08rem);color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.05em;line-height:1.2;text-shadow:0 2px 6px rgba(0,0,0,.8)}
-        
+
         /* Mobile Chrome optimization */
         @media screen and (max-width: 768px) {
             .view-container {
                 transition: opacity 0.6s ease-out;
             }
-            
+
             .selection-tile {
                 animation-duration: 0.3s;
                 transition: transform 0.15s ease;
             }
-            
+
             .selection-tile:hover {
                 transform: translate3d(0,0,0) scale(1.01);
             }
-            
+
             .selection-tile-bg {
                 transition: transform 0.15s ease;
             }
-            
+
             .selection-tile:hover .selection-tile-bg {
                 transform: translate3d(0,0,0) scale(1.02);
             }
-            
+
             /* Reduce motion for smoother performance */
             @media (prefers-reduced-motion: reduce) {
                 .view-container,
@@ -354,7 +354,7 @@
                     transition: none;
                     animation: none;
                 }
-                
+
                 .selection-tile {
                     opacity: 1;
                 }
@@ -372,7 +372,7 @@
         .progress-line.active{background:rgba(255,255,255,.5)}
         .progress-line.active::after{content:'';position:absolute;left:0;top:0;height:100%;background:var(--accent-color);animation:progressLine 7s linear forwards;box-shadow:0 0 10px var(--accent-color),0 0 20px var(--accent-color)}
         .progress-line.active.paused::after{animation-play-state:paused}
-        
+
         /* Navigation */
         .lang-switcher{display:flex;align-items:center;gap:.25rem;padding:.25rem .5rem;border-radius:.5rem;color:rgba(255,255,255,.9);transition:all .2s ease;font-size:.75rem;font-weight:500;text-decoration:none;cursor:pointer}
         .lang-switcher:hover{background:rgba(255,255,255,.1);color:#fff}
@@ -381,7 +381,7 @@
         .side-nav-item{position:relative;cursor:pointer;transition:all .3s ease;border-radius:8px;margin-bottom:4px;overflow:hidden}
         .side-nav-item:hover{transform:translateX(-8px);background:rgba(255,255,255,.1)}
         .side-nav-item.active{background:rgba(255,255,255,.15);transform:translateX(-12px)}
-        
+
         /* Hero */
         .hero-bg{animation:subtleZoom 60s ease-in-out infinite;transition:opacity .6s ease-out,transform .6s ease-out}
         .hero-transition-wrapper{position:absolute;inset:0;opacity:1;transition:opacity .5s ease-in-out}
@@ -394,14 +394,14 @@
         @media(prefers-reduced-motion:no-preference){.hero-content .cta-button-custom{animation:slideIn .6s ease-out .5s both!important}}
         .hero-logo-container{display:block;margin:0;padding:0;text-align:left}
         .hero-logo-container img{display:block;margin:0;padding:0;transform-origin:left center!important}
-        
+
         /* Mobile */
         .mobile-dots{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);z-index:40;display:none;flex-direction:column;align-items:center;gap:.5rem;padding-bottom:env(safe-area-inset-bottom)}
         .swipe-indicator{font-size:.65rem;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.1em;font-weight:500;animation:pulse 2s ease-in-out infinite;text-shadow:0 2px 8px rgba(0,0,0,.8);margin-bottom:.25rem}
         .dots-container{display:flex;flex-direction:row;align-items:center;gap:.5rem}
         .dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.4);cursor:pointer;transition:all .3s ease}
         .dot.active{width:24px;border-radius:4px;background:var(--accent-color)}
-        
+
         /* CTA Button */
         .cta-button-custom{background-size:200% 200%;animation:gradientShift 3s ease infinite;color:#fff;font-weight:700;padding:1rem 2rem;border-radius:50px;display:inline-flex;align-items:center;gap:.75rem;transition:all .3s ease;text-decoration:none;position:relative;overflow:hidden;letter-spacing:.02em;font-size:1rem;border:1px solid rgba(255,255,255,.1);z-index:1;cursor:pointer}
         .cta-button-custom:hover{transform:translateY(-2px);filter:brightness(1.1)}
@@ -409,7 +409,7 @@
         .cta-button-custom span{position:relative;z-index:1;white-space:nowrap;color:#fff!important}
         .cta-button-custom.dock619-cta span{color:#333!important}
         .cta-button-custom.dock619-cta svg{stroke:#333}
-        
+
         /* Enhanced Dock 619 text readability */
         .hero-content[data-dock619="true"] .hero-title,
         .hero-content[data-dock619="true"] .hero-tagline,
@@ -422,7 +422,7 @@
             border-radius: 8px;
             border: 1px solid rgba(255,255,255,0.1);
         }
-        
+
         /* Other components */
         .countdown-unit{background:rgba(0,0,0,.6);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:.75rem 1rem;text-align:center;min-width:60px}
         .pause-indicator{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:45;opacity:0;pointer-events:none;transition:opacity .3s ease}
@@ -433,10 +433,10 @@
         .header-logo:hover{transform:scale(1.05)}
         .dock619-grid-content,.studio76-grid-content{display:flex;flex-direction:column;justify-content:space-between;height:100%}
         .dock619-grid-top,.studio76-grid-top{display:flex;justify-content:space-between;align-items:flex-start}
-        
+
         @supports not (animation: slideIn 1s){.hero-content>*{opacity:1!important}}
         .hero-content .cta-button-custom{display:inline-flex!important}
-        
+
         /* Grid layouts */
         @media(min-width:2160px){
             .selection-grid{
@@ -590,53 +590,53 @@
                 display: none;
             `;
             document.body.appendChild(tooltip);
-            
+
             // Function to add tooltips to social links
             function addTooltips() {
                 const socialLinks = document.querySelectorAll('a[href*="instagram"], a[href*="linkedin"]');
                 console.log('Found social links:', socialLinks.length);
-                
+
                 socialLinks.forEach(link => {
                     // Determine tooltip text based on URL
                     let tooltipText = '';
                     if (link.href.includes('instagram')) tooltipText = 'Instagram';
                     if (link.href.includes('linkedin')) tooltipText = 'LinkedIn';
-                    
+
                     if (tooltipText) {
                         console.log('Adding tooltip to:', tooltipText);
                         // Remove existing listeners to prevent duplicates
                         link.removeEventListener('mouseenter', link._tooltipEnter);
                         link.removeEventListener('mouseleave', link._tooltipLeave);
-                        
+
                         // Create new listeners
                         link._tooltipEnter = function(e) {
                             tooltip.textContent = tooltipText;
                             tooltip.style.display = 'block';
                             tooltip.style.background = '#333';
                             tooltip.style.color = 'white';
-                            
+
                             const rect = link.getBoundingClientRect();
                             tooltip.style.left = (rect.left + rect.width/2 - 50) + 'px';
                             tooltip.style.top = (rect.bottom + 10) + 'px';
                             tooltip.style.opacity = '1';
                         };
-                        
+
                         link._tooltipLeave = function() {
                             tooltip.style.opacity = '0';
                             setTimeout(() => {
                                 tooltip.style.display = 'none';
                             }, 200);
                         };
-                        
+
                         link.addEventListener('mouseenter', link._tooltipEnter);
                         link.addEventListener('mouseleave', link._tooltipLeave);
                     }
                 });
             }
-            
+
             // Initial call
             setTimeout(addTooltips, 1000);
-            
+
             // Re-add tooltips when DOM changes (for React re-renders)
             const observer = new MutationObserver(function(mutations) {
                 mutations.forEach(function(mutation) {
@@ -645,7 +645,7 @@
                     }
                 });
             });
-            
+
             observer.observe(document.body, {
                 childList: true,
                 subtree: true
@@ -655,12 +655,12 @@
         // === MOBILE MENU FUNCTION STANDARDIZATION ===
         function toggleMobileMenu() {
             console.log('toggleMobileMenu called - timestamp:', Date.now());
-            
+
             if (event) {
                 event.preventDefault();
                 event.stopPropagation();
             }
-            
+
             const mobileMenu = document.getElementById('mobileMenu');
             if (!mobileMenu) {
                 console.log('Mobile menu element not found');
@@ -670,7 +670,7 @@
             const isCurrentlyOpen = mobileMenu.classList.contains('active') || 
                                    mobileMenu.style.display === 'flex' ||
                                    window.getComputedStyle(mobileMenu).display === 'flex';
-            
+
             console.log('Menu currently open:', isCurrentlyOpen);
 
             if (isCurrentlyOpen) {
@@ -695,7 +695,7 @@
         // === TEMPORARY TEST FUNCTION === 
         function validateCleanBuild() {
             console.log('🧪 TESTING CLEAN BUILD - Page:', document.title);
-            
+
             const results = {
                 page: document.title,
                 mobileMenuExists: !!document.getElementById('mobileMenu'),
@@ -704,7 +704,7 @@
                 navItemsCount: document.querySelectorAll('.nav-item').length,
                 zIndexCorrect: false
             };
-            
+
             // Test z-index hierarchy
             const modal = document.getElementById('newsModal') || document.getElementById('jobModal');
             if (modal) {
@@ -712,7 +712,7 @@
                 results.zIndexCorrect = modalZ > 1000000;
                 results.modalZIndex = modalZ;
             }
-            
+
             console.table(results);
             return results;
         }
@@ -753,7 +753,7 @@
         // Utilities
         const getCSSVariable = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
         const debounce = (f, w) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => f(...a), w); }; };
-        
+
         // 4K Display Fix - Disabled in favor of CSS media query
         // JavaScript injection was causing conflicts with CSS rules
 
@@ -772,7 +772,7 @@
         const generateColorShades = (baseColor) => {
             const rgb = hexToRgb(baseColor);
             if (!rgb) return { base: baseColor, light: baseColor, dark: baseColor, glow: baseColor };
-            
+
             return {
                 base: baseColor,
                 light: rgbToHex(Math.min(255, rgb.r + 51), Math.min(255, rgb.g + 51), Math.min(255, rgb.b + 51)),
@@ -835,16 +835,16 @@
         const Header = memo(({goToGrid,isMobileMenuOpen,setIsMobileMenuOpen,currentView}) => {
             const navItems = useMemo(() => createNavItems(goToGrid), [goToGrid]);
             const [headerScrolled, setHeaderScrolled] = useState(false);
-            
+
             useEffect(() => {
                 const gridWrapper = document.querySelector('.grid-wrapper');
                 if (!gridWrapper || currentView !== 'grid') return;
-                
+
                 const handleScroll = () => {
                     const scrollTop = gridWrapper.scrollTop;
                     setHeaderScrolled(scrollTop > 20);
                 };
-                
+
                 gridWrapper.addEventListener('scroll', handleScroll);
                 return () => gridWrapper.removeEventListener('scroll', handleScroll);
             }, [currentView]);
@@ -949,7 +949,7 @@
         });
 
         // Mobile Menu Component
-        const MobileMenu = memo(({isOpen,navItems,currentView}) => {
+        const MobileMenu = ({isOpen, navItems, currentView, hideSwipeInstructions}) => {
             if(!isOpen) return null;
             return (
                 <div className="md:hidden fixed inset-0 z-40 bg-black/95 backdrop-blur-md">
@@ -972,7 +972,7 @@
                     </div>
                 </div>
             );
-        });
+        };
 
         // Main App Component
         function App() {
@@ -1022,7 +1022,7 @@
                 if(color) setState(prev => ({...prev, accentColor: color}));
                 setState(prev => ({...prev, isInitialized: true}));
                 new Image().src = PROPERTIES[0].image;
-                
+
                 timers.current.autoPlayTimer = setTimeout(() => {
                     setState(prev => ({...prev, currentView: 'grid', showGridProgress: true}));
                     timers.current.gridTimer = setTimeout(() => {
@@ -1044,7 +1044,7 @@
             // Auto-rotate
             useEffect(() => {
                 if(state.isProgressPaused || state.currentView !== 'hero' || state.isTransitioning) return;
-                
+
                 timers.current.autoPlayTimer = setInterval(() => {
                     setState(prev => {
                         const nextIndex = (prev.activeIndex + 1) % PROPERTIES.length;
@@ -1062,7 +1062,7 @@
                         return {...prev, activeIndex: nextIndex, progressKey: prev.progressKey + 1};
                     });
                 }, AUTO_PLAY_INTERVAL);
-                
+
                 return () => {
                     if(timers.current.autoPlayTimer) clearInterval(timers.current.autoPlayTimer);
                     if(timers.current.gridTimer) clearTimeout(timers.current.gridTimer);
@@ -1088,7 +1088,7 @@
                     });
                     setState(prev => ({...prev, timeLeft: newTimeLeft}));
                 };
-                
+
                 calculateTimeLeft();
                 timers.current.countdownTimer = setInterval(calculateTimeLeft, COUNTDOWN_INTERVAL);
                 return () => clearInterval(timers.current.countdownTimer);
@@ -1137,7 +1137,7 @@
                 const nextIndex = direction === 'next' 
                     ? (state.activeIndex + 1) % PROPERTIES.length
                     : state.activeIndex === 0 ? PROPERTIES.length - 1 : state.activeIndex - 1;
-                
+
                 if(direction === 'next' && nextIndex === 0) {
                     setState(prev => ({...prev, currentView: 'grid', showGridProgress: true}));
                     timers.current.gridTimer = setTimeout(() => {
@@ -1224,7 +1224,7 @@
 
             const getLogoScale = useCallback((property, isMobile, isGridView = false) => {
                 const scales = LOGO_SCALES[property.id] || { mobile: 1.0824, desktop: .82 };
-                
+
                 // Special handling for Beach Pro Tour (id:4)
                 if (property.id === 4) {
                     if (isGridView) {
@@ -1233,7 +1233,7 @@
                         return 0.78; // Hero view reduced by 35% (1.20 × 0.65)
                     }
                 }
-                
+
                 return isMobile ? scales.mobile : scales.desktop;
             }, []);
 
@@ -1276,7 +1276,7 @@
                                 </div>
                             </div>
                             {state.showGridProgress&&<div className="grid-progress-bar" style={{display:'block'}}><div className="grid-progress-fill"/></div>}
-                            <MobileMenu isOpen={state.isMobileMenuOpen} navItems={navItems} currentView={state.currentView}/>
+                            <MobileMenu isOpen={state.isMobileMenuOpen} navItems={navItems} currentView={state.currentView} hideSwipeInstructions={state.currentView !== 'hero'}/>
                         </div>
                     </div>
 
