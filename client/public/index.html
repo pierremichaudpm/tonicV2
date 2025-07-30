@@ -1389,7 +1389,14 @@
                             )}
 
                             {/* Mobile Dots */}
-                            <div className="mobile-dots">
+                            <div className={`mobile-dots ${state.isMobileView && state.currentView === 'hero' && !state.isMobileMenuOpen ? 'block' : 'hidden'}`} style={{display: state.isMobileView && state.currentView === 'hero' && !state.isMobileMenuOpen ? 'flex' : 'none'}}>
+                                <div className="swipe-indicator">Swipe</div>
+                                <div className="dots-container">
+                                    {PROPERTIES.map((_, i) => (
+                                        <div key={i} className={`dot ${i === state.activeIndex ? 'active' : ''}`} onClick={() => handlePropertyChange(i)} />
+                                    ))}
+                                </div>
+                            </div>ame="mobile-dots">
                                 <div className="swipe-indicator">← Glisser / Toucher →</div>
                                 <div className="dots-container">
                                     {PROPERTIES.map((_,i)=>(

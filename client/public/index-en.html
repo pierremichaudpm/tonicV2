@@ -235,24 +235,24 @@
             .view-container {
                 transition: opacity 0.6s ease-out;
             }
-            
+
             .selection-tile {
                 animation-duration: 0.3s;
                 transition: transform 0.15s ease;
             }
-            
+
             .selection-tile:hover {
                 transform: translate3d(0,0,0) scale(1.01);
             }
-            
+
             .selection-tile-bg {
                 transition: transform 0.15s ease;
             }
-            
+
             .selection-tile:hover .selection-tile-bg {
                 transform: translate3d(0,0,0) scale(1.02);
             }
-            
+
             /* Reduce motion for smoother performance */
             @media (prefers-reduced-motion: reduce) {
                 .view-container,
@@ -262,7 +262,7 @@
                     transition: none;
                     animation: none;
                 }
-                
+
                 .selection-tile {
                     opacity: 1;
                 }
@@ -602,12 +602,12 @@
         // === MOBILE MENU FUNCTION STANDARDIZATION ===
         function toggleMobileMenu() {
             console.log('toggleMobileMenu called - timestamp:', Date.now());
-            
+
             if (event) {
                 event.preventDefault();
                 event.stopPropagation();
             }
-            
+
             const mobileMenu = document.getElementById('mobileMenu');
             if (!mobileMenu) {
                 console.log('Mobile menu element not found');
@@ -617,7 +617,7 @@
             const isCurrentlyOpen = mobileMenu.classList.contains('active') || 
                                    mobileMenu.style.display === 'flex' ||
                                    window.getComputedStyle(mobileMenu).display === 'flex';
-            
+
             console.log('Menu currently open:', isCurrentlyOpen);
 
             if (isCurrentlyOpen) {
@@ -642,7 +642,7 @@
         // === TEMPORARY TEST FUNCTION === 
         function validateCleanBuild() {
             console.log('🧪 TESTING CLEAN BUILD - Page:', document.title);
-            
+
             const results = {
                 page: document.title,
                 mobileMenuExists: !!document.getElementById('mobileMenu'),
@@ -651,7 +651,7 @@
                 navItemsCount: document.querySelectorAll('.nav-item').length,
                 zIndexCorrect: false
             };
-            
+
             // Test z-index hierarchy
             const modal = document.getElementById('newsModal') || document.getElementById('jobModal');
             if (modal) {
@@ -659,7 +659,7 @@
                 results.zIndexCorrect = modalZ > 1000000;
                 results.modalZIndex = modalZ;
             }
-            
+
             console.table(results);
             return results;
         }
@@ -958,7 +958,7 @@
             // Logo scale function
             const getLogoScale = useCallback((property, isMobile, isGridView = false) => {
                 const scales = LOGO_SCALES[property.id] || { mobile: 1.0824, desktop: .82 };
-                
+
                 // Special handling for Beach Pro Tour (id:4)
                 if (property.id === 4) {
                     if (isGridView) {
@@ -967,7 +967,7 @@
                         return 0.78; // Hero view reduced by 35% (1.20 × 0.65)
                     }
                 }
-                
+
                 return isMobile ? scales.mobile : scales.desktop;
             }, []);
 
@@ -1406,7 +1406,7 @@
                             )}
 
                             {/* Mobile Dots */}
-                            <div className="mobile-dots">
+                            <div className={`mobile-dots ${state.isMobileView && state.currentView === 'hero' && !state.isMobileMenuOpen ? 'block' : 'hidden'}`} style={{display: state.isMobileView && state.currentView === 'hero' && !state.isMobileMenuOpen ? 'flex' : 'none'}}>
                                 <div className="swipe-indicator">← Swipe / Touch →</div>
                                 <div className="dots-container">
                                     {PROPERTIES.map((_, index) => (

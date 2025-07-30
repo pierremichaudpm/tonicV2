@@ -296,6 +296,16 @@ header {
     -webkit-overflow-scrolling: touch;
 }
 
+/* Hide swipe indicator when mobile menu is active */
+.mobile-menu.active ~ .mobile-dots,
+#mobileMenu.active ~ .mobile-dots,
+body:has(.mobile-menu.active) .mobile-dots,
+body:has(#mobileMenu.active) .mobile-dots {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+}
+
 .mobile-menu.active {
     display: block;
 }
