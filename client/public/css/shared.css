@@ -851,9 +851,11 @@ body.modal-open .modal-content {
             @keyframes fadeInMobileCTA {
                 from {
                     opacity: 0;
+                    transform: translateX(0);
                 }
                 to {
                     opacity: 1;
+                    transform: translateX(0);
                 }
             }
         }
