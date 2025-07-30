@@ -6,23 +6,23 @@
 :root {
     /* Primary Accent Color - CHANGE THIS ONE VALUE TO UPDATE EVERYWHERE */
     --accent-primary: #f97316;
-    
+
     /* Accent Color Variations - Automatically calculated or manually set */
     --accent-hover: #fb923c;      /* Lighter version for hover states */
     --accent-dark: #ea580c;        /* Darker version */
     --accent-light: #fdba74;       /* Light version */
-    
+
     /* Accent with opacity */
     --accent-10: rgba(249, 115, 22, 0.1);
     --accent-20: rgba(249, 115, 22, 0.2);
     --accent-30: rgba(249, 115, 22, 0.3);
     --accent-40: rgba(249, 115, 22, 0.4);
     --accent-50: rgba(249, 115, 22, 0.5);
-    
+
     /* Accent glow/shadow */
     --accent-glow: rgba(249, 115, 22, 0.27);
     --accent-shadow: rgba(249, 115, 22, 0.3);
-    
+
     /* Legacy color mappings for easy migration */
     --coral-400: var(--accent-light);
     --coral-500: var(--accent-primary);
@@ -210,51 +210,51 @@
         z-index: 50;
         pointer-events: none;
     }
-    
+
     .nav-item {
         padding: 0.125rem 0.25rem;
         font-size: 0.625rem;
         gap: 0.125rem;
     }
-    
+
     /* Keep social media icons visible - only hide nav text */
     .nav-item span:not([data-social]) {
         display: none; 
     }
-    
+
     .nav-item svg {
         width: 1rem;
         height: 1rem;
     }
-    
+
     .nav-container {
         padding: 0.125rem 0.25rem;
         gap: 0.125rem;
     }
-    
+
     .lang-switcher {
         font-size: 0.625rem !important;
         padding: 0.125rem 0.25rem !important;
     }
-    
+
     .lang-switcher span {
         display: block !important; 
     }
-    
+
     .lang-divider {
         margin: 0 0.25rem;
         height: 12px;
     }
-    
+
     nav[class*="hidden"] a[class*="px-2"] {
         padding: 0.125rem 0.25rem !important;
         gap: 0.125rem !important;
     }
-    
+
     nav[class*="hidden"] a[class*="px-2"] span.text-xs {
         display: none !important;
     }
-    
+
     nav[class*="hidden"] a[class*="px-2"] svg {
         width: 1rem !important;
         height: 1rem !important;
@@ -501,7 +501,7 @@ body:has(#mobileMenu.active) .mobile-dots {
         line-height: 1.3 !important;
         padding: 0 !important;
     }
-    
+
     #modalContent h1,
     #modalContent h2,
     #modalContent h3,
@@ -527,7 +527,7 @@ body:has(#mobileMenu.active) .mobile-dots {
         margin-block-end: 0.05rem !important;
         padding: 0 !important;
     }
-    
+
     /* NUCLEAR: Force all elements in modal to use minimal spacing on large screens */  
     #modalContent *,
     #modalContent .prose *,
@@ -538,7 +538,7 @@ body:has(#mobileMenu.active) .mobile-dots {
         padding-top: 0 !important;
         padding-bottom: 0 !important;
     }
-    
+
     /* Override any remaining Tailwind prose defaults */
     #modalContent .prose > * + *,
     #modalContent .prose-invert > * + * {
@@ -824,4 +824,30 @@ body.modal-open .modal-content {
     flex-shrink: 0;
 }
 
-/* Mobile menu uses JavaScript toggle with .active class */
+/* CTA Button */
+        .cta-button-custom{background-size:200% 200%;animation:gradientShift 3s ease infinite;color:#fff;font-weight:700;padding:1rem 2rem;border-radius:50px;display:inline-flex;align-items:center;gap:.75rem;transition:all .3s ease;text-decoration:none;position:relative;overflow:hidden;letter-spacing:.02em;font-size:1rem;border:1px solid rgba(255,255,255,.1);z-index:1;cursor:pointer;margin-left:0;margin-right:0}
+        .cta-button-custom:hover{transform:translateY(-2px);filter:brightness(1.1)}
+        .cta-button-custom svg{width:1.25rem;height:1.25rem;flex-shrink:0;transition:transform .3s ease}
+        .cta-button-custom span{position:relative;z-index:1;white-space:nowrap;color:#fff!important}
+
+        /* Fix CTA button container clipping during animation on mobile */
+        @media (max-width: 768px) {
+            .hero-content {
+                overflow: visible !important;
+                padding-left: 1rem !important;
+                padding-right: 1rem !important;
+            }
+
+            .cta-button-custom {
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+                width: fit-content !important;
+                min-width: auto !important;
+            }
+
+            /* Ensure parent containers don't clip the animation */
+            .hero-main-content,
+            .hero-transition-wrapper {
+                overflow: visible !important;
+            }
+        }
