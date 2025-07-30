@@ -741,7 +741,8 @@ The website is now fully operational and matches the original local/Netlify func
 - **Cache-busting solution**: Added version parameter `?v=20250130` to logo URLs to force browser refresh and bypass aggressive caching (max-age=31536000)
 - **File replacement**: Updated `images/beach-pro-tour-logo.png` with new 45KB PNG logo featuring VW symbol and updated branding
 - **Cross-language consistency**: Applied logo update to both index.html and index-en.html PROPERTIES arrays
-- **Status**: ✅ COMPLETED - New Beach Pro Tour logo now displays across all website sections with cache-busting parameters
+- **Grid size reduction**: Reduced Beach Pro Tour logo size by 25% in grid view only (mobile: 0.66→0.495, desktop: 0.5→0.375) while maintaining hero view size
+- **Status**: ✅ COMPLETED - New Beach Pro Tour logo displays with optimal sizing across all website sections
 
 ### Site-Wide Button Color Standardization & CSS Variable System - January 29, 2025 ✅ COMPLETED
 - **Issue identified**: Button colors were inconsistent across pages - communiques used different colors than other pages
