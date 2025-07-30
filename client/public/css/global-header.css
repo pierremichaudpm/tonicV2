@@ -310,3 +310,12 @@ main, section, .hero-title, h1, h2, h3 {
             border-radius: 2px !important;
             flex-shrink: 0 !important;
         }
+
+        /* Additional hover effects for hero menu items */
+        .mobile-menu .hero-menu-item:hover {
+            background: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        .mobile-menu .hero-menu-item:active {
+            background: rgba(255, 255, 255, 0.15) !important;
+        }
