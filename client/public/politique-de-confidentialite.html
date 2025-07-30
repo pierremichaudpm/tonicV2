@@ -8,6 +8,7 @@
 
     <link href="css/tailwind-compiled.css" rel="stylesheet">
     <link rel="stylesheet" href="css/shared.css">
+    <link rel="stylesheet" href="css/global-header.css">
     
     <script>
         // === MOBILE MENU FUNCTION STANDARDIZATION ===
@@ -52,137 +53,7 @@
     </script>
     
     <style>
-        /* === Z-INDEX MASTER OVERRIDE === */
-        :root {
-            --z-header: 50;
-            --z-mobile-menu: 999999; 
-            --z-modal: 2147483647;
-        }
-
-        header { z-index: var(--z-header) !important; }
-        #mobileMenu, .mobile-menu { z-index: var(--z-mobile-menu) !important; }
-        #newsModal, #jobModal, .modal-backdrop { z-index: var(--z-modal) !important; }
-        .modal-content { z-index: var(--z-modal) !important; }
-
-        /* Force page content below modals */
-        main, section, .hero-title, h1, h2, h3 { z-index: 1 !important; }
-
-        /* === NAVIGATION MASTER OVERRIDE === */
-        .nav-container {
-            background: rgba(0,0,0,0.2) !important;
-            backdrop-filter: blur(10px) !important;
-            -webkit-backdrop-filter: blur(10px) !important;
-            padding: 0.125rem 0.5rem !important;
-            border-radius: 9999px !important;
-            gap: 0.125rem !important;
-        }
-
-        .nav-item {
-            display: flex !important;
-            align-items: center !important;
-            gap: 0.25rem !important;
-            padding: 0.25rem 0.5rem !important;
-            border-radius: 0.5rem !important;
-            color: white !important;
-            text-decoration: none !important;
-            transition: all 0.2s ease !important;
-            cursor: pointer !important;
-            font-size: 0.75rem !important;
-            font-weight: 500 !important;
-        }
-
-        .nav-item:hover {
-            background: rgba(255,255,255,0.1) !important;
-            color: white !important;
-        }
-
-        .nav-item svg {
-            width: 1rem !important;
-            height: 1rem !important;
-            flex-shrink: 0 !important;
-        }
-
-        .nav-item span {
-            font-size: 0.75rem !important;
-            font-weight: 500 !important;
-            color: white !important;
-        }
-
-        .lang-switcher {
-            display: flex !important;
-            align-items: center !important;
-            gap: 0.25rem !important;
-            padding: 0.25rem 0.5rem !important;
-            border-radius: 0.5rem !important;
-            color: rgba(255,255,255,.9) !important;
-            transition: all 0.2s ease !important;
-            font-size: 0.75rem !important;
-            font-weight: 500 !important;
-            text-decoration: none !important;
-            cursor: pointer !important;
-        }
-
-        .lang-switcher:hover {
-            background: rgba(255,255,255,.1) !important;
-            color: #fff !important;
-        }
-
-        .lang-divider {
-            width: 1px !important;
-            height: 16px !important;
-            background: rgba(255,255,255,.2) !important;
-            margin: 0 0.5rem !important;
-        }
-
-        /* === MOBILE MENU MASTER OVERRIDE === */
-        .mobile-menu, #mobileMenu {
-            display: none !important;
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            right: 0 !important;
-            bottom: 0 !important;
-            width: 100vw !important;
-            height: 100vh !important;
-            background: rgba(0,0,0,0.95) !important;
-            backdrop-filter: blur(20px) !important;
-            -webkit-backdrop-filter: blur(20px) !important;
-            z-index: var(--z-mobile-menu) !important;
-            flex-direction: column !important;
-            overflow-y: auto !important;
-            touch-action: none !important;
-            -webkit-overflow-scrolling: touch !important;
-        }
-
-        .mobile-menu.active, #mobileMenu.active {
-            display: flex !important;
-            visibility: visible !important;
-            opacity: 1 !important;
-        }
-
-        .mobile-menu .nav-item {
-            display: flex !important;
-            align-items: center !important;
-            gap: 0.75rem !important;
-            padding: 0.75rem 1rem !important;
-            width: 100% !important;
-            color: white !important;
-            text-decoration: none !important;
-            border-radius: 0.5rem !important;
-            transition: background 0.2s ease !important;
-            min-height: 44px !important;
-            touch-action: manipulation !important;
-            -webkit-tap-highlight-color: transparent !important;
-        }
-
-        .mobile-menu .nav-item:hover {
-            background: rgba(255, 255, 255, 0.1) !important;
-        }
-
-        .mobile-menu .nav-item.active {
-            background: rgba(249, 115, 22, 0.2) !important;
-            color: white !important;
-        }
+        /* Only keep essential content styles - let global-header.css handle all header/nav */
         .legal-section {
             margin-bottom: 2rem;
         }
@@ -225,37 +96,6 @@
             font-size: 1.2rem;
         }
     </style>
-
-    <style>
-    /* Fix 1: Make mobile menu appear above everything */
-    #mobileMenu {
-        z-index: 999999 !important;
-    }
-
-    /* Fix 2: Ensure menu is properly positioned when active */
-    #mobileMenu.active {
-        z-index: 999999 !important;
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        right: 0 !important;
-        bottom: 0 !important;
-    }
-    </style>
-
-    <script>
-    /* Fix 3: Define toggleMobileMenu function */
-    function toggleMobileMenu() {
-        var menu = document.getElementById('mobileMenu');
-        if (menu.classList.contains('active')) {
-            menu.classList.remove('active');
-            document.body.style.overflow = '';
-        } else {
-            menu.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-    }
-    </script>
 </head>
 <body class="bg-black text-white">
     <!-- Header -->
