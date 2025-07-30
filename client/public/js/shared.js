@@ -184,49 +184,7 @@ function generateMobileMenuButton() {
     `;
 }
 
-// Toggle mobile menu - Firefox mobile compatible version
-function toggleMobileMenu() {
-    console.log('toggleMobileMenu called - event timestamp:', Date.now());
-    
-    // Prevent event bubbling for Firefox mobile
-    if (event) {
-        event.preventDefault();
-        event.stopPropagation();
-    }
-    
-    const mobileMenu = document.getElementById('mobileMenu');
-    if (!mobileMenu) {
-        console.log('Mobile menu element not found');
-        return;
-    }
-
-    // Firefox-compatible visibility check
-    const isCurrentlyOpen = mobileMenu.classList.contains('active') || 
-                           mobileMenu.style.display === 'flex' ||
-                           window.getComputedStyle(mobileMenu).display === 'flex';
-    
-    console.log('Menu currently open:', isCurrentlyOpen);
-
-    if (isCurrentlyOpen) {
-        // Close menu - Firefox compatible
-        mobileMenu.classList.remove('active');
-        mobileMenu.style.display = 'none';
-        mobileMenu.style.visibility = 'hidden';
-        mobileMenu.style.opacity = '0';
-        document.body.style.overflow = '';
-        document.body.style.touchAction = '';
-        console.log('Menu closed');
-    } else {
-        // Open menu - Firefox compatible
-        mobileMenu.classList.add('active');
-        mobileMenu.style.display = 'flex';
-        mobileMenu.style.visibility = 'visible';
-        mobileMenu.style.opacity = '1';
-        document.body.style.overflow = 'hidden';
-        document.body.style.touchAction = 'none'; // Prevent scroll on mobile
-        console.log('Menu opened');
-    }
-}
+// toggleMobileMenu function removed - using global mobile-menu.js implementation
 
 // Generate standard header
 function generateStandardHeader() {
@@ -317,7 +275,7 @@ function formatDate(dateString) {
 window.generateDesktopNav = generateDesktopNav;
 window.generateMobileMenu = generateMobileMenu;
 window.generateMobileMenuButton = generateMobileMenuButton;
-window.toggleMobileMenu = toggleMobileMenu;
+// window.toggleMobileMenu removed - using mobile-menu.js implementation
 window.generateStandardHeader = generateStandardHeader;
 window.initializeNavigation = initializeNavigation;
 window.initializeMobileMenu = initializeMobileMenu;
@@ -325,10 +283,7 @@ window.hidePDFLoading = hidePDFLoading;
 window.showPDFLoading = showPDFLoading;
 window.formatDate = formatDate;
 
-// Make functions globally available without any variable cleanup
-if (typeof window !== 'undefined') {
-    window.toggleMobileMenu = toggleMobileMenu;
-}
+// toggleMobileMenu assignment removed - using mobile-menu.js implementation
 
 // Optimized single initialization
 document.addEventListener('DOMContentLoaded', initializeNavigation);
