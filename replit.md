@@ -728,6 +728,14 @@ The website is now fully operational and matches the original local/Netlify func
 - **Header structure verified**: All legal pages use identical responsive navigation structure as other secondary pages
 - **Status**: ✅ VERIFIED - Legal pages maintain complete header consistency without being added to main navigation
 
+### Privacy Pages Header Structure & Studio 76 CTA URL Update - January 30, 2025 ✅ COMPLETED
+- **Privacy pages styling standardization**: Applied consistent header structure from a-propos.html reference template to all four legal pages
+- **Fixed mobile menu structure**: Updated mobile menu with proper logo placement, close button positioning, and container classes
+- **Added social media links**: Standardized Instagram and LinkedIn links across all mobile menus for consistency
+- **CSS divider styling updated**: Changed from `bg-white/20 my-2` to `bg-white/10 my-4` to match reference implementation
+- **Studio 76 CTA URL update**: Changed external link from "https://studio-76.replit.app/" to "https://studio-76.ca/" in both French and English homepage files
+- **Status**: ✅ COMPLETED - Privacy pages have consistent header styling and Studio 76 now links to external website studio-76.ca
+
 ### Site-Wide Button Color Standardization & CSS Variable System - January 29, 2025 ✅ COMPLETED
 - **Issue identified**: Button colors were inconsistent across pages - communiques used different colors than other pages
 - **Global color system updated**: Changed shared.css primary accent color from red (#fe4445) to Tonic orange (#f97316)
