@@ -319,3 +319,6 @@ main, section, .hero-title, h1, h2, h3 {
         .mobile-menu .hero-menu-item:active {
             background: rgba(255, 255, 255, 0.15) !important;
         }
+
+/* STANDARDIZED MOBILE MENU TOGGLE FUNCTION */
+/* This script is included in CSS to be loaded by all pages using global-header.css */

@@ -16,76 +16,11 @@
     <!-- Shared Styles -->
     <link rel="stylesheet" href="css/shared.css?v=1753753450">
     <link rel="stylesheet" href="css/global-header.css?v=3">
+    
+    <!-- Standardized Mobile Menu -->
+    <script src="js/mobile-menu.js"></script>
 
-    <script>
-        // === MOBILE MENU FUNCTION STANDARDIZATION ===
-        function toggleMobileMenu() {
-            console.log('toggleMobileMenu called - timestamp:', Date.now());
-
-            if (event) {
-                event.preventDefault();
-                event.stopPropagation();
-            }
-
-            const mobileMenu = document.getElementById('mobileMenu');
-            if (!mobileMenu) {
-                console.log('Mobile menu element not found');
-                return;
-            }
-
-            const isCurrentlyOpen = mobileMenu.classList.contains('active') || 
-                                   mobileMenu.style.display === 'flex' ||
-                                   window.getComputedStyle(mobileMenu).display === 'flex';
-
-            console.log('Menu currently open:', isCurrentlyOpen);
-
-            if (isCurrentlyOpen) {
-                mobileMenu.classList.remove('active');
-                mobileMenu.style.display = 'none';
-                mobileMenu.style.visibility = 'hidden';
-                mobileMenu.style.opacity = '0';
-                document.body.style.overflow = '';
-                document.body.style.touchAction = '';
-                console.log('Menu closed');
-            } else {
-                mobileMenu.classList.add('active');
-                mobileMenu.style.display = 'flex';
-                mobileMenu.style.visibility = 'visible';
-                mobileMenu.style.opacity = '1';
-                document.body.style.overflow = 'hidden';
-                document.body.style.touchAction = 'none';
-                console.log('Menu opened');
-            }
-        }
-
-        // === TEMPORARY TEST FUNCTION === 
-        function validateCleanBuild() {
-            console.log('🧪 TESTING CLEAN BUILD - Page:', document.title);
-
-            const results = {
-                page: document.title,
-                mobileMenuExists: !!document.getElementById('mobileMenu'),
-                toggleFunctionWorks: typeof toggleMobileMenu === 'function',
-                modalExists: !!(document.getElementById('newsModal') || document.getElementById('jobModal')),
-                navItemsCount: document.querySelectorAll('.nav-item').length,
-                zIndexCorrect: false
-            };
-
-            // Test z-index hierarchy
-            const modal = document.getElementById('newsModal') || document.getElementById('jobModal');
-            if (modal) {
-                const modalZ = parseInt(window.getComputedStyle(modal).zIndex);
-                results.zIndexCorrect = modalZ > 1000000;
-                results.modalZIndex = modalZ;
-            }
-
-            console.table(results);
-            return results;
-        }
-
-        // Auto-run test
-        setTimeout(validateCleanBuild, 2000);
-    </script>
+    
 
     <!-- Page Specific Styles -->
     <style>
@@ -599,31 +534,7 @@
         });
     </script>
 
-    <script>
-    /* Firefox Mobile Compatible Menu Toggle */
-    function toggleMobileMenu() {
-        // Prevent default behavior for Firefox mobile
-        if (event) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
-
-        var menu = document.getElementById('mobileMenu');
-        if (!menu) return;
-
-        if (menu.classList.contains('active')) {
-            menu.classList.remove('active');
-            menu.style.display = 'none';
-            document.body.style.overflow = '';
-            document.body.style.touchAction = '';
-        } else {
-            menu.classList.add('active');
-            menu.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-            document.body.style.touchAction = 'none';
-        }
-    }
-    </script>
+    
 
 </head>
 <body class="bg-black text-white min-h-screen">
