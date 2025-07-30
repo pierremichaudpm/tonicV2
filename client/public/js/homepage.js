@@ -355,29 +355,57 @@ function stopAutoPlay() {
     }
 }
 
-// Mobile menu toggle - React homepage original working version
+// Mobile menu toggle for React homepage - Fixed version
 function toggleMobileMenu() {
+    console.log('toggleMobileMenu called from React homepage');
+    
     const mobileMenu = document.getElementById('mobileMenu');
-    if (mobileMenu) {
-        mobileMenu.classList.toggle('active');
-        
-        if (mobileMenu.classList.contains('active')) {
-            mobileMenu.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-            document.body.style.touchAction = 'none';
-        } else {
-            mobileMenu.style.display = 'none';
-            document.body.style.overflow = '';
-            document.body.style.touchAction = '';
-        }
+    if (!mobileMenu) {
+        console.error('Mobile menu not found');
+        return;
+    }
+    
+    const isCurrentlyOpen = mobileMenu.style.display === 'flex' || 
+                           mobileMenu.classList.contains('active');
+    
+    console.log('Menu currently open:', isCurrentlyOpen);
+    
+    if (isCurrentlyOpen) {
+        // Close menu
+        mobileMenu.classList.remove('active');
+        mobileMenu.style.display = 'none';
+        document.body.style.overflow = '';
+        document.body.style.touchAction = '';
+        console.log('Menu closed');
+    } else {
+        // Open menu
+        mobileMenu.classList.add('active');
+        mobileMenu.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        document.body.style.touchAction = 'none';
+        console.log('Menu opened');
     }
 }
 
-// Make available globally
+// Make available globally for React homepage
+window.toggleMobileMenu = toggleMobileMenu;
+
+// Force immediate availability
+if (typeof window !== 'undefined') {
+    window.toggleMobileMenu = toggleMobileMenu;
+}
+
+// Make mobile menu function available immediately
 window.toggleMobileMenu = toggleMobileMenu;
 
 // Initialize when DOM loads
 document.addEventListener('DOMContentLoaded', init);
+
+// Also ensure function is available after DOM loads
+document.addEventListener('DOMContentLoaded', function() {
+    window.toggleMobileMenu = toggleMobileMenu;
+    console.log('React homepage mobile menu function registered:', typeof window.toggleMobileMenu);
+});
 
 // Handle keyboard navigation
 document.addEventListener('keydown', function(e) {
