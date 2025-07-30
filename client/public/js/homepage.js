@@ -355,8 +355,8 @@ function stopAutoPlay() {
     }
 }
 
-// Mobile menu toggle for React homepage - Fixed version
-function toggleMobileMenu() {
+// Mobile menu toggle for React homepage - IMMEDIATE AVAILABILITY
+window.toggleMobileMenu = function() {
     console.log('toggleMobileMenu called from React homepage');
     
     const mobileMenu = document.getElementById('mobileMenu');
@@ -385,27 +385,13 @@ function toggleMobileMenu() {
         document.body.style.touchAction = 'none';
         console.log('Menu opened');
     }
-}
+};
 
-// Make available globally for React homepage
-window.toggleMobileMenu = toggleMobileMenu;
-
-// Force immediate availability
-if (typeof window !== 'undefined') {
-    window.toggleMobileMenu = toggleMobileMenu;
-}
-
-// Make mobile menu function available immediately
-window.toggleMobileMenu = toggleMobileMenu;
+// Alias for internal use
+const toggleMobileMenu = window.toggleMobileMenu;
 
 // Initialize when DOM loads
 document.addEventListener('DOMContentLoaded', init);
-
-// Also ensure function is available after DOM loads
-document.addEventListener('DOMContentLoaded', function() {
-    window.toggleMobileMenu = toggleMobileMenu;
-    console.log('React homepage mobile menu function registered:', typeof window.toggleMobileMenu);
-});
 
 // Handle keyboard navigation
 document.addEventListener('keydown', function(e) {
