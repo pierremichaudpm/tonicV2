@@ -41,40 +41,8 @@ window.toggleMobileMenu = function(event) {
     }
 };
 
-// STANDARDIZED MOBILE MENU TOGGLE FUNCTION
-function toggleMobileMenu() {
-    const mobileMenu = document.getElementById('mobileMenu');
-    if (!mobileMenu) {
-        console.warn('Mobile menu element not found');
-        return;
-    }
-
-    const isActive = mobileMenu.classList.contains('active') || 
-                    mobileMenu.style.display === 'flex';
-    
-    if (isActive) {
-        // Close menu
-        mobileMenu.classList.remove('active');
-        mobileMenu.style.display = 'none';
-        mobileMenu.style.visibility = 'hidden';
-        mobileMenu.style.opacity = '0';
-        document.body.style.overflow = '';
-        document.body.style.touchAction = '';
-        console.log('Menu closed');
-    } else {
-        // Open menu
-        mobileMenu.classList.add('active');
-        mobileMenu.style.display = 'flex';
-        mobileMenu.style.visibility = 'visible';
-        mobileMenu.style.opacity = '1';
-        document.body.style.overflow = 'hidden';
-        document.body.style.touchAction = 'none';
-        console.log('Menu opened');
-    }
-}
-
-// Make function globally available
-window.toggleMobileMenu = toggleMobileMenu;
+// Note: This mobile-menu.js is ONLY for secondary pages
+// React homepage (index.html) has its own mobile menu system in homepage.js
 
 // Auto-run test for debugging
 setTimeout(() => {

@@ -355,33 +355,25 @@ function stopAutoPlay() {
     }
 }
 
-// Mobile menu toggle for React homepage - RESTORED WORKING VERSION
+// Mobile menu toggle - React homepage original working version
 function toggleMobileMenu() {
     const mobileMenu = document.getElementById('mobileMenu');
-    if (!mobileMenu) {
-        console.warn('Mobile menu not found');
-        return;
-    }
-
-    const isCurrentlyOpen = mobileMenu.style.display === 'flex' || 
-                           mobileMenu.classList.contains('active');
-
-    if (isCurrentlyOpen) {
-        // Close menu
-        mobileMenu.style.display = 'none';
-        mobileMenu.classList.remove('active');
-        document.body.style.overflow = '';
-        document.body.style.touchAction = '';
-    } else {
-        // Open menu
-        mobileMenu.style.display = 'flex';
-        mobileMenu.classList.add('active');
-        document.body.style.overflow = 'hidden';
-        document.body.style.touchAction = 'none';
+    if (mobileMenu) {
+        mobileMenu.classList.toggle('active');
+        
+        if (mobileMenu.classList.contains('active')) {
+            mobileMenu.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            document.body.style.touchAction = 'none';
+        } else {
+            mobileMenu.style.display = 'none';
+            document.body.style.overflow = '';
+            document.body.style.touchAction = '';
+        }
     }
 }
 
-// Make globally available for React homepage
+// Make available globally
 window.toggleMobileMenu = toggleMobileMenu;
 
 // Initialize when DOM loads
