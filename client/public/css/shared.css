@@ -830,12 +830,12 @@ body.modal-open .modal-content {
         .cta-button-custom svg{width:1.25rem;height:1.25rem;flex-shrink:0;transition:transform .3s ease}
         .cta-button-custom span{position:relative;z-index:1;white-space:nowrap;color:#fff!important}
 
-        /* Fix CTA button container clipping during animation on mobile */
+        /* Fix CTA button animation clipping on mobile */
         @media (max-width: 768px) {
             .hero-content {
-                overflow: visible !important;
                 padding-left: 1rem !important;
                 padding-right: 1rem !important;
+                overflow: hidden !important;
             }
 
             .cta-button-custom {
@@ -843,11 +843,12 @@ body.modal-open .modal-content {
                 margin-right: 0 !important;
                 width: fit-content !important;
                 min-width: auto !important;
+                max-width: calc(100vw - 2rem) !important;
             }
 
-            /* Ensure parent containers don't clip the animation */
+            /* Ensure proper animation boundaries */
             .hero-main-content,
             .hero-transition-wrapper {
-                overflow: visible !important;
+                overflow: hidden !important;
             }
         }
