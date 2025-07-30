@@ -1389,29 +1389,24 @@
                             )}
 
                             {/* Mobile Dots */}
-                            <div className={`mobile-dots ${state.isMobileView && state.currentView === 'hero' && !state.isMobileMenuOpen ? 'block' : 'hidden'}`} style={{display: state.isMobileView && state.currentView === 'hero' && !state.isMobileMenuOpen ? 'flex' : 'none'}}>
-                                <div className="swipe-indicator">Swipe</div>
-                                <div className="dots-container">
-                                    {PROPERTIES.map((_, i) => (
-                                        <div key={i} className={`dot ${i === state.activeIndex ? 'active' : ''}`} onClick={() => handlePropertyChange(i)} />
-                                    ))}
+                            {state.isMobileView && state.currentView === 'hero' && !state.isMobileMenuOpen && (
+                                <div className="mobile-dots" style={{display: 'flex'}}>
+                                    <div className="swipe-indicator">← Glisser / Toucher →</div>
+                                    <div className="dots-container">
+                                        {PROPERTIES.map((_,i)=>(
+                                            <button key={i} onClick={()=>{
+                                                if(i===state.activeIndex){
+                                                    setState(x=>({...x,isProgressPaused:!x.isProgressPaused,showPauseIndicator:true}));
+                                                    timers.current.pauseTimer = setTimeout(()=>setState(x=>({...x,showPauseIndicator:false})),PAUSE_INDICATOR_DURATION);
+                                                } else {
+                                                    handlePropertyChange(i);
+                                                    setState(x=>({...x,isProgressPaused:false}));
+                                                }
+                                            }} className={`dot ${i===state.activeIndex?'active':''}`} style={{'--accent-color':currentProperty.color}}/>
+                                        ))}
+                                    </div>
                                 </div>
-                            </div>ame="mobile-dots">
-                                <div className="swipe-indicator">← Glisser / Toucher →</div>
-                                <div className="dots-container">
-                                    {PROPERTIES.map((_,i)=>(
-                                        <button key={i} onClick={()=>{
-                                            if(i===state.activeIndex){
-                                                setState(x=>({...x,isProgressPaused:!x.isProgressPaused,showPauseIndicator:true}));
-                                                timers.current.pauseTimer = setTimeout(()=>setState(x=>({...x,showPauseIndicator:false})),PAUSE_INDICATOR_DURATION);
-                                            } else {
-                                                handlePropertyChange(i);
-                                                setState(x=>({...x,isProgressPaused:false}));
-                                            }
-                                        }} className={`dot ${i===state.activeIndex?'active':''}`} style={{'--accent-color':currentProperty.color}}/>
-                                    ))}
-                                </div>
-                            </div>
+                            )}
 
                             {/* Desktop Progress */}
                             <div className="desktop-progress">
