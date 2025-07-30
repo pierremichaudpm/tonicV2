@@ -800,7 +800,7 @@
 
         // Logo scales (Beach Pro Tour reduced by 25% - updated 2025-01-30)
         const LOGO_SCALES = {
-            4: { mobile: .3, desktop: .2 },
+            4: { mobile: .225, desktop: .15 }, // Reduced by 25% for grid view
             1: { mobile: .7632, desktop: .578 },
             5: { mobile: .9504, desktop: .72 },
             3: { mobile: 1.0932, desktop: .828 },
@@ -903,7 +903,7 @@
         });
 
         // Property Tile Component
-        const PropertyTile = memo(({property,index,onClick}) => {
+        const PropertyTile = memo(({property,index,onClick,getLogoScale}) => {
             const tileContent = useMemo(() => {
                 if(property.id===7) return (
                     <div className="dock619-grid-content">
@@ -930,7 +930,7 @@
                 return (
                     <>
                         <div style={{paddingLeft:property.id===2?'clamp(2rem, 4vw, 3rem)':property.id===4?'0.5rem':'0'}}>{property.logo&&<img src={property.logo} alt={property.name} className="selection-tile-logo" 
-                            style={{transform:property.id===3?'scale(1.15)':property.id===2?'scale(1.885)':property.id===4?'scale(1.20)':'scale(1)',margin:property.id===3?'0.5rem':'0'}} loading="lazy"/>}</div>
+                            style={{transform:property.id===3?'scale(1.15)':property.id===2?'scale(1.885)':property.id===4?`scale(${getLogoScale(property,false,true)})`:'scale(1)',margin:property.id===3?'0.5rem':'0'}} loading="lazy"/>}</div>
                         <div className="selection-tile-content">
                             <h3 className="selection-tile-title">{property.name}</h3>
                             {property.date&&<p className="selection-tile-date">{property.date}</p>}
@@ -1222,8 +1222,18 @@
 
             const navItems = useMemo(() => createNavItems(goToGrid), [goToGrid]);
 
-            const getLogoScale = useCallback((property, isMobile) => {
+            const getLogoScale = useCallback((property, isMobile, isGridView = false) => {
                 const scales = LOGO_SCALES[property.id] || { mobile: 1.0824, desktop: .82 };
+                
+                // Special handling for Beach Pro Tour (id:4)
+                if (property.id === 4) {
+                    if (isGridView) {
+                        return isMobile ? scales.mobile : scales.desktop; // Use reduced values for grid
+                    } else {
+                        return isMobile ? 0.3 : 0.2; // Use original values for hero view
+                    }
+                }
+                
                 return isMobile ? scales.mobile : scales.desktop;
             }, []);
 
@@ -1262,7 +1272,7 @@
                             />
                             <div className="grid-wrapper">
                                 <div className="selection-grid">
-                                    {PROPERTIES.map((p,i)=><PropertyTile key={p.id} property={p} index={i} onClick={startHeroSequence}/>)}
+                                    {PROPERTIES.map((p,i)=><PropertyTile key={p.id} property={p} index={i} onClick={startHeroSequence} getLogoScale={getLogoScale}/>)}
                                 </div>
                             </div>
                             {state.showGridProgress&&<div className="grid-progress-bar" style={{display:'block'}}><div className="grid-progress-fill"/></div>}
@@ -1423,7 +1433,7 @@
                                                 <div className="hero-logo-container mb-4 sm:mb-6" style={{'--child-index':0}}>
                                                     <img src={currentProperty.logo} alt={`Logo ${currentProperty.name}`} className="sm:h-14 md:h-16 lg:h-20 xl:h-24 object-contain opacity-90"
                                                         style={{filter:'drop-shadow(0 2px 8px rgba(0,0,0,0.8))',height:state.isMobileView?'auto':undefined,
-                                                        maxHeight:state.isMobileView?'4rem':undefined,transform:`scale(${getLogoScale(currentProperty,state.isMobileView)})`,
+                                                        maxHeight:state.isMobileView?'4rem':undefined,transform:`scale(${getLogoScale(currentProperty,state.isMobileView,false)})`,
                                                         transformOrigin:'left center'}} loading="lazy"/>
                                                 </div>
                                             )}
@@ -1433,7 +1443,7 @@
                                                 <div className="hero-logo-container mb-4 sm:mb-6" style={{'--child-index':1}}>
                                                     <img src="images/dock619-logo-2.png" alt="DOCK 619" className="sm:h-14 md:h-16 lg:h-20 xl:h-24 object-contain"
                                                         style={{filter:'drop-shadow(0 4px 20px rgba(0,0,0,0.8))',height:state.isMobileView?'auto':undefined,
-                                                        maxHeight:state.isMobileView?'4rem':undefined,transform:`scale(${getLogoScale(currentProperty,state.isMobileView)})`,
+                                                        maxHeight:state.isMobileView?'4rem':undefined,transform:`scale(${getLogoScale(currentProperty,state.isMobileView,false)})`,
                                                         transformOrigin:'left center'}} loading="lazy"/>
                                                 </div>
                                             ):currentProperty.id===6?(
@@ -1441,7 +1451,7 @@
                                                     <div className="hero-logo-container mb-4 sm:mb-6" style={{'--child-index':0,paddingTop:state.isMobileView?'0.5rem':'0'}}>
                                                         <img src="images/studio76-logo.png" alt="Studio 76" className="sm:h-14 md:h-16 lg:h-20 xl:h-24 object-contain opacity-90"
                                                             style={{filter:'drop-shadow(0 2px 8px rgba(0,0,0,0.8))',height:state.isMobileView?'auto':undefined,
-                                                            maxHeight:state.isMobileView?'4.5rem':undefined,transform:`scale(${getLogoScale(currentProperty,state.isMobileView)})`,
+                                                            maxHeight:state.isMobileView?'4.5rem':undefined,transform:`scale(${getLogoScale(currentProperty,state.isMobileView,false)})`,
                                                             transformOrigin:'left center'}} loading="lazy"/>
                                                     </div>
                                                     <h2 className="font-black mb-4 sm:mb-6 text-white text-left text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl"
