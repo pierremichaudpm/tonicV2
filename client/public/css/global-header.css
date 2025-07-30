@@ -36,7 +36,7 @@ header div.container {
     /* Reset all Tailwind padding/margin */
     padding: 0 !important;
     margin: 0 !important;
-    
+
     /* Apply consistent padding */
     padding: 0.5rem 0.5rem !important;
     margin-left: auto !important;
@@ -64,7 +64,7 @@ header div.container {
         margin-left: auto !important;
         margin-right: auto !important;
     }
-    
+
     /* Firefox mobile specific fixes */
     header .container.mx-auto.px-2.py-2.sm\:px-4.sm\:py-5 {
         padding: 0.5rem 0.5rem !important;
@@ -92,7 +92,7 @@ header .container.mx-auto.px-2.py-2.sm\:px-4.sm\:py-5 {
         padding: 1.25rem 1rem !important;
         max-width: 1280px !important;
     }
-    
+
     /* Firefox-specific responsive padding fix - DESKTOP */
     @-moz-document url-prefix() {
         header > div,
@@ -224,9 +224,58 @@ main, section, .hero-title, h1, h2, h3 {
             padding-top: 0.5rem !important;
             padding-bottom: 0.5rem !important;
         }
-        
+
         header .header-normalized {
             padding: 0.5rem 1rem !important;
         }
     }
 }
+
+.mobile-menu .nav-item.active {
+            background: rgba(249, 115, 22, 0.2) !important;
+            color: white !important;
+        }
+
+        /* Event navigation section */
+        .mobile-menu .events-section {
+            border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+            padding-top: 1rem !important;
+            margin-top: 1rem !important;
+        }
+
+        .mobile-menu .events-title {
+            color: rgba(255, 255, 255, 0.7) !important;
+            font-size: 0.875rem !important;
+            font-weight: 600 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.05em !important;
+            padding: 0.5rem 1rem !important;
+            margin-bottom: 0.5rem !important;
+        }
+
+        .mobile-menu .event-item {
+            display: flex !important;
+            align-items: center !important;
+            gap: 0.75rem !important;
+            padding: 0.5rem 1rem !important;
+            width: 100% !important;
+            color: rgba(255, 255, 255, 0.9) !important;
+            text-decoration: none !important;
+            border-radius: 0.5rem !important;
+            transition: background 0.2s ease !important;
+            min-height: 44px !important;
+            touch-action: manipulation !important;
+            -webkit-tap-highlight-color: transparent !important;
+            font-size: 0.875rem !important;
+        }
+
+        .mobile-menu .event-item:hover {
+            background: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        .mobile-menu .event-badge {
+            width: 8px !important;
+            height: 8px !important;
+            border-radius: 50% !important;
+            flex-shrink: 0 !important;
+        }
