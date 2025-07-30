@@ -355,29 +355,33 @@ function stopAutoPlay() {
     }
 }
 
-// Mobile menu toggle - Fixed for React homepage
+// Mobile menu toggle for React homepage - RESTORED WORKING VERSION
 function toggleMobileMenu() {
     const mobileMenu = document.getElementById('mobileMenu');
-    if (mobileMenu) {
-        const isActive = mobileMenu.classList.contains('active');
-        
-        if (isActive) {
-            // Close menu
-            mobileMenu.classList.remove('active');
-            mobileMenu.style.display = 'none';
-            document.body.style.overflow = '';
-            document.body.style.touchAction = '';
-        } else {
-            // Open menu
-            mobileMenu.classList.add('active');
-            mobileMenu.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-            document.body.style.touchAction = 'none';
-        }
+    if (!mobileMenu) {
+        console.warn('Mobile menu not found');
+        return;
+    }
+
+    const isCurrentlyOpen = mobileMenu.style.display === 'flex' || 
+                           mobileMenu.classList.contains('active');
+
+    if (isCurrentlyOpen) {
+        // Close menu
+        mobileMenu.style.display = 'none';
+        mobileMenu.classList.remove('active');
+        document.body.style.overflow = '';
+        document.body.style.touchAction = '';
+    } else {
+        // Open menu
+        mobileMenu.style.display = 'flex';
+        mobileMenu.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        document.body.style.touchAction = 'none';
     }
 }
 
-// Make function globally available
+// Make globally available for React homepage
 window.toggleMobileMenu = toggleMobileMenu;
 
 // Initialize when DOM loads
