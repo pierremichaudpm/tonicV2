@@ -355,8 +355,8 @@ function stopAutoPlay() {
     }
 }
 
-// IMMEDIATE MOBILE MENU FUNCTION DEFINITION - MUST BE FIRST
-window.toggleMobileMenu = function(event) {
+// CRITICAL: Define toggleMobileMenu IMMEDIATELY before any other code
+function toggleMobileMenu(event) {
     console.log('toggleMobileMenu called from React homepage - timestamp:', Date.now());
     
     if (event) {
@@ -395,12 +395,10 @@ window.toggleMobileMenu = function(event) {
         document.body.style.touchAction = 'none';
         console.log('Menu opened');
     }
-};
-
-// Ensure function is globally available immediately
-if (typeof window !== 'undefined') {
-    window.toggleMobileMenu = window.toggleMobileMenu;
 }
+
+// Make function globally available
+window.toggleMobileMenu = toggleMobileMenu;
 
 // Initialize when DOM loads
 document.addEventListener('DOMContentLoaded', init);

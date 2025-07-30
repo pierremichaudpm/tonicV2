@@ -121,29 +121,7 @@
         </div>
     </noscript>
     <div id="root"></div>
-    <script>
-        // CRITICAL: Define mobile menu function IMMEDIATELY before any React content
-        window.toggleMobileMenu = function(event) {
-            console.log('Emergency mobile menu function called');
-            if (event) {
-                event.preventDefault();
-                event.stopPropagation();
-            }
-            const mobileMenu = document.getElementById('mobileMenu');
-            if (!mobileMenu) return;
-
-            const isOpen = mobileMenu.style.display === 'flex' || mobileMenu.classList.contains('active');
-            if (isOpen) {
-                mobileMenu.classList.remove('active');
-                mobileMenu.style.display = 'none';
-                document.body.style.overflow = '';
-            } else {
-                mobileMenu.classList.add('active');
-                mobileMenu.style.display = 'flex';
-                document.body.style.overflow = 'hidden';
-            }
-        };
-    </script>
+    
     <script crossorigin src="https://unpkg.com/react@18.2.0/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
