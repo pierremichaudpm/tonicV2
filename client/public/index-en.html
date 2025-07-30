@@ -987,13 +987,44 @@
                 const img = new Image();
                 img.src = PROPERTIES[0].image;
 
-                timers.current.autoPlay = setTimeout(() => {
-                    setState(prev => ({...prev, currentView: VIEWS.GRID, showGridProgress: true}));
-                    timers.current.grid = setTimeout(() => {
-                        setState(prev => ({...prev, showGridProgress: false}));
-                        startHeroSequence(0);
-                    }, GRID_DISPLAY_TIME);
-                }, SPLASH_DISPLAY_TIME);
+                // Check for hero navigation from URL hash
+                const checkForHeroNavigation = () => {
+                    const hash = window.location.hash.substring(1); // Remove the #
+                    const heroId = hash || new URLSearchParams(window.location.search).get('hero');
+                    
+                    if (heroId) {
+                        // Map hash/parameter to property index
+                        const heroMap = {
+                            'beach-pro-tour': 0,
+                            'grands-prix-cyclistes': 1, 
+                            'marathon-beneva': 2,
+                            '21k-montreal': 3,
+                            'montreal-2026-uci': 4,
+                            'studio-76': 5,
+                            'dock-619': 6
+                        };
+                        
+                        const heroIndex = heroMap[heroId];
+                        if (heroIndex !== undefined) {
+                            // Skip splash and grid, go directly to hero
+                            setTimeout(() => {
+                                startHeroSequence(heroIndex);
+                            }, 500);
+                            return;
+                        }
+                    }
+                    
+                    // Default behavior if no hero specified
+                    timers.current.autoPlay = setTimeout(() => {
+                        setState(prev => ({...prev, currentView: VIEWS.GRID, showGridProgress: true}));
+                        timers.current.grid = setTimeout(() => {
+                            setState(prev => ({...prev, showGridProgress: false}));
+                            startHeroSequence(0);
+                        }, GRID_DISPLAY_TIME);
+                    }, SPLASH_DISPLAY_TIME);
+                };
+                
+                checkForHeroNavigation();
             }, []);
 
             // Window resize handler

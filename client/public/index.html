@@ -574,16 +574,16 @@
                 event.preventDefault();
                 event.stopPropagation();
             }
-            
+
             const mobileMenu = document.getElementById('mobileMenu');
             if (!mobileMenu) {
                 console.log('Mobile menu element not found');
                 return;
             }
-            
+
             const isOpen = mobileMenu.classList.contains('active') || 
                           mobileMenu.style.display === 'flex';
-            
+
             if (isOpen) {
                 mobileMenu.classList.remove('active');
                 mobileMenu.style.display = 'none';
@@ -1048,11 +1048,38 @@
 
             // Initialize
             useEffect(() => {
-                const color = getCSSVariable('--accent-primary');
-                if(color) setState(prev => ({...prev, accentColor: color}));
-                setState(prev => ({...prev, isInitialized: true}));
-                new Image().src = PROPERTIES[0].image;
+            setState(prev => ({...prev, isInitialized: true}));
+            const img = new Image();
+            img.src = PROPERTIES[0].image;
 
+            // Check for hero navigation from URL hash
+            const checkForHeroNavigation = () => {
+                const hash = window.location.hash.substring(1); // Remove the #
+                const heroId = hash || new URLSearchParams(window.location.search).get('hero');
+
+                if (heroId) {
+                    // Map hash/parameter to property index
+                    const heroMap = {
+                        'beach-pro-tour': 0,
+                        'grands-prix-cyclistes': 1, 
+                        'marathon-beneva': 2,
+                        '21k-montreal': 3,
+                        'montreal-2026-uci': 4,
+                        'studio-76': 5,
+                        'dock-619': 6
+                    };
+
+                    const heroIndex = heroMap[heroId];
+                    if (heroIndex !== undefined) {
+                        // Skip splash and grid, go directly to hero
+                        setTimeout(() => {
+                            startHeroSequence(heroIndex);
+                        }, 500);
+                        return;
+                    }
+                }
+
+                // Default behavior if no hero specified
                 timers.current.autoPlayTimer = setTimeout(() => {
                     setState(prev => ({...prev, currentView: 'grid', showGridProgress: true}));
                     timers.current.gridTimer = setTimeout(() => {
@@ -1060,7 +1087,10 @@
                         startHeroSequence(0);
                     }, GRID_PROGRESS_DURATION);
                 }, SPLASH_DURATION);
-            }, []);
+            };
+
+            checkForHeroNavigation();
+        }, []);
 
             // Resize handler
             useEffect(() => {
