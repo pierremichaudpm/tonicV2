@@ -1006,10 +1006,8 @@
                         
                         const heroIndex = heroMap[heroId];
                         if (heroIndex !== undefined) {
-                            // Skip splash and grid, go directly to hero
-                            setTimeout(() => {
-                                startHeroSequence(heroIndex);
-                            }, 500);
+                            // Skip splash completely, go directly to hero
+                            setState(prev => ({...prev, currentView: 'hero', activeIndex: heroIndex}));
                             return;
                         }
                     }
