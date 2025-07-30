@@ -567,6 +567,36 @@
         .category-tonic{background:linear-gradient(135deg,var(--accent-primary),var(--accent-50))}
     </style>
     <script>
+        // CRITICAL: Define mobile menu function BEFORE React loads
+        window.toggleMobileMenu = function(event) {
+            console.log('Global toggleMobileMenu called');
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            
+            const mobileMenu = document.getElementById('mobileMenu');
+            if (!mobileMenu) {
+                console.log('Mobile menu element not found');
+                return;
+            }
+            
+            const isOpen = mobileMenu.classList.contains('active') || 
+                          mobileMenu.style.display === 'flex';
+            
+            if (isOpen) {
+                mobileMenu.classList.remove('active');
+                mobileMenu.style.display = 'none';
+                document.body.style.overflow = '';
+                document.body.style.touchAction = '';
+            } else {
+                mobileMenu.classList.add('active');
+                mobileMenu.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+                document.body.style.touchAction = 'none';
+            }
+        };
+
         // Tooltip system for React homepage
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Tooltip script loaded');

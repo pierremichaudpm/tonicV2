@@ -355,13 +355,7 @@ function stopAutoPlay() {
     }
 }
 
-// Mobile menu toggle
-function toggleMobileMenu() {
-    const mobileMenu = document.getElementById('mobileMenu');
-    if (mobileMenu) {
-        mobileMenu.classList.toggle('active');
-    }
-}
+// Mobile menu functionality is now handled globally in index.html
 
 // Initialize when DOM loads
 document.addEventListener('DOMContentLoaded', init);
