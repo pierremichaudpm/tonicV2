@@ -1012,4 +1012,245 @@
         // Mobile Menu Component
         const MobileMenu = ({isOpen, navItems, currentView, hideSwipeInstructions}) => {
             if(!isOpen) return null;
+            return React.createElement('div', {
+                className: "mobile-menu fixed inset-0 bg-black bg-opacity-95 z-[999999] flex flex-col",
+                style: {paddingTop: '100px'}
+            }, 
+                React.createElement('div', {
+                    className: "container mx-auto px-4 pb-8 flex-1 overflow-y-auto"
+                },
+                    React.createElement('div', {
+                        className: "space-y-2"
+                    },
+                        navItems.map((item, index) => 
+                            React.createElement('a', {
+                                key: index,
+                                href: item.href,
+                                className: `nav-item w-full ${currentView === item.view ? 'active' : ''}`,
+                                onClick: hideSwipeInstructions,
+                                dangerouslySetInnerHTML: {__html: item.icon + '<span>' + item.text + '</span>'}
+                            })
+                        )
+                    )
+                )
+            );
+        };
+
+        // Splash Component
+        const Splash = memo(({onAnimationEnd}) => {
             return (
+                <div className="splash-container" onAnimationEnd={onAnimationEnd}>
+                    <div className="absolute inset-0 bg-black opacity-50 z-0 pointer-events-none"></div>
+                    <img src="images/tonic-logo.png" alt="Groupe Tonic" className="splash-logo" />
+                    <p className="splash-tagline">Créateur d'expériences mémorables</p>
+                </div>
+            );
+        });
+
+        // Grid Selection Component
+        const GridSelection = memo(({properties,onTileClick}) => {
+            const [logoScales, setLogoScales] = useState(LOGO_SCALES);
+            const [gridLoaded, setGridLoaded] = useState(false);
+            const [progressVisible, setProgressVisible] = useState(true);
+            const [autoPlayPaused, setAutoPlayPaused] = useState(false);
+            const progressBarRef = useRef(null);
+            const progressLineRefs = useRef([]);
+            const desktopProgressRef = useRef(null);
+
+            const getLogoScale = useCallback((id, viewport) => {
+                const scale = logoScales[id]?.[viewport] || 1;
+                return scale;
+            }, [logoScales]);
+
+            const pauseProgressBar = useCallback(() => {
+                if (progressBarRef.current) {
+                    progressBarRef.current.classList.add('paused');
+                }
+                if (desktopProgressRef.current) {
+                    desktopProgressRef.current.classList.add('paused');
+                }
+                progressLineRefs.current.forEach(line => line.classList.add('paused'));
+                setAutoPlayPaused(true);
+            }, []);
+
+            const resumeProgressBar = useCallback(() => {
+                if (progressBarRef.current) {
+                    progressBarRef.current.classList.remove('paused');
+                }
+                if (desktopProgressRef.current) {
+                    desktopProgressRef.current.classList.remove('paused');
+                }
+                progressLineRefs.current.forEach(line => line.classList.remove('paused'));
+                setAutoPlayPaused(false);
+            }, []);
+
+            useEffect(() => {
+                const timer = setTimeout(() => {
+                    setGridLoaded(true);
+                    setProgressVisible(false);
+                }, GRID_PROGRESS_DURATION);
+
+                return () => clearTimeout(timer);
+            }, []);
+
+            return (
+                <div className="grid-selection-container">
+                    <div className={`grid-progress-bar ${progressVisible ? '' : 'hidden'}`}>
+                        <div className="grid-progress-fill" ref={progressBarRef}></div>
+                    </div>
+                    <div className="grid-wrapper">
+                        <div className="selection-grid" style={{gridTemplateColumns:`repeat(auto-fit, minmax(280px, 1fr))`}}>
+                            {properties.map((property, index) => (
+                                <PropertyTile key={property.id} property={property} index={index} onClick={onTileClick} getLogoScale={getLogoScale}/>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            );
+        });
+
+        // Hero Component
+        const Hero = memo(({property,goToGrid}) => {
+            const [countdown, setCountdown] = useState(getTimeRemaining(property.countdown));
+            const [heroPaused, setHeroPaused] = useState(false);
+            const [transitioning, setTransitioning] = useState(false);
+            const [dock619Enhanced, setDock619Enhanced] = useState(false);
+            const heroContentRef = useRef(null);
+
+            useEffect(() => {
+                if (property.id === 7) {
+                    setTimeout(() => setDock619Enhanced(true), 800);
+                } else {
+                    setDock619Enhanced(false);
+                }
+            }, [property.id]);
+
+            useEffect(() => {
+                let interval = null;
+
+                if (!heroPaused) {
+                    interval = setInterval(() => {
+                        setCountdown(getTimeRemaining(property.countdown));
+                    }, COUNTDOWN_INTERVAL);
+                }
+
+                return () => clearInterval(interval);
+            }, [property, heroPaused]);
+
+            function getTimeRemaining(endTime) {
+                const total = Date.parse(endTime) - Date.parse(new Date());
+                const seconds = Math.floor((total / 1000) % 60);
+                const minutes = Math.floor((total / 1000 / 60) % 60);
+                const hours = Math.floor((total / (1000 * 60 * 60)) % 24);
+                const days = Math.floor(total / (1000 * 60 * 60 * 24));
+
+                return {
+                    total,
+                    days,
+                    hours,
+                    minutes,
+                    seconds
+                };
+            }
+
+            const CountdownUnit = ({value,label}) => (
+                <div className="countdown-unit">
+                    <div className="font-semibold text-2xl sm:text-3xl md:text-4xl lg:text-5xl leading-none">{String(value).padStart(2, '0')}</div>
+                    <div className="font-medium text-xs sm:text-sm md:text-base opacity-80">{label}</div>
+                </div>
+            );
+
+            return (
+                <div className="relative w-full h-full" style={{overflow:'hidden'}}>
+                    <div className="hero-transition-wrapper" style={{opacity: transitioning ? 0 : 1}}>
+                        <div className="hero-bg absolute inset-0" style={{backgroundImage:`url(${property.image})`}}></div>
+                        <div className="absolute inset-0 bg-gradient-to-b from-black to-transparent opacity-40"></div>
+                        <div className="absolute inset-0 pointer-events-none">
+                            {Array.from({ length: PARTICLE_COUNT }, (_, i) => (
+                                <div key={i} className="particle" style={{
+                                    top: `${Math.random() * 100}vh`,
+                                    left: `${Math.random() * 100}vw`,
+                                    animationDelay: `${Math.random() * 4}s`
+                                }}></div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="hero-main-content">
+                        <div className="hero-content container mx-auto px-4 relative z-30" data-dock619={dock619Enhanced} ref={heroContentRef}>
+                            <div className="hero-logo-container" style={{'--child-index':0}}>
+                                <img src={property.logo} alt={property.name} style={{width:'clamp(200px, 40vw, 360px)',height:'auto',filter:'drop-shadow(0 4px 20px rgba(0,0,0,0.8))',transition:'all .3s ease'}}/>
+                            </div>
+                            <h2 className="hero-title text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white leading-tight" style={{textShadow:'0 4px 20px rgba(0,0,0,0.9), 0 2px 10px rgba(0,0,0,0.8)','--child-index':1}}>{property.name}</h2>
+                            <p className="hero-tagline text-lg sm:text-xl md:text-2xl font-medium text-white opacity-90" style={{textShadow:'0 4px 20px rgba(0,0,0,0.9), 0 2px 10px rgba(0,0,0,0.8)',maxWidth:'720px','--child-index':2}}>{property.tagline}</p>
+                            {property.date && <p className="hero-date text-sm sm:text-base font-semibold text-white opacity-80" style={{textShadow:'0 4px 20px rgba(0,0,0,0.9), 0 2px 10px rgba(0,0,0,0.8)','--child-index':3}}>{property.date}</p>}
+                            {property.location && <p className="hero-location text-sm sm:text-base font-medium text-white opacity-70 flex items-center gap-1" style={{textShadow:'0 4px 20px rgba(0,0,0,0.9), 0 2px 10px rgba(0,0,0,0.8)','--child-index':4}}>{Icons.loc} {property.location}</p>}
+
+                            {property.countdown && (
+                                <div className="countdown flex items-center gap-3 mt-5" style={{'--child-index':5}}>
+                                    <CountdownUnit value={countdown.days} label="Jours" />
+                                    <CountdownUnit value={countdown.hours} label="Heures" />
+                                    <CountdownUnit value={countdown.minutes} label="Minutes" />
+                                    <CountdownUnit value={countdown.seconds} label="Secondes" />
+                                </div>
+                            )}
+
+                            <a href={property.url} className={`cta-button-custom ${property.id === 7 ? 'dock619-cta' : ''}`} style={{backgroundImage:`linear-gradient(45deg, ${property.color}, color-mix(in srgb, ${property.color}, #000 30%))`,'--child-index':6}} target="_blank">
+                                <span>En savoir plus</span>
+                                {Icons.arr}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            );
+        });
+
+        // Main App Component
+        const App = () => {
+            const [currentView, setCurrentView] = useState('splash');
+            const [selectedProperty, setSelectedProperty] = useState(PROPERTIES[0]);
+            const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+            const [hideSwipeInstructions, setHideSwipeInstructions] = useState(false);
+
+            const goToGrid = useCallback(() => {
+                setCurrentView('grid');
+            }, []);
+
+            const goToHero = useCallback((index) => {
+                setSelectedProperty(PROPERTIES[index]);
+                setCurrentView('hero');
+            }, []);
+
+            const handleSplashAnimationEnd = useCallback(() => {
+                goToGrid();
+            }, [goToGrid]);
+
+            const navItems = useMemo(() => createNavItems(goToGrid), [goToGrid]);
+
+            return (
+                <div className="mobile-container">
+                    <Header goToGrid={goToGrid} isMobileMenuOpen={isMobileMenuOpen} setIsMobileMenuOpen={setIsMobileMenuOpen} currentView={currentView}/>
+
+                    <MobileMenu 
+                        isOpen={isMobileMenuOpen} 
+                        navItems={navItems}
+                        currentView={currentView}
+                        hideSwipeInstructions={() => {
+                            setIsMobileMenuOpen(false);
+                            setHideSwipeInstructions(true);
+                        }}
+                    />
+
+                    {currentView === 'splash' && <Splash onAnimationEnd={handleSplashAnimationEnd} />}
+                    {currentView === 'grid' && <GridSelection properties={PROPERTIES} onTileClick={goToHero} />}
+                    {currentView === 'hero' && <Hero property={selectedProperty} goToGrid={goToGrid} />}
+                </div>
+            );
+        };
+
+        // Render the app
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(App));
+    </script>
+</body>
+</html>
