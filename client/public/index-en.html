@@ -983,14 +983,18 @@
 
             // Initialize
             useEffect(() => {
+                console.log('Initializing English homepage, URL:', window.location.href);
                 setState(prev => ({...prev, isInitialized: true}));
                 const img = new Image();
                 img.src = PROPERTIES[0].image;
 
-                // Check for hero navigation from URL hash
+                // Check for hero navigation from URL hash or parameters
                 const checkForHeroNavigation = () => {
                     const hash = window.location.hash.substring(1); // Remove the #
-                    const heroId = hash || new URLSearchParams(window.location.search).get('hero');
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const heroId = hash || urlParams.get('hero');
+                    
+                    console.log('Checking for hero navigation:', { hash, heroParam: urlParams.get('hero'), heroId });
                     
                     if (heroId) {
                         // Map hash/parameter to property index
@@ -1005,24 +1009,30 @@
                         };
                         
                         const heroIndex = heroMap[heroId];
+                        console.log('Hero mapping:', { heroId, heroIndex, heroMap });
+                        
                         if (heroIndex !== undefined) {
                             // Skip splash completely, go directly to hero
+                            console.log('Navigating directly to hero:', heroIndex);
                             setState(prev => ({...prev, currentView: 'hero', activeIndex: heroIndex}));
-                            return;
+                            return true;
                         }
                     }
+                    return false;
                     
                     // Default behavior if no hero specified
-                    timers.current.autoPlay = setTimeout(() => {
-                        setState(prev => ({...prev, currentView: VIEWS.GRID, showGridProgress: true}));
-                        timers.current.grid = setTimeout(() => {
-                            setState(prev => ({...prev, showGridProgress: false}));
-                            startHeroSequence(0);
-                        }, GRID_DISPLAY_TIME);
-                    }, SPLASH_DISPLAY_TIME);
+                    const foundHero = checkForHeroNavigation();
+                    if (!foundHero) {
+                        console.log('No hero found, starting normal sequence');
+                        timers.current.autoPlay = setTimeout(() => {
+                            setState(prev => ({...prev, currentView: VIEWS.GRID, showGridProgress: true}));
+                            timers.current.grid = setTimeout(() => {
+                                setState(prev => ({...prev, showGridProgress: false}));
+                                startHeroSequence(0);
+                            }, GRID_DISPLAY_TIME);
+                        }, SPLASH_DISPLAY_TIME);
+                    }
                 };
-                
-                checkForHeroNavigation();
             }, []);
 
             // Window resize handler
