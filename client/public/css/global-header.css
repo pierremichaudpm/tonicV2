@@ -45,7 +45,7 @@ header div.container {
     width: 100% !important;
 }
 
-/* Firefox-specific header container padding fix */
+/* Firefox-specific header container padding fix - ALL DEVICES */
 @-moz-document url-prefix() {
     header > div,
     header > .container,
@@ -60,6 +60,16 @@ header div.container {
         padding-top: 0.5rem !important;
         padding-bottom: 0.5rem !important;
         box-sizing: border-box !important;
+        margin: 0 !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+    
+    /* Firefox mobile specific fixes */
+    header .container.mx-auto.px-2.py-2.sm\:px-4.sm\:py-5 {
+        padding: 0.5rem 0.5rem !important;
+        padding-top: 0.5rem !important;
+        padding-bottom: 0.5rem !important;
     }
 }
 
@@ -83,7 +93,7 @@ header .container.mx-auto.px-2.py-2.sm\:px-4.sm\:py-5 {
         max-width: 1280px !important;
     }
     
-    /* Firefox-specific responsive padding fix */
+    /* Firefox-specific responsive padding fix - DESKTOP */
     @-moz-document url-prefix() {
         header > div,
         header > .container,
@@ -99,6 +109,10 @@ header .container.mx-auto.px-2.py-2.sm\:px-4.sm\:py-5 {
             padding-top: 1.25rem !important;
             padding-bottom: 1.25rem !important;
             box-sizing: border-box !important;
+            margin: 0 !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+            max-width: 1280px !important;
         }
     }
 }
@@ -200,5 +214,19 @@ main, section, .hero-title, h1, h2, h3 {
     .header-normalized {
         padding: 1.25rem 1rem !important;
         max-width: 1280px !important;
+    }
+}
+
+/* Firefox mobile detection fallback - Additional specificity */
+@-moz-document url-prefix() {
+    @media (max-width: 639px) {
+        header * {
+            padding-top: 0.5rem !important;
+            padding-bottom: 0.5rem !important;
+        }
+        
+        header .header-normalized {
+            padding: 0.5rem 1rem !important;
+        }
     }
 }
