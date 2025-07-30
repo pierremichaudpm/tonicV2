@@ -279,3 +279,34 @@ main, section, .hero-title, h1, h2, h3 {
             border-radius: 50% !important;
             flex-shrink: 0 !important;
         }
+
+        /* Hero menu items styling to match main mobile menu */
+        .mobile-menu .hero-menu-item {
+            display: flex !important;
+            align-items: center !important;
+            gap: 0.75rem !important;
+            padding: 0.75rem 1rem !important;
+            width: 100% !important;
+            color: white !important;
+            text-decoration: none !important;
+            border-radius: 0.5rem !important;
+            transition: background 0.2s ease !important;
+            min-height: 44px !important;
+            touch-action: manipulation !important;
+            -webkit-tap-highlight-color: transparent !important;
+            font-size: 0.875rem !important;
+            font-weight: 500 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.025em !important;
+        }
+
+        .mobile-menu .hero-menu-item:hover {
+            background: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        .mobile-menu .hero-color-bar {
+            width: 4px !important;
+            height: 2.5rem !important;
+            border-radius: 2px !important;
+            flex-shrink: 0 !important;
+        }
