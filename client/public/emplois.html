@@ -16,34 +16,15 @@
     <!-- Shared Styles -->
     <link rel="stylesheet" href="css/shared.css">
     <link rel="stylesheet" href="css/global-header.css?v=3">
-    
+
     <!-- Standardized Mobile Menu -->
     <script src="js/mobile-menu.js"></script>
 
-    
+
 
     <!-- Page Specific Styles -->
     <style>
-        /* === Z-INDEX MASTER OVERRIDE === */
-        :root {
-            --z-header: 50;
-            --z-mobile-menu: 999999; 
-            --z-modal: 2147483647;
-        }
-
-        header { z-index: var(--z-header) !important; }
-        #mobileMenu, .mobile-menu { z-index: var(--z-mobile-menu) !important; }
-        #newsModal, #jobModal, .modal-backdrop { z-index: var(--z-modal) !important; }
-        .modal-content { z-index: var(--z-modal) !important; }
-
-        /* Force page content below modals */
-        main, section, .hero-title, h1, h2, h3 { z-index: 1 !important; }
-
-        /* Navigation styles now handled by global-header.css */
-
-        /* Mobile menu styles now handled by global-header.css */
-
-        
+        /* Only keep page-specific content styles - global-header.css handles all header/nav/menu styling */
 
         /* Optimized styles with CSS custom properties */
         :root {
@@ -381,7 +362,7 @@
 
     <!-- All header styles now handled by global-header.css -->
 
-    
+
 </head>
 <body class="bg-black text-white min-h-screen">
     <!-- Header -->
@@ -459,7 +440,7 @@
                 </div>
                 <button onclick="toggleMobileMenu()" class="p-2 hover:bg-white/10 rounded-lg" aria-label="Close" style="z-index: 2000003 !important; position: relative;">
                     <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="pointer-events: none;">
-                        <path d="M6 18L18 6M6 6l12 12"></path>
+                        <path d="M6 18L18 66l12 12"></path>
                     </svg>
                 </button>
             </div>
