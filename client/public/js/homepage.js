@@ -355,50 +355,13 @@ function stopAutoPlay() {
     }
 }
 
-// CRITICAL: Define toggleMobileMenu IMMEDIATELY before any other code
-function toggleMobileMenu(event) {
-    console.log('toggleMobileMenu called from React homepage - timestamp:', Date.now());
-    
-    if (event) {
-        event.preventDefault();
-        event.stopPropagation();
-    }
-    
+// Mobile menu toggle
+function toggleMobileMenu() {
     const mobileMenu = document.getElementById('mobileMenu');
-    if (!mobileMenu) {
-        console.error('Mobile menu not found');
-        return;
-    }
-    
-    const isCurrentlyOpen = mobileMenu.style.display === 'flex' || 
-                           mobileMenu.classList.contains('active') ||
-                           window.getComputedStyle(mobileMenu).display === 'flex';
-    
-    console.log('Menu currently open:', isCurrentlyOpen);
-    
-    if (isCurrentlyOpen) {
-        // Close menu
-        mobileMenu.classList.remove('active');
-        mobileMenu.style.display = 'none';
-        mobileMenu.style.visibility = 'hidden';
-        mobileMenu.style.opacity = '0';
-        document.body.style.overflow = '';
-        document.body.style.touchAction = '';
-        console.log('Menu closed');
-    } else {
-        // Open menu
-        mobileMenu.classList.add('active');
-        mobileMenu.style.display = 'flex';
-        mobileMenu.style.visibility = 'visible';
-        mobileMenu.style.opacity = '1';
-        document.body.style.overflow = 'hidden';
-        document.body.style.touchAction = 'none';
-        console.log('Menu opened');
+    if (mobileMenu) {
+        mobileMenu.classList.toggle('active');
     }
 }
-
-// Make function globally available
-window.toggleMobileMenu = toggleMobileMenu;
 
 // Initialize when DOM loads
 document.addEventListener('DOMContentLoaded', init);

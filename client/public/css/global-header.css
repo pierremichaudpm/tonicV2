@@ -155,114 +155,14 @@ header {
     gap: 0.125rem !important;
 }
 
-/* COMPLETE MOBILE MENU SYSTEM - Single source of truth */
-#mobileMenu, .mobile-menu {
+/* Mobile menu standardization */
+#mobileMenu, .mobile-menu { 
+    z-index: var(--z-mobile-menu) !important; 
     display: none !important;
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    bottom: 0 !important;
-    width: 100vw !important;
-    height: 100vh !important;
-    background: rgba(0,0,0,0.95) !important;
-    backdrop-filter: blur(20px) !important;
-    -webkit-backdrop-filter: blur(20px) !important;
-    z-index: var(--z-mobile-menu) !important;
-    flex-direction: column !important;
-    overflow-y: auto !important;
-    touch-action: none !important;
-    -webkit-overflow-scrolling: touch !important;
 }
 
-/* Show mobile menu when active - Firefox Compatible */
-#mobileMenu.active, 
-.mobile-menu.active,
-#mobileMenu[style*="display: flex"],
-.mobile-menu[style*="display: flex"] {
+#mobileMenu.active, .mobile-menu.active {
     display: flex !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-}
-
-/* Mobile menu header section */
-#mobileMenu .mobile-header,
-.mobile-menu .mobile-header {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    padding: 1rem !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-    position: relative !important;
-}
-
-/* Mobile menu close button */
-#mobileMenu .close-button,
-.mobile-menu .close-button {
-    position: absolute !important;
-    top: 1rem !important;
-    right: 1rem !important;
-    background: none !important;
-    border: none !important;
-    color: white !important;
-    cursor: pointer !important;
-    padding: 0.5rem !important;
-    z-index: calc(var(--z-mobile-menu) + 3) !important;
-    touch-action: manipulation !important;
-    -webkit-tap-highlight-color: transparent !important;
-}
-
-#mobileMenu .close-button svg,
-.mobile-menu .close-button svg {
-    width: 1.5rem !important;
-    height: 1.5rem !important;
-    pointer-events: none !important;
-}
-
-/* Mobile menu logo */
-#mobileMenu .mobile-logo,
-.mobile-menu .mobile-logo {
-    cursor: pointer !important;
-    z-index: calc(var(--z-mobile-menu) + 2) !important;
-    position: relative !important;
-    pointer-events: auto !important;
-}
-
-#mobileMenu .mobile-logo img,
-.mobile-menu .mobile-logo img {
-    width: clamp(180px, 35vw, 250px) !important;
-    height: auto !important;
-    display: block !important;
-}
-
-/* Mobile menu navigation items */
-#mobileMenu .nav-item,
-.mobile-menu .nav-item {
-    display: flex !important;
-    align-items: center !important;
-    gap: 0.75rem !important;
-    padding: 0.75rem 1rem !important;
-    width: 100% !important;
-    color: white !important;
-    text-decoration: none !important;
-    border-radius: 0.5rem !important;
-    transition: background 0.2s ease !important;
-    min-height: 44px !important;
-    touch-action: manipulation !important;
-    -webkit-tap-highlight-color: transparent !important;
-    font-size: 0.875rem !important;
-    font-weight: 500 !important;
-}
-
-#mobileMenu .nav-item:hover,
-.mobile-menu .nav-item:hover {
-    background: rgba(255, 255, 255, 0.1) !important;
-}
-
-#mobileMenu .nav-item.active,
-.mobile-menu .nav-item.active {
-    background: rgba(249, 115, 22, 0.2) !important;
-    color: white !important;
 }
 
 /* Modal z-index */
@@ -419,6 +319,3 @@ main, section, .hero-title, h1, h2, h3 {
         .mobile-menu .hero-menu-item:active {
             background: rgba(255, 255, 255, 0.15) !important;
         }
-
-/* STANDARDIZED MOBILE MENU TOGGLE FUNCTION */
-/* This script is included in CSS to be loaded by all pages using global-header.css */

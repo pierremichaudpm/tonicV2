@@ -17,9 +17,53 @@
     <link rel="stylesheet" href="css/shared.css">
     <link rel="stylesheet" href="css/global-header.css?v=3">
 
-    
+    <script>
+        // === MOBILE MENU FUNCTION STANDARDIZATION ===
+        function toggleMobileMenu() {
+            console.log('toggleMobileMenu called - timestamp:', Date.now());
 
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
 
+            const mobileMenu = document.getElementById('mobileMenu');
+            if (!mobileMenu) {
+                console.log('Mobile menu element not found');
+                return;
+            }
+
+            const isCurrentlyOpen = mobileMenu.classList.contains('active') || 
+                                   mobileMenu.style.display === 'flex' ||
+                                   window.getComputedStyle(mobileMenu).display === 'flex';
+
+            console.log('Menu currently open:', isCurrentlyOpen);
+
+            if (isCurrentlyOpen) {
+                mobileMenu.classList.remove('active');
+                mobileMenu.style.display = 'none';
+                mobileMenu.style.visibility = 'hidden';
+                mobileMenu.style.opacity = '0';
+                document.body.style.overflow = '';
+                document.body.style.touchAction = '';
+                console.log('Menu closed');
+            } else {
+                mobileMenu.classList.add('active');
+                mobileMenu.style.display = 'flex';
+                mobileMenu.style.visibility = 'visible';
+                mobileMenu.style.opacity = '1';
+                document.body.style.overflow = 'hidden';
+                document.body.style.touchAction = 'none';
+                console.log('Menu opened');
+            }
+        }
+
+        // Auto-run test
+        setTimeout(() => {
+            console.log('🧪 Testing cleanup on:', document.title);
+            console.log('Mobile menu function:', typeof toggleMobileMenu);
+        }, 2000);
+    </script>
 
     <!-- Page Specific Styles - Optimized -->
     <style>
@@ -341,7 +385,19 @@
 
     <!-- All header styles now handled by global-header.css -->
 
-
+    <script>
+    /* Fix 3: Define toggleMobileMenu function */
+    function toggleMobileMenu() {
+        var menu = document.getElementById('mobileMenu');
+        if (menu.classList.contains('active')) {
+            menu.classList.remove('active');
+            document.body.style.overflow = '';
+        } else {
+            menu.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+    }
+    </script>
 </head>
 <body class="bg-black text-white min-h-screen">
     <!-- Header -->
@@ -461,7 +517,7 @@
                     <span>EN</span>
                 </a>
             </div>
-
+        
                 <div class="events-section">
                     <a href="index.html#beach-pro-tour" class="hero-menu-item" onclick="toggleMobileMenu(); setTimeout(() => window.location.href='index.html#beach-pro-tour', 100);" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; width: 100%; color: white; text-decoration: none; border-radius: 0.5rem; transition: background 0.2s ease; min-height: 44px; font-size: 0.875rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.025em;">
                         <div class="hero-color-bar" style="width: 4px; height: 2.5rem; border-radius: 2px; background-color: #ff0e9b; flex-shrink: 0;"></div>
