@@ -1021,18 +1021,22 @@
                     return false;
                     
                     // Default behavior if no hero specified
-                    const foundHero = checkForHeroNavigation();
-                    if (!foundHero) {
-                        console.log('No hero found, starting normal sequence');
-                        timers.current.autoPlay = setTimeout(() => {
-                            setState(prev => ({...prev, currentView: VIEWS.GRID, showGridProgress: true}));
-                            timers.current.grid = setTimeout(() => {
-                                setState(prev => ({...prev, showGridProgress: false}));
-                                startHeroSequence(0);
-                            }, GRID_DISPLAY_TIME);
-                        }, SPLASH_DISPLAY_TIME);
                     }
+                    return false;
                 };
+                
+                // Default behavior if no hero specified
+                const foundHero = checkForHeroNavigation();
+                if (!foundHero) {
+                    console.log('No hero found, starting normal sequence');
+                    timers.current.autoPlay = setTimeout(() => {
+                        setState(prev => ({...prev, currentView: VIEWS.GRID, showGridProgress: true}));
+                        timers.current.grid = setTimeout(() => {
+                            setState(prev => ({...prev, showGridProgress: false}));
+                            startHeroSequence(0);
+                        }, GRID_DISPLAY_TIME);
+                    }, SPLASH_DISPLAY_TIME);
+                }
             }, []);
 
             // Window resize handler
