@@ -355,9 +355,14 @@ function stopAutoPlay() {
     }
 }
 
-// Mobile menu toggle for React homepage - IMMEDIATE AVAILABILITY
-window.toggleMobileMenu = function() {
-    console.log('toggleMobileMenu called from React homepage');
+// IMMEDIATE MOBILE MENU FUNCTION DEFINITION - MUST BE FIRST
+window.toggleMobileMenu = function(event) {
+    console.log('toggleMobileMenu called from React homepage - timestamp:', Date.now());
+    
+    if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
     
     const mobileMenu = document.getElementById('mobileMenu');
     if (!mobileMenu) {
@@ -366,7 +371,8 @@ window.toggleMobileMenu = function() {
     }
     
     const isCurrentlyOpen = mobileMenu.style.display === 'flex' || 
-                           mobileMenu.classList.contains('active');
+                           mobileMenu.classList.contains('active') ||
+                           window.getComputedStyle(mobileMenu).display === 'flex';
     
     console.log('Menu currently open:', isCurrentlyOpen);
     
@@ -374,6 +380,8 @@ window.toggleMobileMenu = function() {
         // Close menu
         mobileMenu.classList.remove('active');
         mobileMenu.style.display = 'none';
+        mobileMenu.style.visibility = 'hidden';
+        mobileMenu.style.opacity = '0';
         document.body.style.overflow = '';
         document.body.style.touchAction = '';
         console.log('Menu closed');
@@ -381,14 +389,18 @@ window.toggleMobileMenu = function() {
         // Open menu
         mobileMenu.classList.add('active');
         mobileMenu.style.display = 'flex';
+        mobileMenu.style.visibility = 'visible';
+        mobileMenu.style.opacity = '1';
         document.body.style.overflow = 'hidden';
         document.body.style.touchAction = 'none';
         console.log('Menu opened');
     }
 };
 
-// Alias for internal use
-const toggleMobileMenu = window.toggleMobileMenu;
+// Ensure function is globally available immediately
+if (typeof window !== 'undefined') {
+    window.toggleMobileMenu = window.toggleMobileMenu;
+}
 
 // Initialize when DOM loads
 document.addEventListener('DOMContentLoaded', init);
