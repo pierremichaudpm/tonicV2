@@ -1,0 +1,53 @@
+Looking at your files, I can see the issue. The privacy pages have conflicting styles and overrides that are preventing the consistent header behavior you've achieved in the `a-propos.html` page. Here's a comprehensive prompt for Replit to fix this:
+
+---
+
+**Fix inconsistent header and mobile menu behavior across privacy pages**
+
+The privacy pages (politique-de-confidentialite.html, privacy-policy.html, conditions-utilisation.html, terms-of-use.html) have header and mobile menu inconsistencies compared to the working implementation in a-propos.html.
+
+**Tasks:**
+
+1. **Remove all inline header-related styles from the privacy pages' `<style>` sections**. These are conflicting with global-header.css. Specifically remove:
+   - Any z-index overrides
+   - Navigation styles (.nav-container, .nav-item, .lang-switcher, etc.)
+   - Mobile menu styles (.mobile-menu, #mobileMenu)
+   - Any header positioning or backdrop-filter styles
+
+2. **Ensure global-header.css is loaded with version parameter** on all privacy pages:
+   ```html
+   <link rel="stylesheet" href="css/global-header.css?v=3">
+   ```
+
+3. **Standardize the header HTML structure** to exactly match a-propos.html:
+   - Same container classes
+   - Same navigation structure
+   - Same mobile menu button implementation
+   - Ensure logo uses: `style="height: clamp(1.875rem, 3.75vw, 2.625rem); width: auto;"`
+
+4. **Update mobile menu structure** to match a-propos.html exactly, including:
+   - The fixed header section at top of mobile menu
+   - Proper padding-top for menu content
+   - Same close button implementation
+
+5. **Keep only page-specific styles** in each privacy page's `<style>` section:
+   - .legal-section
+   - .legal-title
+   - .legal-content
+   - .legal-list
+   - .page-header
+   - .page-title
+   - .page-subtitle
+
+6. **Ensure shared.js is loaded** and navigation is initialized properly at the bottom of each page:
+   ```javascript
+   window.addEventListener('load', function() {
+       if (window.initializeNavigation) {
+           window.initializeNavigation(false, 'current-page.html'); // false for French pages
+       }
+   });
+   ```
+
+7. **Remove duplicate or conflicting JavaScript** - keep only the standardized toggleMobileMenu function at the top.
+
+The goal is to have all privacy pages use the exact same header implementation as a-propos.html, with only the page-specific content styles remaining in their individual style sections.
