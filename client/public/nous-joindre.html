@@ -21,12 +21,12 @@
         // === MOBILE MENU FUNCTION STANDARDIZATION ===
         function toggleMobileMenu() {
             console.log('toggleMobileMenu called - timestamp:', Date.now());
-            
+
             if (event) {
                 event.preventDefault();
                 event.stopPropagation();
             }
-            
+
             const mobileMenu = document.getElementById('mobileMenu');
             if (!mobileMenu) {
                 console.log('Mobile menu element not found');
@@ -36,7 +36,7 @@
             const isCurrentlyOpen = mobileMenu.classList.contains('active') || 
                                    mobileMenu.style.display === 'flex' ||
                                    window.getComputedStyle(mobileMenu).display === 'flex';
-            
+
             console.log('Menu currently open:', isCurrentlyOpen);
 
             if (isCurrentlyOpen) {
@@ -485,7 +485,7 @@
 
             <div class="space-y-2">
                 <a href="index.html" class="nav-item w-full">
-                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" style="color: white; stroke: white;"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" style="color: white; stroke: white;"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3y="14" width="7" height="7"/></svg>
                     <span>Accueil</span>
                 </a>
                 <a href="a-propos.html" class="nav-item w-full">
@@ -517,6 +517,41 @@
                     <span>EN</span>
                 </a>
             </div>
+        
+                <div class="events-section">
+                    <a href="index.html#beach-pro-tour" class="hero-menu-item" onclick="toggleMobileMenu(); setTimeout(() => window.location.href='index.html#beach-pro-tour', 100);" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; width: 100%; color: white; text-decoration: none; border-radius: 0.5rem; transition: background 0.2s ease; min-height: 44px; font-size: 0.875rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.025em;">
+                        <div class="hero-color-bar" style="width: 4px; height: 2.5rem; border-radius: 2px; background-color: #ff0e9b; flex-shrink: 0;"></div>
+                        <span>BEACH PRO TOUR</span>
+                    </a>
+                    <a href="index.html#grands-prix-cyclistes" class="hero-menu-item" onclick="toggleMobileMenu(); setTimeout(() => window.location.href='index.html#grands-prix-cyclistes', 100);" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; width: 100%; color: white; text-decoration: none; border-radius: 0.5rem; transition: background 0.2s ease; min-height: 44px; font-size: 0.875rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.025em;">
+                        <div class="hero-color-bar" style="width: 4px; height: 2.5rem; border-radius: 2px; background-color: #b7d233; flex-shrink: 0;"></div>
+                        <span>GRANDS PRIX CYCLISTES</span>
+                    </a>
+                    <a href="index.html#marathon-beneva" class="hero-menu-item" onclick="toggleMobileMenu(); setTimeout(() => window.location.href='index.html#marathon-beneva', 100);" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; width: 100%; color: white; text-decoration: none; border-radius: 0.5rem; transition: background 0.2s ease; min-height: 44px; font-size: 0.875rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.025em;">
+                        <div class="hero-color-bar" style="width: 4px; height: 2.5rem; border-radius: 2px; background-color: #957ab7; flex-shrink: 0;"></div>
+                        <span>MARATHON BENEVA DE MONTRÉAL</span>
+                    </a>
+                    <a href="index.html#21k-montreal" class="hero-menu-item" onclick="toggleMobileMenu(); setTimeout(() => window.location.href='index.html#21k-montreal', 100);" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; width: 100%; color: white; text-decoration: none; border-radius: 0.5rem; transition: background 0.2s ease; min-height: 44px; font-size: 0.875rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.025em;">
+                        <div class="hero-color-bar" style="width: 4px; height: 2.5rem; border-radius: 2px; background-color: #e2493c; flex-shrink: 0;"></div>
+                        <span>21K DE MONTRÉAL</span>
+                    </a>
+                    <a href="index.html#montreal-2026-uci" class="hero-menu-item" onclick="toggleMobileMenu(); setTimeout(() => window.location.href='index.html#montreal-2026-uci', 100);" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; width: 100%; color: white; text-decoration: none; border-radius: 0.5rem; transition: background 0.2s ease; min-height: 44px; font-size: 0.875rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.025em;">
+                        <div class="hero-color-bar" style="width: 4px; height: 2.5rem; border-radius: 2px; background-color: #da273b; flex-shrink: 0;"></div>
+                        <span>CHAMPIONNATS DU MONDE ROUTE UCI MONTRÉAL 2026</span>
+                    </a>
+                    <a href="index.html#studio-76" class="hero-menu-item" onclick="toggleMobileMenu(); setTimeout(() => window.location.href='index.html#studio-76', 100);" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; width: 100%; color: white; text-decoration: none; border-radius: 0.5rem; transition: background 0.2s ease; min-height: 44px; font-size: 0.875rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.025em;">
+                        <div class="hero-color-bar" style="width: 4px; height: 2.5rem; border-radius: 2px; background-color: #03b0f9; flex-shrink: 0;"></div>
+                        <span>STUDIO 76</span>
+                    </a>
+                    <a href="index.html#dock-619" class="hero-menu-item" onclick="toggleMobileMenu(); setTimeout(() => window.location.href='index.html#dock-619', 100);" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; width: 100%; color: white; text-decoration: none; border-radius: 0.5rem; transition: background 0.2s ease; min-height: 44px; font-size: 0.875rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.025em;">
+                        <div class="hero-color-bar" style="width: 4px; height: 2.5rem; border-radius: 2px; background-color: #957ab7; flex-shrink: 0;"></div>
+                        <span>DOCK 619</span>
+                    </a>
+                </div>
+
+                <!-- Language Toggle -->
+                <a href="nous-joindre-en.html" class="nav-item" style="border-top: 1px solid rgba(255, 255, 255, 0.1); margin-top: 1rem; padding-top: 1rem;">
+
         </div>
     </div>
 
