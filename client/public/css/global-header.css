@@ -153,7 +153,7 @@ main, section, .hero-title, h1, h2, h3 {
 
 /* Header normalization class for JavaScript fix */
 .header-normalized {
-    padding: 0.5rem 0.5rem !important;
+    padding: 0.5rem 1rem !important;
     margin-left: auto !important;
     margin-right: auto !important;
     max-width: 100% !important;
