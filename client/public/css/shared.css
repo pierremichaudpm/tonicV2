@@ -830,13 +830,12 @@ body.modal-open .modal-content {
         .cta-button-custom svg{width:1.25rem;height:1.25rem;flex-shrink:0;transition:transform .3s ease}
         .cta-button-custom span{position:relative;z-index:1;white-space:nowrap;color:#fff!important}
 
-        /* Fix CTA button slide-in animation to start from content edge on mobile */
+        /* Fix mobile CTA button clipping by allowing proper overflow during animation */
         @media (max-width: 768px) {
             .hero-content {
                 padding-left: 1rem !important;
                 padding-right: 1rem !important;
-                overflow: hidden !important;
-                position: relative !important;
+                overflow: visible !important;
             }
 
             .cta-button-custom {
@@ -845,25 +844,11 @@ body.modal-open .modal-content {
                 width: fit-content !important;
                 min-width: auto !important;
                 max-width: calc(100vw - 2rem) !important;
-                transform: translateX(-100%) !important;
-                animation: slideInFromContentEdge 0.6s ease-out 0.5s both !important;
             }
 
-            /* Custom animation that starts from the actual content edge */
-            @keyframes slideInFromContentEdge {
-                from {
-                    transform: translateX(-100%) !important;
-                    opacity: 0 !important;
-                }
-                to {
-                    transform: translateX(0) !important;
-                    opacity: 1 !important;
-                }
-            }
-
-            /* Ensure proper animation boundaries */
+            /* Ensure parent containers allow CTA animation to show properly */
             .hero-main-content,
             .hero-transition-wrapper {
-                overflow: hidden !important;
+                overflow: visible !important;
             }
         }
