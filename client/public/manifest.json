@@ -3,8 +3,8 @@
   "short_name": "Tonic",
   "description": "Créateur d'expériences mémorables - Événements sportifs au Québec",
   "start_url": "/",
-  "display": "standalone",
-  "background_color": "#000000",
+  "display": "fullscreen",
+  "background_color": "#ffffff",
   "theme_color": "#000000",
   "orientation": "portrait-primary",
   "icons": [
