@@ -736,6 +736,16 @@ The website is now fully operational and matches the original local/Netlify func
 - **Studio 76 CTA URL update**: Changed external link from "https://studio-76.replit.app/" to "https://studio-76.ca/" in both French and English homepage files
 - **Status**: ✅ COMPLETED - Privacy pages have consistent header styling and Studio 76 now links to external website studio-76.ca
 
+### Favicon & Home Screen Icons Implementation - July 31, 2025 ✅ COMPLETED
+- **Professional favicon system**: Implemented complete favicon coverage using user's Tonic cross logo
+- **Multiple favicon formats**: Added ICO, 16x16 PNG, 32x32 PNG for comprehensive browser compatibility
+- **Android home screen icons**: Created 192x192 and 512x512 PNG icons with white backgrounds for clean appearance when rounded
+- **iOS home screen support**: Added 180x180 apple-touch-icon for iOS devices
+- **PWA mechanism removed**: Eliminated automatic PWA installation prompts while preserving manual "Add to Home Screen" functionality
+- **No installation prompts**: Users can manually add website to home screen without pushy app installation dialogs
+- **Professional icon appearance**: Clean white background with black Tonic cross logo for consistent branding across all platforms
+- **Status**: ✅ COMPLETED - Complete home screen icon system without intrusive PWA prompts
+
 ### Beach Pro Tour Logo Update - January 30, 2025 ✅ COMPLETED
 - **New logo implementation**: Replaced Beach Pro Tour logo with new "VOLLEYBALL WORLD BEACH PRO TOUR" branding across both French and English homepages
 - **Cache-busting solution**: Added version parameter `?v=20250130` to logo URLs to force browser refresh and bypass aggressive caching (max-age=31536000)
