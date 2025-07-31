@@ -23,26 +23,9 @@
     <link rel="icon" type="image/png" sizes="192x192" href="images/android-chrome-192x192.png">
     <link rel="icon" type="image/png" sizes="512x512" href="images/android-chrome-512x512.png">
     
-    <!-- PWA Meta Tags for Android Home Screen -->
+    <!-- Home Screen Icons Only (No PWA Prompts) -->
     <meta name="theme-color" content="#ffffff">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="application-name" content="Groupe Tonic">
-    <link rel="manifest" href="manifest.json">
-    
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function() {
-                navigator.serviceWorker.register('/sw.js')
-                    .then(function(registration) {
-                        console.log('ServiceWorker registration successful');
-                    }, function(err) {
-                        console.log('ServiceWorker registration failed: ', err);
-                    });
-                });
-        }
-    </script>
 
     <style>
         /* === Z-INDEX MASTER OVERRIDE === */
