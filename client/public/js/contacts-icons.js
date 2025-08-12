@@ -25,15 +25,32 @@
     let changed = false;
 
     if (insta) {
-      insta.style.color = BRAND.instagram;
-      insta.addEventListener('mouseenter', () => { insta.style.color = tint(BRAND.instagram, 20); });
-      insta.addEventListener('mouseleave', () => { insta.style.color = BRAND.instagram; });
+      // Force SVG fill to brand color to avoid React hover overriding anchor color
+      const svg = insta.querySelector('svg');
+      if (svg) {
+        svg.setAttribute('fill', BRAND.instagram);
+        svg.style.fill = BRAND.instagram;
+        insta.addEventListener('mouseenter', () => { svg.style.fill = tint(BRAND.instagram, 20); }, { passive: true });
+        insta.addEventListener('mouseleave', () => { svg.style.fill = BRAND.instagram; }, { passive: true });
+      } else {
+        insta.style.color = BRAND.instagram;
+        insta.addEventListener('mouseenter', () => { insta.style.color = tint(BRAND.instagram, 20); }, { passive: true });
+        insta.addEventListener('mouseleave', () => { insta.style.color = BRAND.instagram; }, { passive: true });
+      }
       changed = true;
     }
     if (linked) {
-      linked.style.color = BRAND.linkedin;
-      linked.addEventListener('mouseenter', () => { linked.style.color = tint(BRAND.linkedin, 20); });
-      linked.addEventListener('mouseleave', () => { linked.style.color = BRAND.linkedin; });
+      const svg = linked.querySelector('svg');
+      if (svg) {
+        svg.setAttribute('fill', BRAND.linkedin);
+        svg.style.fill = BRAND.linkedin;
+        linked.addEventListener('mouseenter', () => { svg.style.fill = tint(BRAND.linkedin, 20); }, { passive: true });
+        linked.addEventListener('mouseleave', () => { svg.style.fill = BRAND.linkedin; }, { passive: true });
+      } else {
+        linked.style.color = BRAND.linkedin;
+        linked.addEventListener('mouseenter', () => { linked.style.color = tint(BRAND.linkedin, 20); }, { passive: true });
+        linked.addEventListener('mouseleave', () => { linked.style.color = BRAND.linkedin; }, { passive: true });
+      }
       changed = true;
     }
     return changed;
