@@ -412,7 +412,8 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'client/public/index.html'));
 });
 
-app.listen(PORT, () => {
+// Bind explicitly to 0.0.0.0 for Railway/public networking compatibility
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`);
   console.log(`Serving static files from: ${path.join(__dirname, 'client/public')}`);
 });
