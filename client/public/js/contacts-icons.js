@@ -4,6 +4,8 @@
     linkedin: '#0A66C2'   // LinkedIn brand blue
   };
 
+  // On force les SVG inline existants (pas d'images raster pour éviter le fond blanc)
+
   function tint(hex, amount) {
     try {
       const num = parseInt(hex.replace('#', ''), 16);
@@ -34,34 +36,46 @@
     const linked = root.querySelector('a[href*="linkedin.com/company/groupe-tonic"]');
     let changed = false;
 
+    function purgeImages(anchor) {
+      if (!anchor) return;
+      anchor.querySelectorAll('img').forEach(img => img.remove());
+    }
+
     if (insta) {
-      // Force SVG fill to brand color to avoid React hover overriding anchor color
+      purgeImages(insta);
       const svg = insta.querySelector('svg');
       if (svg) {
+        svg.style.width = '39px';
+        svg.style.height = '39px';
         svg.setAttribute('fill', BRAND.instagram);
         svg.style.fill = BRAND.instagram;
-        insta.addEventListener('mouseenter', () => { svg.style.fill = tint(BRAND.instagram, 20); }, { passive: true });
-        insta.addEventListener('mouseleave', () => { svg.style.fill = BRAND.instagram; }, { passive: true });
-      } else {
-        insta.style.color = BRAND.instagram;
-        insta.addEventListener('mouseenter', () => { insta.style.color = tint(BRAND.instagram, 20); }, { passive: true });
-        insta.addEventListener('mouseleave', () => { insta.style.color = BRAND.instagram; }, { passive: true });
+        insta.style.background = 'transparent';
+        insta.style.border = '0';
+        insta.style.outline = 'none';
+        insta.style.boxShadow = 'none';
+        insta.addEventListener('mouseenter', () => { svg.style.filter = 'brightness(1.08)'; }, { passive: true });
+        insta.addEventListener('mouseleave', () => { svg.style.filter = 'none'; }, { passive: true });
+        changed = true;
       }
-      changed = true;
     }
     if (linked) {
+      purgeImages(linked);
       const svg = linked.querySelector('svg');
       if (svg) {
+        svg.style.width = '38px';
+        svg.style.height = '38px';
+        svg.style.transform = 'scale(1.0)';
+        svg.style.transformOrigin = 'center';
         svg.setAttribute('fill', BRAND.linkedin);
         svg.style.fill = BRAND.linkedin;
-        linked.addEventListener('mouseenter', () => { svg.style.fill = tint(BRAND.linkedin, 20); }, { passive: true });
-        linked.addEventListener('mouseleave', () => { svg.style.fill = BRAND.linkedin; }, { passive: true });
-      } else {
-        linked.style.color = BRAND.linkedin;
-        linked.addEventListener('mouseenter', () => { linked.style.color = tint(BRAND.linkedin, 20); }, { passive: true });
-        linked.addEventListener('mouseleave', () => { linked.style.color = BRAND.linkedin; }, { passive: true });
+        linked.style.background = 'transparent';
+        linked.style.border = '0';
+        linked.style.outline = 'none';
+        linked.style.boxShadow = 'none';
+        linked.addEventListener('mouseenter', () => { svg.style.filter = 'brightness(1.08)'; }, { passive: true });
+        linked.addEventListener('mouseleave', () => { svg.style.filter = 'none'; }, { passive: true });
+        changed = true;
       }
-      changed = true;
     }
     return changed;
   }
