@@ -19,9 +19,19 @@
     }
   }
 
+  function getContactRoot() {
+    const titles = Array.from(document.querySelectorAll('h1.page-title'));
+    const contactTitle = titles.find(h => /Contact Us|Nous joindre/i.test(h.textContent || ''));
+    if (!contactTitle) return null;
+    return contactTitle.closest('.container') || contactTitle.parentElement || document.body;
+  }
+
   function applyColoredIcons() {
-    const insta = document.querySelector('a[href*="instagram.com/groupe.tonic"]');
-    const linked = document.querySelector('a[href*="linkedin.com/company/groupe-tonic"]');
+    const root = getContactRoot();
+    if (!root) return false;
+
+    const insta = root.querySelector('a[href*="instagram.com/groupe.tonic"]');
+    const linked = root.querySelector('a[href*="linkedin.com/company/groupe-tonic"]');
     let changed = false;
 
     if (insta) {
