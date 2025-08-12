@@ -1,0 +1,20 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# Routes spécifiques avant le fallback SPA
+[[redirects]]
+  from = "/cms"
+  to = "/cms.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin"
+  to = "/cms.html"
+  status = 200
+
+# Fallback SPA (toutes les autres routes vers index.html)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

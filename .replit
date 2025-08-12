@@ -1,63 +1,34 @@
-modules = ["nodejs-20", "postgresql-16", "python-3.11", "web"]
-run = "npm run dev"
-hidden = [".config", ".git", "generated-icon.png", "node_modules", "dist"]
+run = "npm install && npm start"
+entrypoint = "server.js"
+hidden = [".config", "package-lock.json"]
+modules = ["nodejs-20:v8-20230920-bd784b9"]
 
 [nix]
-channel = "stable-24_05"
-packages = ["freetype", "imagemagick", "lcms2", "libimagequant", "libjpeg", "libtiff", "libwebp", "libxcrypt", "openjpeg", "tcl", "tk", "zlib", "wget"]
-
-[deployment]
-deploymentTarget = "autoscale"
-build = ["npm", "run", "build"]
-run = ["npm", "run", "start"]
-
-[[ports]]
-localPort = 1337
-externalPort = 3000
-
-[[ports]]
-localPort = 3001
-externalPort = 3002
-
-[[ports]]
-localPort = 3030
-externalPort = 3003
-
-[[ports]]
-localPort = 5000
-externalPort = 80
-
-[[ports]]
-localPort = 5173
-externalPort = 5173
-
-[[ports]]
-localPort = 5174
-externalPort = 3001
+channel = "stable-22_11"
 
 [env]
-PORT = "5000"
+PATH = "/home/runner/$REPL_SLUG/.config/npm/node_global/bin:/home/runner/$REPL_SLUG/node_modules/.bin"
+XDG_CONFIG_HOME = "/home/runner/.config"
+npm_config_prefix = "/home/runner/$REPL_SLUG/.config/npm/node_global"
 
-[workflows]
-runButton = "Project"
+[gitHubImport]
+requiredFiles = [".replit", "replit.nix", ".config"]
 
-[[workflows.workflow]]
-name = "Project"
-mode = "parallel"
-author = "agent"
+[packager]
+language = "nodejs"
 
-[[workflows.workflow.tasks]]
-task = "workflow.run"
-args = "Start application"
+[packager.features]
+packageSearch = true
+guessImports = true
+enabledForHosting = false
 
-[[workflows.workflow]]
-name = "Start application"
-author = "agent"
+[languages]
+[languages.javascript]
+pattern = "**/{*.js,*.jsx,*.ts,*.tsx}"
+[languages.javascript.languageServer]
+start = "typescript-language-server --stdio"
 
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "npm run dev"
-waitForPort = 5000
-
-[agent]
-integrations = ["javascript_database==1.0.0", "javascript_openai==1.0.0", "javascript_anthropic==1.0.0", "javascript_sendgrid==1.0.0", "javascript_log_in_with_replit==1.0.0", "javascript_notion==1.0.0"]
+[deployment]
+run = ["sh", "-c", "npm install && npm start"]
+deploymentTarget = "cloudrun"
+ignorePorts = false

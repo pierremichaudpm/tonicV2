@@ -11,14 +11,77 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Admin password for CMS
-const ADMIN_PASSWORD = 'Axelle20';
+// Admin password for CMS (prefer .env, fallback for local dev)
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'Axelle20';
 
 // Enable gzip compression
 app.use(compression());
 
 // Parse JSON bodies for API requests
 app.use(express.json());
+
+// Resolve data directory for dynamic CMS files (persisted if DATA_DIR is mounted to a volume)
+const DATA_DIR = process.env.DATA_DIR
+  ? path.resolve(process.env.DATA_DIR)
+  : path.join(__dirname, 'client/public/js');
+
+// Ensure data directory exists (no-op if already exists)
+try {
+  fs.mkdirSync(DATA_DIR, { recursive: true });
+} catch {}
+
+// Seed DATA_DIR with initial JS data files if missing (non-destructif)
+const SOURCE_JS_DIR = path.join(__dirname, 'client/public/js');
+const seedSpecs = [
+  { filename: 'communiques-data.js', variableName: 'pressReleases' },
+  { filename: 'communiques-data-en.js', variableName: 'pressReleasesEn' },
+  { filename: 'emplois-data.js', variableName: 'jobListings' },
+  { filename: 'emplois-data-en.js', variableName: 'jobListingsEn' }
+];
+
+for (const { filename, variableName } of seedSpecs) {
+  const destPath = path.join(DATA_DIR, filename);
+  try {
+    if (!fs.existsSync(destPath)) {
+      const sourcePath = path.join(SOURCE_JS_DIR, filename);
+      if (fs.existsSync(sourcePath)) {
+        fs.copyFileSync(sourcePath, destPath);
+        console.log(`[DATA_DIR] Seeded ${filename} from bundled source`);
+      } else {
+        // Create a minimal default if source not found
+        const defaultContent = `const ${variableName} = [];\n`;
+        fs.writeFileSync(destPath, defaultContent, 'utf8');
+        console.log(`[DATA_DIR] Created default ${filename}`);
+      }
+    }
+  } catch (e) {
+    console.warn(`[DATA_DIR] Failed to seed ${filename}:`, e?.message || e);
+  }
+}
+
+// Serve dynamic data files first from DATA_DIR under /js to override bundled ones
+app.use('/js', express.static(DATA_DIR, {
+  maxAge: '0',
+  setHeaders: (res, filePath) => {
+    if (filePath.match(/\.js$/)) {
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+      res.setHeader('Pragma', 'no-cache');
+      res.setHeader('Expires', '0');
+    }
+  }
+}));
+
+// Fallback to bundled JS if not present in DATA_DIR
+app.use('/js', express.static(path.join(__dirname, 'client/public/js'), {
+  maxAge: '0',
+  setHeaders: (res, filePath) => {
+    if (filePath.match(/\.js$/)) {
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+      res.setHeader('Pragma', 'no-cache');
+      res.setHeader('Expires', '0');
+    }
+  }
+}));
 
 // Serve static files from client/public with caching
 app.use(express.static(path.join(__dirname, 'client/public'), {
@@ -51,19 +114,19 @@ const authenticate = (req, res, next) => {
 // Helper function to read data files
 const readDataFile = (filename) => {
   try {
-    const filePath = path.join(__dirname, 'client/public/js', filename);
+    const filePath = path.join(DATA_DIR, filename);
     const content = fs.readFileSync(filePath, 'utf8');
     
     // Extract the data from the JavaScript file using Function constructor for safety
     let match;
-    if (filename.includes('emplois-data-en')) {
-      match = content.match(/const\s+jobsData\s*=\s*(\[[\s\S]*?\]);/);
-    } else if (filename.includes('emplois-data')) {
-      match = content.match(/const\s+jobListings\s*=\s*(\[[\s\S]*?\]);/);
-    } else if (filename.includes('communiques-data-en')) {
-      match = content.match(/const\s+communiquesData\s*=\s*(\[[\s\S]*?\]);/);
-    } else if (filename.includes('communiques-data')) {
-      match = content.match(/const\s+pressReleases\s*=\s*(\[[\s\S]*?\]);/);
+      if (filename.includes('emplois-data-en')) {
+    match = content.match(/const\s+jobListingsEn\s*=\s*(\[[\s\S]*?\]);/);
+  } else if (filename.includes('emplois-data')) {
+    match = content.match(/const\s+jobListings\s*=\s*(\[[\s\S]*?\]);/);
+  } else if (filename.includes('communiques-data-en')) {
+    match = content.match(/const\s+pressReleasesEn\s*=\s*(\[[\s\S]*?\]);/);
+  } else if (filename.includes('communiques-data')) {
+    match = content.match(/const\s+pressReleases\s*=\s*(\[[\s\S]*?\]);/);
     }
     
     if (match) {
@@ -85,7 +148,7 @@ const readDataFile = (filename) => {
 // Helper function to write data files
 const writeDataFile = (filename, data, variableName) => {
   try {
-    const filePath = path.join(__dirname, 'client/public/js', filename);
+    const filePath = path.join(DATA_DIR, filename);
     const content = `const ${variableName} = ${JSON.stringify(data, null, 4)};`;
     
     fs.writeFileSync(filePath, content, 'utf8');
@@ -139,6 +202,14 @@ app.post('/api/translate', authenticate, async (req, res) => {
   
   if (!text || fromLang === toLang) {
     return res.json({ translatedText: text });
+  }
+  
+  // Restrict translation direction to French -> English only
+  if (fromLang !== 'fr' || toLang !== 'en') {
+    return res.status(400).json({
+      error: 'Seule la traduction du français vers l\'anglais est supportée',
+      translatedText: text
+    });
   }
   
   try {
@@ -216,13 +287,13 @@ app.post('/api/cms/content/:type/:lang', authenticate, (req, res) => {
     variableName = 'pressReleases';
   } else if (type === 'news' && lang === 'en') {
     filename = 'communiques-data-en.js';
-    variableName = 'communiquesData';
+    variableName = 'pressReleasesEn';
   } else if (type === 'jobs' && lang === 'fr') {
     filename = 'emplois-data.js';
     variableName = 'jobListings';
   } else if (type === 'jobs' && lang === 'en') {
     filename = 'emplois-data-en.js';
-    variableName = 'jobsData';
+    variableName = 'jobListingsEn';
   } else {
     return res.status(400).json({ error: 'Invalid type or language' });
   }
@@ -249,13 +320,13 @@ app.delete('/api/cms/content/:type/:lang/:id', authenticate, (req, res) => {
     variableName = 'pressReleases';
   } else if (type === 'news' && lang === 'en') {
     filename = 'communiques-data-en.js';
-    variableName = 'communiquesData';
+    variableName = 'pressReleasesEn';
   } else if (type === 'jobs' && lang === 'fr') {
     filename = 'emplois-data.js';
     variableName = 'jobListings';
   } else if (type === 'jobs' && lang === 'en') {
     filename = 'emplois-data-en.js';
-    variableName = 'jobsData';
+    variableName = 'jobListingsEn';
   } else {
     return res.status(400).json({ error: 'Invalid type or language' });
   }
@@ -276,7 +347,7 @@ app.delete('/api/cms/content/:type/:lang/:id', authenticate, (req, res) => {
   }
 });
 
-// Specific routes for important pages
+// Specific routes for CMS (still separate)
 app.get('/cms', (req, res) => {
   res.sendFile(path.join(__dirname, 'client/public/cms.html'));
 });
@@ -289,39 +360,41 @@ app.get('/admin', (req, res) => {
   res.sendFile(path.join(__dirname, 'client/public/cms.html'));
 });
 
+// SPA Routes - All routes now serve the main index.html
+// The client-side JavaScript will handle the routing
 app.get('/about', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client/public/about.html'));
+  res.sendFile(path.join(__dirname, 'client/public/index.html'));
 });
 
 app.get('/a-propos', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client/public/a-propos.html'));
+  res.sendFile(path.join(__dirname, 'client/public/index.html'));
 });
 
 app.get('/emplois', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client/public/emplois.html'));
+  res.sendFile(path.join(__dirname, 'client/public/index.html'));
 });
 
 app.get('/emplois-en', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client/public/emplois-en.html'));
+  res.sendFile(path.join(__dirname, 'client/public/index.html'));
 });
 
 app.get('/communiques', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client/public/communiques.html'));
+  res.sendFile(path.join(__dirname, 'client/public/index.html'));
 });
 
 app.get('/communiques-en', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client/public/communiques-en.html'));
+  res.sendFile(path.join(__dirname, 'client/public/index.html'));
 });
 
 app.get('/nous-joindre', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client/public/nous-joindre.html'));
+  res.sendFile(path.join(__dirname, 'client/public/index.html'));
 });
 
 app.get('/nous-joindre-en', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client/public/nous-joindre-en.html'));
+  res.sendFile(path.join(__dirname, 'client/public/index.html'));
 });
 
-// Catch-all route for homepage variations only
+// Homepage route
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'client/public/index.html'));
 });
@@ -331,12 +404,12 @@ app.get('/index.html', (req, res) => {
 });
 
 app.get('/index-en.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client/public/index-en.html'));
+  res.sendFile(path.join(__dirname, 'client/public/index.html'));
 });
 
-// 404 for any other route
+// Catch-all route for SPA - serves index.html for all other routes
 app.get('*', (req, res) => {
-  res.status(404).sendFile(path.join(__dirname, 'client/public/index.html'));
+  res.sendFile(path.join(__dirname, 'client/public/index.html'));
 });
 
 app.listen(PORT, () => {

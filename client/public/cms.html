@@ -369,6 +369,11 @@
                     <div id="jobsList" class="space-y-4">
                         <!-- Jobs will be loaded here -->
                     </div>
+                     <div class="flex justify-end mt-6">
+                         <button id="saveOrderBtnJobs" onclick="saveCurrentOrder()" class="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-700 disabled:opacity-50" disabled>
+                             <span class="fr-text">Enregistrer l'ordre</span><span class="en-text hidden">Save order</span>
+                         </button>
+                     </div>
                 </div>
 
                 <div id="newsSection" class="section hidden">
@@ -383,6 +388,11 @@
                     <div id="newsList" class="space-y-4">
                         <!-- News will be loaded here -->
                     </div>
+                     <div class="flex justify-end mt-6">
+                         <button id="saveOrderBtnNews" onclick="saveCurrentOrder()" class="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-700 disabled:opacity-50" disabled>
+                             <span class="fr-text">Enregistrer l'ordre</span><span class="en-text hidden">Save order</span>
+                         </button>
+                     </div>
                 </div>
             </div>
         </main>
@@ -776,8 +786,8 @@
                     }
                     
                     return `
-                        <div class="card content-card p-6 rounded-lg" style="position: relative; min-height: 150px;">
-                            <div style="padding-right: 140px;">
+                        <div class="card content-card p-6 rounded-lg flex items-start gap-4" data-item-id="${String(item.id || itemId)}" draggable="true">
+                            <div class="flex-1">
                                 <h3 class="text-xl font-semibold text-gray-900 mb-2">
                                     ${escapeHtml(item.title || '')}
                                     ${item.isAutoTranslated ? `<span class="ml-2 text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">${currentLang === 'fr' ? 'Auto-traduit' : 'Auto-translated'}</span>` : ''}
@@ -792,17 +802,54 @@
                                     ${escapeHtml(plainContent)}
                                 </div>
                             </div>
-                            <div style="position: absolute; top: 1rem; right: 1rem; display: flex; flex-direction: column; gap: 8px; width: 100px;">
-                                <button data-action="edit" data-id="${String(itemId).replace(/'/g, "\\\'")}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium w-full" style="white-space: nowrap;">
-                                    ${currentLang === 'fr' ? 'Modifier' : 'Edit'}
-                                </button>
-                                <button data-action="delete" data-id="${String(itemId).replace(/'/g, "\\\'")}" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium w-full" style="white-space: nowrap;">
-                                    ${currentLang === 'fr' ? 'Supprimer' : 'Delete'}
-                                </button>
+                            <div class="flex flex-col gap-2 w-36 shrink-0">
+                                <button data-action="move-up" data-id="${String(itemId).replace(/'/g, "\\'")}" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg text-sm font-medium w-full" style="white-space: nowrap;">${currentLang === 'fr' ? 'Monter' : 'Up'}</button>
+                                <button data-action="move-down" data-id="${String(itemId).replace(/'/g, "\\'")}" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg text-sm font-medium w-full" style="white-space: nowrap;">${currentLang === 'fr' ? 'Descendre' : 'Down'}</button>
+                                <button data-action="edit" data-id="${String(itemId).replace(/'/g, "\\'")}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium w-full" style="white-space: nowrap;">${currentLang === 'fr' ? 'Modifier' : 'Edit'}</button>
+                                <button data-action="delete" data-id="${String(itemId).replace(/'/g, "\\'")}" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium w-full" style="white-space: nowrap;">${currentLang === 'fr' ? 'Supprimer' : 'Delete'}</button>
                             </div>
                         </div>
                     `;
                 }).join('');
+
+                // Drag & Drop handlers
+                const cards = Array.from(container.querySelectorAll('[data-item-id]'));
+                let dragSrc = null;
+                cards.forEach(card => {
+                    card.addEventListener('dragstart', (e) => {
+                        dragSrc = card;
+                        e.dataTransfer.effectAllowed = 'move';
+                        card.classList.add('ring-2','ring-blue-400');
+                    });
+                    card.addEventListener('dragover', (e) => {
+                        e.preventDefault();
+                        e.dataTransfer.dropEffect = 'move';
+                        card.classList.add('ring-2','ring-orange-400');
+                    });
+                    card.addEventListener('dragleave', () => {
+                        card.classList.remove('ring-2','ring-orange-400');
+                    });
+                    card.addEventListener('drop', (e) => {
+                        e.preventDefault();
+                        card.classList.remove('ring-2','ring-orange-400');
+                        if (!dragSrc || dragSrc === card) return;
+                        const list = card.parentElement;
+                        const srcIndex = cards.indexOf(dragSrc);
+                        const dstIndex = cards.indexOf(card);
+                        if (srcIndex < 0 || dstIndex < 0) return;
+                        if (srcIndex < dstIndex) {
+                            list.insertBefore(dragSrc, card.nextSibling);
+                        } else {
+                            list.insertBefore(dragSrc, card);
+                        }
+                        // Activer le bouton Enregistrer
+                        const saveBtn = currentType === 'jobs' ? document.getElementById('saveOrderBtnJobs') : document.getElementById('saveOrderBtnNews');
+                        if (saveBtn) saveBtn.disabled = false;
+                    });
+                    card.addEventListener('dragend', () => {
+                        card.classList.remove('ring-2','ring-blue-400');
+                    });
+                });
                 
             } catch (error) {
                 console.error('Error displaying content:', error);
@@ -826,6 +873,10 @@
                 editItem(id);
             } else if (action === 'delete') {
                 deleteItem(id);
+            } else if (action === 'move-up') {
+                moveDomCard(id, 'up');
+            } else if (action === 'move-down') {
+                moveDomCard(id, 'down');
             }
         }
 
@@ -1484,6 +1535,88 @@
             }, 2000);
         }
 
+        // Réordonnancement
+        function enableSaveOrderButton() {
+            const btn = currentType === 'jobs' ? document.getElementById('saveOrderBtnJobs') : document.getElementById('saveOrderBtnNews');
+            if (btn) btn.disabled = false;
+        }
+
+        function moveDomCard(id, direction) {
+            const container = currentType === 'jobs' ? document.getElementById('jobsList') : document.getElementById('newsList');
+            if (!container) return;
+            const cards = Array.from(container.children);
+            const idx = cards.findIndex(el => String(el.getAttribute('data-item-id')) === String(id));
+            if (idx === -1) return;
+            if (direction === 'up' && idx > 0) {
+                container.insertBefore(cards[idx], cards[idx - 1]);
+                enableSaveOrderButton();
+            } else if (direction === 'down' && idx < cards.length - 1) {
+                container.insertBefore(cards[idx + 1], cards[idx]);
+                enableSaveOrderButton();
+            }
+        }
+
+        async function saveCurrentOrder() {
+            const container = currentType === 'jobs' ? document.getElementById('jobsList') : document.getElementById('newsList');
+            const btn = currentType === 'jobs' ? document.getElementById('saveOrderBtnJobs') : document.getElementById('saveOrderBtnNews');
+            if (!container) return;
+
+            // UI: état de progression
+            const originalText = btn ? btn.textContent : '';
+            if (btn) {
+                btn.disabled = true;
+                btn.textContent = currentLang === 'fr' ? 'Enregistrement…' : 'Saving…';
+            }
+
+            try {
+                const orderIds = Array.from(container.children)
+                    .map(el => el.getAttribute('data-item-id'))
+                    .filter(Boolean);
+
+                const res = await fetch(`/api/cms/content/${currentType}/${currentLang}`, {
+                    headers: { 'x-admin-password': adminPassword, 'Cache-Control': 'no-cache' }
+                });
+                if (!res.ok) throw new Error('Failed to fetch current list');
+                const json = await res.json();
+                const items = Array.isArray(json.data) ? json.data : [];
+                const map = new Map(items.map(it => [String(it.id), it]));
+                const ordered = orderIds.map(id => map.get(String(id))).filter(Boolean);
+                const remaining = items.filter(it => !orderIds.includes(String(it.id)));
+                const finalList = [...ordered, ...remaining];
+
+                const save = await fetch(`/api/cms/content/${currentType}/${currentLang}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'x-admin-password': adminPassword },
+                    body: JSON.stringify({ data: finalList })
+                });
+                if (!save.ok) throw new Error('Save failed');
+                // UI: confirmation visible
+                if (btn) {
+                    btn.textContent = currentLang === 'fr' ? 'Ordre enregistré ✓' : 'Order saved ✓';
+                }
+                showSaveNotification();
+                showToast(currentLang === 'fr' ? "Ordre enregistré" : "Order saved", 'success');
+                const saveBanner = document.getElementById('saveNotification');
+                if (saveBanner) {
+                    saveBanner.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+                // Revenir à l'état initial après un court délai
+                setTimeout(() => {
+                    if (btn) {
+                        btn.textContent = currentLang === 'fr' ? "Enregistrer l'ordre" : 'Save order';
+                        btn.disabled = true; // reste désactivé tant qu'aucun nouvel ordre n'est modifié
+                    }
+                }, 1200);
+            } catch (err) {
+                console.error('Order save error:', err);
+                alert('Erreur lors de l\'enregistrement de l\'ordre');
+                if (btn) {
+                    btn.textContent = originalText || (currentLang === 'fr' ? "Enregistrer l'ordre" : 'Save order');
+                    btn.disabled = false;
+                }
+            }
+        }
+
         // Helper function to show toast notifications
         function showToast(message, type = 'success') {
             const toast = document.createElement('div');
@@ -1528,6 +1661,10 @@
                     editItem(id);
                 } else if (action === 'delete') {
                     deleteItem(id);
+                } else if (action === 'move-up') {
+                    moveDomCard(id, 'up');
+                } else if (action === 'move-down') {
+                    moveDomCard(id, 'down');
                 }
             });
 

@@ -21,7 +21,7 @@ A sophisticated multilingual React.js website for event management and job listi
 
 ## 🚀 Live Demo
 
-**Production Website**: [https://website-migrator-pmicho.replit.app](https://website-migrator-pmicho.replit.app)
+Déploiement recommandé: Railway
 
 ## 🛠️ Tech Stack
 
@@ -42,7 +42,6 @@ A sophisticated multilingual React.js website for event management and job listi
 - **Vite** for development and building
 - **TypeScript** for type safety
 - **PostCSS** and **Autoprefixer**
-- **Replit** development environment
 
 ## 📱 Responsive Breakpoints
 
@@ -92,9 +91,21 @@ A sophisticated multilingual React.js website for event management and job listi
 ## 🚀 Deployment
 
 ### Main Website
-- Deployed on **Replit** with automatic scaling
-- Production URL with SSL/TLS encryption
-- CDN optimization for global performance
+- Déployé sur **Railway** (Node.js service)
+- URL de production avec SSL/TLS
+- Optionnel: activer un CDN en frontal (Railway + Cloudflare)
+
+### Persistance des données CMS (DATA_DIR)
+- Les contenus (news/jobs) sont stockés sous forme de fichiers JS.
+- En production, utilisez la variable d’environnement `DATA_DIR` pour pointer vers un répertoire persistant.
+- Le serveur monte `DATA_DIR` sur l’URL `/js` avant les fichiers statiques packagés, ce qui permet d’écraser les fichiers embarqués.
+- Recommandation Railway: créer un Volume et le monter sur `/data`, puis définir `DATA_DIR=/data`.
+
+Variables d’environnement minimales:
+- `ADMIN_PASSWORD` (obligatoire pour le CMS)
+- `ANTHROPIC_API_KEY` (pour la traduction FR→EN)
+- `NODE_ENV=production`
+- `DATA_DIR=/data` (si vous souhaitez la persistance via Volume)
 
 ### CMS (Strapi)
 - Requires separate hosting (Render, Railway, or Heroku)
