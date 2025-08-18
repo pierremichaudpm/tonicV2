@@ -3,17 +3,6 @@
 // Event data for the homepage
 const events = [
     {
-        id: 'beach-pro-tour',
-        title: 'BEACH PRO TOUR',
-        date: '13-17 août 2025',
-        tagline: 'L\'ÉLITE MONDIALE DU VOLLEYBALL DE PLAGE',
-        background: 'images/beach-pro-tour-hero.webp',
-        logo: 'images/logo-beach-pro-tour.svg',
-        cta: 'Découvrez nos services',
-        location: 'Montréal, QC',
-        gradient: 'rgba(255, 14, 155, 0.6), rgba(255, 105, 180, 0.4)'
-    },
-    {
         id: 'grands-prix-cyclistes',
         title: 'GRANDS PRIX CYCLISTES',
         date: 'Septembre 2025',
@@ -56,6 +45,17 @@ const events = [
         cta: 'Découvrez nos services',
         location: 'Montréal, QC',
         gradient: 'rgba(59, 130, 246, 0.6), rgba(96, 165, 250, 0.4)'
+    },
+    {
+        id: 'beach-pro-tour',
+        title: 'BEACH PRO TOUR',
+        date: '13-17 août 2025',
+        tagline: 'L\'ÉLITE MONDIALE DU VOLLEYBALL DE PLAGE',
+        background: 'images/beach-pro-tour-hero.webp',
+        logo: 'images/logo-beach-pro-tour.svg',
+        cta: 'Découvrez nos services',
+        location: 'Montréal, QC',
+        gradient: 'rgba(255, 14, 155, 0.6), rgba(255, 105, 180, 0.4)'
     },
     {
         id: 'studio76',
