@@ -348,14 +348,14 @@
             <div class="max-w-6xl mx-auto">
                 <!-- Navigation Tabs -->
                 <div class="flex gap-2 mb-6">
-                    <button onclick="showSection('jobs')" id="jobsTab" class="px-4 py-2 rounded-lg btn-primary text-white">
+                    <button onclick="showSection('hero')" id="heroTab" class="px-4 py-2 rounded-lg btn-primary text-white">
+                        <span class="fr-text">Accueil</span><span class="en-text hidden">Home</span>
+                    </button>
+                    <button onclick="showSection('jobs')" id="jobsTab" class="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-700">
                         <span class="fr-text">Emplois</span><span class="en-text hidden">Jobs</span>
                     </button>
                     <button onclick="showSection('news')" id="newsTab" class="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-700">
                         <span class="fr-text">Nouvelles</span><span class="en-text hidden">News</span>
-                    </button>
-                    <button onclick="showSection('hero')" id="heroTab" class="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-700">
-                        <span class="fr-text">Ordre Accueil</span><span class="en-text hidden">Home Order</span>
                     </button>
                 </div>
 
@@ -402,7 +402,7 @@
                 <div id="heroSection" class="section hidden">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-2xl font-bold text-gray-900">
-                            <span class="fr-text">Ordre des événements (Accueil)</span><span class="en-text hidden">Events order (Home)</span>
+                            <span class="fr-text">Accueil</span><span class="en-text hidden">Home</span>
                         </h2>
                         <button id="saveHeroOrderBtn" class="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-700 disabled:opacity-50" disabled>
                             <span class="fr-text">Enregistrer l'ordre</span><span class="en-text hidden">Save order</span>
@@ -413,6 +413,8 @@
                         <span class="fr-text">Faites glisser pour réordonner. S'applique à la grille et au carrousel.</span>
                         <span class="en-text hidden">Drag to reorder. Applies to grid and carousel.</span>
                     </p>
+ 
+                    
                 </div>
             </div>
         </main>
@@ -620,15 +622,90 @@
                 </form>
             </div>
         </div>
+
+        <!-- Hero Edit Modal -->
+        <div id="heroEditModal" class="fixed inset-0 bg-black/50 modal z-50 hidden items-center justify-center">
+            <div class="bg-white rounded-xl p-6 w-full max-w-3xl mx-4 shadow-xl max-h-[90vh] overflow-y-auto">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 id="heroEditTitle" class="text-xl font-bold text-gray-900">Modifier le héros</h3>
+                    <button onclick="closeHeroModal()" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+                </div>
+                <div id="heroEditForm" class="space-y-4"></div>
+                <div class="flex justify-end gap-3 mt-4">
+                    <button onclick="closeHeroModal()" class="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-lg">Annuler</button>
+                    <button id="heroEditSaveBtn" onclick="saveHeroFromModal()" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg">Enregistrer</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
-        let currentType = 'jobs';
+        let currentType = 'hero';
         let currentLang = 'fr';
         let currentEditId = null;
         let originalEditData = null; // Store original data for translation
         let isAuthenticated = false;
         let quill = null;
+
+        // Valeurs par défaut (FR) dérivées de PROPERTIES côté site public
+        // Utilisées pour préremplir le modal Héros si aucune donnée CMS n'a encore été enregistrée
+        const DEFAULT_HERO_BY_ID = {
+            2: { // GRANDS PRIX CYCLISTES
+                nameFr: 'GRANDS PRIX CYCLISTES',
+                locationFr: 'Québec & Montréal',
+                dateFr: '12 & 14 septembre 2025',
+                taglineFr: 'Les seules épreuves UCI WorldTour en Amérique'
+            },
+            1: { // MARATHON BENEVA DE MONTRÉAL
+                nameFr: 'MARATHON BENEVA DE MONTRÉAL',
+                locationFr: 'Montréal, QC',
+                dateFr: '19-21 septembre 2025',
+                taglineFr: 'Vivez-le!'
+            },
+            5: { // 21K DE MONTRÉAL
+                nameFr: '21K DE MONTRÉAL',
+                locationFr: 'Montréal',
+                dateFr: 'Avril 2026',
+                taglineFr: 'Démarrez en grand votre saison de course'
+            },
+            3: { // UCI 2026
+                nameFr: 'CHAMPIONNATS DU MONDE ROUTE UCI MONTRÉAL 2026',
+                locationFr: 'Montréal, QC',
+                dateFr: '19-27 septembre 2026',
+                taglineFr: 'Montréal, capitale mondiale du vélo'
+            },
+            4: { // BEACH PRO TOUR
+                nameFr: 'BEACH PRO TOUR',
+                locationFr: 'Montréal',
+                dateFr: '13-17 août 2025',
+                taglineFr: "L'élite mondiale du volleyball de plage"
+            },
+            6: { // STUDIO 76
+                nameFr: 'STUDIO 76',
+                locationFr: 'Longueuil, QC',
+                dateFr: '',
+                taglineFr: 'Services intégrés en production vidéo, télévisuelle et création de contenus de marque, pour donner vie à des projets percutants et sur mesure'
+            },
+            7: { // DOCK 619
+                nameFr: 'DOCK 619',
+                locationFr: 'Longueuil, QC',
+                dateFr: '',
+                taglineFr: "Une équipe chevronnée au service d'expériences inoubliables, dans un lieu haut de gamme pouvant accueillir jusqu'à 400 invités. Mariages, événements corporatifs, lancements ou soirées festives, du plus intime au plus grandiose."
+            }
+        };
+
+        function translateDateFrToEn(dateFr) {
+            const map = {
+                '13-17 août 2025': 'August 13-17, 2025',
+                '12 & 14 septembre 2025': 'September 12 & 14, 2025',
+                '19-21 septembre 2025': 'September 19-21, 2025',
+                '3-4 mai 2025': 'May 3-4, 2025',
+                '12-21 septembre 2026': 'September 12-21, 2026',
+                '19-27 septembre 2026': 'September 19-27, 2026',
+                'Avril 2026': 'April 2026'
+            };
+            return map[dateFr] || dateFr || '';
+        }
         let adminPassword = null; // Store the password for API calls
 
         // Authentication
@@ -680,7 +757,8 @@
                 }
             });
 
-            loadContent();
+            // Afficher Accueil (héros) par défaut
+            showSection('hero');
         }
 
         // Navigation
@@ -688,26 +766,26 @@
             currentType = type;
             
             // Update tabs
-            document.getElementById('jobsTab').className = type === 'jobs' ? 
-                'px-4 py-2 rounded-lg btn-primary text-white' : 
-                'px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-700';
-            document.getElementById('newsTab').className = type === 'news' ? 
-                'px-4 py-2 rounded-lg btn-primary text-white' : 
-                'px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-700';
             const heroTab = document.getElementById('heroTab');
-            if (heroTab) heroTab.className = type === 'hero' ? 
-                'px-4 py-2 rounded-lg btn-primary text-white' : 
+            if (heroTab) heroTab.className = type === 'hero' ?
+                'px-4 py-2 rounded-lg btn-primary text-white' :
+                'px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-700';
+            document.getElementById('jobsTab').className = type === 'jobs' ?
+                'px-4 py-2 rounded-lg btn-primary text-white' :
+                'px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-700';
+            document.getElementById('newsTab').className = type === 'news' ?
+                'px-4 py-2 rounded-lg btn-primary text-white' :
                 'px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-700';
             
             // Update tab text based on language
             if (currentLang === 'en') {
+                if (heroTab) heroTab.textContent = 'Home';
                 document.getElementById('jobsTab').textContent = 'Jobs';
                 document.getElementById('newsTab').textContent = 'News';
-                if (heroTab) heroTab.textContent = 'Home Order';
             } else {
+                if (heroTab) heroTab.textContent = 'Accueil';
                 document.getElementById('jobsTab').textContent = 'Emplois';
                 document.getElementById('newsTab').textContent = 'Nouvelles';
-                if (heroTab) heroTab.textContent = "Ordre Accueil";
             }
             
             // Show/hide sections
@@ -1672,11 +1750,12 @@
 
                 const list = document.getElementById('heroOrderList');
                 list.innerHTML = ordered.map(item => `
-                    <div class="card p-4 rounded flex items-center justify-between" data-hero-id="${item.id}" draggable="true">
+                    <div class="card p-4 rounded flex items-center justify-between" data-hero-id="${item.id}" draggable="true" style="cursor: pointer;">
                         <div class="font-medium">${item.name}</div>
                         <div class="flex gap-2">
-                            <button class="px-3 py-1 bg-gray-200 rounded" data-hero-action="up">↑</button>
-                            <button class="px-3 py-1 bg-gray-200 rounded" data-hero-action="down">↓</button>
+                            <button class="px-3 py-1 bg-gray-200 rounded" data-hero-action="up" title="Monter">↑</button>
+                            <button class="px-3 py-1 bg-gray-200 rounded" data-hero-action="down" title="Descendre">↓</button>
+                            <button class="px-3 py-1 bg-blue-500 text-white rounded" data-hero-edit title="Modifier">Modifier</button>
                         </div>
                     </div>
                 `).join('');
@@ -1688,6 +1767,151 @@
                     saveBtn.disabled = true;
                     saveBtn.onclick = saveHeroOrder;
                 }
+                // Edit handling on the order list itself (card click or "Modifier")
+                list.addEventListener('click', (e) => {
+                    const card = e.target.closest('[data-hero-id]');
+                    if (!card) return;
+                    // ignore clicks on up/down buttons
+                    if (e.target.closest('[data-hero-action]')) return;
+                    const id = Number(card.getAttribute('data-hero-id'));
+                    if (!Number.isFinite(id)) return;
+                    openHeroModal(id);
+                });
+
+                // Load hero data
+                const dataResp = await fetch('/api/cms/heroes', { headers: { 'x-admin-password': adminPassword, 'Cache-Control': 'no-cache' } });
+                const dataJson = await dataResp.json();
+                const heroData = Array.isArray(dataJson.data) ? dataJson.data : [];
+                // Cache pour le modal
+                window.__heroDataCache = heroData.slice();
+                const byId = new Map(heroData.map(h => [Number(h.id), h]));
+                const container = document.getElementById('heroDataList');
+                container.innerHTML = ordered.map(ev => {
+                    const h = byId.get(ev.id) || { id: ev.id };
+                    const summary = [h.nameFr||h.nameEn||'', h.dateFr||h.dateEn||'', h.locationFr||h.locationEn||'']
+                        .filter(Boolean).join(' • ');
+                    const heroMode = (h.displayMode || (ev.id === 7 ? 'logoOnly' : 'logo+text'));
+                    const panel = `
+                    <div class="mt-2 hidden border border-gray-200 rounded p-4" data-hero-inline="${ev.id}">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div><label class="text-sm">Titre (FR)</label><input class="w-full px-3 py-2 border rounded" data-if="nameFr" value="${h.nameFr||''}"></div>
+                            <div><label class="text-sm">Title (EN)</label><input class="w-full px-3 py-2 border rounded" data-if="nameEn" value="${h.nameEn||''}"></div>
+                            <div><label class="text-sm">Lieu (FR)</label><input class="w-full px-3 py-2 border rounded" data-if="locationFr" value="${h.locationFr||''}"></div>
+                            <div><label class="text-sm">Location (EN)</label><input class="w-full px-3 py-2 border rounded" data-if="locationEn" value="${h.locationEn||''}"></div>
+                            <div><label class="text-sm">Date (FR)</label><input class="w-full px-3 py-2 border rounded" data-if="dateFr" value="${h.dateFr||''}"></div>
+                            <div><label class="text-sm">Date (EN)</label><input class="w-full px-3 py-2 border rounded" data-if="dateEn" value="${h.dateEn||''}"></div>
+                            <div><label class="text-sm">Tagline (FR)</label><input class="w-full px-3 py-2 border rounded" data-if="taglineFr" value="${h.taglineFr||''}"></div>
+                            <div><label class="text-sm">Tagline (EN)</label><input class="w-full px-3 py-2 border rounded" data-if="taglineEn" value="${h.taglineEn||''}"></div>
+                            <div class="col-span-1 md:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-3 items-end">
+                                <label class="inline-flex items-center gap-2"><input type="checkbox" data-if="countdownEnabled" ${h.countdownEnabled?'checked':''}> Activer le compte à rebours</label>
+                                <div><label class="text-sm">Countdown ISO</label><input class="w-full px-3 py-2 border rounded" placeholder="2025-09-12" data-if="countdownISO" value="${h.countdownISO||''}"></div>
+                                <div><label class="text-sm">Hero Title Mode</label>
+                                    <select class="w-full px-3 py-2 border rounded" data-if="displayMode">
+                                        <option value="text" ${heroMode==='text'?'selected':''}>Texte</option>
+                                        <option value="logo+text" ${heroMode==='logo+text'?'selected':''}>Logo + Texte</option>
+                                        <option value="logoOnly" ${heroMode==='logoOnly'?'selected':''}>Logo seulement</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-span-1 md:col-span-2">
+                                <div class="font-medium mb-2">Grid</div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    <div><label class="text-sm">Grid Title (FR)</label><input class="w-full px-3 py-2 border rounded" data-if="gridTitleFr" value="${h.gridTitleFr||''}"></div>
+                                    <div><label class="text-sm">Grid Title (EN)</label><input class="w-full px-3 py-2 border rounded" data-if="gridTitleEn" value="${h.gridTitleEn||''}"></div>
+                                    <div><label class="text-sm">Grid Tagline (FR)</label><input class="w-full px-3 py-2 border rounded" data-if="gridTaglineFr" value="${h.gridTaglineFr||''}"></div>
+                                    <div><label class="text-sm">Grid Tagline (EN)</label><input class="w-full px-3 py-2 border rounded" data-if="gridTaglineEn" value="${h.gridTaglineEn||''}"></div>
+                                </div>
+                                <div class="flex gap-4 mt-2">
+                                    <label class="inline-flex items-center gap-2"><input type="checkbox" data-if="gridUseTaglineOnly" ${h.gridUseTaglineOnly?'checked':''}> Tagline seulement</label>
+                                    <label class="inline-flex items-center gap-2"><input type="checkbox" data-if="gridShowTitle" ${h.gridShowTitle?'checked':''}> Afficher le titre</label>
+                                    <label class="inline-flex items-center gap-2"><input type="checkbox" data-if="gridShowDate" ${h.gridShowDate?'checked':''}> Afficher la date</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex justify-end gap-2 mt-4">
+                            <button class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded" data-hero-action="cancel">Annuler</button>
+                            <button class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded" data-hero-action="save">Enregistrer</button>
+                        </div>
+                    </div>`;
+                    return `
+                    <div class="card p-4 rounded flex items-center justify-between" data-edit-hero-id="${ev.id}" style="cursor: pointer;">
+                        <div>
+                            <div class="font-semibold">${ev.name}</div>
+                            <div class="text-sm text-gray-500">${summary || '—'}</div>
+                        </div>
+                        <div class="flex gap-2">
+                            <button class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded" data-hero-btn="edit">Modifier</button>
+                        </div>
+                    </div>
+                    ${panel}`;
+                }).join('');
+ 
+                container.addEventListener('click', async (e) => {
+                    const card = e.target.closest('[data-edit-hero-id]');
+                    const btn = e.target.closest('[data-hero-btn="edit"]');
+                    const actionBtn = e.target.closest('[data-hero-action]');
+                    if (!card && !actionBtn) return;
+                    const id = Number((card || e.target.closest('[data-hero-inline]'))?.getAttribute('data-edit-hero-id') || (e.target.closest('[data-hero-inline]')?.getAttribute('data-hero-inline')));
+                    if (!Number.isFinite(id)) return;
+
+                    // Toggle panel on card click or edit button
+                    if (card && (btn || e.target === card || card.contains(e.target))) {
+                        const panel = container.querySelector(`[data-hero-inline="${id}"]`);
+                        if (panel) panel.classList.toggle('hidden');
+                        return;
+                    }
+
+                    // Save / Cancel inside inline panel
+                    if (actionBtn) {
+                        const panel = e.target.closest('[data-hero-inline]');
+                        const action = actionBtn.getAttribute('data-hero-action');
+                        if (action === 'cancel') {
+                            panel.classList.add('hidden');
+                            return;
+                        }
+                        if (action === 'save') {
+                            const q = sel => panel.querySelector(`[data-if="${sel}"]`);
+                            const val = sel => (q(sel)?.value ?? '');
+                            const chk = sel => !!q(sel)?.checked;
+                            const updated = {
+                                id,
+                                nameFr: val('nameFr'), nameEn: val('nameEn'),
+                                locationFr: val('locationFr'), locationEn: val('locationEn'),
+                                dateFr: val('dateFr'), dateEn: val('dateEn'),
+                                taglineFr: val('taglineFr'), taglineEn: val('taglineEn'),
+                                countdownEnabled: chk('countdownEnabled'), countdownISO: val('countdownISO'),
+                                displayMode: val('displayMode') || (id===7 ? 'logoOnly' : 'logo+text'),
+                                gridTitleFr: val('gridTitleFr'), gridTitleEn: val('gridTitleEn'),
+                                gridTaglineFr: val('gridTaglineFr'), gridTaglineEn: val('gridTaglineEn'),
+                                gridUseTaglineOnly: chk('gridUseTaglineOnly'),
+                                gridShowTitle: chk('gridShowTitle'), gridShowDate: chk('gridShowDate')
+                            };
+                            // update cache and persist
+                            const arr = window.__heroDataCache || [];
+                            const idx = arr.findIndex(x => Number(x.id) === id);
+                            if (idx >= 0) arr[idx] = updated; else arr.push(updated);
+                            window.__heroDataCache = arr;
+                            const resp = await fetch('/api/cms/heroes', {
+                                method: 'POST', headers: { 'Content-Type': 'application/json', 'x-admin-password': adminPassword },
+                                body: JSON.stringify({ data: arr })
+                            });
+                            if (!resp.ok) { alert('Échec de la sauvegarde'); return; }
+                            // update summary
+                            const titleEl = card.querySelector('.font-semibold');
+                            const summaryEl = card.querySelector('.text-sm.text-gray-500');
+                            if (titleEl) titleEl.textContent = ordered.find(x=>x.id===id)?.name || titleEl.textContent;
+                            const summary = [updated.nameFr||updated.nameEn||'', updated.dateFr||updated.dateEn||'', updated.locationFr||updated.locationEn||'']
+                                .filter(Boolean).join(' • ');
+                            if (summaryEl) summaryEl.textContent = summary || '—';
+                            panel.classList.add('hidden');
+                        }
+                    }
+                });
+
+                const saveDataBtn = document.getElementById('saveHeroDataBtn');
+                saveDataBtn.disabled = true;
+                container.addEventListener('input', () => { saveDataBtn.disabled = false; });
+                saveDataBtn.onclick = saveHeroesData;
             } catch (e) {
                 console.error('Failed to load hero order', e);
             }
@@ -1740,6 +1964,44 @@
                 setTimeout(() => { btn.textContent = currentLang === 'en' ? 'Save order' : "Enregistrer l'ordre"; }, 1200);
             } catch (e) {
                 console.error(e);
+                alert(currentLang === 'en' ? 'Save failed' : 'Échec de la sauvegarde');
+                btn.disabled = false;
+            }
+        }
+
+        async function saveHeroesData() {
+            const wrap = document.getElementById('heroDataList');
+            const cards = Array.from(wrap.querySelectorAll('[data-edit-hero-id]'));
+            const payload = cards.map(card => {
+                const id = Number(card.getAttribute('data-edit-hero-id'));
+                const get = sel => card.querySelector(`[data-f="${sel}"]`);
+                const val = sel => (get(sel)?.value ?? '');
+                const chk = sel => !!get(sel)?.checked;
+                return {
+                    id,
+                    nameFr: val('nameFr'), nameEn: val('nameEn'),
+                    locationFr: val('locationFr'), locationEn: val('locationEn'),
+                    dateFr: val('dateFr'), dateEn: val('dateEn'),
+                    taglineFr: val('taglineFr'), taglineEn: val('taglineEn'),
+                    countdownEnabled: chk('countdownEnabled'), countdownISO: val('countdownISO'),
+                    displayMode: val('displayMode') || (id===7 ? 'logoOnly' : 'logo+text'),
+                    gridTitleFr: val('gridTitleFr'), gridTitleEn: val('gridTitleEn'),
+                    gridTaglineFr: val('gridTaglineFr'), gridTaglineEn: val('gridTaglineEn'),
+                    gridUseTaglineOnly: chk('gridUseTaglineOnly'),
+                    gridShowTitle: chk('gridShowTitle'), gridShowDate: chk('gridShowDate')
+                };
+            });
+            const btn = document.getElementById('saveHeroDataBtn');
+            btn.disabled = true; btn.textContent = currentLang === 'en' ? 'Saving...' : 'Sauvegarde...';
+            try {
+                const resp = await fetch('/api/cms/heroes', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json', 'x-admin-password': adminPassword },
+                    body: JSON.stringify({ data: payload })
+                });
+                if (!resp.ok) throw new Error('Save failed');
+                btn.textContent = currentLang === 'en' ? 'Saved' : 'Enregistré';
+                setTimeout(() => { btn.textContent = currentLang === 'en' ? 'Save heroes' : 'Enregistrer les héros'; }, 1200);
+            } catch (e) {
                 alert(currentLang === 'en' ? 'Save failed' : 'Échec de la sauvegarde');
                 btn.disabled = false;
             }
@@ -1850,6 +2112,125 @@
             }
             // Always keep logout as "Sortie"
             document.getElementById('logoutBtn').textContent = 'Sortie';
+        }
+
+        function openHeroModal(id) {
+            const data = (window.__heroDataCache || []);
+            const seed = DEFAULT_HERO_BY_ID[id] || {};
+            const h = data.find(x => Number(x.id) === Number(id)) || { id, displayMode: id===7 ? 'logoOnly' : 'logo+text' };
+            const heroMode = h.displayMode || (id === 7 ? 'logoOnly' : 'logo+text');
+            const modal = document.getElementById('heroEditModal');
+            const title = document.getElementById('heroEditTitle');
+            const form = document.getElementById('heroEditForm');
+            title.textContent = `Héros #${id}`;
+            // Pré-calcul des valeurs FR/EN et Grid afin de préremplir correctement
+            const vNameFr = (h.nameFr || seed.nameFr || '');
+            const vNameEn = (h.nameEn || vNameFr);
+            const vLocFr = (h.locationFr || seed.locationFr || '');
+            const vLocEn = (h.locationEn || vLocFr);
+            const vDateFr = (h.dateFr || seed.dateFr || '');
+            const vDateEn = (h.dateEn || translateDateFrToEn(h.dateFr) || translateDateFrToEn(seed.dateFr) || '');
+            const vTagFr = (h.taglineFr || seed.taglineFr || '');
+            const vTagEn = (h.taglineEn || (function(){
+                const map = {
+                    4: 'Elite world beach volleyball',
+                    2: 'The only UCI WorldTour events in America',
+                    1: 'Live it!',
+                    5: 'Kickstart your running season',
+                    3: 'Montreal, the world capital of cycling',
+                    6: 'Your creative vision, our expertise',
+                    7: 'An experienced team at the service of unforgettable experiences, in a high-end venue that can accommodate up to 400 guests. Weddings, corporate events, launches or festive evenings, from the most intimate to the most grandiose.'
+                };
+                return map[id] || vTagFr;
+            })());
+            const vGridTitleFr = (h.gridTitleFr || vNameFr);
+            const vGridTitleEn = (h.gridTitleEn || vNameEn);
+            const vGridTagFr = (h.gridTaglineFr || vTagFr);
+            const vGridTagEn = (h.gridTaglineEn || vTagEn);
+            const vGridUseTaglineOnly = (typeof h.gridUseTaglineOnly === 'boolean' ? h.gridUseTaglineOnly : (id===6 || id===7));
+            const vGridShowTitle = (typeof h.gridShowTitle === 'boolean' ? h.gridShowTitle : !(id===6 || id===7));
+            const vGridShowDate = (typeof h.gridShowDate === 'boolean' ? h.gridShowDate : !!vDateFr);
+            form.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div><label class="text-sm">Titre (FR)</label><input class="w-full px-3 py-2 border rounded" data-mf="nameFr" value="${vNameFr}"></div>
+                    <div><label class="text-sm">Title (EN)</label><input class="w-full px-3 py-2 border rounded" data-mf="nameEn" value="${vNameEn}"></div>
+                    <div><label class="text-sm">Lieu (FR)</label><input class="w-full px-3 py-2 border rounded" data-mf="locationFr" value="${vLocFr}"></div>
+                    <div><label class="text-sm">Location (EN)</label><input class="w-full px-3 py-2 border rounded" data-mf="locationEn" value="${vLocEn}"></div>
+                    <div><label class="text-sm">Date (FR)</label><input class="w-full px-3 py-2 border rounded" data-mf="dateFr" value="${vDateFr}"></div>
+                    <div><label class="text-sm">Date (EN)</label><input class="w-full px-3 py-2 border rounded" data-mf="dateEn" value="${vDateEn}"></div>
+                    <div><label class="text-sm">Tagline (FR)</label><input class="w-full px-3 py-2 border rounded" data-mf="taglineFr" value="${vTagFr}"></div>
+                    <div><label class="text-sm">Tagline (EN)</label><input class="w-full px-3 py-2 border rounded" data-mf="taglineEn" value="${vTagEn}"></div>
+                    <div class="col-span-1 md:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-3 items-end">
+                        <label class="inline-flex items-center gap-2"><input type="checkbox" data-mf="countdownEnabled" ${h.countdownEnabled?'checked':''}> Activer le compte à rebours</label>
+                        <div><label class="text-sm">Countdown ISO</label><input class="w-full px-3 py-2 border rounded" placeholder="2025-09-12" data-mf="countdownISO" value="${h.countdownISO||''}"></div>
+                        <div><label class="text-sm">Hero Title Mode</label>
+                            <select class="w-full px-3 py-2 border rounded" data-mf="displayMode">
+                                <option value="text" ${heroMode==='text'?'selected':''}>Texte</option>
+                                <option value="logo+text" ${heroMode==='logo+text'?'selected':''}>Logo + Texte</option>
+                                <option value="logoOnly" ${heroMode==='logoOnly'?'selected':''}>Logo seulement</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-span-1 md:col-span-2">
+                        <div class="font-medium mb-2">Grid</div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div><label class="text-sm">Grid Title (FR)</label><input class="w-full px-3 py-2 border rounded" data-mf="gridTitleFr" value="${vGridTitleFr}"></div>
+                            <div><label class="text-sm">Grid Title (EN)</label><input class="w-full px-3 py-2 border rounded" data-mf="gridTitleEn" value="${vGridTitleEn}"></div>
+                            <div><label class="text-sm">Grid Tagline (FR)</label><input class="w-full px-3 py-2 border rounded" data-mf="gridTaglineFr" value="${vGridTagFr}"></div>
+                            <div><label class="text-sm">Grid Tagline (EN)</label><input class="w-full px-3 py-2 border rounded" data-mf="gridTaglineEn" value="${vGridTagEn}"></div>
+                        </div>
+                        <div class="flex gap-4 mt-2">
+                            <label class="inline-flex items-center gap-2"><input type="checkbox" data-mf="gridUseTaglineOnly" ${vGridUseTaglineOnly?'checked':''}> Tagline seulement</label>
+                            <label class="inline-flex items-center gap-2"><input type="checkbox" data-mf="gridShowTitle" ${vGridShowTitle?'checked':''}> Afficher le titre</label>
+                            <label class="inline-flex items-center gap-2"><input type="checkbox" data-mf="gridShowDate" ${vGridShowDate?'checked':''}> Afficher la date</label>
+                        </div>
+                    </div>
+                </div>`;
+            modal.setAttribute('data-hero-id', String(id));
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeHeroModal() {
+            const modal = document.getElementById('heroEditModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            modal.removeAttribute('data-hero-id');
+        }
+
+        async function saveHeroFromModal() {
+            const modal = document.getElementById('heroEditModal');
+            const id = Number(modal.getAttribute('data-hero-id'));
+            const form = document.getElementById('heroEditForm');
+            const q = sel => form.querySelector(`[data-mf="${sel}"]`);
+            const val = sel => (q(sel)?.value ?? '');
+            const chk = sel => !!q(sel)?.checked;
+            const updated = {
+                id,
+                nameFr: val('nameFr'), nameEn: val('nameEn'),
+                locationFr: val('locationFr'), locationEn: val('locationEn'),
+                dateFr: val('dateFr'), dateEn: val('dateEn'),
+                taglineFr: val('taglineFr'), taglineEn: val('taglineEn'),
+                countdownEnabled: chk('countdownEnabled'), countdownISO: val('countdownISO'),
+                displayMode: val('displayMode') || (id===7 ? 'logoOnly' : 'logo+text'),
+                gridTitleFr: val('gridTitleFr'), gridTitleEn: val('gridTitleEn'),
+                gridTaglineFr: val('gridTaglineFr'), gridTaglineEn: val('gridTaglineEn'),
+                gridUseTaglineOnly: chk('gridUseTaglineOnly'),
+                gridShowTitle: chk('gridShowTitle'), gridShowDate: chk('gridShowDate')
+            };
+            // update cache
+            const arr = window.__heroDataCache || [];
+            const idx = arr.findIndex(x => Number(x.id) === id);
+            if (idx >= 0) arr[idx] = updated; else arr.push(updated);
+            window.__heroDataCache = arr;
+            // persist
+            const resp = await fetch('/api/cms/heroes', {
+                method: 'POST', headers: { 'Content-Type': 'application/json', 'x-admin-password': adminPassword },
+                body: JSON.stringify({ data: arr })
+            });
+            if (!resp.ok) { alert('Échec de la sauvegarde'); return; }
+            closeHeroModal();
+            loadHeroOrder();
         }
     </script>
 </body>

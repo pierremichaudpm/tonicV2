@@ -1244,7 +1244,7 @@
             filter: brightness(0) invert(1);
             opacity: 0.9;
         }
-    </style> </head><body><noscript><div style="min-height:100vh;background:#000;color:#fff;display:flex;align-items:center;justify-content:center;padding:2rem;text-align:center"><div><img src="images/tonic-logo.png" alt="Groupe Tonic" style="width:clamp(200px,40vw,300px);height:auto;margin-bottom:1rem;" /><p style="margin-bottom:2rem;opacity:.8">Ce site nécessite JavaScript pour fonctionner correctement. Veuillez l'activer dans votre navigateur.</p></div></div></noscript><div id="root"></div> <script crossorigin src="https://unpkg.com/react@18.2.0/umd/react.production.min.js"></script> <script crossorigin src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script> <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script> <script src="https://cdn.tailwindcss.com"></script>  <script src="js/emplois-data.js"></script> <script src="js/emplois-data-en.js"></script> <script src="js/communiques-data.js"></script> <script src="js/communiques-data-en.js"></script> <script src="js/hero-order.js"></script> <script type="text/babel">const {
+    </style> </head><body><noscript><div style="min-height:100vh;background:#000;color:#fff;display:flex;align-items:center;justify-content:center;padding:2rem;text-align:center"><div><img src="images/tonic-logo.png" alt="Groupe Tonic" style="width:clamp(200px,40vw,300px);height:auto;margin-bottom:1rem;" /><p style="margin-bottom:2rem;opacity:.8">Ce site nécessite JavaScript pour fonctionner correctement. Veuillez l'activer dans votre navigateur.</p></div></div></noscript><div id="root"></div> <script crossorigin src="https://unpkg.com/react@18.2.0/umd/react.production.min.js"></script> <script crossorigin src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script> <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script> <script src="https://cdn.tailwindcss.com"></script>  <script src="js/emplois-data.js"></script> <script src="js/emplois-data-en.js"></script> <script src="js/communiques-data.js"></script> <script src="js/communiques-data-en.js"></script> <script src="js/hero-order.js"></script> <script src="js/hero-data.js"></script> <script type="text/babel">const {
   useState,
   useEffect,
   useRef,
@@ -2693,20 +2693,29 @@ const getTranslatedCategory = (category, language) => {
   return translations[category] || category;
 };
 
-// Function to translate taglines only
+// Function to translate taglines only (does not override CMS EN overrides)
 const getTranslatedTagline = (eventId, tagline, language) => {
   if (language !== 'en') return tagline;
-  
+  try {
+    // If CMS provided an explicit EN tagline for this id, prefer it
+    if (window.heroData && Array.isArray(window.heroData)) {
+      const found = window.heroData.find(h => Number(h.id) === Number(eventId));
+      if (found && found.taglineEn && String(found.taglineEn).trim().length > 0) {
+        return String(found.taglineEn);
+      }
+    }
+  } catch (e) {}
+
   const taglineTranslations = {
     4: "Elite world beach volleyball", // Beach Pro Tour (id=4)
     2: "The only UCI WorldTour events in America", // GPCQM (id=2)
     1: "Live it!", // Marathon Beneva (id=1)
-    3: "Montreal's spring half-marathon", // 21K (id=3)
-    5: "The world's best cyclists in Montreal", // UCI 2026 (id=5)
+    5: "Kickstart your running season", // 21K (id=5)
+    3: "Montreal, the world capital of cycling", // UCI 2026 (id=3)
     6: "Your creative vision, our expertise", // Studio 76 (id=6)
     7: "An experienced team at the service of unforgettable experiences, in a high-end venue that can accommodate up to 400 guests. Weddings, corporate events, launches or festive evenings, from the most intimate to the most grandiose." // DOCK 619 (id=7)
   };
-  
+
   return taglineTranslations[eventId] || tagline;
 };
 
@@ -2841,11 +2850,41 @@ let PROPERTIES = [{
 
 try {
   if (window.heroOrder && Array.isArray(window.heroOrder) && window.heroOrder.length > 0) {
-    const byId = new Map(PROPERTIES.map(p => [p.id, p]));
+    const idToProperty = new Map(PROPERTIES.map(p => [p.id, p]));
     const ordered = [];
-    window.heroOrder.forEach(id => { if (byId.has(id)) ordered.push(byId.get(id)); });
+    window.heroOrder.forEach(id => {
+      if (idToProperty.has(id)) ordered.push(idToProperty.get(id));
+    });
+    // push any remaining not listed
     PROPERTIES.forEach(p => { if (!ordered.includes(p)) ordered.push(p); });
     PROPERTIES = ordered;
+  }
+} catch (e) {}
+
+// Apply hero-data overrides (names, locations, dates, taglines, countdown)
+try {
+  const detectLang = () => {
+    if (document.documentElement && document.documentElement.lang) {
+      return document.documentElement.lang.toLowerCase().startsWith('en') ? 'en' : 'fr';
+    }
+    return /index-en/i.test(location.pathname) ? 'en' : 'fr';
+  };
+  const lang = detectLang();
+  if (window.heroData && Array.isArray(window.heroData) && window.heroData.length > 0) {
+    const byId = new Map(window.heroData.map(h => [Number(h.id), h]));
+    PROPERTIES = PROPERTIES.map(p => {
+      const h = byId.get(Number(p.id));
+      if (!h) return p;
+      const clone = { ...p };
+      const pick = (fr, en, fallback) => (lang === 'en' ? (en || fr || fallback) : (fr || en || fallback));
+      clone.name = pick(h.nameFr, h.nameEn, p.name);
+      clone.location = pick(h.locationFr, h.locationEn, p.location);
+      clone.date = pick(h.dateFr, h.dateEn, p.date);
+      clone.tagline = pick(h.taglineFr, h.taglineEn, p.tagline);
+      clone.countdown = h.countdownEnabled && h.countdownISO ? new Date(h.countdownISO) : null;
+      // Preserve Dock619 behavior via id===7; no change needed for other ids
+      return clone;
+    });
   }
 } catch (e) {}
 

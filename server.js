@@ -219,6 +219,72 @@ app.post('/api/cms/hero-order', authenticate, (req, res) => {
   return res.status(500).json({ error: 'Failed to save order' });
 });
 
+// --- Hero data (titles, locations, dates, countdown, taglines, display mode) ---
+const HERO_DATA_FILE = 'hero-data.js';
+const readHeroData = () => {
+  try {
+    const filePath = path.join(DATA_DIR, HERO_DATA_FILE);
+    if (!fs.existsSync(filePath)) return [];
+    const content = fs.readFileSync(filePath, 'utf8');
+    const match = content.match(/heroData\s*=\s*(\[[\s\S]*?\])/);
+    if (match) {
+      return JSON.parse(match[1]);
+    }
+  } catch (e) {
+    console.warn('Failed to read hero data:', e?.message || e);
+  }
+  return [];
+};
+
+const writeHeroData = (dataArray) => {
+  try {
+    const filePath = path.join(DATA_DIR, HERO_DATA_FILE);
+    const safe = Array.isArray(dataArray) ? dataArray : [];
+    const content = `window.heroData = ${JSON.stringify(safe, null, 2)};\n`;
+    fs.writeFileSync(filePath, content, 'utf8');
+    return true;
+  } catch (e) {
+    console.error('Failed to write hero data:', e?.message || e);
+    return false;
+  }
+};
+
+// Seed minimal hero-data if missing (ids only)
+try {
+  const heroDataPath = path.join(DATA_DIR, HERO_DATA_FILE);
+  if (!fs.existsSync(heroDataPath)) {
+    const seed = [2,1,5,3,4,6,7].map(id => ({
+      id,
+      nameFr: '',
+      nameEn: '',
+      locationFr: '',
+      locationEn: '',
+      dateFr: '',
+      dateEn: '',
+      taglineFr: '',
+      taglineEn: '',
+      countdownEnabled: false,
+      countdownISO: '',
+      displayMode: id === 7 ? 'logoOnly' : 'logo+text'
+    }));
+    writeHeroData(seed);
+  }
+} catch {}
+
+// Hero data API
+app.get('/api/cms/heroes', authenticate, (req, res) => {
+  const data = readHeroData();
+  res.json({ data });
+});
+
+app.post('/api/cms/heroes', authenticate, (req, res) => {
+  const { data } = req.body || {};
+  if (!Array.isArray(data)) return res.status(400).json({ error: 'Invalid payload' });
+  const ok = writeHeroData(data);
+  if (ok) return res.json({ success: true });
+  return res.status(500).json({ error: 'Failed to save hero data' });
+});
+
 // Get content endpoint
 app.get('/api/cms/content/:type/:lang', authenticate, (req, res) => {
   const { type, lang } = req.params;
