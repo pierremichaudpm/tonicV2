@@ -354,6 +354,9 @@
                     <button onclick="showSection('news')" id="newsTab" class="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-700">
                         <span class="fr-text">Nouvelles</span><span class="en-text hidden">News</span>
                     </button>
+                    <button onclick="showSection('hero')" id="heroTab" class="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-700">
+                        <span class="fr-text">Ordre Accueil</span><span class="en-text hidden">Home Order</span>
+                    </button>
                 </div>
 
                 <!-- Content Sections -->
@@ -393,6 +396,23 @@
                              <span class="fr-text">Enregistrer l'ordre</span><span class="en-text hidden">Save order</span>
                          </button>
                      </div>
+                </div>
+
+                <!-- Hero Order Section -->
+                <div id="heroSection" class="section hidden">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-2xl font-bold text-gray-900">
+                            <span class="fr-text">Ordre des événements (Accueil)</span><span class="en-text hidden">Events order (Home)</span>
+                        </h2>
+                        <button id="saveHeroOrderBtn" class="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-700 disabled:opacity-50" disabled>
+                            <span class="fr-text">Enregistrer l'ordre</span><span class="en-text hidden">Save order</span>
+                        </button>
+                    </div>
+                    <div id="heroOrderList" class="space-y-3"></div>
+                    <p class="text-sm text-gray-500 mt-3">
+                        <span class="fr-text">Faites glisser pour réordonner. S'applique à la grille et au carrousel.</span>
+                        <span class="en-text hidden">Drag to reorder. Applies to grid and carousel.</span>
+                    </p>
                 </div>
             </div>
         </main>
@@ -674,21 +694,33 @@
             document.getElementById('newsTab').className = type === 'news' ? 
                 'px-4 py-2 rounded-lg btn-primary text-white' : 
                 'px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-700';
+            const heroTab = document.getElementById('heroTab');
+            if (heroTab) heroTab.className = type === 'hero' ? 
+                'px-4 py-2 rounded-lg btn-primary text-white' : 
+                'px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-700';
             
             // Update tab text based on language
             if (currentLang === 'en') {
                 document.getElementById('jobsTab').textContent = 'Jobs';
                 document.getElementById('newsTab').textContent = 'News';
+                if (heroTab) heroTab.textContent = 'Home Order';
             } else {
                 document.getElementById('jobsTab').textContent = 'Emplois';
                 document.getElementById('newsTab').textContent = 'Nouvelles';
+                if (heroTab) heroTab.textContent = "Ordre Accueil";
             }
             
             // Show/hide sections
             document.getElementById('jobsSection').style.display = type === 'jobs' ? 'block' : 'none';
             document.getElementById('newsSection').style.display = type === 'news' ? 'block' : 'none';
+            const heroSection = document.getElementById('heroSection');
+            if (heroSection) heroSection.style.display = type === 'hero' ? 'block' : 'none';
             
-            loadContent();
+            if (type === 'hero') {
+                loadHeroOrder();
+            } else {
+                loadContent();
+            }
         }
 
         // Category color mapping
@@ -1614,6 +1646,102 @@
                     btn.textContent = originalText || (currentLang === 'fr' ? "Enregistrer l'ordre" : 'Save order');
                     btn.disabled = false;
                 }
+            }
+        }
+
+        // ---- Hero order management ----
+        async function loadHeroOrder() {
+            try {
+                // Base list of events (ids and names) — keep in sync with PROPERTIES ids
+                const base = [
+                    { id: 2, name: 'GRANDS PRIX CYCLISTES' },
+                    { id: 1, name: 'MARATHON BENEVA DE MONTRÉAL' },
+                    { id: 5, name: '21K DE MONTRÉAL' },
+                    { id: 3, name: 'CHAMPIONNATS DU MONDE ROUTE UCI MONTRÉAL 2026' },
+                    { id: 4, name: 'BEACH PRO TOUR' },
+                    { id: 6, name: 'STUDIO 76' },
+                    { id: 7, name: 'DOCK 619' }
+                ];
+                const resp = await fetch('/api/cms/hero-order', { headers: { 'x-admin-password': adminPassword } });
+                const json = await resp.json();
+                const order = Array.isArray(json.order) ? json.order.map(Number) : [];
+                const idToItem = new Map(base.map(x => [x.id, x]));
+                const ordered = [];
+                order.forEach(id => { if (idToItem.has(id)) ordered.push(idToItem.get(id)); });
+                base.forEach(x => { if (!ordered.includes(x)) ordered.push(x); });
+
+                const list = document.getElementById('heroOrderList');
+                list.innerHTML = ordered.map(item => `
+                    <div class="card p-4 rounded flex items-center justify-between" data-hero-id="${item.id}" draggable="true">
+                        <div class="font-medium">${item.name}</div>
+                        <div class="flex gap-2">
+                            <button class="px-3 py-1 bg-gray-200 rounded" data-hero-action="up">↑</button>
+                            <button class="px-3 py-1 bg-gray-200 rounded" data-hero-action="down">↓</button>
+                        </div>
+                    </div>
+                `).join('');
+
+                enableHeroDnD(list);
+
+                const saveBtn = document.getElementById('saveHeroOrderBtn');
+                if (saveBtn) {
+                    saveBtn.disabled = true;
+                    saveBtn.onclick = saveHeroOrder;
+                }
+            } catch (e) {
+                console.error('Failed to load hero order', e);
+            }
+        }
+
+        function enableHeroDnD(container) {
+            const items = Array.from(container.children);
+            let dragSrc = null;
+            items.forEach(el => {
+                el.addEventListener('dragstart', () => { dragSrc = el; el.classList.add('ring-2','ring-blue-400'); });
+                el.addEventListener('dragover', e => { e.preventDefault(); el.classList.add('ring-2','ring-orange-400'); });
+                el.addEventListener('dragleave', () => { el.classList.remove('ring-2','ring-orange-400'); });
+                el.addEventListener('drop', () => {
+                    el.classList.remove('ring-2','ring-orange-400');
+                    if (!dragSrc || dragSrc === el) return;
+                    const list = el.parentElement;
+                    const arr = Array.from(list.children);
+                    const src = arr.indexOf(dragSrc);
+                    const dst = arr.indexOf(el);
+                    if (src < dst) list.insertBefore(dragSrc, el.nextSibling); else list.insertBefore(dragSrc, el);
+                    const saveBtn = document.getElementById('saveHeroOrderBtn');
+                    if (saveBtn) saveBtn.disabled = false;
+                });
+                el.addEventListener('dragend', () => { el.classList.remove('ring-2','ring-blue-400'); });
+                el.addEventListener('click', (e) => {
+                    const btn = e.target.closest('button[data-hero-action]');
+                    if (!btn) return;
+                    const action = btn.getAttribute('data-hero-action');
+                    if (action === 'up' && el.previousElementSibling) el.parentElement.insertBefore(el, el.previousElementSibling);
+                    if (action === 'down' && el.nextElementSibling) el.parentElement.insertBefore(el.nextElementSibling, el);
+                    const saveBtn = document.getElementById('saveHeroOrderBtn');
+                    if (saveBtn) saveBtn.disabled = false;
+                });
+            });
+        }
+
+        async function saveHeroOrder() {
+            const list = document.getElementById('heroOrderList');
+            const ids = Array.from(list.children).map(el => Number(el.getAttribute('data-hero-id')));
+            const btn = document.getElementById('saveHeroOrderBtn');
+            btn.disabled = true; btn.textContent = currentLang === 'en' ? 'Saving...' : 'Sauvegarde...';
+            try {
+                const resp = await fetch('/api/cms/hero-order', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'x-admin-password': adminPassword },
+                    body: JSON.stringify({ order: ids })
+                });
+                if (!resp.ok) throw new Error('Save failed');
+                btn.textContent = currentLang === 'en' ? 'Saved' : 'Enregistré';
+                setTimeout(() => { btn.textContent = currentLang === 'en' ? 'Save order' : "Enregistrer l'ordre"; }, 1200);
+            } catch (e) {
+                console.error(e);
+                alert(currentLang === 'en' ? 'Save failed' : 'Échec de la sauvegarde');
+                btn.disabled = false;
             }
         }
 

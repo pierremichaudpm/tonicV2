@@ -173,6 +173,52 @@ app.post('/api/cms/login', (req, res) => {
   }
 });
 
+// --- Hero order helpers ---
+const HERO_ORDER_FILE = 'hero-order.js';
+const readHeroOrder = () => {
+  try {
+    const filePath = path.join(DATA_DIR, HERO_ORDER_FILE);
+    if (!fs.existsSync(filePath)) return [];
+    const content = fs.readFileSync(filePath, 'utf8');
+    const match = content.match(/heroOrder\s*=\s*(\[[\s\S]*?\])/);
+    if (match) {
+      return JSON.parse(match[1]);
+    }
+  } catch (e) {
+    console.warn('Failed to read hero order:', e?.message || e);
+  }
+  return [];
+};
+
+const writeHeroOrder = (orderArray) => {
+  try {
+    const filePath = path.join(DATA_DIR, HERO_ORDER_FILE);
+    const safe = Array.isArray(orderArray) ? orderArray.map(Number).filter(n => Number.isFinite(n)) : [];
+    const content = `window.heroOrder = ${JSON.stringify(safe, null, 2)};\n`;
+    fs.writeFileSync(filePath, content, 'utf8');
+    return true;
+  } catch (e) {
+    console.error('Failed to write hero order:', e?.message || e);
+    return false;
+  }
+};
+
+// Hero order API
+app.get('/api/cms/hero-order', authenticate, (req, res) => {
+  const order = readHeroOrder();
+  res.json({ order });
+});
+
+app.post('/api/cms/hero-order', authenticate, (req, res) => {
+  const { order } = req.body || {};
+  if (!Array.isArray(order)) {
+    return res.status(400).json({ error: 'Invalid order payload' });
+  }
+  const ok = writeHeroOrder(order);
+  if (ok) return res.json({ success: true });
+  return res.status(500).json({ error: 'Failed to save order' });
+});
+
 // Get content endpoint
 app.get('/api/cms/content/:type/:lang', authenticate, (req, res) => {
   const { type, lang } = req.params;
