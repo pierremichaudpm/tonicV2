@@ -2233,5 +2233,16 @@
             loadHeroOrder();
         }
     </script>
+    <script>
+        try {
+            window.addEventListener('beforeinstallprompt', function(e) { e.preventDefault(); });
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.getRegistrations().then(function(regs){ regs.forEach(function(r){ r.unregister().catch(function(){}); }); }).catch(function(){});
+            }
+            if ('caches' in window) {
+                caches.keys().then(function(keys){ keys.forEach(function(k){ caches.delete(k).catch(function(){}); }); }).catch(function(){});
+            }
+        } catch (e) {}
+    </script>
 </body>
 </html>
