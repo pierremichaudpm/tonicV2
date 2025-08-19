@@ -519,13 +519,40 @@ app.get('/index-en.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'client/public/index.html'));
 });
 
+// Lightweight health check for platform probes
+app.get('/healthz', (req, res) => {
+  res.status(200).send('ok');
+});
+
 // Catch-all route for SPA - serves index.html for all other routes
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'client/public/index.html'));
 });
 
 // Bind explicitly to 0.0.0.0 for Railway/public networking compatibility
-app.listen(PORT, '0.0.0.0', () => {
+const server = app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`);
   console.log(`Serving static files from: ${path.join(__dirname, 'client/public')}`);
 });
+
+// Graceful shutdown to avoid crashy logs on rolling deploys
+const shutdown = (signal) => {
+  try {
+    console.log(`[lifecycle] Received ${signal}. Shutting down gracefully...`);
+    server.close(() => {
+      console.log('[lifecycle] HTTP server closed. Exiting.');
+      process.exit(0);
+    });
+    // Failsafe in case close hangs
+    setTimeout(() => {
+      console.warn('[lifecycle] Force exit after timeout');
+      process.exit(0);
+    }, 10000).unref();
+  } catch (e) {
+    console.error('[lifecycle] Shutdown error:', e?.message || e);
+    process.exit(0);
+  }
+};
+
+process.on('SIGTERM', () => shutdown('SIGTERM'));
+process.on('SIGINT', () => shutdown('SIGINT'));
