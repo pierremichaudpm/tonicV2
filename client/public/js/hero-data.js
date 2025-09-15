@@ -30,8 +30,8 @@ window.heroData = [
     "dateEn": "",
     "taglineFr": "",
     "taglineEn": "",
-    "countdownEnabled": false,
-    "countdownISO": "",
+    "countdownEnabled": true,
+    "countdownISO": "2025-09-19",
     "displayMode": "logo+text"
   },
   {
@@ -44,8 +44,8 @@ window.heroData = [
     "dateEn": "April 2026",
     "taglineFr": "Démarrez en grand votre saison",
     "taglineEn": "Kickstart your running season",
-    "countdownEnabled": false,
-    "countdownISO": "",
+    "countdownEnabled": true,
+    "countdownISO": "2026-04-01",
     "displayMode": "logo+text",
     "gridTitleFr": "21K DE MONTRÉAL",
     "gridTitleEn": "21K DE MONTRÉAL",
@@ -65,8 +65,8 @@ window.heroData = [
     "dateEn": "",
     "taglineFr": "",
     "taglineEn": "",
-    "countdownEnabled": false,
-    "countdownISO": "",
+    "countdownEnabled": true,
+    "countdownISO": "2026-09-19",
     "displayMode": "logo+text"
   },
   {
