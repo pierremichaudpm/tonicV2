@@ -2879,7 +2879,17 @@ try {
       clone.location = pick(h.locationFr, h.locationEn, p.location);
       clone.date = pick(h.dateFr, h.dateEn, p.date);
       clone.tagline = pick(h.taglineFr, h.taglineEn, p.tagline);
-      clone.countdown = h.countdownEnabled && h.countdownISO ? new Date(h.countdownISO) : null;
+      // Robust countdown parsing with fallback and local timezone normalization
+      const rawCountdown = (h.countdownEnabled && h.countdownISO && typeof h.countdownISO === 'string') ? h.countdownISO.trim() : '';
+      let parsedCountdown = null;
+      if (rawCountdown) {
+        const isoLike = /^\d{4}-\d{2}-\d{2}$/; // YYYY-MM-DD
+        const normalized = isoLike.test(rawCountdown) ? `${rawCountdown}T00:00:00` : rawCountdown;
+        const d = new Date(normalized);
+        if (!Number.isNaN(d.getTime())) parsedCountdown = d;
+      }
+      // Use CMS value if valid, otherwise keep default p.countdown
+      clone.countdown = parsedCountdown ?? p.countdown;
       // Preserve Dock619 behavior via id===7; no change needed for other ids
       return clone;
     });
