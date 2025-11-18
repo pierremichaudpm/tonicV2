@@ -458,7 +458,10 @@ Return ONLY the translated text, no explanations. Do not truncate or summarize; 
 // Backup CMS data to local backup folder
 app.post('/api/cms/backup', authenticate, (req, res) => {
   try {
-    const backupDir = path.join(__dirname, 'cms_backups');
+    // Store backups on volume (persistent) if DATA_DIR is set, otherwise in repo
+    const backupDir = process.env.DATA_DIR 
+      ? path.join(path.dirname(path.resolve(process.env.DATA_DIR)), 'cms_backups')
+      : path.join(__dirname, 'cms_backups');
     if (!fs.existsSync(backupDir)) {
       fs.mkdirSync(backupDir, { recursive: true });
     }
@@ -692,7 +695,10 @@ app.get('*', (req, res) => {
 
 // Auto-backup CMS data on server start (protection contre perte de données)
 try {
-  const backupDir = path.join(__dirname, 'cms_backups');
+  // Store backups on volume (persistent) if DATA_DIR is set, otherwise in repo
+  const backupDir = process.env.DATA_DIR 
+    ? path.join(path.dirname(path.resolve(process.env.DATA_DIR)), 'cms_backups')
+    : path.join(__dirname, 'cms_backups');
   if (!fs.existsSync(backupDir)) fs.mkdirSync(backupDir, { recursive: true });
   
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5);

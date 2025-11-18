@@ -6,7 +6,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, 'client/public/js');
-const BACKUP_DIR = path.join(__dirname, 'cms_backups');
+// Store backups on volume (persistent) if DATA_DIR is set, otherwise in repo
+const BACKUP_DIR = process.env.DATA_DIR 
+  ? path.join(path.dirname(path.resolve(process.env.DATA_DIR)), 'cms_backups')
+  : path.join(__dirname, 'cms_backups');
 
 // Créer le dossier de backup s'il n'existe pas
 if (!fs.existsSync(BACKUP_DIR)) {
