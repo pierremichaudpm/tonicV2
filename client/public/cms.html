@@ -338,6 +338,9 @@
                     <button id="languageToggle" onclick="toggleLanguage()" class="px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg font-medium transition-all">
                         <span id="langText">EN</span>
                     </button>
+                    <button onclick="createBackup()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-all shadow-sm" id="backupBtn" title="Créer un backup de toutes les données CMS">
+                        💾 <span id="backupBtnText">Backup</span>
+                    </button>
                     <button onclick="logout()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-medium transition-all shadow-sm" id="logoutBtn">Sortie</button>
                 </div>
             </div>
@@ -739,6 +742,54 @@
             isAuthenticated = false;
             adminPassword = null; // Clear the password
             document.getElementById('loginModal').style.display = 'flex';
+        }
+
+        async function createBackup() {
+            const btn = document.getElementById('backupBtn');
+            const btnText = document.getElementById('backupBtnText');
+            const originalText = btnText.textContent;
+            
+            btn.disabled = true;
+            btnText.textContent = currentLang === 'en' ? 'Creating...' : 'Création...';
+            
+            try {
+                const response = await fetch('/api/cms/backup', {
+                    method: 'POST',
+                    headers: {
+                        'x-admin-password': adminPassword,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    btnText.textContent = '✅';
+                    setTimeout(() => {
+                        btnText.textContent = originalText;
+                        btn.disabled = false;
+                    }, 2000);
+                    
+                    const msg = currentLang === 'en' 
+                        ? `Backup created successfully!\n${result.message}`
+                        : `Backup créé avec succès!\n${result.message}`;
+                    alert(msg);
+                } else {
+                    throw new Error(result.error || 'Backup failed');
+                }
+            } catch (error) {
+                console.error('Erreur backup:', error);
+                btnText.textContent = '❌';
+                setTimeout(() => {
+                    btnText.textContent = originalText;
+                    btn.disabled = false;
+                }, 2000);
+                
+                const msg = currentLang === 'en'
+                    ? 'Backup failed. Check console for details.'
+                    : 'Échec du backup. Vérifiez la console pour les détails.';
+                alert(msg);
+            }
         }
 
         // App initialization
