@@ -2412,6 +2412,7 @@ const NewsPage = ({
       style: {
         background: item.category.toLowerCase().includes('beach') ? 'linear-gradient(135deg, rgba(233, 30, 99, 0.4), rgba(233, 30, 99, 0.2))' : 
                    item.category.toLowerCase().includes('cycliste') ? 'linear-gradient(135deg, rgba(76, 175, 80, 0.4), rgba(76, 175, 80, 0.2))' :
+                   (item.category.toLowerCase().includes('uci') || item.category.toLowerCase().includes('mondiaux')) ? 'linear-gradient(135deg, rgba(218, 39, 59, 0.4), rgba(218, 39, 59, 0.2))' :
                    item.category.toLowerCase().includes('21k') ? 'linear-gradient(135deg, rgba(255, 152, 0, 0.4), rgba(255, 152, 0, 0.2))' :
                    item.category.toLowerCase().includes('marathon') ? 'linear-gradient(135deg, rgba(33, 150, 243, 0.4), rgba(33, 150, 243, 0.2))' : 
                    'linear-gradient(135deg, rgba(255, 87, 34, 0.4), rgba(255, 87, 34, 0.2))'
