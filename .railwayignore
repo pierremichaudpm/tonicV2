@@ -1,0 +1,7 @@
+# Ignorer les backups CMS pour ne pas les déployer
+cms_backups/
+cms_backup_*/
+*.log
+test-data-dir.js
+restore-*.js
+

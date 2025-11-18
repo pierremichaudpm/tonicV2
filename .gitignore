@@ -32,6 +32,10 @@ logs/
 tmp/
 temp/
 
+# CMS backups (local only, not for deployment)
+cms_backups/
+cms_backup_*/
+
 # Package manager
 package-lock.json
 yarn.lock

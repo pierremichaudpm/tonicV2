@@ -10,7 +10,8 @@
     "check": "tsc",
     "db:push": "drizzle-kit push",
     "test:api": "bash scripts/test_api.sh",
-    "test:data-dir": "node test-data-dir.js"
+    "test:data-dir": "node test-data-dir.js",
+    "backup:cms": "node backup-cms.js"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.37.0",

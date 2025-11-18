@@ -455,6 +455,44 @@ Return ONLY the translated text, no explanations. Do not truncate or summarize; 
 });
 
 // Save/Update content endpoint
+// Backup CMS data to local backup folder
+app.post('/api/cms/backup', authenticate, (req, res) => {
+  try {
+    const backupDir = path.join(__dirname, 'cms_backups');
+    if (!fs.existsSync(backupDir)) {
+      fs.mkdirSync(backupDir, { recursive: true });
+    }
+    
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5);
+    const backupFolder = path.join(backupDir, `backup_${timestamp}`);
+    fs.mkdirSync(backupFolder, { recursive: true });
+    
+    const filesToBackup = [
+      'hero-data.js',
+      'hero-order.js', 
+      'communiques-data.js',
+      'communiques-data-en.js',
+      'emplois-data.js',
+      'emplois-data-en.js'
+    ];
+    
+    let count = 0;
+    filesToBackup.forEach(file => {
+      const source = path.join(DATA_DIR, file);
+      if (fs.existsSync(source)) {
+        fs.copyFileSync(source, path.join(backupFolder, file));
+        count++;
+      }
+    });
+    
+    console.log(`[BACKUP] Created backup: ${timestamp} (${count} files)`);
+    res.json({ success: true, message: `Backup created: ${count} fichiers sauvegardés`, timestamp });
+  } catch (err) {
+    console.error('[BACKUP] Error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // EMERGENCY: Restore from bundled backup
 app.post('/api/cms/emergency-restore', authenticate, (req, res) => {
   try {
@@ -651,6 +689,35 @@ app.get('/healthz', (req, res) => {
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'client/public/index.html'));
 });
+
+// Auto-backup CMS data on server start (protection contre perte de données)
+try {
+  const backupDir = path.join(__dirname, 'cms_backups');
+  if (!fs.existsSync(backupDir)) fs.mkdirSync(backupDir, { recursive: true });
+  
+  const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5);
+  const backupFolder = path.join(backupDir, `startup_${timestamp}`);
+  fs.mkdirSync(backupFolder, { recursive: true });
+  
+  const filesToBackup = ['hero-data.js', 'hero-order.js', 'communiques-data.js', 'communiques-data-en.js', 'emplois-data.js', 'emplois-data-en.js'];
+  let count = 0;
+  filesToBackup.forEach(file => {
+    const source = path.join(DATA_DIR, file);
+    if (fs.existsSync(source)) {
+      fs.copyFileSync(source, path.join(backupFolder, file));
+      count++;
+    }
+  });
+  console.log(`[STARTUP] ✅ Auto-backup: ${count} fichiers sauvegardés`);
+  
+  // Nettoyer (garder 30 derniers)
+  const backups = fs.readdirSync(backupDir).filter(f => f.startsWith('backup_') || f.startsWith('startup_')).sort().reverse();
+  if (backups.length > 30) {
+    backups.slice(30).forEach(old => fs.rmSync(path.join(backupDir, old), { recursive: true, force: true }));
+  }
+} catch (e) {
+  console.warn('[STARTUP] Auto-backup échoué:', e?.message);
+}
 
 // Bind explicitly to 0.0.0.0 for Railway/public networking compatibility
 const server = app.listen(PORT, '0.0.0.0', () => {
