@@ -17,8 +17,20 @@ const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'Axelle20';
 // Enable gzip compression
 app.use(compression());
 
-// Parse JSON bodies for API requests
-app.use(express.json());
+// Parse JSON bodies for API requests (increase limit for rich HTML with base64 images)
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+
+// Uniform JSON error for payload too large instead of HTML (prevents client JSON parse errors)
+app.use((err, req, res, next) => {
+  if (err && (err.type === 'entity.too.large' || err.status === 413)) {
+    return res.status(413).json({
+      error: 'Payload too large',
+      message: 'Le contenu à sauvegarder est trop volumineux. Réduisez la taille des images ou fractionnez le contenu.'
+    });
+  }
+  return next(err);
+});
 
 // Resolve data directory for dynamic CMS files (persisted if DATA_DIR is mounted to a volume)
 const DATA_DIR = process.env.DATA_DIR
@@ -311,11 +323,11 @@ app.get('/api/cms/content/:type/:lang', authenticate, (req, res) => {
 app.post('/api/translate', authenticate, async (req, res) => {
   const { text, fromLang, toLang } = req.body;
   console.log(`Translation request: ${fromLang} -> ${toLang}`);
-  
+
   if (!text || fromLang === toLang) {
     return res.json({ translatedText: text });
   }
-  
+
   // Restrict translation direction to French -> English only
   if (fromLang !== 'fr' || toLang !== 'en') {
     return res.status(400).json({
@@ -323,56 +335,123 @@ app.post('/api/translate', authenticate, async (req, res) => {
       translatedText: text
     });
   }
-  
-  try {
-    // Use Claude API for translation
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': process.env.ANTHROPIC_API_KEY,
-        'anthropic-version': '2023-06-01'
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 8192,
-        system: `You are a professional French-English translator specializing in business content for Groupe Tonic, a Quebec-based event production company. Translate text while preserving:
+
+  const apiKey = process.env.ANTHROPIC_API_KEY;
+  if (!apiKey) {
+    console.warn('[translate] Missing ANTHROPIC_API_KEY');
+    return res.json({ translatedText: text, message: 'Translation service unavailable (missing API key), using original text' });
+  }
+
+  // Preserve <img> tags (including base64) by replacing them with placeholders before translation
+  const imgTags = [];
+  const textWithoutImages = String(text || '').replace(/<img[\s\S]*?>/gi, (match) => {
+    const index = imgTags.push(match) - 1;
+    return `__IMG_${index}__`;
+  });
+
+  // Try a small, safe list of model fallbacks
+  const candidateModels = [
+    'claude-3-7-sonnet-2025-02-19',
+    'claude-3-5-sonnet-latest',
+    'claude-3-5-sonnet-20241022',
+    'claude-3-opus-20240229',
+    'claude-3-haiku-20240307',
+    // Original model kept last, in case the key supports it
+    'claude-sonnet-4-20250514'
+  ];
+
+  const systemPrompt = `You are a professional French-English translator specializing in business content for Groupe Tonic, a Quebec-based event production company. Translate text while preserving:
 - HTML formatting (spans, links, bold, etc.)
 - Professional tone and business terminology
 - Brand names (keep French: "Groupe Tonic", "Beach Pro Tour", etc.)
 - Quebec French cultural context when translating to English
 - All technical formatting and structure
 
-Return ONLY the translated text, no explanations.`,
-        messages: [{
-          role: 'user',
-          content: `Translate this ${fromLang === 'fr' ? 'French' : 'English'} text to ${toLang === 'en' ? 'English' : 'French'}:\n\n${text}`
-        }]
+Return ONLY the translated text, no explanations. Do not truncate or summarize; return the full translation with all sections.`;
+
+  // Helper: call Anthropic once
+  async function callAnthropicOnce(model, content) {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01'
+      },
+      body: JSON.stringify({
+        model,
+        max_tokens: 6000,
+        system: systemPrompt,
+        messages: [{ role: 'user', content }]
       })
     });
-
     if (!response.ok) {
-      console.error('Claude API error:', response.status);
-      throw new Error(`Claude API error: ${response.status}`);
+      const errText = await response.text().catch(() => '');
+      throw new Error(`HTTP ${response.status} ${errText?.slice(0, 240)}`);
     }
-
     const result = await response.json();
-    const translatedText = result.content[0].text;
-
-    res.json({ 
-      translatedText: translatedText,
-      message: 'Translated using Claude API'
-    });
-
-  } catch (error) {
-    console.error('Translation failed:', error);
-    
-    // Fallback to simple response if Claude fails
-    res.json({ 
-      translatedText: text,
-      message: 'Translation service unavailable, using original text'
-    });
+    return result?.content?.[0]?.text ?? '';
   }
+
+  // Helper: try multiple models
+  async function translateWithFallback(content) {
+    let lastErr = '';
+    for (const model of candidateModels) {
+      try {
+        const prompt = `Translate this French text to English:\n\n${content}`;
+        const out = await callAnthropicOnce(model, prompt);
+        if (out && out.trim()) return { text: out, model };
+      } catch (e) {
+        lastErr = e?.message || String(e);
+        console.error(`[translate] ${model} failed:`, lastErr);
+        if (/HTTP\s+(401|403)/.test(lastErr)) break; // auth error → stop
+      }
+    }
+    return { text: '', error: lastErr };
+  }
+
+  // Chunking for long HTML to avoid truncation
+  function splitHtmlIntoChunks(html, maxLen = 5000) {
+    const parts = html.split(/(<\/p>|<li\b[^>]*>|<\/li>|<br\s*\/?>|\n\n+)/i);
+    const chunks = [];
+    let buf = '';
+    for (const part of parts) {
+      if ((buf + part).length > maxLen && buf) {
+        chunks.push(buf);
+        buf = part;
+      } else {
+        buf += part;
+      }
+    }
+    if (buf) chunks.push(buf);
+    return chunks;
+  }
+
+  const chunks = splitHtmlIntoChunks(textWithoutImages, 4500);
+  let translated = '';
+  let usedModel = '';
+  for (let i = 0; i < chunks.length; i++) {
+    const { text: piece, model, error } = await translateWithFallback(chunks[i]);
+    if (!piece) {
+      console.warn('[translate] chunk failed, falling back to original for this chunk:', error);
+      translated += chunks[i];
+      continue;
+    }
+    if (!usedModel) usedModel = model;
+    translated += piece;
+  }
+
+  // Remove any stray bracketed meta-notes the model might add
+  translated = translated.replace(/\n?\s*\[[^\]]*(translate|translation|continued|formatting)[^\]]*\]\s*/gi, '\n');
+
+  // Restore images
+  translated = translated.replace(/__IMG_(\d+)__/g, (_, n) => imgTags[Number(n)] ?? '');
+
+  if (!translated || !translated.trim()) {
+    return res.json({ translatedText: text, message: 'Translation service unavailable, using original text' });
+  }
+
+  return res.json({ translatedText: translated, message: `Translated using Claude API${usedModel ? ` (${usedModel})` : ''}` });
 });
 
 // Save/Update content endpoint
