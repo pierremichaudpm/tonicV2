@@ -455,12 +455,56 @@ Return ONLY the translated text, no explanations. Do not truncate or summarize; 
 });
 
 // Save/Update content endpoint
+// EMERGENCY: Restore from bundled backup
+app.post('/api/cms/emergency-restore', authenticate, (req, res) => {
+  try {
+    console.log('[EMERGENCY] Starting restore from bundled files...');
+    
+    // Restore news FR
+    const newsFrPath = path.join(__dirname, 'client/public/js/communiques-data.js');
+    if (fs.existsSync(newsFrPath)) {
+      const destPath = path.join(DATA_DIR, 'communiques-data.js');
+      fs.copyFileSync(newsFrPath, destPath);
+      console.log('[EMERGENCY] ✓ Restored communiques-data.js');
+    }
+    
+    // Restore news EN
+    const newsEnPath = path.join(__dirname, 'client/public/js/communiques-data-en.js');
+    if (fs.existsSync(newsEnPath)) {
+      const destPath = path.join(DATA_DIR, 'communiques-data-en.js');
+      fs.copyFileSync(newsEnPath, destPath);
+      console.log('[EMERGENCY] ✓ Restored communiques-data-en.js');
+    }
+    
+    // Restore jobs FR
+    const jobsFrPath = path.join(__dirname, 'client/public/js/emplois-data.js');
+    if (fs.existsSync(jobsFrPath)) {
+      const destPath = path.join(DATA_DIR, 'emplois-data.js');
+      fs.copyFileSync(jobsFrPath, destPath);
+      console.log('[EMERGENCY] ✓ Restored emplois-data.js');
+    }
+    
+    // Restore jobs EN
+    const jobsEnPath = path.join(__dirname, 'client/public/js/emplois-data-en.js');
+    if (fs.existsSync(jobsEnPath)) {
+      const destPath = path.join(DATA_DIR, 'emplois-data-en.js');
+      fs.copyFileSync(jobsEnPath, destPath);
+      console.log('[EMERGENCY] ✓ Restored emplois-data-en.js');
+    }
+    
+    res.json({ success: true, message: 'Emergency restore completed' });
+  } catch (err) {
+    console.error('[EMERGENCY] Error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.post('/api/cms/content/:type/:lang', authenticate, (req, res) => {
   const { type, lang } = req.params;
   const { data } = req.body;
   
   console.log(`Saving ${type} content for ${lang}`);
-  console.log(`Received ${data.length} items to save`);
+  console.log(`Received ${data?.length || 0} items to save`);
   
   // Log first item for debugging
   if (data.length > 0) {
