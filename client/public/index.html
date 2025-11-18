@@ -2376,14 +2376,18 @@ const NewsPage = ({
     };
 
     // Images selon le type de communiqué
-    const getNewsImage = title => {
-      if (title.toLowerCase().includes('beach')) return 'images/beach-pro-tour-hero.webp';
-      if (title.toLowerCase().includes('cycliste') || title.toLowerCase().includes('grand prix')) return 'images/grands-prix-cyclistes-hero.webp';
-      if (title.toLowerCase().includes('marathon') || title.toLowerCase().includes('21k')) return 'images/21k-hero.webp';
-      if (title.toLowerCase().includes('beneva')) return 'images/marathon-beneva-hero.webp';
+    const getNewsImage = (title, category) => {
+      const t = title.toLowerCase();
+      const c = (category || '').toLowerCase();
+      if (t.includes('beach') || c.includes('beach')) return 'images/beach-pro-tour-hero.webp';
+      if (t.includes('cycliste') || t.includes('grand prix') || c.includes('cycliste')) return 'images/grands-prix-cyclistes-hero.webp';
+      if (t.includes('uci') || t.includes('mondiaux') || c.includes('uci') || c.includes('mondiaux')) return 'images/montreal-2026-uci-hero.webp';
+      if (t.includes('beneva') || c.includes('beneva')) return 'images/marathon-beneva-hero.webp';
+      if (t.includes('marathon') || c.includes('marathon')) return 'images/marathon-beneva-hero.webp';
+      if (t.includes('21k') || c.includes('21k')) return 'images/21k-hero.webp';
       return null;
     };
-    const newsImage = getNewsImage(item.title);
+    const newsImage = getNewsImage(item.title, item.category);
     return /*#__PURE__*/React.createElement("div", {
       key: item.id,
       className: "relative rounded-2xl overflow-hidden animate-fadeInUp cursor-pointer hover:transform hover:scale-105 transition-all duration-300",
