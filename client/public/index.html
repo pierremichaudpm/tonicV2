@@ -4584,6 +4584,10 @@
                         );
                     }
                 }, [selectedJob, isEn]);
+                useEffect(() => {
+                    document.body.style.overflow = selectedJob ? "hidden" : "";
+                    return () => { document.body.style.overflow = ""; };
+                }, [selectedJob]);
                 const getShareUrl = (job) =>
                     `${window.location.origin}/#/${isEn ? "jobs" : "emplois"}/${job.id}`;
 
@@ -5274,6 +5278,10 @@
                         );
                     }
                 }, [selectedNews, isEn]);
+                useEffect(() => {
+                    document.body.style.overflow = selectedNews ? "hidden" : "";
+                    return () => { document.body.style.overflow = ""; };
+                }, [selectedNews]);
                 const getShareUrl = (item) =>
                     `${window.location.origin}/#/${isEn ? "news" : "communiques"}/${item.id}`;
 
