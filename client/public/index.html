@@ -222,9 +222,16 @@
         <style>
             /* === Z-INDEX MASTER OVERRIDE === */
             :root {
-                --z-header: 50;
+                --z-header: 100000;
                 --z-mobile-menu: 999999;
-                --z-modal: 2147483647;
+                --z-modal: 99998;
+                --modal-top: 80px;
+            }
+
+            @media (min-width: 640px) {
+                :root {
+                    --modal-top: 100px;
+                }
             }
 
             header {
@@ -5031,9 +5038,10 @@
                             "div",
                             {
                                 className:
-                                    "fixed inset-0 flex items-center justify-center p-4",
+                                    "fixed left-0 right-0 bottom-0 flex items-center justify-center p-4",
                                 style: {
-                                    zIndex: 99999,
+                                    zIndex: 99998,
+                                    top: "var(--modal-top, 80px)",
                                     backgroundColor: "rgba(0, 0, 0, 0.95)",
                                     backdropFilter: "blur(15px)",
                                 },
@@ -5043,7 +5051,7 @@
                                 "div",
                                 {
                                     className:
-                                        "relative max-w-4xl w-full max-h-[90vh] overflow-y-auto p-4 sm:p-6 md:p-8 rounded-2xl",
+                                        "relative max-w-4xl w-full max-h-[85vh] overflow-y-auto p-4 sm:p-6 md:p-8 rounded-2xl",
                                     style: {
                                         background: "rgba(20, 20, 20, 0.98)",
                                         border: "2px solid rgba(249, 115, 22, 0.4)",
@@ -5093,24 +5101,14 @@
                                                 "rgba(249, 115, 22, 0.15)",
                                         },
                                     },
-                                    /*#__PURE__*/ React.createElement("img", {
-                                        src: "images/tonic-logo.png",
-                                        alt: "Groupe Tonic",
-                                        style: {
-                                            height: "auto",
-                                            width: "120px",
-                                            maxWidth: "150px",
-                                            filter: "brightness(1.1) drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5))",
-                                        },
-                                    }),
                                     /*#__PURE__*/ React.createElement(
                                         "span",
                                         {
                                             className:
-                                                "text-xs sm:text-sm text-gray-400 font-medium",
+                                                "text-sm sm:text-base font-semibold uppercase tracking-wider",
                                             style: {
-                                                color: "rgba(249, 115, 22, 0.8)",
-                                                letterSpacing: "0.05em",
+                                                color: "rgba(249, 115, 22, 0.9)",
+                                                letterSpacing: "0.08em",
                                             },
                                         },
                                         isEn ? "Job Posting" : "Offre d'emploi",
@@ -5665,9 +5663,10 @@
                             "div",
                             {
                                 className:
-                                    "fixed inset-0 flex items-center justify-center p-4",
+                                    "fixed left-0 right-0 bottom-0 flex items-center justify-center p-4",
                                 style: {
-                                    zIndex: 99999,
+                                    zIndex: 99998,
+                                    top: "var(--modal-top, 80px)",
                                     backgroundColor: "rgba(0, 0, 0, 0.95)",
                                     backdropFilter: "blur(15px)",
                                 },
@@ -5677,7 +5676,7 @@
                                 "div",
                                 {
                                     className:
-                                        "relative max-w-4xl w-full max-h-[90vh] overflow-y-auto p-4 sm:p-6 md:p-8 rounded-2xl",
+                                        "relative max-w-4xl w-full max-h-[85vh] overflow-y-auto p-4 sm:p-6 md:p-8 rounded-2xl",
                                     style: {
                                         background: "rgba(20, 20, 20, 0.98)",
                                         border: "2px solid rgba(249, 115, 22, 0.4)",
@@ -5727,24 +5726,14 @@
                                                 "rgba(249, 115, 22, 0.15)",
                                         },
                                     },
-                                    /*#__PURE__*/ React.createElement("img", {
-                                        src: "images/tonic-logo.png",
-                                        alt: "Groupe Tonic",
-                                        style: {
-                                            height: "auto",
-                                            width: "120px",
-                                            maxWidth: "150px",
-                                            filter: "brightness(1.1) drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5))",
-                                        },
-                                    }),
                                     /*#__PURE__*/ React.createElement(
                                         "span",
                                         {
                                             className:
-                                                "text-xs sm:text-sm text-gray-400 font-medium",
+                                                "text-sm sm:text-base font-semibold uppercase tracking-wider",
                                             style: {
-                                                color: "rgba(249, 115, 22, 0.8)",
-                                                letterSpacing: "0.05em",
+                                                color: "rgba(249, 115, 22, 0.9)",
+                                                letterSpacing: "0.08em",
                                             },
                                         },
                                         isEn ? "Press Release" : "Communiqué",

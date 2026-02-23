@@ -2,11 +2,12 @@
 /* This file eliminates header jumping by providing consistent styling across all pages */
 
 :root {
-    --z-header: 50;
-    --z-mobile-menu: 999999; 
-    --z-modal: 2147483647;
+    --z-header: 100000;
+    --z-mobile-menu: 999999;
+    --z-modal: 99998;
     --header-height-mobile: 80px;
     --header-height-desktop: 100px;
+    --modal-top: 80px;
 }
 
 /* Force identical header positioning across ALL pages */
@@ -126,6 +127,9 @@ header {
     header {
         min-height: var(--header-height-desktop) !important;
     }
+    :root {
+        --modal-top: 100px;
+    }
 }
 
 /* Logo consistency */
@@ -165,14 +169,15 @@ header {
     display: flex !important;
 }
 
-/* Modal z-index */
-#newsModal, #jobModal, .modal-backdrop { 
-    z-index: var(--z-modal) !important; 
+/* Modal z-index and positioning below header */
+#newsModal, #jobModal, .modal-backdrop {
+    z-index: var(--z-modal) !important;
 }
 
-.modal-content { 
-    z-index: var(--z-modal) !important; 
+.modal-content {
+    z-index: var(--z-modal) !important;
 }
+
 
 /* Force page content below header with consistent spacing */
 body {

@@ -676,23 +676,29 @@ body:has(#mobileMenu.active) .mobile-dots {
     background: #0077B5;
 }
 
-/* Modal Z-Index Fix - COMPLETE OVERRIDE */
+/* Modal Z-Index Fix - BELOW HEADER */
 #newsModal {
-    z-index: 2147483647 !important;
+    z-index: var(--z-modal, 99998) !important;
     position: fixed !important;
-    top: 0 !important;
+    top: var(--header-height-mobile, 80px) !important;
     left: 0 !important;
     right: 0 !important;
     bottom: 0 !important;
 }
 
+@media (min-width: 640px) {
+    #newsModal {
+        top: var(--header-height-desktop, 100px) !important;
+    }
+}
+
 .modal-backdrop {
-    z-index: 2147483647 !important;
+    z-index: var(--z-modal, 99998) !important;
     position: fixed !important;
 }
 
 .modal-content {
-    z-index: 2147483647 !important;
+    z-index: var(--z-modal, 99998) !important;
     position: relative !important;
 }
 
@@ -733,7 +739,7 @@ body.modal-open main h1:not(.mobile-menu h1) {
 body.modal-open #newsModal,
 body.modal-open .modal-backdrop,
 body.modal-open .modal-content {
-    z-index: 2147483647 !important;
+    z-index: var(--z-modal, 99998) !important;
 }
 
 /* Mobile Menu Consistent Styling - High Z-Index */
