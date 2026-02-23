@@ -452,6 +452,35 @@
                     transform: scale(1.02);
                 }
             }
+            /* Ken Burns variants — all zoom in with strong directional pan */
+            @keyframes kenBurns0 {
+                0% { transform: scale(1) translate(0, 0); }
+                100% { transform: scale(1.25) translate(-3%, -2%); }
+            }
+            @keyframes kenBurns1 {
+                0% { transform: scale(1) translate(0, 0); }
+                100% { transform: scale(1.25) translate(3%, -2.5%); }
+            }
+            @keyframes kenBurns2 {
+                0% { transform: scale(1) translate(0, 0); }
+                100% { transform: scale(1.25) translate(-2.5%, 2%); }
+            }
+            @keyframes kenBurns3 {
+                0% { transform: scale(1) translate(0, 0); }
+                100% { transform: scale(1.25) translate(2%, 3%); }
+            }
+            @keyframes kenBurns4 {
+                0% { transform: scale(1) translate(0, 0); }
+                100% { transform: scale(1.25) translate(-3.5%, 0%); }
+            }
+            @keyframes kenBurns5 {
+                0% { transform: scale(1) translate(0, 0); }
+                100% { transform: scale(1.25) translate(0%, -3.5%); }
+            }
+            @keyframes kenBurns6 {
+                0% { transform: scale(1) translate(0, 0); }
+                100% { transform: scale(1.25) translate(3%, 2%); }
+            }
             @keyframes float {
                 0%,
                 100% {
@@ -997,10 +1026,9 @@
 
             /* Hero */
             .hero-bg {
-                animation: subtleZoom 60s ease-in-out infinite;
-                transition:
-                    opacity 0.6s ease-out,
-                    transform 0.6s ease-out;
+                transition: opacity 0.6s ease-out;
+                will-change: transform;
+                overflow: hidden;
             }
             .hero-transition-wrapper {
                 position: absolute;
@@ -6308,13 +6336,13 @@
                     name: "BEACH PRO TOUR",
                     tagline: "L'élite mondiale du volleyball de plage",
                     category: "CIRCUIT INTERNATIONAL",
-                    date: "13-17 août 2025",
+                    date: "19-23 août 2026",
                     location: "Montréal",
                     color: "#ff0e9b",
                     image: "images/beach-pro-tour-hero.webp",
                     logo: "images/beach-pro-tour-logo.png?v=20250130",
                     url: "https://mtlbeachprotour.com/",
-                    countdown: null,
+                    countdown: new Date("2026-08-19"),
                     theme: {
                         primary: "from-pink-600 to-pink-500",
                         secondary: "from-pink-900 to-pink-700",
@@ -8277,7 +8305,11 @@
                                             ? 0.7
                                             : 1,
                                         transition: "opacity 0.5s ease-in-out",
+                                        animation: state.isMobileView || state.isTransitioning
+                                            ? "none"
+                                            : `kenBurns${state.activeIndex % 7} 14s ease-out forwards`,
                                     },
+                                    key: `hero-bg-${state.activeIndex}-${state.isTransitioning}`,
                                 }),
                                 /*#__PURE__*/ React.createElement("div", {
                                     className: `absolute inset-0 bg-gradient-to-r ${currentProperty.theme.primary} opacity-50`,
