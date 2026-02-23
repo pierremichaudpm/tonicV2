@@ -104,7 +104,9 @@ app.use(express.static(path.join(__dirname, 'client/public'), {
     } else if (filePath.match(/\.(jpg|jpeg|png|gif|webp|ico|svg)$/)) {
       res.setHeader('Cache-Control', 'public, max-age=31536000');
     } else if (filePath.match(/\.css$/)) {
-      res.setHeader('Cache-Control', 'public, max-age=86400');
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+      res.setHeader('Pragma', 'no-cache');
+      res.setHeader('Expires', '0');
     } else if (filePath.match(/\.js$/)) {
       res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
       res.setHeader('Pragma', 'no-cache');
