@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'path';
 import compression from 'compression';
+import helmet from 'helmet';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
 import fetch from 'node-fetch';
@@ -21,20 +22,15 @@ if (!ADMIN_PASSWORD) {
 // Enable gzip compression
 app.use(compression());
 
+// Security headers (allow inline scripts/styles for the CMS)
+app.use(helmet({
+  contentSecurityPolicy: false,
+  crossOriginEmbedderPolicy: false,
+}));
+
 // Parse JSON bodies for API requests (increase limit for rich HTML with base64 images)
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
-
-// Uniform JSON error for payload too large instead of HTML (prevents client JSON parse errors)
-app.use((err, req, res, next) => {
-  if (err && (err.type === 'entity.too.large' || err.status === 413)) {
-    return res.status(413).json({
-      error: 'Payload too large',
-      message: 'Le contenu à sauvegarder est trop volumineux. Réduisez la taille des images ou fractionnez le contenu.'
-    });
-  }
-  return next(err);
-});
 
 // Resolve data directory for dynamic CMS files (persisted if DATA_DIR is mounted to a volume)
 const DATA_DIR = process.env.DATA_DIR
@@ -758,6 +754,17 @@ try {
 } catch (e) {
   console.warn('[STARTUP] Auto-backup échoué:', e?.message);
 }
+
+// Uniform JSON error for payload too large instead of HTML (prevents client JSON parse errors)
+app.use((err, req, res, next) => {
+  if (err && (err.type === 'entity.too.large' || err.status === 413)) {
+    return res.status(413).json({
+      error: 'Payload too large',
+      message: 'Le contenu à sauvegarder est trop volumineux. Réduisez la taille des images ou fractionnez le contenu.'
+    });
+  }
+  return next(err);
+});
 
 // Bind explicitly to 0.0.0.0 for Railway/public networking compatibility
 const server = app.listen(PORT, '0.0.0.0', () => {
