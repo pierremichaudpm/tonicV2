@@ -2,7 +2,8 @@
 import fs from 'fs';
 import https from 'https';
 
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'Axelle20';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+if (!ADMIN_PASSWORD) { console.error('ADMIN_PASSWORD env var required'); process.exit(1); }
 const BASE_URL = 'https://www.groupetonic.ca';
 
 async function restoreJobs() {

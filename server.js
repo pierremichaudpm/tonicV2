@@ -11,8 +11,12 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Admin password for CMS (prefer .env, fallback for local dev)
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'Axelle20';
+// Admin password for CMS (required via environment variable)
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+if (!ADMIN_PASSWORD) {
+  console.error('FATAL: ADMIN_PASSWORD environment variable is not set. Exiting.');
+  process.exit(1);
+}
 
 // Enable gzip compression
 app.use(compression());
@@ -147,9 +151,8 @@ const readDataFile = (filename) => {
       try {
         return JSON.parse(match[1]);
       } catch (e) {
-        // Use Function constructor for JavaScript array evaluation
-        const fn = new Function('return ' + match[1]);
-        return fn();
+        console.error('Invalid JSON in data file, skipping:', filename);
+        return [];
       }
     }
     return [];
@@ -173,13 +176,42 @@ const writeDataFile = (filename, data, variableName) => {
   }
 };
 
+// Rate limiting for login (max 5 attempts per IP per 15 minutes)
+const loginAttempts = new Map();
+const LOGIN_MAX = 5;
+const LOGIN_WINDOW_MS = 15 * 60 * 1000;
+
+const loginRateLimit = (req, res, next) => {
+  const ip = req.ip || req.connection.remoteAddress;
+  const now = Date.now();
+  const record = loginAttempts.get(ip);
+  if (record) {
+    // Clean expired entries
+    if (now - record.start > LOGIN_WINDOW_MS) {
+      loginAttempts.set(ip, { count: 1, start: now });
+      return next();
+    }
+    if (record.count >= LOGIN_MAX) {
+      const retryAfter = Math.ceil((record.start + LOGIN_WINDOW_MS - now) / 1000);
+      return res.status(429).json({ success: false, message: `Trop de tentatives. Réessayez dans ${Math.ceil(retryAfter / 60)} minutes.` });
+    }
+    record.count++;
+  } else {
+    loginAttempts.set(ip, { count: 1, start: now });
+  }
+  next();
+};
+
 // CMS API Routes
-app.post('/api/cms/login', (req, res) => {
+app.post('/api/cms/login', loginRateLimit, (req, res) => {
   const { password } = req.body;
   console.log('CMS Login request received');
-  
+
   if (password === ADMIN_PASSWORD) {
     console.log('Login successful');
+    // Reset attempts on successful login
+    const ip = req.ip || req.connection.remoteAddress;
+    loginAttempts.delete(ip);
     res.json({ success: true, message: 'Login successful' });
   } else {
     console.log('Login failed - wrong password');

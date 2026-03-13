@@ -3,7 +3,7 @@ set -euo pipefail
 
 # Config
 BASE_URL=${BASE_URL:-http://localhost:3000}
-ADMIN_PASSWORD=${ADMIN_PASSWORD:-Axelle20}
+ADMIN_PASSWORD=${ADMIN_PASSWORD:?'ADMIN_PASSWORD env var is required'}
 
 echo "=== Tests API Groupe Tonic (${BASE_URL}) ==="
 
