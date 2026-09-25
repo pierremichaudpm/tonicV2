@@ -4,7 +4,6 @@ import compression from 'compression';
 import helmet from 'helmet';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
-import fetch from 'node-fetch';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -379,16 +378,8 @@ app.post('/api/translate', authenticate, async (req, res) => {
     return `__IMG_${index}__`;
   });
 
-  // Try a small, safe list of model fallbacks
-  const candidateModels = [
-    'claude-3-7-sonnet-2025-02-19',
-    'claude-3-5-sonnet-latest',
-    'claude-3-5-sonnet-20241022',
-    'claude-3-opus-20240229',
-    'claude-3-haiku-20240307',
-    // Original model kept last, in case the key supports it
-    'claude-sonnet-4-20250514'
-  ];
+  // Single current model; override via env var when Anthropic retires it
+  const TRANSLATE_MODEL = process.env.TRANSLATE_MODEL || 'claude-sonnet-5';
 
   const systemPrompt = `You are a professional French-English translator specializing in business content for Groupe Tonic, a Quebec-based event production company. Translate text while preserving:
 - HTML formatting (spans, links, bold, etc.)
@@ -423,21 +414,11 @@ Return ONLY the translated text, no explanations. Do not truncate or summarize; 
     return result?.content?.[0]?.text ?? '';
   }
 
-  // Helper: try multiple models
-  async function translateWithFallback(content) {
-    let lastErr = '';
-    for (const model of candidateModels) {
-      try {
-        const prompt = `Translate this French text to English:\n\n${content}`;
-        const out = await callAnthropicOnce(model, prompt);
-        if (out && out.trim()) return { text: out, model };
-      } catch (e) {
-        lastErr = e?.message || String(e);
-        console.error(`[translate] ${model} failed:`, lastErr);
-        if (/HTTP\s+(401|403)/.test(lastErr)) break; // auth error → stop
-      }
-    }
-    return { text: '', error: lastErr };
+  // Helper: translate one chunk (errors bubble up to the caller)
+  async function translateChunk(content) {
+    const out = await callAnthropicOnce(TRANSLATE_MODEL, `Translate this French text to English:\n\n${content}`);
+    if (!out || !out.trim()) throw new Error('Empty translation');
+    return out;
   }
 
   // Chunking for long HTML to avoid truncation
@@ -459,16 +440,12 @@ Return ONLY the translated text, no explanations. Do not truncate or summarize; 
 
   const chunks = splitHtmlIntoChunks(textWithoutImages, 4500);
   let translated = '';
-  let usedModel = '';
-  for (let i = 0; i < chunks.length; i++) {
-    const { text: piece, model, error } = await translateWithFallback(chunks[i]);
-    if (!piece) {
-      console.warn('[translate] chunk failed, falling back to original for this chunk:', error);
-      translated += chunks[i];
-      continue;
-    }
-    if (!usedModel) usedModel = model;
-    translated += piece;
+  try {
+    for (const chunk of chunks) translated += await translateChunk(chunk);
+  } catch (e) {
+    console.error(`[translate] ${TRANSLATE_MODEL} failed:`, e?.message || String(e));
+    // Non-2xx so the CMS uses its own fallback instead of saving French as English
+    return res.status(502).json({ error: 'Translation service failed', translatedText: text });
   }
 
   // Remove any stray bracketed meta-notes the model might add
@@ -477,11 +454,7 @@ Return ONLY the translated text, no explanations. Do not truncate or summarize; 
   // Restore images
   translated = translated.replace(/__IMG_(\d+)__/g, (_, n) => imgTags[Number(n)] ?? '');
 
-  if (!translated || !translated.trim()) {
-    return res.json({ translatedText: text, message: 'Translation service unavailable, using original text' });
-  }
-
-  return res.json({ translatedText: translated, message: `Translated using Claude API${usedModel ? ` (${usedModel})` : ''}` });
+  return res.json({ translatedText: translated, message: `Translated using Claude API (${TRANSLATE_MODEL})` });
 });
 
 // Save/Update content endpoint
